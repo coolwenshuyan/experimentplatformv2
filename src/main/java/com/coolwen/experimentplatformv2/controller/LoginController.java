@@ -254,6 +254,7 @@ public class LoginController {
 //                        student.setClassId(Integer.valueOf(class_id));
 //                    }
                 student.setStuUname(username);
+
                 student.setStuPassword(password);
                 if (stu_isinschool && stu_xuehao == "") {
 //                        throw new UserException("在校学生须填写学号!");

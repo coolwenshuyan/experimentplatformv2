@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1" />
+		<meta name="renderer" content="webkit" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>学习 - 四川旅游学院虚拟仿真实验教学管理平台</title>
+		<link rel="stylesheet" href="../../static/new/css/reset.css" />
+		<link rel="stylesheet" href="../../static/new/css/study.css" />
+	</head>
+	<body>
+		<div class="study-page">
+			<h1>理论学习</h1>
+			<div class="study-list">
+				<div class="study-item">
+					<div class="study-item-header">实验介绍</div>
+					<div class="study-item-body" th:utext="${exp.introduce}"></div>
+				</div>
+				<div class="study-item">
+					<div class="study-item-header">实验目的</div>
+					<div class="study-item-body" th:utext="${exp.purpose}"></div>
+				</div>
+				<div class="study-item">
+					<div class="study-item-header">实验原理</div>
+					<div class="study-item-body" th:utext="${exp.principle}"></div>
+				</div>
+				<div class="study-item">
+					<div class="study-item-header">实验内容</div>
+					<div class="study-item-body" th:utext="${exp.m_content}"></div>
+				</div>
+				<div class="study-item">
+					<div class="study-item-header">实验资料</div>
+					<div class="study-item-body">
+						<p>资料路径：</p>
+						<div th:each="p:${path}">
+							<p><a th:href="${p}" th:text="${p}"></a></p>
+						</div>
+					</div>
+				</div>
+				<div class="study-item">
+					<div class="study-item-header">实验步骤</div>
+					<div class="study-item-body study-step" th:utext="${exp.m_step}"></div>
+				</div>
+			</div>
+			<a th:href="@{/expmodel/moduleDispathcher}" class="back-btn">返回</a>
+		</div>
+	</body>
+</html>

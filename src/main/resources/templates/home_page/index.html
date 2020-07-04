@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1" />
+		<meta name="renderer" content="webkit" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>首页 - 旅游大数据虚拟仿真实验教学平台</title>
+		<link rel="stylesheet" href="../../static/new/css/reset.css" />
+		<link rel="stylesheet" href="../../static/new/css/common.css" />
+		<link rel="stylesheet" href="../../static/new/css/index.css" />
+		<script>
+            var chartsInfo = {
+                1: {
+                    data: [
+                        { value: parseInt('[[${kaohenum}]]'), name: '考核模块' },
+                        { value: parseInt('[[${modenum}]]') - parseInt('[[${kaohenum}]]'), name: '实验模块' },
+                        {
+                            name: '实验总数\n[[${modenum}]]个',
+                            value: 0,
+                            label: {
+                                formatter: '{b}',
+                                position: 'center',
+                                fontSize: 18,
+                                fontWeight: 'bold',
+                                align: 'center',
+                                lineHeight: 28
+                            }
+                        }
+                    ]
+                },
+                2: {
+                    data: [
+                        { value: 536, name: '校内人员' },
+                        { value: 43, name: '校外人员' },
+                        {
+                            name: '用户总数\n' + 579 + '个',
+                            value: 0,
+                            label: {
+                                formatter: '{b}',
+                                position: 'center',
+                                fontSize: 18,
+                                fontWeight: 'bold',
+                                align: 'center',
+                                lineHeight: 28
+                            }
+                        }
+                    ]
+                },
+                3: {
+                    data: [
+                        { value: 571, name: '通过考核' },
+                        { value: 8, name: '未通过考核' },
+                        {
+                            name: '考核总数\n579个',
+                            value: 0,
+                            label: {
+                                formatter: '{b}',
+                                position: 'center',
+                                fontSize: 18,
+                                fontWeight: 'bold',
+                                align: 'center',
+                                lineHeight: 28
+                            }
+                        }
+                    ]
+                },
+                4: {
+                    data: [
+                        { value: 174, name: '高' },
+                        { value: 280, name: '中' },
+                        { value: 125, name: '低' },
+                        {
+                            name: '成绩总数\n579份',
+                            value: 0,
+                            label: {
+                                formatter: '{b}',
+                                position: 'center',
+                                fontSize: 18,
+                                fontWeight: 'bold',
+                                align: 'center',
+                                lineHeight: 28
+                            }
+                        }
+                    ]
+                }
+            }
+		</script>
+		<!--<script>-->
+			<!--var chartsInfo = {-->
+				<!--1: {-->
+					<!--data: [-->
+						<!--{ value: parseInt('[[${kaohenum}]]'), name: '考核模块' },-->
+						<!--{ value: parseInt('[[${modenum}]]') - parseInt('[[${kaohenum}]]'), name: '实验模块' },-->
+						<!--{-->
+							<!--name: '实验总数\n[[${modenum}]]个',-->
+							<!--value: 0,-->
+							<!--label: {-->
+								<!--formatter: '{b}',-->
+								<!--position: 'center',-->
+								<!--fontSize: 18,-->
+								<!--fontWeight: 'bold',-->
+								<!--align: 'center',-->
+								<!--lineHeight: 28-->
+							<!--}-->
+						<!--}-->
+					<!--]-->
+				<!--},-->
+				<!--2: {-->
+					<!--data: [-->
+						<!--{ value: parseInt('[[${usernum}]]'), name: '校内人员' },-->
+						<!--{ value: parseInt('[[${xiaowainum}]]'), name: '校外人员' },-->
+						<!--{-->
+							<!--name: '用户总数\n' + (parseInt('[[${usernum}]]') + parseInt('[[${xiaowainum}]]')) + '个',-->
+							<!--value: 0,-->
+							<!--label: {-->
+								<!--formatter: '{b}',-->
+								<!--position: 'center',-->
+								<!--fontSize: 18,-->
+								<!--fontWeight: 'bold',-->
+								<!--align: 'center',-->
+								<!--lineHeight: 28-->
+							<!--}-->
+						<!--}-->
+					<!--]-->
+				<!--},-->
+				<!--3: {-->
+					<!--data: [-->
+						<!--{ value: parseInt('[[${passpeople}]]'), name: '通过考核' },-->
+						<!--{ value: parseInt('[[${studentmodel}]]') - parseInt('[[${passpeople}]]'), name: '未通过考核' },-->
+						<!--{-->
+							<!--name: '考核总数\n[[${studentmodel}]]个',-->
+							<!--value: 0,-->
+							<!--label: {-->
+								<!--formatter: '{b}',-->
+								<!--position: 'center',-->
+								<!--fontSize: 18,-->
+								<!--fontWeight: 'bold',-->
+								<!--align: 'center',-->
+								<!--lineHeight: 28-->
+							<!--}-->
+						<!--}-->
+					<!--]-->
+				<!--},-->
+				<!--4: {-->
+					<!--data: [-->
+						<!--{ value: parseInt('[[${excellentstu}]]'), name: '高' },-->
+						<!--{ value: parseInt('[[${qualifiedstu}]]'), name: '中' },-->
+						<!--{ value: parseInt('[[${unqualifiedstu}]]'), name: '低' },-->
+						<!--{-->
+							<!--name: '成绩总数\n[[${allpasspeople}]]份',-->
+							<!--value: 0,-->
+							<!--label: {-->
+								<!--formatter: '{b}',-->
+								<!--position: 'center',-->
+								<!--fontSize: 18,-->
+								<!--fontWeight: 'bold',-->
+								<!--align: 'center',-->
+								<!--lineHeight: 28-->
+							<!--}-->
+						<!--}-->
+					<!--]-->
+				<!--}-->
+			<!--}-->
+		<!--</script>-->
+	</head>
+	<body>
+		<div class="topbar">
+			<div class="main cl">
+				<p>旅游大数据虚拟仿真实验教学平台</p>
+				<div class="user-info" th:if="${session.username} == null">
+					<a href="http://tysf.sctu.edu.cn:8071/sso//login?service=http://172.17.55.112:8889/shiro-cas">登陆</a>
+					<a href="/register">注册</a>
+				</div>
+				<div class="user-info" th:if="${session.username} != null">
+					<span th:text="|欢迎你，${session.username} |"></span>
+					<!--<a th:href="@{/logout}">退出登录</a>-->
+				</div>
+			</div>
+		</div>
+		<div class="navs cl">
+			<div class="logo">
+				<img src="../../static/new/images/sctu.png" />
+				<p>旅游大数据虚拟仿真实验教学平台</p>
+			</div>
+			<ul class="nav">
+				<li><a href="javascript:;">首页</a></li>
+				<li><a href="/newsinfo/shiyan">实验大厅</a></li>
+				<li><a href="/setinfo/situation">平台概况</a></li>
+				<li><a href="/teachers/frontList">师资队伍</a></li>
+				<li><a href="/question/list1">咨询答疑</a></li>
+				<li><a href="/learning/learningList">学习效果</a></li>
+			</ul>
+		</div>
+		<div class="banners">
+			<ul class="rslides">
+				<li><img src="../../static/new/images/index_01.jpg" /></li>
+				<li><img src="../../static/new/images/index_02.jpg" /></li>
+				<li><img src="../../static/new/images/index_03.jpg" /></li>
+			</ul>
+		</div>
+		<div class="notice">
+			<p>本平台虚拟实验课程版权归四川旅游学院虚拟仿真实验教学管理平台所有，可供学习参考，未经允许私自盗用用作商业用途将承担法律责任</p>
+		</div>
+		<div class="news-section">
+			<div class="main cl">
+				<div class="news-area">
+					<div class="title-bar">
+						<div class="title">平台公告</div>
+						<a href="/newsinfo/more" class="more">more+</a>
+					</div>
+					<ul class="news-list">
+						<li th:each="news:${newsPageInfo.content}" class="news-item cl">
+							<a th:href="@{|noticeDetails/${news.id}|}" th:title="${news.news_name}">
+								<p th:text="${news.news_name}"></p>
+								<span th:text="${#dates.format(news.dic_datetime,'yyyy-MM-dd')}"></span>
+							</a>
+						</li>
+					</ul>
+				</div>
+				<div class="recommend">
+					<div class="title-bar">
+						<div class="title">推荐实验项目</div>
+					</div>
+					<div class="cl">
+						<div class="recommend-item">
+							<a th:href="@{|/expmodel/homeExpDispatcher/${mid0}|}">
+								<img th:src="${img0}" />
+								<p>基于旅游大数据虚拟仿真平台的推荐系统入门</p>
+							</a>
+						</div>
+						<div class="recommend-item">
+							<a th:href="@{|/expmodel/homeExpDispatcher/${mid1}|}">
+								<img th:src="${img1}" />
+								<p>实验二 数据模型，推荐流程总体框架</p>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="list-section">
+			<div class="main">
+				<div class="section-title">虚拟仿真实验列表</div>
+				<div class="list-table">
+					<div class="list-row list-header-row cl">
+						<div class="list-id">序号</div>
+						<div class="list-name">实验名称</div>
+						<div class="list-incharge">负责人</div>
+						<div class="list-desc">实验目的</div>
+						<div class="list-time">课时</div>
+						<div class="list-opt">操作</div>
+					</div>
+					<div class="list-row cl" th:each="exp:${allexp}">
+						<div class="list-id" th:text="${exp.m_id}"></div>
+						<div class="list-name" th:text="${exp.m_name}"></div>
+						<div class="list-incharge" th:text="${exp.m_manager}"></div>
+						<div class="list-desc" th:title="${exp.purpose}" th:text="${exp.purpose}"></div>
+						<div class="list-time" th:text="${exp.classhour}"></div>
+						<div class="list-opt">
+							<a th:href="@{|/expmodel/homeExpDispatcher/${exp.m_id}|}" class="list-btn">开始实验</a>
+						</div>
+					</div>
+				</div>
+				<div class="more-btn"><a href="/newsinfo/shiyan">进入实验大厅</a></div>
+			</div>
+		</div>
+		<div class="charts-section">
+			<div class="main">
+				<div class="section-title">平台数据统计</div>
+				<div class="charts cl">
+					<div class="chart-item" id="chart1"></div>
+					<div class="chart-item" id="chart2"></div>
+					<div class="chart-item" id="chart3"></div>
+					<div class="chart-item" id="chart4"></div>
+				</div>
+			</div>
+		</div>
+		<footer>
+			<p>copyright © 2020 旅游大数据虚拟仿真实验教学平台</p>
+		</footer>
+		<script src="//cdn.staticfile.org/jquery/1.8.0/jquery.min.js"></script>
+		<script src="../../static/new/js/slider.min.js"></script>
+		<script src="//cdn.staticfile.org/echarts/4.8.0/echarts.common.min.js"></script>
+		<script src="../../static/new/js/index.js"></script>
+	</body>
+</html>

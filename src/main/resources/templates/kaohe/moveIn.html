@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta charset="UTF-8">
+		<title>实验设置</title>
+		<link rel="stylesheet" type="text/css" href="../../static/css/layui.css" />
+		<!--<link rel="stylesheet" type="text/css" href="css/page.css"/>-->
+		<link rel="stylesheet" type="text/css" href="../../static/css/code.css">
+
+		<style type="text/css">
+			body{
+				background-color: rgb(242,242,242);
+			}
+			/*@media screen and (min-width: 1200px)*/
+				.layui-container {
+					width: 50%;
+					background-color: white;
+					}
+			.layui-input,
+			.layui-textarea {
+				width: 35%;
+			}
+			
+			.layui-form-label {
+				width: 100px;
+			}
+			.p0{
+				padding-top: 9px;
+			}
+			.text-overflow {
+				display:block;/*内联对象需加*/
+				width:31em;/*指定宽度*/
+				word-break:keep-all;/* 不换行 */
+				white-space:nowrap;/* 强制在同一行内显示所有文本，直到文本结束或者遭遇 br 对象。不换行 */
+				overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
+				text-overflow:ellipsis;/* IE 专有属性，当对象内文本溢出时显示省略标记() ；需与overflow:hidden;一起使用。*/
+			}
+
+			table{
+				width:30em;
+				table-layout:fixed;/* 只有定义了表格的布局算法为fixed，下面td的定义才能起作用。 */
+			}
+			td{
+				width:100%;
+				word-break:keep-all;/* 不换行 */
+				white-space:nowrap;/* 不换行 */
+				overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
+				text-overflow:ellipsis;/* 当对象内文本溢出时显示省略标记() ；需与overflow:hidden;一起使用。*/
+			}
+
+			.layui-form-label b{
+				font-weight: 900;
+				font-size: 20px;
+				color: rgb(0,150,136);
+			}
+			.layui-form-label{
+				text-align: left;
+			}
+
+			.bo{
+				margin-bottom: 5%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="layui-container" >
+<!--			<img src="../../static/images/LOGO2.png"> <br><br>-->
+<!--			<span class="layui-breadcrumb">-->
+<!--  			<a href="/kaohe/check_Module">首页</a>-->
+<!--  			&lt;!&ndash;<a href="/demo/">轮播公告</a>&ndash;&gt;-->
+<!--  			<a><cite>考核实验</cite></a>-->
+<!--			</span><br><br><br>-->
+
+			<div th:object="${expInfo}">
+				<div class="layui-form-item" >
+					<label class="layui-form-label">
+						<b>|</b>&nbsp;
+						实验名</label>
+					<!--					<div class="layui-input-block">-->
+					<!--						<input type="text" name="Experiment_name" lay-verify="title" autocomplete="off" placeholder="请输入实验名称" class="layui-input">-->
+					<!--					</div>-->
+					<p class="p0" th:text="*{m_name}">这是一个实验名</p>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">
+						<b>|</b>&nbsp;
+						实验类型</label>
+					<!--					<div class="layui-input-block">-->
+					<!--						<input type="text" name="shiyan_Types" lay-verify="title" autocomplete="off" placeholder="请输入实验类型" class="layui-input">-->
+					<!--					</div>-->
+					<p class="p0" th:text="*{m_type}">这是一个实验类型</p>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">
+						<b>|</b>&nbsp;
+						课时</label>
+					<!--					<div class="layui-input-block">-->
+					<!--						<input type="text" name="m_id" lay-verify="title" autocomplete="off" placeholder="请输入实验课时" class="layui-input">-->
+					<!--					</div>-->
+					<p class="p0" th:text="*{classhour}">这是一个课时</p>
+				</div>
+				<div class="layui-form-item layui-form-text">
+					<label class="layui-form-label">
+						<b>|</b>&nbsp;
+						实验目的</label>
+					<!--					<div class="layui-input-block">-->
+					<!--						<textarea placeholder="请输入实验目的" class="layui-textarea" name="shiyan_Purpose"></textarea>-->
+					<!--					</div>-->
+					<p class="p0" th:text="*{purpose}">这是一个实验目的</p>
+				</div>
+			</div>
+
+			<form class="layui-form" th:object="${moveIn}" th:method="post">
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">
+						<b>|</b>&nbsp;
+						测试成绩占比</label>
+					<div class="layui-input-block">
+						<input th:value="*{m_test_baifenbi}" type="text" name="m_test_baifenbi" lay-verify="title" autocomplete="off" placeholder="请输入测试成绩占比" class="layui-input" title="请输入0-1之间的数" pattern="^(1|(0(.\d{1,10})?))$">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">
+						<b>|</b>&nbsp;
+						报告成绩占比</label>
+					<div class="layui-input-block">
+						<input th:value="*{m_report_baifenbi}" type="text" name="m_report_baifenbi" lay-verify="title" autocomplete="off" placeholder="请输入报告成绩占比" class="layui-input" title="请输入0-1之间的数" pattern="^(1|(0(.\d{1,10})?))$">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">
+						<b>|</b>&nbsp;
+						权重</label>
+					<div class="layui-input-block">
+						<input th:value="*{m_scale}" type="text" name="m_scale" lay-verify="title" autocomplete="off" placeholder="请输入权重" class="layui-input" title="请输入0-1之间的数" pattern="^(1|(0(.\d{1,10})?))$">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">
+						<b>|</b>&nbsp;
+						序号</label>
+					<div class="layui-input-block">
+						<input th:value="*{m_order}" type="number" name="m_order" lay-verify="title" autocomplete="off" placeholder="请输入实验序号" class="layui-input">
+					</div>
+				</div>
+
+				<div class="layui-form-item ">
+					<div class="layui-input-block ">
+						<button type="submit" class="layui-btn bo" lay-submit="" lay-filter="demo1" >添加</button>
+						<a th:href="@{/kaohemodel/allModule}" class="layui-btn layui-btn-primary bo">取消</a>
+					</div>
+				</div>
+			</form>
+
+		</div>
+
+		<script src="../../static/js/layui.js" type="text/javascript" charset="utf-8"></script>
+		<!-- <script src="js/layui.all.js" type="text/javascript" charset="utf-8"></script> -->
+	</body>
+
+</html>

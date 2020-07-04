@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1" />
+		<meta name="renderer" content="webkit" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>实验报告 - 旅游大数据虚拟仿真实验教学平台</title>
+		<link rel="stylesheet" href="../../static/new/css/reset.css" />
+		<link rel="stylesheet" href="../../static/new/css/exp-report.css" />
+	</head>
+	<body>
+		<div class="report-page">
+			<div class="logo">
+				<img src="../../static/new/images/sctu.png" />
+			</div>
+			<div class="title">[[${collegeReport.getCrClassName()}]]实验报告</div>
+			<p class="name">实验名称：<span th:text="${collegeReport.getMname()}"></span></p>
+			<form id="step1" th:action="@{|/collegereport/info/${collegeReport.getMid()}|}" method="post">
+				<div class="basic">
+					<p class="basic-item">学号：<span th:text="${collegeReport.getStuXuehao()}"></span></p>
+					<p class="basic-item">姓名：<span th:text="${collegeReport.getStuName()}"></span></p>
+					<p class="basic-item">班级：<span th:text="${collegeReport.getClassName()}"></span></p>
+					<p class="basic-item">地点：<input name="crDress" type="text" th:value="${collegeReport.getCrDress()}" placeholder="请输入地点" /></p>
+					<p class="basic-item">时间：<input name="crDate" type="text" th:value="${#dates.format(collegeReport.getCrDate(),'yyyy/MM/dd')}" placeholder="请选择时间" id="date1" /></p>
+					<p class="basic-item">教师：<input name="crTeacher" type="text" th:value="${collegeReport.getCrTeacher()}" placeholder="请输入教师名字" /></p>
+				</div>
+			</form>
+		</div>
+		<div class="report-btns cl">
+			<div class="next-btn">下一步</div>
+		</div>
+		<script src="//cdn.staticfile.org/jquery/1.8.0/jquery.min.js"></script>
+		<script src="//cdn.staticfile.org/layer/3.1.1/layer.min.js"></script>
+		<script src="../../static/new/js/laydate/laydate.js"></script>
+		<script>
+			$(function () {
+				laydate.render({
+					elem: '#date1',
+					format: 'yyyy/MM/dd'
+				})
+				$('.next-btn').click(function () {
+					if ($('#date1').val()) {
+						$('#step1').submit()
+					} else {
+						layer.tips('请选择时间', '#date1', { tips: 3 })
+					}
+				})
+			})
+		</script>
+	</body>
+</html>

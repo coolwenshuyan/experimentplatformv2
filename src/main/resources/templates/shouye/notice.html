@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>平台公告</title>
+    <link rel="stylesheet" href="../../static/css/layui.css">
+</head>
+<style type="text/css">
+    #head{
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+    #main{
+        margin-top: 30px;
+    }
+    .text-overflow {
+        display:block;/*内联对象需加*/
+        width:31em;/*指定宽度*/
+        word-break:keep-all;/* 不换行 */
+        white-space:nowrap;/* 强制在同一行内显示所有文本，直到文本结束或者遭遇 br 对象。不换行 */
+        overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
+        text-overflow:ellipsis;/* IE 专有属性，当对象内文本溢出时显示省略标记() ；需与overflow:hidden;一起使用。*/
+    }
+
+    table{
+        width:30em;
+        table-layout:fixed;/* 只有定义了表格的布局算法为fixed，下面td的定义才能起作用。 */
+    }
+    td{
+        width:100%;
+        word-break:keep-all;/* 不换行 */
+        white-space:nowrap;/* 不换行 */
+        overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
+        text-overflow:ellipsis;/* 当对象内文本溢出时显示省略标记() ；需与overflow:hidden;一起使用。*/
+    }
+    .layui-table th {
+        text-align: center;
+        font-weight: 900;
+    }
+    .layui-table{
+        text-align: center;
+    }
+</style>
+<body>
+<!--<div id="head" class="layui-col-md10 layui-col-md-offset1">-->
+<!--			<span class="layui-col-md3">-->
+<!--  				<a class="layui-btn layui-btn-primary" href="../kuangjia/frame.html">首页设置</a>-->
+<!--  				<a class="layui-btn" href="notice.html">平台公告</a>-->
+<!--			</span>-->
+<!--</div>-->
+<!--<hr>-->
+<div class="layui-container">
+
+<div  style="margin-top: 50px;">
+    <a href="/newsinfo/add">
+        <button type="button" class="layui-btn">
+            <i class="layui-icon">&#xe608;</i> 添加
+        </button>
+    </a>
+</div>
+
+<div id="main" >
+    <table id="d1" class="layui-table">
+        <colgroup>
+            <col >
+            <col >
+            <col>
+        </colgroup>
+        <thead>
+        <tr>
+            <th>id</th>
+            <th>标题</th>
+            <th>发布者</th>
+            <th style=" width: 30%;">内容</th>
+            <th>发布日期</th>
+            <th>点击次数</th>
+            <th style="width:15%;">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="news:${newsPageInfo.content}">
+            <td th:text="${news.id}">1</td>
+            <td th:text="${news.news_name}">2016-11-29</td>
+            <td th:text="${news.news_person}">贤心</td>
+            <td class="aa" th:text="${news.content}">人生就像是一场修行</td>
+            <td th:text="${news.dic_datetime}">时间</td>
+            <td th:text="${news.dic_num}">点击</td>
+            <td>
+                <div id="d" class="layui-btn-container">
+                <!--                    <a type="button" th:href="@{|${news.id}/update|}" class="layui-btn layui-btn-primary layui-btn-sm">-->
+                <!--                        <i class="layui-icon">&#xe642;</i>-->
+                <!--                    </a>-->
+                <!--                    <a type="button" th:href="@{|${news.id}/delete|}" class="layui-btn layui-btn-primary layui-btn-sm">-->
+                <!--                        <i class="layui-icon">&#xe640;</i>-->
+                <!--                    </a>-->
+                <a type="add" class="layui-btn layui-btn-sm" th:href="@{|${news.id}/update|}">修改</a>
+                <a type="delete" @click="isTrue" class="layui-btn layui-btn-sm layui-bg-red" th:href="@{|${news.id}/delete|}">删除</a>
+            </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div id="d2" class="layui-row">
+        <div style="margin:0 auto; width: 80%; text-align: center;">
+            <p>当前 <span th:text="${newsPageInfo.number}+1"></span> 页,
+                总 <span th:text="${newsPageInfo.totalPages}"></span> 页,
+                共 <span th:text="${newsPageInfo.totalElements}"></span> 条记录</p>
+            <a th:href="@{/newsinfo/list}">首页</a>
+            <a th:href="@{/newsinfo/list(pageNum=${newsPageInfo.hasPrevious()}?${newsPageInfo.number}-1:0)}">上一页</a>
+            <a th:href="@{/newsinfo/list(pageNum=${newsPageInfo.hasNext()}?${newsPageInfo.number}+1:${newsPageInfo.number})}">下一页</a>
+            <a th:href="@{/newsinfo/list(pageNum=${newsPageInfo.totalPages}-1)}">尾页</a>
+        </div>
+    </div>
+
+</div>
+</div>
+
+<script src="../../static/js/layui.all.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/layui.js" type="text/javascript" charset="utf-8"></script>
+</body>
+</html>
+

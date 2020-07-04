@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1" />
+		<meta name="renderer" content="webkit" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>测试结果 - 四川旅游学院虚拟仿真实验教学管理平台</title>
+		<link rel="stylesheet" href="../../static/new/css/reset.css" />
+		<link rel="stylesheet" href="../../static/new/css/score.css" />
+	</head>
+	<body>
+		<div class="score-page">
+			<h1 class="score-title">测试结果</h1>
+			<a th:href="@{/expmodel/moduleDispathcher}" class="back-btn">返回</a>
+			<div class="result">本次测试总分:<span th:text="${fs2}">100</span> 分</div>
+			<div class="score-area">
+				<h3 class="score-part-title">一、单选题<span>（共六十分）</span></h3>
+				<div class="score-item" th:each="m,iterStat:${radioQuestionsList}">
+					<div class="score-que cl">
+						<span th:text="${iterStat.index+1}+'. '">1. </span>
+						<p th:text="${m.questDescribe}+' ('+${m.questScore}+'分)'"></p>
+					</div>
+					<div class="score-anws cl">
+						<label class="score-radio cl" th:each="n:${m.moduleTestAnswerList}">
+							<input disabled type="radio" th:value="${n.answerId}" th:name="${m.questId}" />
+							<em></em>
+							<span th:text="${n.answerDescribe}"></span>
+						</label>
+					</div>
+					<div class="score-result">
+						<div class="result-item">本题得分：<span th:text="${m.oneQuestScore}"></span> 分</div>
+						<div class="result-item">我的答案：第 <span th:text="${m.stuAnswer}"></span> 选项</div>
+						<div class="result-item">正确答案：第 <span th:text="${m.questAnswer}"></span> 选项</div>
+					</div>
+				</div>
+				<h3 class="score-part-title">二、多选题<span>（共四十分）</span></h3>
+				<div class="score-item" th:each="m1,iterStat:${checkboxQuestionsList}">
+					<div class="score-que cl">
+						<span th:text="${iterStat.index+1}+'. '">1. </span>
+						<p th:text="${m1.questDescribe}+' ('+${m1.questScore}+'分)'"></p>
+					</div>
+					<div class="score-anws cl">
+						<label class="score-checkbox cl" th:each="n1:${m1.moduleTestAnswerList}">
+							<input disabled type="checkbox" th:name="${m1.questId}" th:value="${n1.answerId}" />
+							<em></em>
+							<span th:text="${n1.answerDescribe}"></span>
+						</label>
+					</div>
+					<div class="score-result">
+						<div class="result-item">本题得分：<span th:text="${m1.oneQuestScore}"></span> 分</div>
+						<div class="result-item">我的答案：第 <span th:text="${m1.stuAnswer}"></span> 选项</div>
+						<div class="result-item">正确答案：第 <span th:text="${m1.questAnswer}"></span> 选项</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

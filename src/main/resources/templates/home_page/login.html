@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1" />
+		<meta name="renderer" content="webkit" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>登陆 - 四川旅游学院虚拟仿真实验教学管理平台</title>
+		<link rel="stylesheet" href="../../static/new/css/reset.css" />
+		<link rel="stylesheet" href="../../static/new/css/login.css" />
+	</head>
+	<body>
+		<div class="topbar">
+			<div class="main cl">
+				<div class="welcome">四川旅游学院虚拟仿真实验教学管理平台</div>
+				<div class="datestr"></div>
+			</div>
+		</div>
+		<header>
+			<div class="main cl">
+				<img class="header-logo" src="../../static/new/images/sctu.png" />
+				<p class="header-title">虚拟仿真实验教学管理平台</p>
+			</div>
+		</header>
+		<section>
+			<div class="main cl">
+				<form class="login-form-area" method="post" th:action="@{/login}">
+					<select name="type" class="form-select">
+						<option value="student">平台学习者</option>
+						<option value="admin">平台管理员</option>
+					</select>
+					<input class="form-input" type="text" name="account" placeholder="请输入您的学/工号" />
+					<input class="form-input" type="password" name="password" placeholder="请输入您的密码" />
+					<div class="cl">
+						<input class="row-input" type="text" name="code" placeholder="请输入验证码" autocomplete="off" />
+						<img class="verify-img" id="verifyimg" th:src="@{/verifyCode}" />
+						<p class="change-verify-btn" id="changeBtn">(看不清?换一张)</p>
+					</div>
+					<p th:text="${msg}" class="error-msg">这里是错误信息</p>
+					<div class="cl">
+						<button class="login-button" type="submit">登陆</button>
+						<a class="register-button" href="/register">注册</a>
+					</div>
+					<a class="form-button" href="#">评审专家一键登陆</a>
+				</form>
+			</div>
+		</section>
+		<footer>
+			<div class="main">
+				<p>copyright © 2020 四川旅游学院虚拟仿真实验教学平台</p>
+			</div>
+		</footer>
+		<script src="//cdn.staticfile.org/jquery/3.5.1/jquery.min.js"></script>
+		<script>
+			$(function () {
+				var _days = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
+				var _d = new Date()
+				$('.datestr').text(_d.getFullYear() + '年' + (_d.getMonth() + 1) + '月' + _d.getDate() + '日 ' + _days[_d.getDay()])
+				$('#changeBtn').click(function (e) {
+					e.preventDefault()
+					$('#verifyimg').attr('src', '/verifyCode?id=' + new Date() + Math.floor(Math.random() * 24))
+				})
+			})
+		</script>
+	</body>
+</html>

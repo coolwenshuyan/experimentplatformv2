@@ -22,7 +22,7 @@ public class CourseInfo {
     private String courseCode;
 
     @Column(name = "teacher_id")
-    private String teacherId;
+    private int teacherId;
 
     @Column(name = "course_imgurl")
     private String courseImgurl;
@@ -54,11 +54,11 @@ public class CourseInfo {
         this.courseCode = courseCode;
     }
 
-    public String getTeacherId() {
+    public int getTeacherId() {
         return teacherId;
     }
 
-    public void setTeacherId(String teacherId) {
+    public void setTeacherId(int teacherId) {
         this.teacherId = teacherId;
     }
 

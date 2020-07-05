@@ -1,6 +1,7 @@
 package com.coolwen.experimentplatformv2.model;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * @author 朱治汶
@@ -18,19 +19,19 @@ public class ArrangeClass {
     private int id;
 
     @Column(name = "course_id")
-    private String courseId;
+    private int courseId;
 
     @Column(name = "teacher_id")
-    private String teacherId;
+    private int teacherId;
 
     @Column(name = "class_id")
-    private String classId;
+    private int classId;
 
     @Column(name = "arrange_start")
-    private String arrangeStart;
+    private Date arrangeStart;
 
     @Column(name = "arrange_end")
-    private String arrangeEnd;
+    private Date arrangeEnd;
 
     public int getId() {
         return id;
@@ -40,43 +41,43 @@ public class ArrangeClass {
         this.id = id;
     }
 
-    public String getCourseId() {
+    public int getCourseId() {
         return courseId;
     }
 
-    public void setCourseId(String courseId) {
+    public void setCourseId(int courseId) {
         this.courseId = courseId;
     }
 
-    public String getTeacherId() {
+    public int getTeacherId() {
         return teacherId;
     }
 
-    public void setTeacherId(String teacherId) {
+    public void setTeacherId(int teacherId) {
         this.teacherId = teacherId;
     }
 
-    public String getClassId() {
+    public int getClassId() {
         return classId;
     }
 
-    public void setClassId(String classId) {
+    public void setClassId(int classId) {
         this.classId = classId;
     }
 
-    public String getArrangeStart() {
+    public Date getArrangeStart() {
         return arrangeStart;
     }
 
-    public void setArrangeStart(String arrangeStart) {
+    public void setArrangeStart(Date arrangeStart) {
         this.arrangeStart = arrangeStart;
     }
 
-    public String getArrangeEnd() {
+    public Date getArrangeEnd() {
         return arrangeEnd;
     }
 
-    public void setArrangeEnd(String arrangeEnd) {
+    public void setArrangeEnd(Date arrangeEnd) {
         this.arrangeEnd = arrangeEnd;
     }
 }

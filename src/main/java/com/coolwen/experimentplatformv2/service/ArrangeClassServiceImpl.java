@@ -1,6 +1,11 @@
 package com.coolwen.experimentplatformv2.service;
 
+import com.coolwen.experimentplatformv2.dao.ArrangeClassRepository;
 import com.coolwen.experimentplatformv2.model.ArrangeClass;
+import com.coolwen.experimentplatformv2.model.DTO.ArrangeClassDto;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -10,6 +15,10 @@ import org.springframework.stereotype.Service;
  **/
 @Service
 public class ArrangeClassServiceImpl implements ArrangeClassService {
+
+    @Autowired
+    ArrangeClassRepository arrangeClassRepository;
+
     @Override
     public void add(ArrangeClass effect) {
 
@@ -23,5 +32,10 @@ public class ArrangeClassServiceImpl implements ArrangeClassService {
     @Override
     public void delete(int id) {
 
+    }
+
+    @Override
+    public Page<ArrangeClassDto> findByAll(Pageable pageable) {
+        return arrangeClassRepository.findByAll(pageable);
     }
 }

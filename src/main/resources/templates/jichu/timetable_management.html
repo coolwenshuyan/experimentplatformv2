@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="x-admin-sm">
+<html class="x-admin-sm" lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>课程表查看</title>
@@ -61,7 +61,7 @@
 
 
                         <div class="layui-inline layui-show-xs-block">
-                            <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon"></i>增加</button>
+                            <a href="/courseinfo/add" class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon"></i>增加</a>
                         </div>
                     </form>
                 </div>
@@ -80,33 +80,43 @@
                             <th>操作</th>
                         </thead>
                         <tbody>
-                        <tr>
+                        <tr th:each="courseInfo:${courseInfos.content}">
 
-                            <td>1</td>
-                            <td>JAVA</td>
-                            <th>课程代码111</th>
-                            <td>wen</th>
-                            <td><img src="../../static/images/logo.png"></td>
-                            <td>课程介绍</td>
+                            <td th:text="${courseInfo.id}">1</td>
+                            <td th:text="${courseInfo.courseName}">JAVA</td>
+                            <td th:text="${courseInfo.courseCode}">课程代码111</td>
+                            <td th:text="${courseInfo.teacherId}">wen</th>
+                            <td><img th:src="@{'/upload/'+${courseInfo.courseImgurl}}"></td>
+                            <td th:text="${courseInfo.courseIntruduce}">课程介绍</td>
 
                             <td class="td-manage">
-                                <button class="layui-btn layui-btn-primary layui-bg-red" lay-submit>修改</button>
-                                <button class="layui-btn layui-btn-primary layui-bg-green" lay-submit>删除</button>
+                                <a th:href="@{|${courseInfo.id}/update|}" class="layui-btn layui-btn-primary layui-bg-red" lay-submit>修改</a>
+                                <a th:href="@{|${courseInfo.id}/delete|}" class="layui-btn layui-btn-primary layui-bg-green" lay-submit>删除</a>
                             </td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="layui-card-body ">
-                    <div class="page">
-                        <div>
-                            <a class="prev" href="">&lt;&lt;</a>
-                            <a class="num" href="">1</a>
-                            <span class="current">2</span>
-                            <a class="num" href="">3</a>
-                            <a class="num" href="">489</a>
-                            <a class="next" href="">&gt;&gt;</a>
-                        </div>
+<!--                    <div class="page">-->
+<!--                        <div>-->
+<!--                            <a class="prev" href="">&lt;&lt;</a>-->
+<!--                            <a class="num" href="">1</a>-->
+<!--                            <span class="current">2</span>-->
+<!--                            <a class="num" href="">3</a>-->
+<!--                            <a class="num" href="">489</a>-->
+<!--                            <a class="next" href="">&gt;&gt;</a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+                    <div style="margin:0 auto; width: 80%; text-align: center;">
+                        <p>当前 <span th:text="${courseInfos.number}+1"></span> 页,
+                            总 <span th:text="${courseInfos.totalPages}"></span> 页,
+                            共 <span th:text="${courseInfos.totalElements}"></span> 条记录</p>
+                        <a th:href="@{/courseinfo/list}">首页</a>
+                        <a th:href="@{/courseinfo/list(pageNum=${courseInfos.hasPrevious()}?${courseInfos.number}-1:0)}">上一页</a>
+                        <a th:href="@{/courseinfo/list(pageNum=${courseInfos.hasNext()}?${courseInfos.number}+1:${courseInfos.number})}">下一页</a>
+                        <a th:href="@{/courseinfo/list(pageNum=${courseInfos.totalPages}-1)}">尾页</a>
                     </div>
                 </div>
             </div>

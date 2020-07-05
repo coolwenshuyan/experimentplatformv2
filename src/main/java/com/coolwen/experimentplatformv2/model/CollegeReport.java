@@ -12,8 +12,8 @@ import java.util.Date;
 @Table(name = "t_college_report")
 public class CollegeReport {
     @Id //自动获取id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "admin_id")
-    @TableGenerator(name = "admin_id", initialValue = 0, allocationSize = 1, table = "seq_table")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "collegereport_id")
+    @TableGenerator(name = "collegereport_id", initialValue = 0, allocationSize = 1, table = "seq_table")
     @Column(name = "id")
     private int id;
     @Column(name = "stu_id")

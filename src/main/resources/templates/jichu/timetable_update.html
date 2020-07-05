@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="x-admin-sm">
+<html class="x-admin-sm" lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -50,33 +50,38 @@
         <div class="layui-col-md12">
             <div class="layui-card">
                 <div class="layui-card-body ">
-                    <form class="layui-form" action="">
+                    <form class="layui-form" th:action="@{update}" th:object="${courseInfo}" method="post" enctype="multipart/form-data">
                         <div class="layui-form-item">
                             <label class="layui-form-label">课程名称</label>
                             <div class="layui-input-block">
-                                <input type="text" required  lay-verify="required" placeholder="请输入课程名称" autocomplete="off" class="layui-input">
+                                <input name="courseName" th:value="${courseInfo.getCourseName()}" type="text" required  lay-verify="required" placeholder="请输入课程名称" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">课程代码</label>
                             <div class="layui-input-block">
-                                <input type="text" name="password" required lay-verify="required" placeholder="请输入课程代码" autocomplete="off" class="layui-input">
+                                <input type="text" name="courseCode" th:value="${courseInfo.getCourseCode()}" required lay-verify="required" placeholder="请输入课程代码" autocomplete="off" class="layui-input">
                             </div>
                             <!--<div class="layui-form-mid layui-word-aux">辅助文字</div>-->
                         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">课程负责人</label>
                             <div class="layui-input-block">
-                                <input type="text" name="title" required  lay-verify="required" placeholder="请输入课程负责人" autocomplete="off" class="layui-input">
+                                <select name="teacherId" lay-filter="aihao" required="required" th:value="${courseInfo.getTeacherId()}">
+                                    <a th:each="user:${userList}">
+                                        <option th:value="${user.getId()}">[[${user.username}]]</option>
+                                    </a>
+
+                                </select>
                             </div>
                         </div>
 
                         <div class="layui-form-item">
                             <label class="layui-form-label">课程图片:</label>
                             <div class="layui-upload">
-                                <input type="file"  id="test1" name="m_image" required="required" value="上传图片" onchange="xmTanUploadImg(this)"/>
+                                <input type="file" name="attachs" id="uploadImg" required="required" value="上传图片" onchange="xmTanUploadImg(this)"/>
                                 <div class="layui-upload-list">
-                                    <img class="layui-upload-img" id="selectImg">
+                                    <img th:src="@{'/upload/'+${courseInfo.getCourseImgurl()}}" class="layui-upload-img" id="selectImg" >
                                     <p id="demoText"></p>
                                 </div>
                             </div>
@@ -84,14 +89,17 @@
                         <div class="layui-form-item layui-form-text">
                             <label class="layui-form-label">课程介绍:</label>
 
-                            <div class="layui-input-block" id="div1">
-                                <p>请输入课程介绍</p>
+                            <div class="layui-input-block">
+                                <input type="text" name="courseIntruduce" th:value="${courseInfo.getCourseIntruduce()}" required lay-verify="required" placeholder="请输入课程介绍" autocomplete="off" class="layui-input">
                             </div>
+<!--                            <div class="layui-input-block" id="div1">-->
+<!--                                <p>请输入课程介绍</p>-->
+<!--                            </div>-->
                         </div>
 
                         <div class="layui-form-item">
                             <div class="layui-input-block">
-                                <button class="layui-btn" lay-submit lay-filter="formDemo">修改完成</button>
+                                <button type="submit" class="layui-btn" lay-submit lay-filter="formDemo">修改完成</button>
                                 <button type="reset" class="layui-btn layui-btn-primary">删除</button>
                             </div>
                         </div>

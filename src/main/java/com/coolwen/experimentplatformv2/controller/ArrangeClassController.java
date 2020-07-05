@@ -48,11 +48,17 @@ public class ArrangeClassController {
         model.addAttribute("ArrangeClassDto",page);
 
 
-        List<CourseInfo> courseInfoList1 = courseInfoService.getclass_by_arrangeteacher(4);
+//        List<CourseInfo> courseInfoList1 = courseInfoService.getclass_by_arrangeteacher(4);
+//
+//        for (int i = 0; i <courseInfoList1.size() ; i++) {
+//            System.out.println(">>>>>>>>>>>>>>>>>>>>>>"+courseInfoList1.get(i).getTeacherId());
+//        }
 
-        for (int i = 0; i <courseInfoList1.size() ; i++) {
-            System.out.println(">>>>>>>>>>>>>>>>>>>>>>"+courseInfoList1.get(i).getTeacherId());
-        }
+//        List<ClassModel> courseInfoList1 = courseInfoService.getclass_by_arrangecourseid(1,1);
+//
+//        for (int i = 0; i <courseInfoList1.size() ; i++) {
+//            System.out.println(">>>>>>>>>>>>>>>>>>>>>>"+courseInfoList1.get(i).getClassName());
+//        }
 
         List<CourseInfo> courseInfoList = courseInfoService.list();
         model.addAttribute("courseInfoList",courseInfoList);

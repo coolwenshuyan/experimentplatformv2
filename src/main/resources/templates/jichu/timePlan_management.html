@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="x-admin-sm">
+<html class="x-admin-sm" lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>课程安排管理</title>
@@ -116,7 +116,7 @@
                             </li>
                             <li style="float: right">
                                 <div class="layui-inline layui-show-xs-block">
-                                    <button class="layui-btn" ><i class="layui-icon"></i>增加</button>
+                                    <a href="/arrangeclass/add" class="layui-btn" ><i class="layui-icon"></i>增加</a>
                                 </div>
                             </li>
                         </ul>
@@ -127,7 +127,6 @@
                     <table class="layui-table layui-form">
                         <thead>
                         <tr>
-
                             <th>ID</th>
                             <th>课程名</th>
                             <th>教师</th>
@@ -137,34 +136,44 @@
                             <th>操作</th>
                         </thead>
                         <tbody>
-                        <tr>
-
-                            <td>1</td>
-                            <td>JAVA</td>
-                            <td>wen</td>
-                            <td>18信管03</td>
-                            <td>2020/2/1</td>
-                            <td>2020/2/1</td>
+                        <tr th:each="arrangeClass:${ArrangeClassDto}">
+                            <td th:text="${arrangeClass.getId()}">1</td>
+                            <td th:text="${arrangeClass.getCourseName()}">JAVA</td>
+                            <td th:text="${arrangeClass.getTeacherName()}">wen</td>
+                            <td th:text="${arrangeClass.getClassName()}">18信管03</td>
+                            <td th:text="${arrangeClass.getArrangeStart()}">2020/2/1</td>
+                            <td th:text="${arrangeClass.getArrangeEnd()}">2020/2/1</td>
 
                             <td class="td-manage">
-                                <button class="layui-btn layui-btn-primary layui-bg-red" lay-submit>修改</button>
-                                <button class="layui-btn layui-btn-primary layui-bg-green" lay-submit>删除</button>
+                                <a th:href="@{|${arrangeClass.id}/update|}" class="layui-btn layui-btn-primary layui-bg-red" lay-submit>修改</a>
+                                <a th:href="@{|${arrangeClass.id}/delete|}" class="layui-btn layui-btn-primary layui-bg-green" lay-submit>删除</a>
                             </td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="layui-card-body ">
-                    <div class="page">
-                        <div>
-                            <a class="prev" href="">&lt;&lt;</a>
-                            <a class="num" href="">1</a>
-                            <span class="current">2</span>
-                            <a class="num" href="">3</a>
-                            <a class="num" href="">489</a>
-                            <a class="next" href="">&gt;&gt;</a>
-                        </div>
+
+                    <div style="margin:0 auto; width: 80%; text-align: center;">
+                        <p>当前 <span th:text="${ArrangeClassDto.number}+1"></span> 页,
+                            总 <span th:text="${ArrangeClassDto.totalPages}"></span> 页,
+                            共 <span th:text="${ArrangeClassDto.totalElements}"></span> 条记录</p>
+                        <a th:href="@{/arrangeclass/list}">首页</a>
+                        <a th:href="@{/arrangeclass/list(pageNum=${ArrangeClassDto.hasPrevious()}?${ArrangeClassDto.number}-1:0)}">上一页</a>
+                        <a th:href="@{/arrangeclass/list(pageNum=${ArrangeClassDto.hasNext()}?${ArrangeClassDto.number}+1:${ArrangeClassDto.number})}">下一页</a>
+                        <a th:href="@{/arrangeclass/list(pageNum=${ArrangeClassDto.totalPages}-1)}">尾页</a>
                     </div>
+
+<!--                    <div class="page">-->
+<!--                        <div>-->
+<!--                            <a class="prev" href="">&lt;&lt;</a>-->
+<!--                            <a class="num" href="">1</a>-->
+<!--                            <span class="current">2</span>-->
+<!--                            <a class="num" href="">3</a>-->
+<!--                            <a class="num" href="">489</a>-->
+<!--                            <a class="next" href="">&gt;&gt;</a>-->
+<!--                        </div>-->
+<!--                    </div>-->
                 </div>
             </div>
         </div>

@@ -20,18 +20,18 @@ public class ArrangeClassServiceImpl implements ArrangeClassService {
     ArrangeClassRepository arrangeClassRepository;
 
     @Override
-    public void add(ArrangeClass effect) {
-
+    public void add(ArrangeClass arrangeClass) {
+        arrangeClassRepository.save(arrangeClass);
     }
 
     @Override
     public ArrangeClass findById(int id) {
-        return null;
+        return arrangeClassRepository.findById(id).get();
     }
 
     @Override
     public void delete(int id) {
-
+        arrangeClassRepository.deleteById(id);
     }
 
     @Override

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="x-admin-sm">
+<html class="x-admin-sm" lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -48,24 +48,24 @@
         <div class="layui-col-md12">
             <div class="layui-card">
                 <div class="layui-card-body ">
-                    <form class="layui-form" action="">
+                    <form class="layui-form" action="/arrangeclass/add" method="post">
                         <div class="layui-form-item">
                             <label class="layui-form-label">课程</label>
                             <div class="layui-input-block">
-                                <select name="m_type" lay-filter="aihao" required="required">
-                                    <option value="理论验证">理论验证</option>
-                                    <option value="综合实操" selected="">综合实操</option>
-                                    <option value="拓展创新">拓展创新</option>
+                                <select name="courseId" lay-filter="aihao" required="required">
+                                    <a th:each="courseInfo:${courseInfoList}">
+                                        <option th:value="${courseInfo.getId()}">[[${courseInfo.courseName}]]</option>
+                                    </a>
                                 </select>
                             </div>
                         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">教师</label>
                             <div class="layui-input-block">
-                                <select name="m_type" lay-filter="aihao" required="required">
-                                    <option value="理论验证">理论验证</option>
-                                    <option value="综合实操" selected="">综合实操</option>
-                                    <option value="拓展创新">拓展创新</option>
+                                <select name="teacherId" lay-filter="aihao" required="required">
+                                    <a th:each="user:${userList}">
+                                        <option th:value="${user.getId()}">[[${user.username}]]</option>
+                                    </a>
                                 </select>
                             </div>
                             <!--<div class="layui-form-mid layui-word-aux">辅助文字</div>-->
@@ -73,10 +73,10 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">班级</label>
                             <div class="layui-input-block">
-                                <select name="m_type" lay-filter="aihao" required="required">
-                                    <option value="理论验证">理论验证</option>
-                                    <option value="综合实操" selected="">综合实操</option>
-                                    <option value="拓展创新">拓展创新</option>
+                                <select name="classId" lay-filter="aihao" required="required">
+                                    <a th:each="class:${classList}">
+                                        <option th:value="${class.getClassId()}">[[${class.className}]]</option>
+                                    </a>
                                 </select>
                             </div>
                         </div>
@@ -88,7 +88,7 @@
                                     <div class="layui-inline">
                                         <label class="layui-form-label">开始时间</label>
                                         <div class="layui-input-inline">
-                                            <input type="text" class="layui-input" id="test5" placeholder="yyyy-MM-dd HH:mm:ss">
+                                            <input name="arrangeStart" type="text" class="layui-input" id="test5" placeholder="yyyy-MM-dd HH:mm:ss">
                                         </div>
                                     </div>
                                 </div>
@@ -96,7 +96,7 @@
                                     <div class="layui-inline">
                                         <label class="layui-form-label">结束时间</label>
                                         <div class="layui-input-inline">
-                                            <input type="text" class="layui-input" id="test2" placeholder="yyyy-MM-dd HH:mm:ss">
+                                            <input name="arrangeEnd" type="text" class="layui-input" id="test2" placeholder="yyyy-MM-dd HH:mm:ss">
                                         </div>
 
                                     </div>

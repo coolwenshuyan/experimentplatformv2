@@ -6,8 +6,6 @@ import java.util.Date;
 /**
  * @author 朱治汶
  * @version 1.0
- * @className ArrangeClass
- * @description TODO
  * @date 2020/7/4 23:34
  **/
 @Entity

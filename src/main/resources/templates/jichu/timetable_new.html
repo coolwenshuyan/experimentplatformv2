@@ -67,7 +67,7 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">课程负责人</label>
                             <div class="layui-input-block">
-                                <select name="teacherId" lay-filter="aihao" required="required">
+                                <select name="teacherId" lay-filter="aihao"  required="required" lay-verify="required">
                                     <a th:each="user:${userList}">
                                         <option th:value="${user.getId()}">[[${user.username}]]</option>
                                     </a>

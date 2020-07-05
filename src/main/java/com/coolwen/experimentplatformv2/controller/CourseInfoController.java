@@ -45,6 +45,9 @@ public class CourseInfoController {
         Pageable pageable = PageRequest.of(pageNum,10);
         Page<CourseInfo> page = courseInfoRepository.findAll(pageable);
         model.addAttribute("courseInfos",page);
+
+        List<User> userList = userService.list();
+        model.addAttribute("userList",userList);
         return "jichu/timetable_management";
     }
 

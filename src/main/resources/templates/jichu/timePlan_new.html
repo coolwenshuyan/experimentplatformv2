@@ -52,7 +52,8 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">课程</label>
                             <div class="layui-input-block">
-                                <select name="courseId" lay-filter="aihao" required="required">
+                                <select name="courseId" lay-filter="aihao" required="required" lay-verify="required">
+                                    <option value="">请选择课程</option>
                                     <a th:each="courseInfo:${courseInfoList}">
                                         <option th:value="${courseInfo.getId()}">[[${courseInfo.courseName}]]</option>
                                     </a>
@@ -62,7 +63,8 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">教师</label>
                             <div class="layui-input-block">
-                                <select name="teacherId" lay-filter="aihao" required="required">
+                                <select name="teacherId" lay-filter="aihao" required="required" lay-verify="required">
+                                    <option value="">请选择教师</option>
                                     <a th:each="user:${userList}">
                                         <option th:value="${user.getId()}">[[${user.username}]]</option>
                                     </a>
@@ -73,7 +75,8 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">班级</label>
                             <div class="layui-input-block">
-                                <select name="classId" lay-filter="aihao" required="required">
+                                <select name="classId" lay-filter="aihao" required="required" lay-verify="required">
+                                    <option value="">请选择班级</option>
                                     <a th:each="class:${classList}">
                                         <option th:value="${class.getClassId()}">[[${class.className}]]</option>
                                     </a>

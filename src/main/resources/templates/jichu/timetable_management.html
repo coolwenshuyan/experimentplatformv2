@@ -85,7 +85,7 @@
                             <td th:text="${courseInfo.id}">1</td>
                             <td th:text="${courseInfo.courseName}">JAVA</td>
                             <td th:text="${courseInfo.courseCode}">课程代码111</td>
-                            <td th:text="${courseInfo.teacherId}">wen</th>
+                            <td th:each="user:${userList}" th:if="${user.getId()}==${courseInfo.teacherId}" th:text="${user.getUsername()}">wen</th>
                             <td><img th:src="@{'/upload/'+${courseInfo.courseImgurl}}"></td>
                             <td th:text="${courseInfo.courseIntruduce}">课程介绍</td>
 

@@ -67,17 +67,17 @@
             <div class="layui-card">
                 <div class="layui-card-body " style="margin-bottom: 3%">
 
-                    <form class="layui-form layui-col-space5" action="">
+                    <form class="layui-form layui-col-space5" action="/arrangeclass/mhlist" method="post">
                         <ul>
                             <li style="margin-left:3%">
                                 <div class="layui-form-item choice-box" >
                                     <label class="layui-form-label ">课程</label>
-                                    <div class="layui-input-block choose">
-                                        <select name="city" lay-verify="required">
-                                            <option value=""></option>
-                                            <option value="0">java</option>
-                                            <option value="1">数据库</option>
-                                            <option value="2">运筹学</option>
+                                    <div class="layui-input-block">
+                                        <select name="courseName" lay-filter="aihao" required="required" lay-verify="required">
+                                            <option value="">请选择课程</option>
+                                            <a th:each="courseInfo:${courseInfoList}">
+                                                <option th:value="${courseInfo.getCourseName()}">[[${courseInfo.courseName}]]</option>
+                                            </a>
                                         </select>
                                     </div>
                                 </div>
@@ -85,12 +85,12 @@
                             <li style="margin-left:20%">
                                 <div class="layui-form-item choice-box" >
                                     <label class="layui-form-label ">教师</label>
-                                    <div class="layui-input-block choose">
-                                        <select name="city" lay-verify="required">
-                                            <option value=""></option>
-                                            <option value="0">温</option>
-                                            <option value="1">朱</option>
-                                            <option value="2">周</option>
+                                    <div class="layui-input-block">
+                                        <select name="teacherName" lay-filter="aihao" required="required" lay-verify="required">
+                                            <option value="">请选择教师</option>
+                                            <a th:each="user:${userList}">
+                                                <option th:value="${user.getUsername()}">[[${user.username}]]</option>
+                                            </a>
                                         </select>
                                     </div>
                                 </div>
@@ -98,19 +98,19 @@
                             <li style="margin-left:35%">
                                 <div class="layui-form-item choice-box" >
                                     <label class="layui-form-label ">班级</label>
-                                    <div class="layui-input-block choose" >
-                                        <select name="city" lay-verify="required">
-                                            <option value=""></option>
-                                            <option value="0">3班</option>
-                                            <option value="1">1班</option>
-                                            <option value="2">2班</option>
+                                    <div class="layui-input-block">
+                                        <select name="className" lay-filter="aihao" required="required" lay-verify="required">
+                                            <option value="">请选择班级</option>
+                                            <a th:each="class:${classList}">
+                                                <option th:value="${class.getClassName()}">[[${class.className}]]</option>
+                                            </a>
                                         </select>
                                     </div>
                                 </div>
                             </li>
                             <li style="margin-left:50%">
                                 <div class="layui-input-block">
-                                <button class="layui-btn" >检索</button>
+                                <button type="submit" class="layui-btn" >检索</button>
 
                                 </div>
                             </li>

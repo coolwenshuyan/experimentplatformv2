@@ -9,7 +9,11 @@ package com.coolwen.experimentplatformv2.controller;
 
 import com.coolwen.experimentplatformv2.controller.HomepagesettingController.FileUploadController;
 import com.coolwen.experimentplatformv2.dao.TeacherRepository;
+import com.coolwen.experimentplatformv2.model.CourseInfo;
+import com.coolwen.experimentplatformv2.model.DTO.StuTotalScoreCurrentDTO;
+import com.coolwen.experimentplatformv2.model.KaoheModel;
 import com.coolwen.experimentplatformv2.model.Teacher;
+import com.coolwen.experimentplatformv2.service.CourseInfoService;
 import com.coolwen.experimentplatformv2.service.TeacherService;
 import com.coolwen.experimentplatformv2.utils.FileUploadUtil;
 import com.coolwen.experimentplatformv2.utils.GetServerRealPathUnit;
@@ -26,6 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 /**
 *@Description 后台管理系统-->首页-->师资队伍页面
@@ -40,6 +45,8 @@ public class TeacherController {
     TeacherRepository teacherRepository;
     @Autowired
     TeacherService teacherService;
+    @Autowired
+    CourseInfoService courseInfoService;
 
     FileUploadController fileUploadController =new FileUploadController();  //上传文件
 
@@ -66,8 +73,27 @@ public class TeacherController {
         Pageable pageable = PageRequest.of(pageNum,6);
         Page<Teacher> page = teacherRepository.findAll(pageable);
         model.addAttribute("teacherPageInfo",page);
+
+        System.out.println(">>>>>>>>>>>>>>>>>");
+        List<CourseInfo> courseInfoList =  courseInfoService.getclassByCharge(4);
+        System.out.println(">>>>>>>>>>>>>>>>aaaaaaaaaaaaaaa"+courseInfoList);
+        model.addAttribute("courseInfoList",courseInfoList);
         return "shouye/teacher_change";
     }
+
+    @GetMapping("/{courseId}/list")
+    public String getTotalScoreCirrentByGroupId(Model model,
+                                                @PathVariable int courseId,
+                                                @RequestParam(value = "pageNum",defaultValue = "0",required = true) int pageNum) {
+        //
+        Page<Teacher> page = teacherService.findAllByCourseId(pageNum,courseId);
+        model.addAttribute("teacherPageInfo",page);
+
+        List<CourseInfo> courseInfoList =  courseInfoService.getclassByCharge(4);
+        model.addAttribute("courseInfoList",courseInfoList);
+        return "shouye/teacher_change";
+    }
+
     /**
      * 后台管理系统 师资队伍单条删除
      */

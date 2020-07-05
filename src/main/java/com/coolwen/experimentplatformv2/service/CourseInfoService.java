@@ -15,4 +15,8 @@ public interface CourseInfoService {
 
     List<CourseInfo> list();
 
+    List<CourseInfo> getclassByCharge(int teacher_id);
+
+    List<CourseInfo> getclass_by_arrangeteacher(int teacher_id);
+
 }

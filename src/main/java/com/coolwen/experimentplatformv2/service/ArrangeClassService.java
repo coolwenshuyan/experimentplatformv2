@@ -15,4 +15,6 @@ public interface ArrangeClassService {
     void delete(int id);
 
     Page<ArrangeClassDto> findByAll(Pageable pageable);
+
+    Page<ArrangeClassDto> findBycidAndtidAndclaidLike(Integer pageNum, String courseName,String teacherName, String className);
 }

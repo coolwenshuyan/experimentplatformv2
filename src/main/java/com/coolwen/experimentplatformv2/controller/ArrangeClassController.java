@@ -46,6 +46,41 @@ public class ArrangeClassController {
         Pageable pageable = PageRequest.of(pageNum,10);
         Page<ArrangeClassDto> page = arrangeClassService.findByAll(pageable);
         model.addAttribute("ArrangeClassDto",page);
+
+
+        List<CourseInfo> courseInfoList1 = courseInfoService.getclass_by_arrangeteacher(4);
+
+        for (int i = 0; i <courseInfoList1.size() ; i++) {
+            System.out.println(">>>>>>>>>>>>>>>>>>>>>>"+courseInfoList1.get(i).getTeacherId());
+        }
+
+        List<CourseInfo> courseInfoList = courseInfoService.list();
+        model.addAttribute("courseInfoList",courseInfoList);
+
+        List<User> userList = userService.list();
+        model.addAttribute("userList",userList);
+
+        List<ClassModel> classList = classService.findCurrentClass();
+        model.addAttribute("classList",classList);
+        return "jichu/timePlan_management";
+    }
+
+    @PostMapping(value = "/mhlist")
+    public String courseInfoList1(Model model, String courseName,String teacherName,String className,
+                                  @RequestParam(defaultValue = "0", required=true,value = "pageNum")  Integer pageNum){
+        //查询课程安排表所有数据
+//        Pageable pageable = PageRequest.of(pageNum,10);
+        Page<ArrangeClassDto> page = arrangeClassService.findBycidAndtidAndclaidLike(pageNum,courseName,teacherName,className);
+        model.addAttribute("ArrangeClassDto",page);
+
+        List<CourseInfo> courseInfoList = courseInfoService.list();
+        model.addAttribute("courseInfoList",courseInfoList);
+
+        List<User> userList = userService.list();
+        model.addAttribute("userList",userList);
+
+        List<ClassModel> classList = classService.findCurrentClass();
+        model.addAttribute("classList",classList);
         return "jichu/timePlan_management";
     }
 

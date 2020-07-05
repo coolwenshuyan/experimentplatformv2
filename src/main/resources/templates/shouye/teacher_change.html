@@ -19,11 +19,12 @@
 <div id="app" class="layui-container" >
 <!--	<img src="../../static/images/LOGO2.png"> <br><br>-->
 	<br><br>
-<!--	<span class="layui-breadcrumb">-->
-<!--  			<a href="/">首页</a>-->
-		<!--<a href="/demo/">师资队伍</a>-->
-<!--  			<a><cite>师资队伍</cite></a>-->
-<!--			</span> <br><br><br>-->
+	<select name="interest" lay-filter="aihao" onchange="window.open(this.options[this.selectedIndex].value,target='_self')" style="margin-top: 13px;">
+		<option>请选择</option>
+		<div th:each="courseInfo:${courseInfoList}" >
+			<option th:value="|/teachers/${courseInfo.getId()}/list|"  th:text="${courseInfo.getCourseName()}">18信管01</option>
+		</div>
+	</select>
 	<a type="add" class="layui-btn" href="/teachers/add">添加账号</a>
 
 	<table class="layui-table" lay-size="lg" style="    text-align: center;">

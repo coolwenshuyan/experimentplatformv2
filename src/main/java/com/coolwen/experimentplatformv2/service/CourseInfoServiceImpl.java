@@ -37,4 +37,14 @@ public class CourseInfoServiceImpl implements CourseInfoService {
     public List<CourseInfo> list() {
         return courseInfoRepository.findAll();
     }
+
+    @Override
+    public List<CourseInfo> getclassByCharge(int teacher_id) {
+        return courseInfoRepository.getclassByCharge(teacher_id);
+    }
+
+    @Override
+    public List<CourseInfo> getclass_by_arrangeteacher(int teacher_id) {
+        return courseInfoRepository.getclass_by_arrangeteacher(teacher_id);
+    }
 }

@@ -12,6 +12,8 @@ public class Teacher {
     private String person_name;
     private String image_url;
     private String intro;
+    private String course_id;
+
 
     public int getId() {
         return id;
@@ -45,6 +47,14 @@ public class Teacher {
         this.intro = intro;
     }
 
+    public String getCourse_id() {
+        return course_id;
+    }
+
+    public void setCourse_id(String course_id) {
+        this.course_id = course_id;
+    }
+
     @Override
     public String toString() {
         return "Teacher{" +
@@ -52,6 +62,7 @@ public class Teacher {
                 ", person_name='" + person_name + '\'' +
                 ", image_url='" + image_url + '\'' +
                 ", intro='" + intro + '\'' +
+                ", course_id='" + course_id + '\'' +
                 '}';
     }
 }

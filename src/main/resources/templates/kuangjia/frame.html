@@ -37,14 +37,10 @@
                             <el-submenu index="1">
                                 <template slot="title">
                                     <i class="el-icon-s-home"></i>
-                                    <span>首页设置</span>
+                                    <span>首页相关设置</span>
                                 </template>
-                                <el-menu-item index="/setinfo/addplat">平台介绍</el-menu-item>
                                 <el-menu-item index="/teachers/list">师资队伍</el-menu-item>
                                 <el-menu-item index="/learning/list">学习效果</el-menu-item>
-                                <el-menu-item index="/setinfo/lunbo">轮播导航</el-menu-item>
-                                <el-menu-item index="/newsinfo/list">平台公告</el-menu-item>
-                                <el-menu-item index="/setinfo/addus">关于我们</el-menu-item>
                             </el-submenu>
                             <el-submenu index="2">
                                 <template slot="title">
@@ -60,30 +56,57 @@
                                     <span>考核设置</span>
                                 </template>
                                 <el-menu-item index="/kaohemodel/checkModule">考核模块设置</el-menu-item>
-                                <el-menu-item index="/shiyan/lastTestList">课程理论测试管理</el-menu-item>
+                                <el-menu-item index="/shiyan/lastTestList">课程整体测试题管理</el-menu-item>
                                 <el-menu-item index="/testScoreManage/list">模块测试成绩管理</el-menu-item>
                                 <el-menu-item index="/reportScoreManage/list">模块报告成绩管理</el-menu-item>
-                                <el-menu-item index="/lastTestScoreManage/list">课程理论测试成绩管理</el-menu-item>
+                                <el-menu-item index="">考核模块进度查询</el-menu-item>
+                                <el-menu-item index="/lastTestScoreManage/list">课程整体测试成绩管理</el-menu-item>
                                 <el-menu-item index="/totalscore/list">学生总评成绩管理</el-menu-item>
                             </el-submenu>
-                            <el-submenu index="4">
+                            <el-menu-item index="/question/list">
+                                <i class="el-icon-question"></i>
+                                <span slot="title">学生答疑管理</span>
+                            </el-menu-item>
+                            <el-submenu index="5">
                                 <template slot="title">
-                                    <i class="el-icon-user-solid"></i>
-                                    <span>学生账号管理</span>
+                                    <i class="el-icon-house"></i>
+                                    <span>首页设置</span>
                                 </template>
-                                <el-menu-item index="/studentManage/toBeReviewd">学生账号信息审核</el-menu-item>
-                                <el-menu-item index="/studentManage/list">学生账号信息管理</el-menu-item>
-                                <el-menu-item index="/studentManage/classManage">班级管理</el-menu-item>
-                                <el-menu-item index="/studentManage/dockerList">学生实验管理</el-menu-item>
+                                <el-menu-item index="/setinfo/addplat">平台介绍</el-menu-item>
+                                <el-menu-item index="/setinfo/lunbo">轮播导航</el-menu-item>
+                                <el-menu-item index="/newsinfo/list">平台公告</el-menu-item>
+                                <el-menu-item index="/setinfo/addus">关于我们</el-menu-item>
                             </el-submenu>
                             <el-menu-item index="/admin/list">
                                 <i class="el-icon-s-custom"></i>
                                 <span slot="title">教师账号管理</span>
                             </el-menu-item>
-                            <el-menu-item index="/question/list">
-                                <i class="el-icon-question"></i>
-                                <span slot="title">学生答疑管理</span>
-                            </el-menu-item>
+                            <el-submenu index="7">
+                                <template slot="title">
+                                    <i class="el-icon-aim"></i>
+                                    <span slot="title">权限管理</span>
+                                </template>
+                            </el-submenu>
+                            <el-submenu index="8">
+                                <template slot="title">
+                                    <i class="el-icon-menu"></i>
+                                    <span>基础设置</span>
+                                </template>
+                                <el-menu-item index="">课程设置</el-menu-item>
+                                <el-menu-item index="">课程安排</el-menu-item>
+                            </el-submenu>
+                            <el-submenu index="9">
+                                <template slot="title">
+                                    <i class="el-icon-user-solid"></i>
+                                    <span>学生账号管理</span>
+                                </template>
+                                <el-menu-item index="/studentManage/dockerList">实验地址管理</el-menu-item>
+                                <el-menu-item index="/studentManage/toBeReviewd">学生账号信息审核</el-menu-item>
+                                <el-menu-item index="/studentManage/list">学生账号信息管理</el-menu-item>
+                                <el-menu-item index="/studentManage/classManage">班级管理</el-menu-item>
+                            </el-submenu>
+
+
                             <el-menu-item index="monitor">
                                 <i class="el-icon-stopwatch"></i>
                                 <span slot="title">平台服务监控</span>

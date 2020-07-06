@@ -72,7 +72,6 @@ public class User {
         this.status = status;
     }
 
-
     public String getGonghao() {
         return gonghao;
     }

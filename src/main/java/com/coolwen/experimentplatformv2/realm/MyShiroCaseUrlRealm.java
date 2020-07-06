@@ -68,7 +68,6 @@ public class MyShiroCaseUrlRealm extends CasRealm {
             uid = student.getId();
             logger.debug("授权用户:" + uid + "," + student.getStuName());
         } else if (comsys_role.contains("ROLE_TEACHER")) {
-
             String gonghao = CasUtils.getLoginUserInfor();
             logger.debug("授权老师工号信息:" + "," + gonghao);
             User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");

@@ -82,7 +82,6 @@ public class CasUtils {
         Date date;
         try {
             date = sdf.parse(time);
-
             return date.getTime();
         } catch (ParseException e) {
             e.printStackTrace();

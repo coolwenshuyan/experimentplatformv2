@@ -1,8 +1,11 @@
 package com.coolwen.experimentplatformv2.utils;
 
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.subject.support.DefaultSubjectContext;
+import org.jasig.cas.client.util.AbstractCasFilter;
+import org.jasig.cas.client.validation.Assertion;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,16 +22,16 @@ public class CasUtils {
      * @param session Shiro 的session
      * @return map
      */
-    public static   Map<Object, Object> getUserInfo(Session session) {
+    public static Map<Object, Object> getUserInfo(Session session) {
 
         SimplePrincipalCollection collection = (SimplePrincipalCollection) session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
 //        collection.asList().get(1) 获取到的当前用户信息，但是有编码不能直接人眼读取
         HashMap hashMap = (HashMap) collection.asList().get(1);
 
-        Map<Object,Object> map = new HashMap<>();
+        Map<Object, Object> map = new HashMap<>();
         for (Object key : hashMap.keySet()) {
 
-            map.put(key,hashMap.get(key));
+            map.put(key, hashMap.get(key));
 
         }
         return map;
@@ -50,7 +53,7 @@ public class CasUtils {
      * @return 时间字符串
      */
     public static String timeStamp2Date(String time) {
-        if (time == null){
+        if (time == null) {
             return "";
         }
         Long timeLong = Long.parseLong(time);
@@ -71,7 +74,7 @@ public class CasUtils {
      * @return 时间字符串
      */
     public static long date2TimeStamp(String time) {
-        if (time == null){
+        if (time == null) {
             return 0;
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//要转换的时间格式
@@ -95,5 +98,11 @@ public class CasUtils {
         Date date;
         date = sdf.parse(sdf.format(System.currentTimeMillis()));
         return date;
+    }
+
+    public static String getLoginUserInfor() {
+        Assertion assertion = (Assertion) SecurityUtils.getSubject().getSession().getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION);
+        String ssoid = assertion.getPrincipal().getName();
+        return ssoid;
     }
 }

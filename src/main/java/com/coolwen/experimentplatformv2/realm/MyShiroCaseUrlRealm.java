@@ -14,6 +14,8 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.cas.CasRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.jasig.cas.client.util.AbstractCasFilter;
+import org.jasig.cas.client.validation.Assertion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +68,12 @@ public class MyShiroCaseUrlRealm extends CasRealm {
             uid = student.getId();
             logger.debug("授权用户:" + uid + "," + student.getStuName());
         } else if (comsys_role.contains("ROLE_TEACHER")) {
+
+            String gonghao = CasUtils.getLoginUserInfor();
+            logger.debug("授权老师工号信息:" + "," + gonghao);
             User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
+            user.setGonghao(gonghao);
+            userService.add(user);
             uid = user.getId();
             logger.debug("授权老师信息:" + uid + "," + user.getUsername());
         }

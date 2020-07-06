@@ -20,6 +20,8 @@ public class User {
     private String password;
     private Boolean status;
 
+    private String gonghao;
+
     public User() {
     }
 
@@ -70,6 +72,15 @@ public class User {
         this.status = status;
     }
 
+
+    public String getGonghao() {
+        return gonghao;
+    }
+
+    public void setGonghao(String gonghao) {
+        this.gonghao = gonghao;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -78,6 +89,7 @@ public class User {
                 ", nickname='" + nickname + '\'' +
                 ", password='" + password + '\'' +
                 ", status=" + status +
+                ", gonghao='" + gonghao + '\'' +
                 '}';
     }
 }

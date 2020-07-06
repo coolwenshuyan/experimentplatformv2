@@ -73,7 +73,7 @@
                                 <div class="layui-form-item choice-box" >
                                     <label class="layui-form-label ">课程</label>
                                     <div class="layui-input-block">
-                                        <select name="courseName" lay-filter="aihao" required="required" lay-verify="required">
+                                        <select name="courseName" lay-filter="aihao">
                                             <option value="">请选择课程</option>
                                             <a th:each="courseInfo:${courseInfoList}">
                                                 <option th:value="${courseInfo.getCourseName()}">[[${courseInfo.courseName}]]</option>
@@ -86,7 +86,7 @@
                                 <div class="layui-form-item choice-box" >
                                     <label class="layui-form-label ">教师</label>
                                     <div class="layui-input-block">
-                                        <select name="teacherName" lay-filter="aihao" required="required" lay-verify="required">
+                                        <select name="teacherName" lay-filter="aihao">
                                             <option value="">请选择教师</option>
                                             <a th:each="user:${userList}">
                                                 <option th:value="${user.getUsername()}">[[${user.username}]]</option>
@@ -99,7 +99,7 @@
                                 <div class="layui-form-item choice-box" >
                                     <label class="layui-form-label ">班级</label>
                                     <div class="layui-input-block">
-                                        <select name="className" lay-filter="aihao" required="required" lay-verify="required">
+                                        <select name="className" lay-filter="aihao">
                                             <option value="">请选择班级</option>
                                             <a th:each="class:${classList}">
                                                 <option th:value="${class.getClassName()}">[[${class.className}]]</option>

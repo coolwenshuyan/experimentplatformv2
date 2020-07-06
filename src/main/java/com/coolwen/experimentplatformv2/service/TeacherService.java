@@ -2,6 +2,7 @@ package com.coolwen.experimentplatformv2.service;
 
 import com.coolwen.experimentplatformv2.model.Teacher;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface TeacherService {
     void add(Teacher teacher);
@@ -14,4 +15,6 @@ public interface TeacherService {
 
 
     Page<Teacher> findAllByCourseId(int pageNum, int courseId);
+
+    Page<Teacher> findAllByUid(int uid,Pageable pageable);
 }

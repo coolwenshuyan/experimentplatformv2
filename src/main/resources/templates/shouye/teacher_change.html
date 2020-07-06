@@ -65,9 +65,10 @@
 				</div>
 			</td>
 			<td th:text="${teacher.intro }">人生就像是一场修行</td>
+			<td th:each="courseInfo:${courseInfoList}" th:if="${courseInfo.getId()}==${teacher.course_id}" th:text="${courseInfo.getCourseName()}">人生就像是一场修行</td>
 			<td>
-				<a type="add" class="layui-btn layui-btn-sm" th:href="@{|${teacher.id }/update|}">修改</a>
-				<a type="delete" @click="isTrue" class="layui-btn layui-btn-sm" style="background-color: red;" th:href="@{|${teacher.id}/delete|}">删除</a>
+				<a type="add" class="layui-btn layui-btn-sm" th:href="@{|/teachers/${teacher.id }/update|}">修改</a>
+				<a type="delete" @click="isTrue" class="layui-btn layui-btn-sm" style="background-color: red;" th:href="@{|/teachers/${teacher.id}/delete|}">删除</a>
 			</td>
 		</tr>
 <!--		<tr>-->

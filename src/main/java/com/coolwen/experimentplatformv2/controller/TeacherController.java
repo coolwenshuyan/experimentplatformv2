@@ -7,17 +7,21 @@
 
 package com.coolwen.experimentplatformv2.controller;
 
+import com.coolwen.experimentplatformv2.config.ShiroCasConfiguration;
 import com.coolwen.experimentplatformv2.controller.HomepagesettingController.FileUploadController;
 import com.coolwen.experimentplatformv2.dao.TeacherRepository;
 import com.coolwen.experimentplatformv2.model.CourseInfo;
 import com.coolwen.experimentplatformv2.model.DTO.StuTotalScoreCurrentDTO;
 import com.coolwen.experimentplatformv2.model.KaoheModel;
 import com.coolwen.experimentplatformv2.model.Teacher;
+import com.coolwen.experimentplatformv2.model.User;
 import com.coolwen.experimentplatformv2.service.CourseInfoService;
 import com.coolwen.experimentplatformv2.service.TeacherService;
 import com.coolwen.experimentplatformv2.utils.FileUploadUtil;
 import com.coolwen.experimentplatformv2.utils.GetServerRealPathUnit;
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,6 +32,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -50,6 +55,8 @@ public class TeacherController {
 
     FileUploadController fileUploadController =new FileUploadController();  //上传文件
 
+    protected static final Logger logger = LoggerFactory.getLogger(TeacherController.class);
+
     /**
      * 前端师资队伍页面
      */
@@ -69,14 +76,16 @@ public class TeacherController {
      * @return
      */
     @GetMapping(value = "/list")
-    public String TeacherList(Model model, @RequestParam(defaultValue = "0", required=true,value = "pageNum")  Integer pageNum){
+    public String TeacherList(Model model, HttpSession session,
+                              @RequestParam(defaultValue = "0", required=true,value = "pageNum")  Integer pageNum){
+        User user = (User) session.getAttribute("admin");
+        logger.debug("user:>>"+user);
         Pageable pageable = PageRequest.of(pageNum,6);
-        Page<Teacher> page = teacherRepository.findAll(pageable);
+//        Page<Teacher> page = teacherRepository.findAll(pageable);
+        Page<Teacher> page = teacherService.findAllByUid(user.getId(),pageable);
         model.addAttribute("teacherPageInfo",page);
 
-        System.out.println(">>>>>>>>>>>>>>>>>");
-        List<CourseInfo> courseInfoList =  courseInfoService.getclassByCharge(4);
-        System.out.println(">>>>>>>>>>>>>>>>aaaaaaaaaaaaaaa"+courseInfoList);
+        List<CourseInfo> courseInfoList =  courseInfoService.getclassByCharge(user.getId());
         model.addAttribute("courseInfoList",courseInfoList);
         return "shouye/teacher_change";
     }
@@ -85,7 +94,6 @@ public class TeacherController {
     public String getTotalScoreCirrentByGroupId(Model model,
                                                 @PathVariable int courseId,
                                                 @RequestParam(value = "pageNum",defaultValue = "0",required = true) int pageNum) {
-        //
         Page<Teacher> page = teacherService.findAllByCourseId(pageNum,courseId);
         model.addAttribute("teacherPageInfo",page);
 
@@ -106,7 +114,10 @@ public class TeacherController {
      * 跳转到师资队伍添加页面
      */
     @GetMapping(value = "/add")
-    public String TeacherAdd(){
+    public String TeacherAdd(Model model,HttpSession session){
+        User user = (User) session.getAttribute("admin");
+        List<CourseInfo> courseInfoList =  courseInfoService.getclassByCharge(user.getId());
+        model.addAttribute("courseInfoList",courseInfoList);
         return "shouye/teacher_add";
     }
 
@@ -174,9 +185,13 @@ public class TeacherController {
 
     //进入修改界面
     @GetMapping(value = "/{id}/update")
-    public String update(@PathVariable int id, Model model){
+    public String update(@PathVariable int id, Model model,HttpSession session){
         Teacher teacher = teacherService.findById(id);
         model.addAttribute("teacher",teacher);
+
+        User user = (User) session.getAttribute("admin");
+        List<CourseInfo> courseInfoList =  courseInfoService.getclassByCharge(user.getId());
+        model.addAttribute("courseInfoList",courseInfoList);
         return "shouye/teacher_updata";
     }
 

@@ -41,7 +41,7 @@ public class CourseInfoController {
 
     @GetMapping(value = "/list")
     public String courseInfoList(Model model, @RequestParam(defaultValue = "0", required=true,value = "pageNum")  Integer pageNum){
-        //查询优秀实验报告所有数据
+
         Pageable pageable = PageRequest.of(pageNum,10);
         Page<CourseInfo> page = courseInfoRepository.findAll(pageable);
         model.addAttribute("courseInfos",page);

@@ -53,4 +53,9 @@ public class TeacherServiceImpl implements TeacherService {
                 .generateSpecification(), pager);
         return teacherPage;
     }
+
+    @Override
+    public Page<Teacher> findAllByUid(int uid,Pageable pageable) {
+        return teacherRepository.findAllByUid(uid,pageable);
+    }
 }

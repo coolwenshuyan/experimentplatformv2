@@ -79,7 +79,7 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">课程图片:</label>
                             <div class="layui-upload">
-                                <input type="file" name="attachs" id="uploadImg" required="required" value="上传图片" onchange="xmTanUploadImg(this)"/>
+                                <input type="file" name="attachs" id="uploadImg" value="上传图片" onchange="xmTanUploadImg(this)"/>
                                 <div class="layui-upload-list">
                                     <img th:src="@{'/upload/'+${courseInfo.getCourseImgurl()}}" class="layui-upload-img" id="selectImg" >
                                     <p id="demoText"></p>

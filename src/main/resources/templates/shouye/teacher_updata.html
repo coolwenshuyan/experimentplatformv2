@@ -36,6 +36,18 @@
             </div>
         </div>
 
+        <div class="layui-form-item choice-box" >
+            <label class="layui-form-label ">课程</label>
+            <div class="layui-input-block">
+                <select name="course_id" lay-filter="aihao">
+                    <option value="">请选择课程</option>
+                    <a th:each="courseInfo:${courseInfoList}">
+                        <option th:selected="${teacher.getCourse_id()}==${courseInfo.getId()}" th:value="${courseInfo.getId()}">[[${courseInfo.courseName}]]</option>
+                    </a>
+                </select>
+            </div>
+        </div>
+
         <div class="layui-form-item">
             <label class="layui-form-label">图片</label>
             <img name="image_url" th:src="@{'/upload/'+${teacher.image_url}}" class="form-control" id="selectImg" />

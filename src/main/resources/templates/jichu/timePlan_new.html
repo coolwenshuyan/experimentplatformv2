@@ -48,6 +48,7 @@
         <div class="layui-col-md12">
             <div class="layui-card">
                 <div class="layui-card-body ">
+                    <p th:text="${msg}" class="error-msg" style="color: red">这里是错误信息</p>
                     <form class="layui-form" action="/arrangeclass/add" method="post">
                         <div class="layui-form-item">
                             <label class="layui-form-label">课程</label>
@@ -84,6 +85,12 @@
                             </div>
                         </div>
 
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">上课教室</label>
+                            <div class="layui-input-block">
+                                <input name="skAddress" type="text" required  lay-verify="required" placeholder="请输入上课教室名" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
 
                         <div class="layui-form">
                             <div class="layui-form-item">
@@ -147,18 +154,18 @@
     });
 
 
-//     //模态框  选择
-//     layer.open({
-//         type:1,
-//         title:'[新增]',
-//         area:['700px','600px'],
-//         btn:false,
-// // shade: false,
-//         shadeClose: true,
-//         maxmin:false,
-//         content:$('#moniItemModel'),
-//         zIndex:layer.zIndex,
-//     });
+    //     //模态框  选择
+    //     layer.open({
+    //         type:1,
+    //         title:'[新增]',
+    //         area:['700px','600px'],
+    //         btn:false,
+    // // shade: false,
+    //         shadeClose: true,
+    //         maxmin:false,
+    //         content:$('#moniItemModel'),
+    //         zIndex:layer.zIndex,
+    //     });
 </script>
 </body>
 

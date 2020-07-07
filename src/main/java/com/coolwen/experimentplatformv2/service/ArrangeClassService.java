@@ -24,4 +24,6 @@ public interface ArrangeClassService {
     List<ArrangeClassDto> findByTeacherIdAndCourseId(int tid, int cid);
 
     List<Integer> findArrangeIdByTeacherIdAndCourseId(int tid, int cid);
+
+    ArrangeClass findByCourseIdAndTeacherIdAndClassId(int courseId, int teacherId, int classId);
 }

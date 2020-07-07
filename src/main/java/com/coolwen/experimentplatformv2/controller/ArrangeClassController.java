@@ -106,7 +106,21 @@ public class ArrangeClassController {
 
 
     @PostMapping(value = "/add")
-    public String add(int courseId,int teacherId,int classId,String arrangeStart,String arrangeEnd){
+    public String add(int courseId,int teacherId,int classId,String arrangeStart,String arrangeEnd,String skAddress,Model model){
+
+        ArrangeClass a = arrangeClassService.findByCourseIdAndTeacherIdAndClassId(courseId,teacherId,classId);
+        if (a != null){
+            List<CourseInfo> courseInfoList = courseInfoService.list();
+            model.addAttribute("courseInfoList",courseInfoList);
+
+            List<User> userList = userService.list();
+            model.addAttribute("userList",userList);
+
+            List<ClassModel> classList = classService.findCurrentClass();
+            model.addAttribute("classList",classList);
+            model.addAttribute("msg","添加课程安排失败，已经有该课程安排!!!");
+            return "jichu/timePlan_new";
+        }
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date starsDate = null;
@@ -128,6 +142,7 @@ public class ArrangeClassController {
         arrangeClass.setClassId(classId);
         arrangeClass.setArrangeStart(starsDate);
         arrangeClass.setArrangeEnd(endDate);
+        arrangeClass.setSkAddress(skAddress);
 
         //将信息储存到数据库
         arrangeClassService.add(arrangeClass);
@@ -154,7 +169,27 @@ public class ArrangeClassController {
 
 
     @PostMapping(value = "/{id}/update")
-    public String update(@PathVariable int id,int courseId,int teacherId,int classId,String arrangeStart,String arrangeEnd){
+    public String update(@PathVariable int id,int courseId,int teacherId,int classId,String arrangeStart,String arrangeEnd,String skAddress,Model model){
+
+        ArrangeClass a = arrangeClassService.findByCourseIdAndTeacherIdAndClassId(courseId,teacherId,classId);
+        //查询到id所对应的整条数据
+        ArrangeClass arrangeClass1 = arrangeClassService.findById(id);
+      if (a != null){
+          if (!(arrangeClass1.getCourseId() == a.getCourseId() && arrangeClass1.getTeacherId()==a.getTeacherId() && arrangeClass1.getClassId()==a.getClassId())){
+              model.addAttribute("arrangeClass",arrangeClass1);
+
+                List<CourseInfo> courseInfoList = courseInfoService.list();
+                model.addAttribute("courseInfoList",courseInfoList);
+
+                List<User> userList = userService.list();
+                model.addAttribute("userList",userList);
+
+                List<ClassModel> classList = classService.findCurrentClass();
+                model.addAttribute("classList",classList);
+                model.addAttribute("msg","添加课程安排失败，已经有该课程安排!!!");
+                return "jichu/timePlan_update";
+            }
+        }
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date starsDate = null;
@@ -177,6 +212,7 @@ public class ArrangeClassController {
         arrangeClass.setClassId(classId);
         arrangeClass.setArrangeStart(starsDate);
         arrangeClass.setArrangeEnd(endDate);
+        arrangeClass.setSkAddress(skAddress);
 
         //将信息储存到数据库
         arrangeClassService.add(arrangeClass);

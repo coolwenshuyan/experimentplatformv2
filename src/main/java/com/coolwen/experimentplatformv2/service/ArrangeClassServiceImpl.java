@@ -91,6 +91,10 @@ public class ArrangeClassServiceImpl implements ArrangeClassService {
         return integerList;
     }
 
+    @Override
+    public ArrangeClass findByCourseIdAndTeacherIdAndClassId(int courseId, int teacherId, int classId) {
+        return arrangeClassRepository.findByCourseIdAndTeacherIdAndClassId(courseId,teacherId,classId);}
+
 //    @Override
 //    public Page<ArrangeClassDto> findBycidAndtidAndclaidLike(Pageable pageable, String courseId, String teacherId, String classId) {
 //        Pageable pager = PageRequest.of(page, size);

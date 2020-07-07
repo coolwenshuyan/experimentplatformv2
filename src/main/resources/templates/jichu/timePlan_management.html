@@ -46,7 +46,7 @@
     }
     .choice-box{
         width: 70%;
-      /*float: left;*/
+        /*float: left;*/
         /*position: relative;*/
     }
     label{
@@ -110,7 +110,7 @@
                             </li>
                             <li style="margin-left:50%">
                                 <div class="layui-input-block">
-                                <button type="submit" class="layui-btn" >检索</button>
+                                    <button type="submit" class="layui-btn" >检索</button>
 
                                 </div>
                             </li>
@@ -131,6 +131,7 @@
                             <th>课程名</th>
                             <th>教师</th>
                             <th>班级</th>
+                            <th>上课教室名</th>
                             <th>开始时间</th>
                             <th>结束时间</th>
                             <th>操作</th>
@@ -141,6 +142,7 @@
                             <td th:text="${arrangeClass.getCourseName()}">JAVA</td>
                             <td th:text="${arrangeClass.getTeacherName()}">wen</td>
                             <td th:text="${arrangeClass.getClassName()}">18信管03</td>
+                            <td th:text="${arrangeClass.getSkAddress()}">A103</td>
                             <td th:text="${arrangeClass.getArrangeStart()}">2020/2/1</td>
                             <td th:text="${arrangeClass.getArrangeEnd()}">2020/2/1</td>
 
@@ -164,16 +166,16 @@
                         <a th:href="@{/arrangeclass/list(pageNum=${ArrangeClassDto.totalPages}-1)}">尾页</a>
                     </div>
 
-<!--                    <div class="page">-->
-<!--                        <div>-->
-<!--                            <a class="prev" href="">&lt;&lt;</a>-->
-<!--                            <a class="num" href="">1</a>-->
-<!--                            <span class="current">2</span>-->
-<!--                            <a class="num" href="">3</a>-->
-<!--                            <a class="num" href="">489</a>-->
-<!--                            <a class="next" href="">&gt;&gt;</a>-->
-<!--                        </div>-->
-<!--                    </div>-->
+                    <!--                    <div class="page">-->
+                    <!--                        <div>-->
+                    <!--                            <a class="prev" href="">&lt;&lt;</a>-->
+                    <!--                            <a class="num" href="">1</a>-->
+                    <!--                            <span class="current">2</span>-->
+                    <!--                            <a class="num" href="">3</a>-->
+                    <!--                            <a class="num" href="">489</a>-->
+                    <!--                            <a class="next" href="">&gt;&gt;</a>-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
                 </div>
             </div>
         </div>

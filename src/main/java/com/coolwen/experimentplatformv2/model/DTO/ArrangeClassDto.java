@@ -29,6 +29,9 @@ public class ArrangeClassDto {
     //老师id
     private int teacherId;
 
+    //上课教室名
+    private String skAddress;
+
     public ArrangeClassDto(int id, String courseName, String teacherName, String className, Date arrangeStart, Date arrangeEnd) {
         this.id = id;
         this.courseName = courseName;
@@ -36,6 +39,16 @@ public class ArrangeClassDto {
         this.className = className;
         this.arrangeStart = arrangeStart;
         this.arrangeEnd = arrangeEnd;
+    }
+
+    public ArrangeClassDto(int id, String courseName, String teacherName, String className, Date arrangeStart, Date arrangeEnd, String skAddress) {
+        this.id = id;
+        this.courseName = courseName;
+        this.teacherName = teacherName;
+        this.className = className;
+        this.arrangeStart = arrangeStart;
+        this.arrangeEnd = arrangeEnd;
+        this.skAddress = skAddress;
     }
 
     public ArrangeClassDto() {
@@ -114,6 +127,14 @@ public class ArrangeClassDto {
         this.teacherId = teacherId;
     }
 
+    public String getSkAddress() {
+        return skAddress;
+    }
+
+    public void setSkAddress(String skAddress) {
+        this.skAddress = skAddress;
+    }
+
     @Override
     public String toString() {
         return "ArrangeClassDto{" +
@@ -126,6 +147,7 @@ public class ArrangeClassDto {
                 ", courseId=" + courseId +
                 ", cIlassId=" + cIlassId +
                 ", teacherId=" + teacherId +
+                ", skAddress='" + skAddress + '\'' +
                 '}';
     }
 }

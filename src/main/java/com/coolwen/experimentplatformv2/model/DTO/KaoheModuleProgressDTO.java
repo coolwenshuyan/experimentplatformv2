@@ -20,8 +20,12 @@ public class KaoheModuleProgressDTO {
     //模块总分
     private float m_score;
     private int m_id;
+    private int classId;
+    //模块报告类型
+    private boolean report_type;
+    private int stuId;
 
-    public KaoheModuleProgressDTO(String stu_xuehao, String stu_name, String class_name, String m_name, boolean m_teststate, float m_test_score, boolean m_reportstate, float m_report_score, boolean mReportteacherstate, float m_score,int m_mid) {
+    public KaoheModuleProgressDTO(String stu_xuehao, String stu_name, String class_name, String m_name, boolean m_teststate, float m_test_score, boolean m_reportstate, float m_report_score, boolean mReportteacherstate, float m_score,int m_mid,int classId,boolean report_type,int stuId) {
         this.stu_xuehao = stu_xuehao;
         this.stu_name = stu_name;
         this.class_name = class_name;
@@ -33,6 +37,33 @@ public class KaoheModuleProgressDTO {
         this.mReportteacherstate = mReportteacherstate;
         this.m_score = m_score;
         this.m_id = m_mid;
+        this.classId = classId;
+        this.report_type = report_type;
+        this.stuId = stuId;
+    }
+
+    public int getStuId() {
+        return stuId;
+    }
+
+    public void setStuId(int stuId) {
+        this.stuId = stuId;
+    }
+
+    public boolean isReport_type() {
+        return report_type;
+    }
+
+    public void setReport_type(boolean report_type) {
+        this.report_type = report_type;
+    }
+
+    public int getClassId() {
+        return classId;
+    }
+
+    public void setClassId(int classId) {
+        this.classId = classId;
     }
 
     public int getM_id() {
@@ -137,6 +168,9 @@ public class KaoheModuleProgressDTO {
                 ", mReportteacherstate=" + mReportteacherstate +
                 ", m_score=" + m_score +
                 ", m_id=" + m_id +
+                ", classId=" + classId +
+                ", report_type=" + report_type +
+                ", stuId=" + stuId +
                 '}';
     }
 }

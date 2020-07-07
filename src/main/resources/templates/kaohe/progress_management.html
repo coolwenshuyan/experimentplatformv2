@@ -122,7 +122,13 @@
                             <td th:text="${m.mReportteacherstate}==true?'完成':'未完成'">完成</td>
                             <td th:text="${m.m_report_score}">20</td>
                             <td>
-                                <a class="layui-btn layui-btn-primary" lay-submit>评分</a>
+                                <span th:if="${m.report_type}==false">
+                                    <a class="layui-btn layui-btn-primary" lay-submit th:href="@{|/TreportGrade/${m.stuId}/${mid}/giveMark|}">评分</a>
+                                </span>
+                                <span th:if="${m.report_type}==true">
+                                    <a class="layui-btn layui-btn-primary" lay-submit th:href="@{|/collegereport/mark/${mid}/${m.stuId}|}">评分</a>
+                                </span>
+
                             </td>
                             <td th:text="${m.m_score}">20</td>
                         </tr>
@@ -130,17 +136,6 @@
                     </table>
                 </div>
                 <div class="layui-card-body ">
-<!--                    <div class="page">-->
-<!--                        <div>-->
-<!--                            <a class="prev" href="">&lt;&lt;</a>-->
-<!--                            <a class="num" href="">1</a>-->
-<!--                            <span class="current">2</span>-->
-<!--                            <a class="num" href="">3</a>-->
-<!--                            <a class="num" href="">489</a>-->
-<!--                            <a class="next" href="">&gt;&gt;</a>-->
-<!--                        </div>-->
-<!--                    </div>-->
-
                     <div style="margin:0 auto; width: 80%; text-align: center;">
                         <p>当前 <span th:text="${pro.number}+1"></span> 页,
                             总 <span th:text="${pro.totalPages}"></span> 页,

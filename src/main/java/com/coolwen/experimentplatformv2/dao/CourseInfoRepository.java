@@ -15,9 +15,10 @@ public interface CourseInfoRepository extends BaseRepository<CourseInfo, Integer
     List<CourseInfo> getclassByCharge(int teacher_id);
 
 
-    @Query("select c from CourseInfo c,ArrangeClass a where c.id = a.courseId and a.teacherId = ?1")
+    @Query("select c from CourseInfo c,ArrangeClass a where c.id = a.courseId and a.teacherId = ?1 group by a.courseId,a.teacherId")
     List<CourseInfo> getclass_by_arrangeteacher(int teacher_id);
 
     @Query("select c from ClassModel c,ArrangeClass a where c.id = a.classId and a.teacherId= ?1 and a.courseId = ?2")
     List<ClassModel> getclass_by_arrangecourseid(int teacher_id, int course_id);
+
 }

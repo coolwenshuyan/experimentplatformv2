@@ -70,9 +70,9 @@
 
                                         <tbody>
                                         <tr>
-                                            <td>总人数：100人</td>
-                                            <td>模块测试：50人提交；50人未提交</td>
-                                            <td>模块报告：50人提交；50人未提交</td>
+                                            <td>总人数：<span th:text="${totalStuNum}"></span>人</td>
+                                            <td>模块测试：<span th:text="${totalStuNum - testStateFalseNum}"></span>人提交；<span th:text="${testStateFalseNum}"></span>人未提交</td>
+                                            <td>模块报告：<span th:text="${totalStuNum - reportStateFalseNum}"></span>人提交；<span th:text="${reportStateFalseNum}"></span>人未提交</td>
                                         </tr>
 
                                         </tbody>
@@ -80,8 +80,8 @@
                                 </div>
                                 <div class="layui-col-md2 ">
                                     <div class="layui-inline layui-show-xs-block">
-                                        <a href="/courseinfo/add" class="layui-btn"  lay-submit="" lay-filter="sreach">返回</a>
-                                        <a href="/courseinfo/add" class="layui-btn layui-btn-normal"  lay-submit="" lay-filter="sreach">导出成绩</a>
+                                        <a  class="layui-btn"  lay-submit="" lay-filter="sreach">返回</a>
+                                        <a  class="layui-btn layui-btn-normal"  lay-submit="" lay-filter="sreach">导出成绩</a>
 
                                     </div>
                                 </div>
@@ -109,49 +109,41 @@
                             <th>模块报告成绩</th>
                             <th>教师报告评分</th>
                             <th>模块总成绩</th>
-                            <th>操作</th>
                         </thead>
                         <tbody>
-                        <tr >
-                            <td>1806101012</td>
-                            <td>李</td>
-                            <td>3班</td>
-                            <td>java</td>
-                            <td>完成</td>
-                            <td>18</td>
-                            <td>完成</td>
-                            <td>完成</td>
-                            <td>20</td>
-                            <td>20</td>
-                            <td>20</td>
-                            <td >
-                                <a class="layui-btn layui-btn-primary layui-bg-red" lay-submit>修改</a>
-                                <a class="layui-btn layui-btn-primary layui-bg-green" lay-submit>删除</a>
+                        <tr th:each="m:${pro}">
+                            <td th:text="${m.stu_xuehao}">1806101012</td>
+                            <td th:text="${m.stu_name}">李</td>
+                            <td th:text="${m.class_name}">3班</td>
+                            <td th:text="${m.m_name}">java</td>
+                            <td th:text="${m.m_teststate}==true?'完成':'未完成'">完成</td>
+                            <td th:text="${m.m_test_score}">18</td>
+                            <td th:text="${m.m_reportstate}==true?'完成':'未完成'">完成</td>
+                            <td th:text="${m.mReportteacherstate}==true?'完成':'未完成'">完成</td>
+                            <td th:text="${m.m_report_score}">20</td>
+                            <td>
+                                <span th:if="${m.report_type}==false">
+                                    <a class="layui-btn layui-btn-primary" lay-submit th:href="@{|/TreportGrade/${m.stuId}/${mid}/giveMark|}">评分</a>
+                                </span>
+                                <span th:if="${m.report_type}==true">
+                                    <a class="layui-btn layui-btn-primary" lay-submit th:href="@{|/collegereport/mark/${mid}/${m.stuId}|}">评分</a>
+                                </span>
+
                             </td>
+                            <td th:text="${m.m_score}">20</td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="layui-card-body ">
-<!--                    <div class="page">-->
-<!--                        <div>-->
-<!--                            <a class="prev" href="">&lt;&lt;</a>-->
-<!--                            <a class="num" href="">1</a>-->
-<!--                            <span class="current">2</span>-->
-<!--                            <a class="num" href="">3</a>-->
-<!--                            <a class="num" href="">489</a>-->
-<!--                            <a class="next" href="">&gt;&gt;</a>-->
-<!--                        </div>-->
-<!--                    </div>-->
-
                     <div style="margin:0 auto; width: 80%; text-align: center;">
-                        <p>当前 <span th:text="${courseInfos.number}+1"></span> 页,
-                            总 <span th:text="${courseInfos.totalPages}"></span> 页,
-                            共 <span th:text="${courseInfos.totalElements}"></span> 条记录</p>
-                        <a th:href="@{/courseinfo/list}">首页</a>
-                        <a th:href="@{/courseinfo/list(pageNum=${courseInfos.hasPrevious()}?${courseInfos.number}-1:0)}">上一页</a>
-                        <a th:href="@{/courseinfo/list(pageNum=${courseInfos.hasNext()}?${courseInfos.number}+1:${courseInfos.number})}">下一页</a>
-                        <a th:href="@{/courseinfo/list(pageNum=${courseInfos.totalPages}-1)}">尾页</a>
+                        <p>当前 <span th:text="${pro.number}+1"></span> 页,
+                            总 <span th:text="${pro.totalPages}"></span> 页,
+                            共 <span th:text="${pro.totalElements}"></span> 条记录</p>
+                        <a th:href="@{|/expmodel/kaoheProgressQuery/${mid}}">首页</a>
+                        <a th:href="@{|/expmodel/kaoheProgressQuery/${mid}(pageNum=${pro.hasPrevious()}?${pro.number}-1:0)}">上一页</a>
+                        <a th:href="@{|/expmodel/kaoheProgressQuery/${mid}(pageNum=${pro.hasNext()}?${pro.number}+1:${pro.number})}">下一页</a>
+                        <a th:href="@{|/expmodel/kaoheProgressQuery/${mid}(pageNum=${pro.totalPages}-1)}">尾页</a>
                     </div>
                 </div>
             </div>

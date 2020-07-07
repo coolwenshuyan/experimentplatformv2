@@ -1,8 +1,10 @@
 package com.coolwen.experimentplatformv2.service;
 
+import com.coolwen.experimentplatformv2.model.DTO.KaoheModuleProgressDTO;
 import com.coolwen.experimentplatformv2.model.ExpModel;
 import com.coolwen.experimentplatformv2.model.ModuleTestQuest;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 
@@ -28,6 +30,8 @@ public interface ExpModelService {
     int findByMid(int m_id);
 
     ExpModel findExpModelsByKaoheMid(int mid);
+
+    Page<KaoheModuleProgressDTO> findExpModels(int course_id, int class_id, int m_id,int pageNum);
 
 
 

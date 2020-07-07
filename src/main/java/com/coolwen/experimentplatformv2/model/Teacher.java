@@ -12,7 +12,7 @@ public class Teacher {
     private String person_name;
     private String image_url;
     private String intro;
-    private String course_id;
+    private int course_id;
 
 
     public int getId() {
@@ -47,11 +47,11 @@ public class Teacher {
         this.intro = intro;
     }
 
-    public String getCourse_id() {
+    public int getCourse_id() {
         return course_id;
     }
 
-    public void setCourse_id(String course_id) {
+    public void setCourse_id(int course_id) {
         this.course_id = course_id;
     }
 

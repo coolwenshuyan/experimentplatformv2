@@ -1,8 +1,10 @@
 package com.coolwen.experimentplatformv2.dao;
 
 import com.coolwen.experimentplatformv2.dao.basedao.BaseRepository;
+import com.coolwen.experimentplatformv2.model.DTO.KaoheModuleProgressDTO;
 import com.coolwen.experimentplatformv2.model.ExpModel;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 
@@ -30,6 +32,10 @@ public interface ExpModelRepository extends BaseRepository<ExpModel,Integer> {
 
     @Query("select e from ExpModel e order by e.m_id ASC ")
     Page<ExpModel> findExpModels(Pageable pageable);
+
+    @Query("select new com.coolwen.experimentplatformv2.model.DTO.KaoheModuleProgressDTO(stu.stuXuehao,stu.stuName,cm.className,e.m_name,khs.mTeststate,khs.mTestScore,khs.mReportstate,khs.mReportScore,khs.mReportteacherstate,khs.mScore,e.m_id,cm.classId,e.report_type,stu.id) from CourseInfo ci left join Teacher t on ci.teacherId = t.id and t.course_id = ci.id left join ExpModel e on ci.id = e.course_id left join KaoheModel kh on e.m_id = kh.m_id left join ClassModel cm on t.person_name = cm.classTeacher left join Student stu on cm.classId = stu.classId left join KaoHeModelScore khs on stu.id = khs.stuId and kh.id = khs.tKaohemodleId where ci.id = ?1 and cm.classId = ?2 and e.m_id = ?3")
+    Page<KaoheModuleProgressDTO> findExpModels(int course_id, int class_id, int m_id, PageRequest pageRequest);
+
 
 
 }

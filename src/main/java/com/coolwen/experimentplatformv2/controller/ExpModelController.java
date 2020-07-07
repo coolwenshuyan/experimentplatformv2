@@ -1,9 +1,14 @@
 package com.coolwen.experimentplatformv2.controller;
 
 
+import com.coolwen.experimentplatformv2.config.ShiroConfig;
 import com.coolwen.experimentplatformv2.model.*;
 import com.coolwen.experimentplatformv2.model.DTO.KaoHeModelStuDTO;
+import com.coolwen.experimentplatformv2.model.DTO.KaoheModuleProgressDTO;
 import com.coolwen.experimentplatformv2.service.*;
+import org.apache.shiro.SecurityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -56,6 +61,8 @@ public class ExpModelController {
     CollegeReportService collegeReportService;
     @Autowired
     DockerService dockerService;
+
+    protected static final Logger logger = LoggerFactory.getLogger(ExpModelController.class);
 
 
     //查询模块信息页面
@@ -548,4 +555,22 @@ public class ExpModelController {
         model.addAttribute("disMid",id);
         return "kuangjia/shiyan";
     }
+
+    //考核模块进度查询
+    @GetMapping("/kaoheProgressQuery/{id}")
+    public String kaoheProgressQuery(@PathVariable("id")int id,@RequestParam(value = "pageNum",defaultValue = "0",required = true)int pageNum,Model model){
+        model.addAttribute("mid",id);
+        int course_id = (int) SecurityUtils.getSubject().getSession().getAttribute("proGressCourse_id");
+        int class_id = (int) SecurityUtils.getSubject().getSession().getAttribute("class_id");
+        Page<KaoheModuleProgressDTO> progressDTO = expModelService.findExpModels(course_id,class_id,id,pageNum);
+        model.addAttribute("pro",progressDTO);
+        int totalStuNum = clazzService.findStudentNumByClassId(class_id);
+        model.addAttribute("totalStuNum",totalStuNum);
+        model.addAttribute("testStateFalseNum",clazzService.findStuMTestByClassId(class_id,id));
+        model.addAttribute("reportStateFalseNum",clazzService.findStuMReportStateByClassId(class_id,id));
+        return "kaohe/progress_management";
+    }
+
+
+
 }

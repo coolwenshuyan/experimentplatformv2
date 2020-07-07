@@ -61,5 +61,20 @@ public class ClazzServiceImpl implements ClazzService {
         return clazzRepository.findPassClass();
     }
 
+    @Override
+    public Integer findStudentNumByClassId(int classId) {
+        return clazzRepository.findStudentNumByClassId(classId);
+    }
+
+    @Override
+    public Integer findStuMTestByClassId(int classId, int mid) {
+        return clazzRepository.findStuMTestByClassId(classId,mid);
+    }
+
+    @Override
+    public Integer findStuMReportStateByClassId(int classid, int mid) {
+        return clazzRepository.findStuMReportStateByClassId(classid, mid);
+    }
+
 
 }

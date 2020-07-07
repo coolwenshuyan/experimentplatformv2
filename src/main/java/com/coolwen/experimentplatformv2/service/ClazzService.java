@@ -25,5 +25,8 @@ public interface ClazzService {
 
 
     List<ClassModel> findPassClass();
+    Integer findStudentNumByClassId(int classId);
+    Integer findStuMTestByClassId(int classId,int mid);
+    Integer findStuMReportStateByClassId(int classid,int mid);
 
 }

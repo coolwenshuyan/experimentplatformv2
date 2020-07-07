@@ -3,10 +3,12 @@ package com.coolwen.experimentplatformv2.service;
 import com.coolwen.experimentplatformv2.dao.ExpModelRepository;
 import com.coolwen.experimentplatformv2.dao.ModuleTestAnswerStuRepository;
 import com.coolwen.experimentplatformv2.dao.ModuleTestQuestRepository;
+import com.coolwen.experimentplatformv2.model.DTO.KaoheModuleProgressDTO;
 import com.coolwen.experimentplatformv2.model.ExpModel;
 import com.coolwen.experimentplatformv2.model.ModuleTestAnswerStu;
 import com.coolwen.experimentplatformv2.model.ModuleTestQuest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +24,9 @@ public class ExpModelServiceImpl implements ExpModelService {
     ModuleTestQuestRepository moduleTestQuestRepository;
     @Autowired
     ModuleTestAnswerStuRepository moduleTestAnswerStuRepository;
+
+    @Value("${SimplePageBuilder.pageSize}")
+    private int pageSize;
     @Override
     public void save(ExpModel expModel) {
         expModelRepository.save(expModel);
@@ -40,7 +45,7 @@ public class ExpModelServiceImpl implements ExpModelService {
 
     @Override
     public Page<ExpModel> findModelList(int pageNum) {
-        Pageable pageable  = PageRequest.of(pageNum,10);
+        Pageable pageable  = PageRequest.of(pageNum,pageSize);
         return expModelRepository.findAll(pageable);
     }
 
@@ -81,7 +86,10 @@ public class ExpModelServiceImpl implements ExpModelService {
         return expModelRepository.findExpModelsByKaoheMid(mid);
     }
 
-
+    @Override
+    public Page<KaoheModuleProgressDTO> findExpModels(int course_id, int class_id, int m_id,int pageNum) {
+        return expModelRepository.findExpModels(course_id,class_id,m_id,PageRequest.of(pageNum,pageSize));
+    }
 
 
 }

@@ -19,6 +19,8 @@ public class ExpModel {
     //实验负责人
     @Column(length = 30,nullable = false)
     private String m_manager;
+    //所属课程id
+    private int course_id;
     //实验类型
     @Column(length = 16,nullable = false)
     private String m_type;
@@ -59,13 +61,13 @@ public class ExpModel {
     @Column(nullable = false,columnDefinition = "bit default 0")
     private boolean report_type;
 
-
     @Override
     public String toString() {
         return "ExpModel{" +
                 "m_id=" + m_id +
                 ", m_name='" + m_name + '\'' +
                 ", m_manager='" + m_manager + '\'' +
+                ", course_id=" + course_id +
                 ", m_type='" + m_type + '\'' +
                 ", classhour=" + classhour +
                 ", imageurl='" + imageurl + '\'' +
@@ -80,6 +82,14 @@ public class ExpModel {
                 ", needKaohe=" + needKaohe +
                 ", report_type=" + report_type +
                 '}';
+    }
+
+    public int getCourse_id() {
+        return course_id;
+    }
+
+    public void setCourse_id(int course_id) {
+        this.course_id = course_id;
     }
 
     public int getM_id() {

@@ -19,4 +19,13 @@ public interface ClazzRepository extends BaseRepository<ClassModel,Integer> {
 
     @Query("select c from ClassModel c where c.classIscurrent = true ")
     List<ClassModel> findPassClass();
+
+    @Query("select count(s) from Student s where s.classId = ?1")
+    Integer findStudentNumByClassId(int classId);
+
+    @Query("select count (s)from ClassModel cm left join Student s on cm.classId = s.classId left join KaoHeModelScore khs on s.id = khs.stuId left join KaoheModel kh on khs.tKaohemodleId = kh.id where kh.m_id = ?1 and khs.mTeststate = false ")
+    Integer findStuMTestByClassId(int classId,int mid);
+
+    @Query("select count (s)from ClassModel cm left join Student s on cm.classId = s.classId left join KaoHeModelScore khs on s.id = khs.stuId left join KaoheModel kh on khs.tKaohemodleId = kh.id where kh.m_id = ?1 and khs.mReportstate = false ")
+    Integer findStuMReportStateByClassId(int classid,int mid);
 }

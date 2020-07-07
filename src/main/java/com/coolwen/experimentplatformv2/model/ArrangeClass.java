@@ -31,6 +31,10 @@ public class ArrangeClass {
     @Column(name = "arrange_end")
     private Date arrangeEnd;
 
+    //上课教室名
+    @Column(name = "sk_address")
+    private String skAddress;
+
     public int getId() {
         return id;
     }
@@ -77,5 +81,13 @@ public class ArrangeClass {
 
     public void setArrangeEnd(Date arrangeEnd) {
         this.arrangeEnd = arrangeEnd;
+    }
+
+    public String getSkAddress() {
+        return skAddress;
+    }
+
+    public void setSkAddress(String skAddress) {
+        this.skAddress = skAddress;
     }
 }

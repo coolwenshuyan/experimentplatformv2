@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<title>学习效果修改</title>
 	<link rel="stylesheet" type="text/css" href="../../static/css/layui.css" />
-<!--	<link rel="stylesheet" type="text/css" href="../../static/css/notice.css" />-->
+	<!--	<link rel="stylesheet" type="text/css" href="../../static/css/notice.css" />-->
 	<style type="text/css">
 		.layui-textarea{
 			width: 50%;
@@ -31,12 +31,12 @@
 </head>
 <body>
 <div class="layui-container">
-<!--	<img src="../../static/images/LOGO2.png"> <br><br>-->
-<!--	<span class="layui-breadcrumb">-->
-<!--  			<a href="/">首页</a>-->
-<!--  			<a>学习效果</a>-->
-<!--  			<a><cite>学习效果修改</cite></a>-->
-<!--			</span>			<br><br><br>-->
+	<!--	<img src="../../static/images/LOGO2.png"> <br><br>-->
+	<!--	<span class="layui-breadcrumb">-->
+	<!--  			<a href="/">首页</a>-->
+	<!--  			<a>学习效果</a>-->
+	<!--  			<a><cite>学习效果修改</cite></a>-->
+	<!--			</span>			<br><br><br>-->
 
 
 	<!--标题-->
@@ -45,6 +45,18 @@
 			<label class="layui-form-label">标题</label>
 			<div class="layui-input-block">
 				<input type="text" th:value="${effect.effect_name}" name="effect_name" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
+			</div>
+		</div>
+
+		<div class="layui-form-item choice-box" >
+			<label class="layui-form-label ">课程</label>
+			<div class="layui-input-block">
+				<select name="course_id" lay-filter="aihao">
+					<option value="">请选择课程</option>
+					<a th:each="courseInfo:${courseInfoList}">
+						<option th:selected="${effect.getCourse_id()}==${courseInfo.getId()}" th:value="${courseInfo.getId()}">[[${courseInfo.courseName}]]</option>
+					</a>
+				</select>
 			</div>
 		</div>
 
@@ -71,10 +83,10 @@
 			<label class="layui-form-label">发布内容</label>
 
 		</div>
-<!--		富文本编辑器的html代码开始-->
+		<!--		富文本编辑器的html代码开始-->
 		<script id="editor" name="effect_content" th:utext="${effect.effect_content}" type="text/plain">
 		</script>
-<!--		富文本编辑器的html代码结束-->
+		<!--		富文本编辑器的html代码结束-->
 		<div class="layui-form-item">
 			<div class="layui-input-block">
 				<button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">保存</button>

@@ -18,6 +18,7 @@ public class Effect {
     private String effect_content;
     private int dic_num;
     private Date dic_datetime;
+    private int course_id;
 
     public int getId() {
         return id;
@@ -75,6 +76,14 @@ public class Effect {
         this.dic_datetime = dic_datetime;
     }
 
+    public int getCourse_id() {
+        return course_id;
+    }
+
+    public void setCourse_id(int course_id) {
+        this.course_id = course_id;
+    }
+
     @Override
     public String toString() {
         return "Effect{" +
@@ -85,6 +94,7 @@ public class Effect {
                 ", effect_content='" + effect_content + '\'' +
                 ", dic_num=" + dic_num +
                 ", dic_datetime=" + dic_datetime +
+                ", course_id=" + course_id +
                 '}';
     }
 }

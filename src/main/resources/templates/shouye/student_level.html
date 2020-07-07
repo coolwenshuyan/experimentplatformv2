@@ -43,6 +43,12 @@
 </style>
 <body>
 <div  class="layui-container">
+    <select name="interest" lay-filter="aihao" onchange="window.open(this.options[this.selectedIndex].value,target='_self')" style="margin-top: 13px;">
+        <option>请选择</option>
+        <div th:each="courseInfo:${courseInfoList}" >
+            <option th:value="|/learning/${courseInfo.getId()}/list|"  th:text="${courseInfo.getCourseName()}">18信管01</option>
+        </div>
+    </select>
     <div  style="margin-top: 50px">
         <a href="/learning/add">
             <button type="button" class="layui-btn">
@@ -56,10 +62,10 @@
                 <col width="100">
                 <col width="150">
                 <col width="100">
-<!--                <col width="240">-->
-<!--                <col width="100">-->
-<!--                <col width="100">-->
-<!--                <col width="160">-->
+                <!--                <col width="240">-->
+                <!--                <col width="100">-->
+                <!--                <col width="100">-->
+                <!--                <col width="160">-->
                 <col>
             </colgroup>
             <thead>
@@ -68,6 +74,7 @@
                 <th>缩略图</th>
                 <th>发布者</th>
                 <th style="width: 32%;">发布内容</th>
+                <th style="width: 32%;">课程名</th>
                 <th style="width: 15%;">发布时间</th>
                 <th style="width: 12%;">点击次数</th>
                 <th style="width: 17%;">操作</th>
@@ -79,12 +86,13 @@
                 <td ><img th:src="@{'/upload/'+${effect.effect_imgurl}}"></td>
                 <td th:text="${effect.effect_person}">人生</td>
                 <td th:text="${effect.effect_content}">人生就像是一场修行</td>
+                <td th:each="courseInfo:${courseInfoList}" th:if="${courseInfo.getId()}==${effect.course_id}" th:text="${courseInfo.getCourseName()}">人生就像是一场修行</td>
                 <td th:text="${effect.dic_datetime}">2020-5-29</td>
                 <td th:text="${effect.dic_num}">10</td>
                 <td>
                     <div id="d" class="layui-btn-container">
-                        <a type="add" class="layui-btn layui-btn-sm"  th:href="@{|${effect.id}/update|}">修改</a>
-                        <a type="delete" @click="isTrue" class="layui-btn layui-btn-sm layui-bg-red"  th:href="@{|${effect.id}/delete|}">删除</a>
+                        <a type="add" class="layui-btn layui-btn-sm"  th:href="@{|/learning/${effect.id}/update|}">修改</a>
+                        <a type="delete" @click="isTrue" class="layui-btn layui-btn-sm layui-bg-red"  th:href="@{|/learning/${effect.id}/delete|}">删除</a>
                         <!--                    <a type="button" th:href="@{|${effect.id}/update|}" class="layui-btn">编辑</a>-->
                         <!--                    <a type="button" th:href="@{|${effect.id}/delete|}" class="layui-btn">删除</a>-->
                     </div>

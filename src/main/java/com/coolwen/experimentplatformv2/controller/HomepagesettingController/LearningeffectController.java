@@ -7,13 +7,20 @@
 
 package com.coolwen.experimentplatformv2.controller.HomepagesettingController;
 
+import com.coolwen.experimentplatformv2.controller.TeacherController;
 import com.coolwen.experimentplatformv2.dao.EffectRepository;
+import com.coolwen.experimentplatformv2.model.CourseInfo;
 import com.coolwen.experimentplatformv2.model.Effect;
+import com.coolwen.experimentplatformv2.model.Teacher;
+import com.coolwen.experimentplatformv2.model.User;
+import com.coolwen.experimentplatformv2.service.CourseInfoService;
 import com.coolwen.experimentplatformv2.service.EffectService;
 import com.coolwen.experimentplatformv2.service.NewsInfoService;
 import com.coolwen.experimentplatformv2.utils.FileUploadUtil;
 import com.coolwen.experimentplatformv2.utils.GetServerRealPathUnit;
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,17 +31,19 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
-*@Description 主要为后台管理系统中首页-->学习效果 的增删改查，前端学习效果页面优秀实验报告展示
-*@Author 朱治汶
-*@Version 1.0
-*@Date 2020/5/29 16:11
-*/
+ *@Description 主要为后台管理系统中首页-->学习效果 的增删改查，前端学习效果页面优秀实验报告展示
+ *@Author 朱治汶
+ *@Version 1.0
+ *@Date 2020/5/29 16:11
+ */
 @Controller
 @RequestMapping(value = "/learning")
 public class LearningeffectController {
@@ -45,8 +54,13 @@ public class LearningeffectController {
     EffectService effectService;        //学习效果的servi层
     @Autowired
     NewsInfoService newsInfoService;
+    @Autowired
+    CourseInfoService courseInfoService;
 
     FileUploadController fileUploadController =new FileUploadController();  //上传文件
+
+    protected static final Logger logger = LoggerFactory.getLogger(LearningeffectController.class);
+
     /**
      * 进入后台管理系统的接口
      * @return 返回到后台框架界面
@@ -115,11 +129,35 @@ public class LearningeffectController {
      * @return 返回到学习效果列表展示页面
      */
     @GetMapping(value = "/list")
-    public String LearningeffectList(Model model, @RequestParam(defaultValue = "0", required=true,value = "pageNum")  Integer pageNum){
+    public String LearningeffectList(Model model, HttpSession session,
+                                     @RequestParam(defaultValue = "0", required=true,value = "pageNum")  Integer pageNum){
+        User user = (User) session.getAttribute("admin");
+        logger.debug("user:>>"+user);
         //查询优秀实验报告所有数据
-        Pageable pageable = PageRequest.of(pageNum,3);
-        Page<Effect> page = effectRepository.findAll(pageable);
+        Pageable pageable = PageRequest.of(pageNum,10);
+//        Page<Effect> page = effectRepository.findAll(pageable);
+        Page<Effect> page = effectService.findAllByUid(user.getId(),pageable);
         model.addAttribute("learningPageInfo",page);
+
+        List<CourseInfo> courseInfoList =  courseInfoService.getclassByCharge(user.getId());
+        model.addAttribute("courseInfoList",courseInfoList);
+        return "shouye/student_level";
+    }
+
+
+    @GetMapping("/{courseId}/list")
+    public String LearningeffectList1(Model model,
+                                      HttpSession session,
+                                      @PathVariable int courseId,
+                                      @RequestParam(defaultValue = "0", required=true,value = "pageNum")  Integer pageNum){
+        Page<Effect> page = effectService.findAllByCourseId(pageNum,courseId);
+        logger.debug("courseId:>>>>>>>>>>>>>>"+courseId);
+        model.addAttribute("learningPageInfo",page);
+
+        User user = (User) session.getAttribute("admin");
+        logger.debug("user:>>"+user);
+        List<CourseInfo> courseInfoList =  courseInfoService.getclassByCharge(user.getId());
+        model.addAttribute("courseInfoList",courseInfoList);
         return "shouye/student_level";
     }
 
@@ -128,7 +166,10 @@ public class LearningeffectController {
      * @return 返回到学习效果添加页面
      */
     @GetMapping(value = "/add")
-    public String LearningeffectAdd(){
+    public String LearningeffectAdd(HttpSession session,Model model){
+        User user = (User) session.getAttribute("admin");
+        List<CourseInfo> courseInfoList =  courseInfoService.getclassByCharge(user.getId());
+        model.addAttribute("courseInfoList",courseInfoList);
         return "shouye/study_add";
     }
 
@@ -177,7 +218,11 @@ public class LearningeffectController {
      * @return 返回到修改页面
      */
     @GetMapping(value = "/{id}/update")
-    public String update(@PathVariable int id, Model model){
+    public String update(@PathVariable int id, Model model,HttpSession session){
+        User user = (User) session.getAttribute("admin");
+        List<CourseInfo> courseInfoList =  courseInfoService.getclassByCharge(user.getId());
+        model.addAttribute("courseInfoList",courseInfoList);
+
         //查询到id所对应的整条数据
         Effect effect = effectService.findById(id);
         model.addAttribute("effect",effect);

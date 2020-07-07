@@ -91,13 +91,16 @@ public class TeacherController {
     }
 
     @GetMapping("/{courseId}/list")
-    public String getTotalScoreCirrentByGroupId(Model model,
+    public String getTotalScoreCirrentByGroupId(Model model,HttpSession session,
                                                 @PathVariable int courseId,
                                                 @RequestParam(value = "pageNum",defaultValue = "0",required = true) int pageNum) {
         Page<Teacher> page = teacherService.findAllByCourseId(pageNum,courseId);
+        logger.debug("courseId:>>"+courseId);
         model.addAttribute("teacherPageInfo",page);
 
-        List<CourseInfo> courseInfoList =  courseInfoService.getclassByCharge(4);
+        User user = (User) session.getAttribute("admin");
+        logger.debug("user:>>"+user);
+        List<CourseInfo> courseInfoList =  courseInfoService.getclassByCharge(user.getId());
         model.addAttribute("courseInfoList",courseInfoList);
         return "shouye/teacher_change";
     }

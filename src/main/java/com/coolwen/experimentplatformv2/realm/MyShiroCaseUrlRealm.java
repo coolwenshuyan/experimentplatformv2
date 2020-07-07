@@ -75,6 +75,7 @@ public class MyShiroCaseUrlRealm extends CasRealm {
             userService.add(user);
             uid = user.getId();
             logger.debug("授权老师信息:" + uid + "," + user.getUsername());
+            SecurityUtils.getSubject().getSession().setAttribute("teacher", user);
         }
         List<String> roles = userService.listRoleSnByUser(uid);
         logger.debug("授权角色:" + roles);

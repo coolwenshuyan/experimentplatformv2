@@ -2,18 +2,19 @@ package com.coolwen.experimentplatformv2.controller;
 
 
 import com.coolwen.experimentplatformv2.model.*;
+import com.coolwen.experimentplatformv2.model.DTO.ArrangeClassDto;
 import com.coolwen.experimentplatformv2.model.DTO.KaoheModelAndExpInfoDTO;
 import com.coolwen.experimentplatformv2.service.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.shiro.SecurityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 /**
@@ -25,6 +26,7 @@ import java.util.List;
 /**
  * 对考核进行编辑管理
  * 列出所有模块/所有考核模块,将实验模块移入/移出考核,修改/添加考核信息
+ *
  * @author 王雨来
  * @version 2020/5/13 12:21
  */
@@ -50,20 +52,31 @@ public class KaoheModelController {
     private ReportAnswerService reportAnswerService;   //自定义报告
 
 
+    @Autowired
+    private CourseInfoService courseInfoService;
+
+    @Autowired
+    ArrangeClassService arrangeClassService;
+
+    protected static final Logger logger = LoggerFactory.getLogger(KaoheModelController.class);
+
     /**
      * 列出所有模块
-     * @param model 传值
+     *
+     * @param model   传值
      * @param pageNum 分页
      * @return 列表页面
      */
     @RequestMapping(value = "/allModule", method = RequestMethod.GET)
     public String loadAllModel(Model model,
                                @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum) {
+        //获取当前登陆老师的信息
+        User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
         // 这是一个整数列表,用来存放所有的考核模块的实验模块id,在视图上用来判断此实验是否已经在考核中
         List<Integer> check = kaoheModelService.inKaoheList();
         model.addAttribute("checkList", check);
 
-        //这个是所有的实验模块
+        //这个是所有的实验模块，需要传入老师的信息查询
         Page<ExpModel> a = expModelService.findModelList(pageNum);
         model.addAttribute("allKaohe", a);
 //        List <ExpModels> b = null;
@@ -93,9 +106,11 @@ public class KaoheModelController {
         return "kaohe/allModule";
     }
 
+
     /**
      * 列出所有考核模块 以下均为相同内容,不再赘述
-     * @param model 传值
+     *
+     * @param model   传值
      * @param pageNum 分页
      * @return 页面
      * @throws JsonProcessingException
@@ -108,11 +123,11 @@ public class KaoheModelController {
         Page<KaoheModelAndExpInfoDTO> page = kaoheModelService.findAllKaoheModelAndExpInfoDTO(pageNum);
 
         model.addAttribute("kaoheModelPageInfo", page);
-        System.out.println("page:" + page.getTotalElements());
+        logger.info(("page:" + page.getTotalElements()));
 
         //分页
         ObjectMapper mapper = new ObjectMapper();
-        System.out.println("json:" + mapper.writeValueAsString(page));
+        logger.info(("json:" + mapper.writeValueAsString(page)));
         return "kaohe/checkModule";
     }
 
@@ -143,7 +158,7 @@ public class KaoheModelController {
         u.setM_id(expModel.getM_id());
 //        u.setExperiment_name(expModel.getM_name());
 //        u.setClass_hour(expModel.getClasshour());
-        System.out.println(">>>>>>>>>>>>>>>>>>>>"+moveIn.getM_order());
+        System.out.println(">>>>>>>>>>>>>>>>>>>>" + moveIn.getM_order());
         u.setM_order(moveIn.getM_order());
         u.setM_scale(moveIn.getM_scale());
 //        u.setShiyan_Purpose(expModel.getPurpose());
@@ -153,10 +168,10 @@ public class KaoheModelController {
 
         //从考核模块中取出整体测试百分比
         List<KaoheModel> kaoheModels = kaoheModelService.findAll();
-        if (kaoheModels.size()>0){
+        if (kaoheModels.size() > 0) {
             u.setKaohe_baifenbi(kaoheModels.get(0).getKaohe_baifenbi());
             u.setTest_baifenbi(kaoheModels.get(0).getTest_baifenbi());
-        }else {
+        } else {
             u.setKaohe_baifenbi(0);
             u.setTest_baifenbi(0);
         }
@@ -164,12 +179,12 @@ public class KaoheModelController {
         kaoheModelService.add(u);
         expModel.setNeedKaohe(true);
         //学生考核模块成绩记录表，只处理当期有考核权限的学生
-        for (Student i : studentService.findStudentByNotClassId()){
+        for (Student i : studentService.findStudentByNotClassId()) {
             System.out.println(i);
             kaoHeModelScoreService.add(new KaoHeModelScore(u.getId(), i.getId(), 0, 0, u.getM_order(), u.getM_scale()));
             //更新表13中学生总表记录中考核模块数
             TotalScoreCurrent totalScoreCurrent = totalScoreCurrentService.findTotalScoreCurrentByStuId(i.getId());
-            totalScoreCurrent.setKaoheNum(totalScoreCurrent.getKaoheNum()+1);
+            totalScoreCurrent.setKaoheNum(totalScoreCurrent.getKaoheNum() + 1);
             totalScoreCurrentService.add(totalScoreCurrent);
         }
         // 当期限定
@@ -243,11 +258,54 @@ public class KaoheModelController {
         //批量更新学生成绩
         scoreUpdateService.allStudentScoreUpdate();
 //        kaoHeModelScoreService.deleteAllByKaohemId(id);
-        System.out.println("移出成功");
+        logger.info("移出成功");
         return "redirect:/kaohemodel/checkModule";
     }
 
+    /**
+     * 获取当前登陆老师的课程信息
+     *
+     * @return
+     */
+    @RequestMapping(value = "/course")
+    @ResponseBody
+    public List<CourseInfo> getCourse() {
+        User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
+        List<CourseInfo> courseInfos = courseInfoService.getclassByCharge(user.getId());
+        logger.info(user.getId() + "课程信息为" + courseInfos);
+        return courseInfos;
+    }
 
+    /**
+     * 根据课程的id来获取当前课程下所有的班级
+     *
+     * @param cid 课程的id
+     * @return
+     */
+    @RequestMapping(value = "/course/{cid}")
+    @ResponseBody
+    public List<ArrangeClassDto> getCourse(@PathVariable int cid) {
+        User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
+        List<ArrangeClassDto> arrangeClassDtos = arrangeClassService.findByTeacherIdAndCourseId(user.getId(), cid);
+        logger.info(user.getId() + "班级信息为" + arrangeClassDtos);
+        return arrangeClassDtos;
+    }
 
+    @PostMapping(value = "/findmodel")
+    public String getCheckModel(Model model, int courseid, int classid, @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum) throws JsonProcessingException {
+        logger.info("课程ID=" + courseid + "班级ID=" + classid);
+        User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
+        List<Integer> integerList = arrangeClassService.findArrangeIdByTeacherIdAndCourseId(user.getId(), classid);
+        logger.info(user.getId() + "课程安排表的ids为:" + integerList);
+//        Page<KaoheModelAndExpInfoDTO> page = kaoheModelService.findAllKaoheModelAndExpInfoDTO(pageNum);
+        Page<KaoheModelAndExpInfoDTO> page = kaoheModelService.findByArrange_idIn(pageNum, integerList);
+        model.addAttribute("classid", classid);
+        model.addAttribute("courseid", courseid);
+        model.addAttribute("kaoheModelPageInfo", page);
+        logger.info(("page:" + page.getTotalElements()));
+        //分页
+        ObjectMapper mapper = new ObjectMapper();
+        logger.info(("json:" + mapper.writeValueAsString(page)));
+        return "kaohe/checkModule";
+    }
 }
-

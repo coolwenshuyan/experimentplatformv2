@@ -66,8 +66,11 @@ public interface KaoheModelRepository extends BaseRepository<KaoheModel, Integer
             "on khm.m_id = em.m_id ")
     Page<KaoheModelAndExpInfoDTO> findAllKaoheModelAndExpInfoDTO(Pageable pageable);
 
-
-
+    @Query("select new com.coolwen.experimentplatformv2.model.DTO.KaoheModelAndExpInfoDTO " +
+            "(khm.id,khm.m_id,khm.m_order,khm.m_scale,khm.m_test_baifenbi,khm.m_report_baifenbi,em.m_name,em.classhour,em.purpose,em.m_type) " +
+            "from KaoheModel khm left join ExpModel em " +
+            "on khm.m_id = em.m_id where khm.arrange_id in(:ids)")
+    Page<KaoheModelAndExpInfoDTO> findByArrange_idIn(Pageable pageable, List<Integer> ids);
 
 
 }

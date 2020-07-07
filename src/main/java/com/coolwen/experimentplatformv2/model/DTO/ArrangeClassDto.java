@@ -21,6 +21,14 @@ public class ArrangeClassDto {
     //结束时间
     private Date arrangeEnd;
 
+    //课程id
+    private int courseId;
+
+    //班级id
+    private int cIlassId;
+    //老师id
+    private int teacherId;
+
     public ArrangeClassDto(int id, String courseName, String teacherName, String className, Date arrangeStart, Date arrangeEnd) {
         this.id = id;
         this.courseName = courseName;
@@ -28,6 +36,10 @@ public class ArrangeClassDto {
         this.className = className;
         this.arrangeStart = arrangeStart;
         this.arrangeEnd = arrangeEnd;
+    }
+
+    public ArrangeClassDto() {
+
     }
 
     public int getId() {
@@ -76,5 +88,44 @@ public class ArrangeClassDto {
 
     public void setArrangeEnd(Date arrangeEnd) {
         this.arrangeEnd = arrangeEnd;
+    }
+
+    public int getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
+    }
+
+    public int getcIlassId() {
+        return cIlassId;
+    }
+
+    public void setcIlassId(int cIlassId) {
+        this.cIlassId = cIlassId;
+    }
+
+    public int getTeacherId() {
+        return teacherId;
+    }
+
+    public void setTeacherId(int teacherId) {
+        this.teacherId = teacherId;
+    }
+
+    @Override
+    public String toString() {
+        return "ArrangeClassDto{" +
+                "id=" + id +
+                ", courseName='" + courseName + '\'' +
+                ", teacherName='" + teacherName + '\'' +
+                ", className='" + className + '\'' +
+                ", arrangeStart=" + arrangeStart +
+                ", arrangeEnd=" + arrangeEnd +
+                ", courseId=" + courseId +
+                ", cIlassId=" + cIlassId +
+                ", teacherId=" + teacherId +
+                '}';
     }
 }

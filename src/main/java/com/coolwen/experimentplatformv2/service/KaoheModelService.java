@@ -11,6 +11,7 @@ import java.util.List;
 public interface KaoheModelService {
     //添加
     public void add(KaoheModel kaoheModel);
+
     //修改
     public void update(KaoheModel kaoheModel);
 
@@ -50,4 +51,6 @@ public interface KaoheModelService {
     KaoheModelAndExpInfoDTO findKaoheModelAndExpInfoDTOByKaoheid(int kaoheid);
 
     Page<KaoheModelAndExpInfoDTO> findAllKaoheModelAndExpInfoDTO(int pageNum);
+
+    public Page<KaoheModelAndExpInfoDTO> findByArrange_idIn(int pageNum, List<Integer> ids);
 }

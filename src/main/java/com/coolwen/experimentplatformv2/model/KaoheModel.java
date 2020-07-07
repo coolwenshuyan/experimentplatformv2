@@ -8,7 +8,7 @@ public class KaoheModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "t_kaohemodel")
-    @TableGenerator(name = "t_kaohemodel", initialValue = 0, allocationSize = 1,table = "seq_table")
+    @TableGenerator(name = "t_kaohemodel", initialValue = 0, allocationSize = 1, table = "seq_table")
     private int id;
     //模块id
     @Column(nullable = false)
@@ -32,7 +32,8 @@ public class KaoheModel {
     @Column(nullable = false)
     private float kaohe_baifenbi;
 
-
+    @Column(nullable = false)
+    private int arrange_id;
 
     public KaoheModel(int id, int m_id, int m_order, float m_scale, float m_test_baifenbi, float m_report_baifenbi, float test_baifenbi, float kaohe_baifenbi) {
         this.id = id;
@@ -112,6 +113,15 @@ public class KaoheModel {
         this.kaohe_baifenbi = kaohe_baifenbi;
     }
 
+
+    public int getArrange_id() {
+        return arrange_id;
+    }
+
+    public void setArrange_id(int arrange_id) {
+        this.arrange_id = arrange_id;
+    }
+
     @Override
     public String toString() {
         return "KaoheModel{" +
@@ -123,6 +133,7 @@ public class KaoheModel {
                 ", m_report_baifenbi=" + m_report_baifenbi +
                 ", test_baifenbi=" + test_baifenbi +
                 ", kaohe_baifenbi=" + kaohe_baifenbi +
+                ", arrange_id=" + arrange_id +
                 '}';
     }
 }

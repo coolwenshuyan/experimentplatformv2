@@ -5,6 +5,7 @@ import com.coolwen.experimentplatformv2.model.Role;
 import com.coolwen.experimentplatformv2.model.User;
 import com.coolwen.experimentplatformv2.service.RoleService;
 import com.coolwen.experimentplatformv2.service.UserService;
+import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,8 @@ public class UserController {
 
     @RequestMapping("list")
     public String list(Model model) {
+        User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
+        logger.debug("登陆信息:" + user);
         model.addAttribute("users", userService.list());
         return "user/list";
     }

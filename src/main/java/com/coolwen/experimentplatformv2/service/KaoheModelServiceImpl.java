@@ -4,6 +4,7 @@ import com.coolwen.experimentplatformv2.dao.*;
 import com.coolwen.experimentplatformv2.model.*;
 import com.coolwen.experimentplatformv2.model.DTO.KaoHeModelStuDTO;
 import com.coolwen.experimentplatformv2.model.DTO.KaoheModelAndExpInfoDTO;
+import com.coolwen.experimentplatformv2.specification.SimpleSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -104,7 +105,7 @@ public class KaoheModelServiceImpl implements KaoheModelService {
 
     @Override
     public KaoHeModelStuDTO findKaoHeModelStuDTOByStuId(int stu_id, int mid) {
-        return kaoHeModelScoreRepository.findKaoHeModelStuDTOByStuId(stu_id,mid);
+        return kaoHeModelScoreRepository.findKaoHeModelStuDTOByStuId(stu_id, mid);
     }
 
     @Override
@@ -123,13 +124,12 @@ public class KaoheModelServiceImpl implements KaoheModelService {
         KaoheModel km = kaoheModelRepository.findKaoheModelByMid(mid);
         List<KaoHeModelScore> khms = kaoHeModelScoreRepository.findKaoHeModelScoreByKaoheid(km.getId());
         // 移除模块时，删除表12中该模块学生成绩记录，更新13模块数量
-        for (KaoHeModelScore i : khms){
+        for (KaoHeModelScore i : khms) {
             TotalScoreCurrent tsc = totalScoreCurrentRepository.findTotalScoreCurrentByStuId(i.getStuId());
-            tsc.setKaoheNum(tsc.getKaoheNum()-1);
+            tsc.setKaoheNum(tsc.getKaoheNum() - 1);
             totalScoreCurrentRepository.save(tsc);
             kaoHeModelScoreRepository.delete(i);
         }
-
 
 
 //        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+mid);
@@ -167,19 +167,18 @@ public class KaoheModelServiceImpl implements KaoheModelService {
 //        }
 
 
-
     }
 
     @Override
     public void updateAllGreatestWeight(float kaoheBaifenbi, float testBaifenbi) {
-        kaoheModelRepository.updateAllGreatestWeight(kaoheBaifenbi,testBaifenbi);
+        kaoheModelRepository.updateAllGreatestWeight(kaoheBaifenbi, testBaifenbi);
     }
 
     @Override
     public void deleteMTestAnswerByMid(int mid) {
         List<ModuleTestQuest> moduleTestQuests = moduleTestQuestRepository.findAllByMid(mid);
 
-        for(ModuleTestQuest i : moduleTestQuests){
+        for (ModuleTestQuest i : moduleTestQuests) {
 //            System.out.println("ModuleTestQuest>>>>>>>>>>>>>>"+i.getQuestId());
             moduleTestAnswerStuRepository.deleteAllByQuest_id(i.getQuestId());
         }
@@ -193,10 +192,15 @@ public class KaoheModelServiceImpl implements KaoheModelService {
 
     @Override
     public Page<KaoheModelAndExpInfoDTO> findAllKaoheModelAndExpInfoDTO(int pageNum) {
-        Pageable pageable  = PageRequest.of(pageNum,10);
+        Pageable pageable = PageRequest.of(pageNum, 10);
         return kaoheModelRepository.findAllKaoheModelAndExpInfoDTO(pageable);
     }
 
+    @Override
+    public Page<KaoheModelAndExpInfoDTO> findByArrange_idIn(int pageNum, List<Integer> ids) {
+        Pageable pageable = PageRequest.of(pageNum, 10);
+        return kaoheModelRepository.findByArrange_idIn(pageable, ids);
+    }
 
 
 }

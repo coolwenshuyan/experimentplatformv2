@@ -69,4 +69,7 @@ public interface KaoheModelRepository extends BaseRepository<KaoheModel, Integer
     List<Integer> findKaoheModelByArrangeId(int arrangeId);
 
 
+
+
+
 }

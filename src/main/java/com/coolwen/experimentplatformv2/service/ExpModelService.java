@@ -35,4 +35,6 @@ public interface ExpModelService {
 
 
     Page<ExpModel> findOneCourseModelList(int courseId ,Integer pageNum);
+
+    Page<ExpModel> findKaoheProgressMainByCourseId(int courseId,int PageNum);
 }

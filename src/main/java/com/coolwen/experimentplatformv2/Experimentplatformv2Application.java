@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@EnableJpaRepositories(basePackages = {"com.coolwen.experimentplatformv2."}, repositoryFactoryBeanClass = BaseRepositoryFactoryBean.class)
+@EnableJpaRepositories(basePackages = {"com.coolwen.experimentplatformv2"}, repositoryFactoryBeanClass = BaseRepositoryFactoryBean.class)
 //@Import(ShiroCasConfiguration.class)//使用单点登陆配置，请打开
 @Import(ShiroConfig.class)//不使用单点登陆配置，请打开
 @EnableCaching

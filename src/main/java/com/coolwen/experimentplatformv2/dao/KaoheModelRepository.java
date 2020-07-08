@@ -68,8 +68,10 @@ public interface KaoheModelRepository extends BaseRepository<KaoheModel, Integer
     @Query("select khm.m_id from KaoheModel khm where khm.arrange_id = ?1")
     List<Integer> findKaoheModelByArrangeId(int arrangeId);
 
-
-
-
-
+    @Query("select new com.coolwen.experimentplatformv2.model.DTO.KaoheModelAndExpInfoDTO " +
+            "(khm.id,khm.m_id,khm.m_order,khm.m_scale,khm.m_test_baifenbi,khm.m_report_baifenbi,em.m_name,em.classhour,em.purpose,em.m_type) " +
+            "from KaoheModel khm left join ExpModel em " +
+            "on khm.m_id = em.m_id " +
+            "where khm.arrange_id = ?1")
+    Page<KaoheModelAndExpInfoDTO> findAllKaoheModelAndExpInfoDTOByArrangeId(int arrangeId,Pageable pageable);
 }

@@ -90,7 +90,7 @@ public class ShiroConfig {
         //未授权界面;
         shiroFilterFactoryBean.setUnauthorizedUrl("/405");
         //拦截器.
-        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
+        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
 //        Map<String, String> chains = new HashMap();
         filterChainDefinitionMap.put("/static/**", "anon");
         filterChainDefinitionMap.put("/verifyCode", "anon");
@@ -119,7 +119,7 @@ public class ShiroConfig {
         //需要资源检查才能访问
         filterChainDefinitionMap.put("/learning/kuangjia", "authc,resourceCheckFilter");
         filterChainDefinitionMap.put("/**", "authc");//需要登录访问的资源 , 一般将/**放在最下边
-        logger.debug("filterChainDefinitionMap" + filterChainDefinitionMap);
+        logger.debug("filterChainDefinition Mapmessage: {}", filterChainDefinitionMap);
         logger.debug("Shiro拦截器工厂类注入成功");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
@@ -140,8 +140,7 @@ public class ShiroConfig {
 
     @Bean
     public UrlPermissionResovler urlPermissionResovler() {
-        UrlPermissionResovler urlPermissionResovler = new UrlPermissionResovler();
-        return urlPermissionResovler;
+        return new UrlPermissionResovler();
     }
 
     @Bean

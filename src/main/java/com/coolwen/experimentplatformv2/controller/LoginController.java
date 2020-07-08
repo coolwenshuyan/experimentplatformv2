@@ -20,10 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -49,7 +46,7 @@ public class LoginController {
     private AdminService adminService;
 
 
-    @RequestMapping(value = {"/verifyCode"}, method = RequestMethod.GET)
+    @GetMapping(value = {"/verifyCode"})
     public void Code(HttpServletRequest request, HttpServletResponse response) {
         IVerifyCodeGen iVerifyCodeGen = new SimpleCharVerifyCodeGenImpl();
         try {
@@ -238,12 +235,12 @@ public class LoginController {
             Matcher m = p.matcher(tel);
             Pattern p1 = Pattern.compile("^$|^\\d{10}$");
             Matcher m1 = p1.matcher(stu_xuehao);
-            if (m.matches() != true) {
+            if (!m.matches()) {
                 model.addObject("telmsg", "请输入11位数字");
                 model.setViewName("register");
                 return model;
             }
-            if (m1.matches() != true) {
+            if (!m1.matches()) {
                 model.addObject("xuehaomsg", "请输入正确的学号");
                 model.setViewName("register");
                 return model;
@@ -281,9 +278,11 @@ public class LoginController {
                     return model;
                 }
                 logger.debug(">>>>>>>>>>>>>>>>>>>>>>>" + stu);
+                logger.debug("Result {0}.", stu);
                 student.setStuMobile(tel);
                 studentService.addStudent(student);
-                logger.debug(student.toString());
+//                logger.debug(student.toString());
+                logger.debug("注册学生信息message: {}", student.toString());
                 model.addObject("msg2", "注册成功！！！");
                 model.setViewName("home_page/login");
             }
@@ -306,7 +305,7 @@ public class LoginController {
     }
 
 
-    @RequestMapping(value = {"/change"}, method = RequestMethod.POST)//修改个人信息
+    @PostMapping(value = {"/change"})//修改个人信息
     public ModelAndView change(@RequestParam("account") String username,
                                @RequestParam("password") String password,
                                @RequestParam("type") String registType,

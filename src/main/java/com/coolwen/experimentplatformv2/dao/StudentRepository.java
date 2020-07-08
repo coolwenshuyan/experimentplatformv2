@@ -15,7 +15,7 @@ import java.util.List;
  * @author 淮南
  * @date 2020/5/13 20:12
  */
-public interface StudentRepository extends BaseRepository<Student,Integer>, JpaSpecificationExecutor<Student> {
+public interface StudentRepository extends BaseRepository<Student, Integer>, JpaSpecificationExecutor<Student> {
 
     Student findAllById(int id);
 
@@ -103,10 +103,14 @@ public interface StudentRepository extends BaseRepository<Student,Integer>, JpaS
     @Query("select s from Student s where s.stuUname = ?1 ")
     Student findAllByStuUname(String stuUname);
 
+    Student findByStuName(String name);
 
-//<<<<<<< Updated upstream
-    @Query(value = "select stu_uname from t_student where id = ?",nativeQuery = true)
+
+    //<<<<<<< Updated upstream
+    @Query(value = "select stu_uname from t_student where id = ?", nativeQuery = true)
     String findStudentname(int a);
+
+
 //=======
 ////    List<TreportGradeDto> ListStudentDto();
 //

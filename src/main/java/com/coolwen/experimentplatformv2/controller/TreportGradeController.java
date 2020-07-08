@@ -17,11 +17,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 //import com.coolwen.experimentplatformv2.model.StudentTestScoreDTO;
 
 /**
  * 老师评分
  * 老师对学生提交的报告进行评分
+ *
  * @author 王雨来
  * @version 2020/5/13 12:21
  */
@@ -29,7 +32,7 @@ import java.util.List;
 //老师评分
 @RequestMapping(value = "/TreportGrade")
 public class TreportGradeController {
-
+    protected static final Logger logger = LoggerFactory.getLogger(TreportGradeController.class);
     @Autowired
     public StudentRepository studentRepository;
 
@@ -80,45 +83,46 @@ public class TreportGradeController {
 
     /**
      * 获取学生报告
+     *
      * @param stuId 学生id
-     * @param mid 模块id
+     * @param mid   模块id
      * @return 页面
      */
-    @GetMapping(value = "/{stuId}/{mid}/giveMark" )
+    @GetMapping(value = "/{stuId}/{mid}/giveMark")
     public String GiveAmark(Model model,
                             @PathVariable("stuId") int stuId,
-                            @PathVariable("mid")int mid
+                            @PathVariable("mid") int mid
     ) {
-        System.out.println(stuId+">>>>>>>>>>"+mid);
-        List<PScoreDto> score = scoreService.listScorerDTOBystudentId(stuId,mid);
-        System.out.println(score.size());
+        logger.debug(stuId + ">>>>>>>>>>" + mid);
+        List<PScoreDto> score = scoreService.listScorerDTOBystudentId(stuId, mid);
+        logger.debug(String.valueOf(score.size()));
 
-        model.addAttribute("zjy",score);
-        System.out.println(">>>>>>>>>>>>>>>>>>"+score);
+        model.addAttribute("zjy", score);
+        logger.debug(">>>>>>>>>>>>>>>>>>" + score);
         return "kaohe/reportGrade_ma";
     }
 
 
     /**
      * 打分
+     *
      * @param request 获得学生报告
-     * @param stuId 学生id
-     * @param mid 模块id
+     * @param stuId   学生id
+     * @param mid     模块id
      * @return 页面
      */
-    @PostMapping(value = "/{stuId}/{mid}/giveMark" )
+    @PostMapping(value = "/{stuId}/{mid}/giveMark")
     public String giveamark(Model model, HttpServletRequest request,
                             @PathVariable("stuId") int stuId,
-                            @PathVariable("mid")int mid
+                            @PathVariable("mid") int mid
 
     ) {
-        List<PScoreDto> score = scoreService.listScorerDTOBystudentId(stuId,mid);
+        List<PScoreDto> score = scoreService.listScorerDTOBystudentId(stuId, mid);
 
         //存储教师评分
-        for (PScoreDto pScoreDto1:score)
-        {
+        for (PScoreDto pScoreDto1 : score) {
             String value_t = request.getParameter(Integer.toString(pScoreDto1.getReportid()));
-            ReportAnswer c = reportAnswerService.findByReportidAndStuID(pScoreDto1.getReportid(),stuId);
+            ReportAnswer c = reportAnswerService.findByReportidAndStuID(pScoreDto1.getReportid(), stuId);
             Integer a = Integer.parseInt(value_t);
             c.setScore(a);
             reportAnswerService.updateOne(c);
@@ -127,19 +131,19 @@ public class TreportGradeController {
         //重新计算成绩
         scoreUpdateService.singleStudentScoreUpdate(stuId);
 
-        KaoHeModelScore khs = kaoHeModelScoreService.findKaoheModelScoreByMid(mid ,stuId);
+        KaoHeModelScore khs = kaoHeModelScoreService.findKaoheModelScoreByMid(mid, stuId);
         khs.setmReportteacherstate(true);
         kaoHeModelScoreService.update(khs);
 
 //        model.addAttribute("zjy",score);
-//        System.out.println(">>>>>>>>>>>>>>>>>>"+score);
+//        logger.debug(">>>>>>>>>>>>>>>>>>"+score);
 //        Enumeration em = request.getParameterNames();
 //        List<String> zyy = new ArrayList<>();
 //
 //        while (em.hasMoreElements()) {
 //        String name = (String) em.nextElement();
 //        String value = request.getParameter(name);
-//        System.out.println("<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+value);
+//        logger.debug("<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+value);
 //        zyy.add(value);
 //        }
 
@@ -183,7 +187,7 @@ public class TreportGradeController {
 //        KaoheModel kh = kaoheModelService.findKaoheModelByMid(mid);
 //        //获取当前学生考核模块分数信息
 //        KaoHeModelScore khs = kaoHeModelScoreService.findKaoheModelScoreByMid(mid ,stuId);
-//        System.out.println("dddddddddddd"+khs);
+//        logger.debug("dddddddddddd"+khs);
 //        khs.setmReportScore(fs);
 //        //计算模块总分
 //        float ms = (fs*kh.getM_report_baifenbi()+khs.getmTestScore()*kh.getM_test_baifenbi())*khs.getmScale();
@@ -199,10 +203,10 @@ public class TreportGradeController {
 //        tsc.setmTotalScore(tsc.getmTotalScore()+ms-pkhsScore);
 //        //更新学生总成绩
 ////        tsc.setTotalScore(tsc.getmTotalScore()*kh.getKaohe_baifenbi()+tsc.getTestScore()*kh.getTest_baifenbi());
-////        System.out.println(tsc.getmTotalScore()*kh.getKaohe_baifenbi()+">>>"+tsc.getTestScore()*kh.getTest_baifenbi());
+////        logger.debug(tsc.getmTotalScore()*kh.getKaohe_baifenbi()+">>>"+tsc.getTestScore()*kh.getTest_baifenbi());
 //        tsc.setTotalScore(tsc.getTotalScore()+ms-pkhsScore);
 //        totalScoreCurrentService.update(tsc);
 
-        return "redirect:/TreportGrade/"+stuId+'/'+mid+"/giveMark";
+        return "redirect:/TreportGrade/" + stuId + '/' + mid + "/giveMark";
     }
 }

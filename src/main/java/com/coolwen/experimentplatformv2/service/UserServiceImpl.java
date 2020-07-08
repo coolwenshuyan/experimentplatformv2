@@ -44,9 +44,9 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("用户名已经存在!");
         }
         user.setPassword(ShiroKit.md5(user.getPassword(), user.getUsername()));
-
         return userRepository.save(user);
     }
+
 
     @Override
     @Transactional

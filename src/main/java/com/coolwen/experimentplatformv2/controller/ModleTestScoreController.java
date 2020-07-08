@@ -21,9 +21,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * 学生模块测试成绩管理
  * 列出所有学生的所有的模块的测试成绩
+ *
  * @author 王雨来
  * @version 2020/5/13 12:21
  */
@@ -32,6 +36,7 @@ import java.util.List;
 @RequestMapping(value = "/testScoreManage")
 public class ModleTestScoreController {
 
+    protected static final Logger logger = LoggerFactory.getLogger(ModleTestScoreController.class);
     @Autowired
     public StudentRepository studentRepository;
     @Autowired
@@ -68,7 +73,7 @@ public class ModleTestScoreController {
 ////
 ////
 ////        }
-//        System.out.println(a);
+//        logger.debug(a);
 //        long modleNum = kaoheModelRepository.count();
 //        model.addAttribute("allInfo",a);
 //        model.addAttribute("num",modleNum);
@@ -76,51 +81,51 @@ public class ModleTestScoreController {
 //        for(int i=1;i<=modleNum;i++){
 //            list.add(i);
 //        }
-//        System.out.println(list);
+//        logger.debug(list);
 //        model.addAttribute("numList",list);
 //        return "kaohe/score_manage";
 //    }
 
     /**
      * 列出所有学生的所有的模块的测试成绩
+     *
      * @param model
      * @param select_orderId 搜索值
-     * @param pageNum 分页
+     * @param pageNum        分页
      * @return 页面
      */
     @GetMapping(value = "/list")
     public String loadAllModel(Model model,
-                               @RequestParam(required = true, defaultValue = "")String select_orderId ,
-                               @RequestParam(defaultValue = "0", required=true,value = "pageNum")  Integer pageNum) {
+                               @RequestParam(required = true, defaultValue = "") String select_orderId,
+                               @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum) {
 
         //与[ModleTestReportController]大同小异
 //        Page<Student> c = studentService.findAll(pageNum);
         Page<Student> c = studentService.findStudentPageAndXuehao(pageNum, select_orderId);
 
-        model.addAttribute("allStu",c);
-        model.addAttribute("selectOrderId",select_orderId);
+        model.addAttribute("allStu", c);
+        model.addAttribute("selectOrderId", select_orderId);
 
         //查询当期班级
         List<ClassModel> classList = classService.findCurrentClass();
-        model.addAttribute("classList",classList);
+        model.addAttribute("classList", classList);
 
         List<StudentTestScoreDTO> a = studentRepository.listStudentMTestAnswerDTO();
 
-        System.out.println(a);
+        logger.debug(String.valueOf(a));
         long modleNum = kaoheModelRepository.count();
-        model.addAttribute("allInfo",a);
-        model.addAttribute("num",modleNum);
+        model.addAttribute("allInfo", a);
+        model.addAttribute("num", modleNum);
         List<Integer> list = new ArrayList<Integer>();
-        for(int i=1;i<=modleNum;i++){
+        for (int i = 1; i <= modleNum; i++) {
             list.add(i);
         }
-        System.out.println(list);
-        model.addAttribute("numList",list);
+        logger.debug(String.valueOf(list));
+        model.addAttribute("numList", list);
         return "kaohe/score_manage";
     }
 
     /**
-     *
      * @param model
      * @param classId
      * @param select_orderId
@@ -130,33 +135,33 @@ public class ModleTestScoreController {
     @GetMapping(value = "/{classId}/list")
     public String loadOneClassModel(Model model,
                                     @PathVariable int classId,
-                                    @RequestParam(required = true, defaultValue = "")String select_orderId ,
-                                    @RequestParam(defaultValue = "0", required=true,value = "pageNum")  Integer pageNum) {
+                                    @RequestParam(required = true, defaultValue = "") String select_orderId,
+                                    @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum) {
 
 //        Page<Student> c = studentService.findAll(pageNum);
-        Page<Student> c = studentService.pageStudentByClassId(pageNum,classId);
+        Page<Student> c = studentService.pageStudentByClassId(pageNum, classId);
 
-        System.out.println(">>>>>>>>>>>>>>>>>>c"+c);
-        model.addAttribute("allStu",c);
-        model.addAttribute("selectOrderId",select_orderId);
+        logger.debug(">>>>>>>>>>>>>>>>>>c" + c);
+        model.addAttribute("allStu", c);
+        model.addAttribute("selectOrderId", select_orderId);
 
         //查询当期班级
         List<ClassModel> classList = classService.findCurrentClass();
-        model.addAttribute("classList",classList);
+        model.addAttribute("classList", classList);
 
         List<StudentTestScoreDTO> a = studentRepository.listStudentMTestAnswerDTO();
 
 
-        System.out.println(a);
+        logger.debug(String.valueOf(a));
         long modleNum = kaoheModelRepository.count();
-        model.addAttribute("allInfo",a);
-        model.addAttribute("num",modleNum);
+        model.addAttribute("allInfo", a);
+        model.addAttribute("num", modleNum);
         List<Integer> list = new ArrayList<Integer>();
-        for(int i=1;i<=modleNum;i++){
+        for (int i = 1; i <= modleNum; i++) {
             list.add(i);
         }
-        System.out.println(list);
-        model.addAttribute("numList",list);
+        logger.debug(String.valueOf(list));
+        model.addAttribute("numList", list);
         return "kaohe/score_manage";
     }
 
@@ -165,7 +170,7 @@ public class ModleTestScoreController {
     public void exportExcel(HttpServletResponse response) {
         List<StudentTestScoreDTO> a = studentRepository.listStudentMTestAnswerDTO();
 //        List<Student> b = studentRepository.findAll();
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+a);
+        logger.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + a);
         // 设置响应输出的头类型(设置响应类型)
         response.setHeader("content-Type", "application/vnd.ms-excel");
         // 下载文件的默认名称(设置下载文件的默认名称)

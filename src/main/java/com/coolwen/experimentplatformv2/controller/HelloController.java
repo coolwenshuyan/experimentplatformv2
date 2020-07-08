@@ -3,7 +3,8 @@ package com.coolwen.experimentplatformv2.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 /**
  * @author CoolWen
  * @version 2020-05-06 21:46
@@ -11,10 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 //@RequestMapping("/admin")
 public class HelloController {
+
+    protected static final Logger logger = LoggerFactory.getLogger(HelloController.class);
     @RequestMapping("/")
 //    @RequiresRoles("Admin")
     public String hello() {
-        System.out.println("hello>>>>>>>>>>>>");
+        logger.debug("hello>>>>>>>>>>>>");
         return "redirect:/newsinfo/newslist";
     }
 

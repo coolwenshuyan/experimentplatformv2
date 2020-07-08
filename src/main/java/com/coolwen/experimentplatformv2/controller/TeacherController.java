@@ -136,7 +136,7 @@ public class TeacherController {
     public String add(Teacher teacher, @RequestParam("attachs") MultipartFile[] attachs, HttpServletRequest req){
         //储存图片，并将图片路径储存到数据库
         String realpath = GetServerRealPathUnit.getPath("static/upload/");
-//       System.out.println("realPath:" + realpath);
+//       logger.debug("realPath:" + realpath);
         for (MultipartFile attach : attachs) {
             if (attach.isEmpty()) {
                 continue;
@@ -144,7 +144,7 @@ public class TeacherController {
             //图片验证重命名
             String picName = FileUploadUtil.picRename(attach.getContentType());
             String path = realpath + "/" + picName;
-//            System.out.println(path);
+//            logger.debug(path);
             File f = new File(path);
 //            user.setImg(picName);
             teacher.setImage_url(picName);
@@ -165,7 +165,7 @@ public class TeacherController {
 ////            return bindingResult.getFieldError().getDefaultMessage();
 //        }
 //        String realpath = GetServerRealPathUnit.getPath("static/upload/");
-////       System.out.println("realPath:" + realpath);
+////       logger.debug("realPath:" + realpath);
 //        for (MultipartFile attach : attachs) {
 //            if (attach.isEmpty()) {
 //                continue;
@@ -173,7 +173,7 @@ public class TeacherController {
 //            //图片验证重命名
 //            String picName = FileUploadUtil.picRename(attach.getContentType());
 //            String path = realpath + "/" + picName;
-////            System.out.println(path);
+////            logger.debug(path);
 //            File f = new File(path);
 //            user.setImg(picName);
 //            try {
@@ -204,7 +204,7 @@ public class TeacherController {
         teacher.setId(id);
         //储存图片，并将图片路径储存到数据库
         String realpath = GetServerRealPathUnit.getPath("static/upload/");
-//       System.out.println("realPath:" + realpath);
+//       logger.debug("realPath:" + realpath);
         for (MultipartFile attach : attachs) {
             if (attach.isEmpty()) {
                 teacher.setImage_url(teacherService.findById(id).getImage_url());
@@ -213,7 +213,7 @@ public class TeacherController {
             //图片验证重命名
             String picName = FileUploadUtil.picRename(attach.getContentType());
             String path = realpath + "/" + picName;
-//            System.out.println(path);
+//            logger.debug(path);
             File f = new File(path);
 //            user.setImg(picName);
             teacher.setImage_url(picName);
@@ -224,7 +224,7 @@ public class TeacherController {
             }
         }
         teacherService.add(teacher);
-        System.out.println("修改成功");
+        logger.debug("修改成功");
         return "redirect:/teachers/list";
     }
 

@@ -36,7 +36,7 @@ public class QuestListAnswerRepositoryCustomImpl implements QuestListAnswerRepos
                 .getResultList();
         List<QuestListAnswerDto> questListAnswerDtos = new ArrayList<QuestListAnswerDto>();
         List<ModuleTestAnswer> answesrs = null;
-//        System.out.println(list.size());
+//        logger.debug(list.size());
         QuestListAnswerDto cd = null;
         for (Object[] objs : list) {
             ModuleTestAnswer answesr = new ModuleTestAnswer();
@@ -61,7 +61,7 @@ public class QuestListAnswerRepositoryCustomImpl implements QuestListAnswerRepos
             } else {
                 cd.getModuleTestAnswerList().add(answesr);
             }
-//            System.out.println(objs.toString());
+//            logger.debug(objs.toString());
         }
         return questListAnswerDtos;
     }
@@ -83,7 +83,7 @@ public class QuestListAnswerRepositoryCustomImpl implements QuestListAnswerRepos
                 .getResultList();
         List<QuestListAnswerAndStuScoreDto> questListAnswerAndStuScoreDtos = new ArrayList<QuestListAnswerAndStuScoreDto>();
         List<ModuleTestAnswer> answesrs = null;
-//        System.out.println(list.size());
+//        logger.debug(list.size());
         QuestListAnswerAndStuScoreDto cd = null;
         for (Object[] objs : list) {
             ModuleTestAnswer answesr = new ModuleTestAnswer();
@@ -110,7 +110,7 @@ public class QuestListAnswerRepositoryCustomImpl implements QuestListAnswerRepos
             } else {
                 cd.getModuleTestAnswerList().add(answesr);
             }
-//            System.out.println(objs.toString());
+//            logger.debug(objs.toString());
         }
 
         return questListAnswerAndStuScoreDtos;

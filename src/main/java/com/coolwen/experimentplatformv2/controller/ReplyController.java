@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
 import java.util.Date;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 /**
  *
  *  @author yellow
@@ -22,7 +23,7 @@ import java.util.Date;
 @Controller
 @RequestMapping(value = "reply")
 public class ReplyController {
-
+    protected static final Logger logger = LoggerFactory.getLogger(ReplyController.class);
 //    注入
     @Autowired
     private ReplyService replyService;
@@ -45,7 +46,7 @@ public class ReplyController {
 
 //        回复的问题地存为qid
         reply.setQid(id);
-        System.out.println("插入的回复保存为：" + id);
+        logger.debug("插入的回复保存为：" + id);
 
 //        seesion获得老师信息
         Admin admin = null;
@@ -78,7 +79,7 @@ public class ReplyController {
 
 //        回复的问题地存为qid
         reply.setQid(id);
-        System.out.println("插入的回复保存为：" + id);
+        logger.debug("插入的回复保存为：" + id);
 
 //        seesion获得学生信息
 //        Student student = (Student) SecurityUtils.getSubject().getPrincipal();
@@ -121,7 +122,7 @@ public class ReplyController {
 //        重新写入内容
         replyupdate.setContent(reply.getContent());
         replyService.add(replyupdate);
-        System.out.println("修改成功");
+        logger.debug("修改成功");
         return "redirect:/question/" + replyupdate.getQid() + "/dayiMore";
     }
 

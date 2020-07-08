@@ -9,9 +9,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 @Service
 public class TotalScorePassServiceImpl implements TotalScorePassService {
+    protected static final Logger logger = LoggerFactory.getLogger(TotalScorePassServiceImpl.class);
     @Autowired
     TotalScorePassRepository totalScorePassRepository;
     @Override
@@ -30,7 +32,7 @@ public class TotalScorePassServiceImpl implements TotalScorePassService {
 
     @Override
     public Page<TotalScorePass> findAll(int pageNum) {
-        System.out.println("成功进入");
+        logger.debug("成功进入");
         Pageable pageable  = PageRequest.of(pageNum,10);
 
         return totalScorePassRepository.findAll(pageable);

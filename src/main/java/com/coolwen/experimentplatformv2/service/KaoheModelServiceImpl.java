@@ -132,29 +132,29 @@ public class KaoheModelServiceImpl implements KaoheModelService {
         }
 
 
-//        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+mid);
+//        logger.debug("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+mid);
 //        KaoheModel km = kaoheModelRepository.findKaoheModelByMid(mid);
-//        System.out.println("km000000000"+km);
+//        logger.debug("km000000000"+km);
 //
 //        // 整体理论测试占比和模块考核成绩占比存放在-1的记录中(!!已经废除!!)
 ////        KaoheModel akm = kaoheModelRepository.findKaoheModelByMid(-1);
-////        System.out.println("akm000000000"+akm);
+////        logger.debug("akm000000000"+akm);
 //
 //        List<KaoHeModelScore> khms = kaoHeModelScoreRepository.findKaoHeModelScoreByKaoheid(km.getId());
 //
-//        System.out.println("khms000000000"+khms);
+//        logger.debug("khms000000000"+khms);
 //
 //        // 遍历该模块所有学生的模块成绩,进行修改
 //        for (KaoHeModelScore i : khms){
-//            System.out.println(">>>>>>>>>"+i);
+//            logger.debug(">>>>>>>>>"+i);
 //            TotalScoreCurrent tsc = totalScoreCurrentRepository.findTotalScoreCurrentByStuId(i.getStuId());
-//            System.out.println(">>>>>>>>>"+tsc);
+//            logger.debug(">>>>>>>>>"+tsc);
 //            tsc.setKaoheNum(tsc.getKaoheNum()-1);
 //            float msc = i.getmScore();
 //            float mtsc = tsc.getmTotalScore();
-//            System.out.println("mtsc>>>>>>>>>>>>>>>>>>>>>>>>>>"+mtsc);
+//            logger.debug("mtsc>>>>>>>>>>>>>>>>>>>>>>>>>>"+mtsc);
 //            float newmtsc = mtsc - msc * km.getM_scale();
-//            System.out.println("newmtsc>>>>>>>>>>>>>>>>>>>>>>>>>>"+newmtsc);
+//            logger.debug("newmtsc>>>>>>>>>>>>>>>>>>>>>>>>>>"+newmtsc);
 //            tsc.setmTotalScore(newmtsc);
 //
 //            float old_total_score = tsc.getTotalScore();
@@ -179,7 +179,7 @@ public class KaoheModelServiceImpl implements KaoheModelService {
         List<ModuleTestQuest> moduleTestQuests = moduleTestQuestRepository.findAllByMid(mid);
 
         for (ModuleTestQuest i : moduleTestQuests) {
-//            System.out.println("ModuleTestQuest>>>>>>>>>>>>>>"+i.getQuestId());
+//            logger.debug("ModuleTestQuest>>>>>>>>>>>>>>"+i.getQuestId());
             moduleTestAnswerStuRepository.deleteAllByQuest_id(i.getQuestId());
         }
 

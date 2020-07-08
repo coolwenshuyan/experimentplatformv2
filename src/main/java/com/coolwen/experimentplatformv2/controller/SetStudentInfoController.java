@@ -17,11 +17,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpSession;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 @Controller
 @RequestMapping(value = "/setstudentinfo")
 public class SetStudentInfoController {
 
+    protected static final Logger logger = LoggerFactory.getLogger(SetStudentInfoController.class);
     @Autowired
     SetStudentInfoService setStudentInfoService;
     @Autowired
@@ -36,7 +38,7 @@ public class SetStudentInfoController {
         String classname = setStudentInfoService.findByClassName(student.getClassId());
         model.addAttribute("student", student);
         model.addAttribute("classname", classname);
-        System.out.println(student);
+        logger.debug(student.toString());
         return "home_shiyan/change";
     }
 
@@ -46,10 +48,10 @@ public class SetStudentInfoController {
         Student student1 = studentService.findByUname(student.getStuUname());
         if (pass.equals(student.getStuPassword())) {
             if (student3.getStuUname().equals(student.getStuUname())){
-                System.out.println("通过");
+                logger.debug("通过");
             }
             else if (student1 != null) {
-                System.out.println("不通过");
+                logger.debug("不通过");
                 model.addAttribute("msg1", "用户名已存在");
                 return "home_shiyan/change";
             }

@@ -7,11 +7,14 @@
 
 package com.coolwen.experimentplatformv2.controller;
 
+import com.coolwen.experimentplatformv2.config.ShiroCasConfiguration;
 import com.coolwen.experimentplatformv2.dao.AdminDao;
 import com.coolwen.experimentplatformv2.kit.ShiroKit;
 import com.coolwen.experimentplatformv2.model.Admin;
 import com.coolwen.experimentplatformv2.service.AdminService;
 import org.apache.shiro.SecurityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,6 +32,8 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping(value = "/admin")
 public class AdminController {
+
+    protected static final Logger logger = LoggerFactory.getLogger(AdminController.class);
     @Autowired
     AdminDao adminDao;
     @Autowired
@@ -77,7 +82,7 @@ public class AdminController {
         //密码加密
         admin.setPassword(ShiroKit.md5(admin.getPassword(), admin.getUname()));
         adminService.add(admin);
-        System.out.println("修改成功！");
+        logger.debug("修改成功！");
         return "redirect:/admin/list";
     }
 
@@ -85,7 +90,7 @@ public class AdminController {
     @GetMapping(value = "/{id}/delete")
     public String delete(@PathVariable int id){
         adminService.delete(id);
-        System.out.println("删除成功！");
+        logger.debug("删除成功！");
         return "redirect:/admin/list";
     }
 }

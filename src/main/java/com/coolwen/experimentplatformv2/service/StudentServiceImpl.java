@@ -15,7 +15,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 /**
  * @author Artell
  * @version 2020/5/15 21:31
@@ -24,6 +25,7 @@ import java.util.List;
 @Service
 public class StudentServiceImpl implements StudentService {
 
+    protected static final Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
     @Autowired
     public StudentRepository studentRepository;
 
@@ -248,16 +250,16 @@ public class StudentServiceImpl implements StudentService {
 //        return studentRepository.listStuTotalScoreCurrentDTO(pager);
         Page<StuTotalScoreCurrentDTO> listStuTotalScoreCurrentDTOPage;
         if (select_orderId == "" || select_orderId.equals("")) {
-            System.out.println("不筛选");
+            logger.debug("不筛选");
             listStuTotalScoreCurrentDTOPage = studentRepository.listStuTotalScoreCurrentDTOOfPass(pager);
         } else {
-            System.out.println("筛选");
+            logger.debug("筛选");
             select_orderId = "%" + select_orderId + "%";
             listStuTotalScoreCurrentDTOPage = studentRepository.listStuTotalScoreCurrentDTOOfPassSelect(select_orderId, pager);
         }
 
         for (StuTotalScoreCurrentDTO i : listStuTotalScoreCurrentDTOPage) {
-            System.out.println("listStuTotalScoreCurrentDTOPage!!!" + i);
+            logger.debug("listStuTotalScoreCurrentDTOPage!!!" + i);
         }
 
         return listStuTotalScoreCurrentDTOPage;

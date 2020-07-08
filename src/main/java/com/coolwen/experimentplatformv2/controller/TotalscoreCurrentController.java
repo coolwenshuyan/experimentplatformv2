@@ -12,9 +12,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * 总成绩管理
  * 列出所有的成绩
+ *
  * @author 王雨来
  * @version 2020/5/13 12:21
  */
@@ -23,6 +27,7 @@ import java.util.List;
 @RequestMapping(value = "/totalscore")
 public class TotalscoreCurrentController {
 
+    protected static final Logger logger = LoggerFactory.getLogger(TotalscoreCurrentController.class);
     @Autowired
     public TotalScoreCurrentService totalScoreCurrentService;
 
@@ -85,83 +90,84 @@ public class TotalscoreCurrentController {
 
     /**
      * 列出所有成绩
-     * @param model 传值
+     *
+     * @param model   传值
      * @param pageNum 分页
      * @return 页面
      */
     @GetMapping("/list")
     public String expModelList(Model model,
-                               @RequestParam(required = true, defaultValue = "")String select_orderId ,
-                               @RequestParam(value = "pageNum",defaultValue = "0",required = true) int pageNum){
+                               @RequestParam(required = true, defaultValue = "") String select_orderId,
+                               @RequestParam(value = "pageNum", defaultValue = "0", required = true) int pageNum) {
         //从数据库得到所有的总成绩
         Page<StuTotalScoreCurrentDTO> totalScore = null;
         try {
-            totalScore= studentService.listStuTotalScoreCurrentDTO(pageNum,select_orderId);
+            totalScore = studentService.listStuTotalScoreCurrentDTO(pageNum, select_orderId);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        model.addAttribute("selectOrderId",select_orderId);
+        model.addAttribute("selectOrderId", select_orderId);
         //获得所有考核模块的列表
-        List<KaoheModel> toGetBaiFenBi=kaoheModelService.findAll();
+        List<KaoheModel> toGetBaiFenBi = kaoheModelService.findAll();
 
         List<ClassModel> classList = clazzService.findCurrentClass();
-        model.addAttribute("classList",classList);
+        model.addAttribute("classList", classList);
 
         //初始化 最后权重
         float kaoheBaifenbi = 0;
         float testBaifenbi = 0;
-        if (toGetBaiFenBi.size()>0){
-            kaoheBaifenbi=toGetBaiFenBi.get(0).getKaohe_baifenbi();
-            testBaifenbi=toGetBaiFenBi.get(0).getTest_baifenbi();
+        if (toGetBaiFenBi.size() > 0) {
+            kaoheBaifenbi = toGetBaiFenBi.get(0).getKaohe_baifenbi();
+            testBaifenbi = toGetBaiFenBi.get(0).getTest_baifenbi();
         }
-        model.addAttribute("pageTotalScore",totalScore);
-        model.addAttribute("kaoheBaifenbi",kaoheBaifenbi);
-        model.addAttribute("testBaifenbi",testBaifenbi);
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+totalScore);
+        model.addAttribute("pageTotalScore", totalScore);
+        model.addAttribute("kaoheBaifenbi", kaoheBaifenbi);
+        model.addAttribute("testBaifenbi", testBaifenbi);
+        logger.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + totalScore);
         return "kaohe/all_score";
     }
 
     @GetMapping("/{classId}/list")
     public String getTotalScoreCirrentByGroupId(Model model,
                                                 @PathVariable int classId,
-                                                @RequestParam(required = true, defaultValue = "")String select_orderId ,
-                                                @RequestParam(value = "pageNum",defaultValue = "0",required = true) int pageNum){
+                                                @RequestParam(required = true, defaultValue = "") String select_orderId,
+                                                @RequestParam(value = "pageNum", defaultValue = "0", required = true) int pageNum) {
         //从数据库得到所有的总成绩
-        Page<StuTotalScoreCurrentDTO> totalScore= studentService.listStuTotalScoreCurrentDTOByClassId(pageNum,select_orderId,classId);
+        Page<StuTotalScoreCurrentDTO> totalScore = studentService.listStuTotalScoreCurrentDTOByClassId(pageNum, select_orderId, classId);
         //获得所有考核模块的列表
-        List<KaoheModel> toGetBaiFenBi=kaoheModelService.findAll();
+        List<KaoheModel> toGetBaiFenBi = kaoheModelService.findAll();
 
         List<ClassModel> classList = clazzService.findCurrentClass();
-        model.addAttribute("classList",classList);
+        model.addAttribute("classList", classList);
 
         //初始化 最后权重
         float kaoheBaifenbi = 0;
         float testBaifenbi = 0;
-        if (toGetBaiFenBi.size()>0){
-            kaoheBaifenbi=toGetBaiFenBi.get(0).getKaohe_baifenbi();
-            testBaifenbi=toGetBaiFenBi.get(0).getTest_baifenbi();
+        if (toGetBaiFenBi.size() > 0) {
+            kaoheBaifenbi = toGetBaiFenBi.get(0).getKaohe_baifenbi();
+            testBaifenbi = toGetBaiFenBi.get(0).getTest_baifenbi();
         }
-        model.addAttribute("pageTotalScore",totalScore);
-        model.addAttribute("kaoheBaifenbi",kaoheBaifenbi);
-        model.addAttribute("testBaifenbi",testBaifenbi);
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+totalScore);
+        model.addAttribute("pageTotalScore", totalScore);
+        model.addAttribute("kaoheBaifenbi", kaoheBaifenbi);
+        model.addAttribute("testBaifenbi", testBaifenbi);
+        logger.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + totalScore);
         return "kaohe/all_score";
     }
 
     @PostMapping(value = "/GreatestWeight")
-    public String GreatestWeight(@RequestParam(required = true,defaultValue = "0")float kaoheBaifenbi,
-                                 @RequestParam(required = true,defaultValue = "0")float testBaifenbi){
+    public String GreatestWeight(@RequestParam(required = true, defaultValue = "0") float kaoheBaifenbi,
+                                 @RequestParam(required = true, defaultValue = "0") float testBaifenbi) {
 
-        kaoheModelService.updateAllGreatestWeight(kaoheBaifenbi,testBaifenbi);
-        System.out.println("设置所有"+kaoheBaifenbi+"++++++++++++++"+testBaifenbi);
+        kaoheModelService.updateAllGreatestWeight(kaoheBaifenbi, testBaifenbi);
+        logger.debug("设置所有" + kaoheBaifenbi + "++++++++++++++" + testBaifenbi);
 
-        List<TotalScoreCurrent> totalScoreCurrents= totalScoreCurrentService.findAll();
-        for (TotalScoreCurrent i :totalScoreCurrents){
-            System.out.println(i);
-            i.setTotalScore(i.getmTotalScore()*kaoheBaifenbi+i.getTestScore()*testBaifenbi);
+        List<TotalScoreCurrent> totalScoreCurrents = totalScoreCurrentService.findAll();
+        for (TotalScoreCurrent i : totalScoreCurrents) {
+            logger.debug(String.valueOf(i));
+            i.setTotalScore(i.getmTotalScore() * kaoheBaifenbi + i.getTestScore() * testBaifenbi);
             totalScoreCurrentService.update(i);
-            System.out.println(i);
-            System.out.println("----------------------------------------");
+            logger.debug(String.valueOf(i));
+            logger.debug("----------------------------------------");
         }
         return "redirect:/totalscore/list";
 
@@ -170,13 +176,13 @@ public class TotalscoreCurrentController {
 
     @GetMapping("/GuHuaAll")
     public String GuHuaAll(Model model,
-                           @RequestParam(required = true, defaultValue = "")String select_orderId ,
-                           @RequestParam(value = "pageNum",defaultValue = "0",required = true) int pageNum){
+                           @RequestParam(required = true, defaultValue = "") String select_orderId,
+                           @RequestParam(value = "pageNum", defaultValue = "0", required = true) int pageNum) {
 
         //获得所有往期班级
         List<ClassModel> classList = clazzService.findAllClass();
-        for (ClassModel i : classList){
-            int id=i.getClassId();
+        for (ClassModel i : classList) {
+            int id = i.getClassId();
 
             TotalScorePass totalScorePass = null;
             //初始化固化成绩信息
@@ -190,20 +196,19 @@ public class TotalscoreCurrentController {
             float kaohe_baifenbi = 0;
             List<KaoheModel> kaoheModelList = kaoheModelService.findAll();
             //获得考核项目名字
-            for (KaoheModel k : kaoheModelList){
+            for (KaoheModel k : kaoheModelList) {
                 ExpModel expModel = expModelService.findExpModelsByKaoheMid(k.getM_id());
-                kaoheModuleName += expModel.getM_name()+";";
+                kaoheModuleName += expModel.getM_name() + ";";
                 test_baifenbi = k.getTest_baifenbi();
                 kaohe_baifenbi = k.getKaohe_baifenbi();
             }
 
             //拼接之后，如果有数据要去除最后一个分号，
-            if(kaoheModuleName.length() > 0)
-            {
-                kaoheModuleName = kaoheModuleName.substring(0,kaoheModuleName.length()-1);
+            if (kaoheModuleName.length() > 0) {
+                kaoheModuleName = kaoheModuleName.substring(0, kaoheModuleName.length() - 1);
             }
             List<Student> studentList = studentservice.findStudentByClassId(id);
-            for(Student s : studentList){
+            for (Student s : studentList) {
                 //拼接之前要初始化
                 kaohe_mtestscore = "";
                 kaohe_mreportscore = "";
@@ -211,25 +216,24 @@ public class TotalscoreCurrentController {
                 kaohe_mreportscore_baifengbi = "";
                 kaohe_mscale = "";
 
-                for(KaoheModel k : kaoheModelList){
+                for (KaoheModel k : kaoheModelList) {
                     //获取该班级下学生每个考核模块信息
-                    KaoHeModelScore kaoHeModelScore = kaoHeModelScoreService.findKaoHeModelScoreByStuIdAndId(s.getId(),k.getId());
+                    KaoHeModelScore kaoHeModelScore = kaoHeModelScoreService.findKaoHeModelScoreByStuIdAndId(s.getId(), k.getId());
                     //进行成绩固化临时存储
-                    kaohe_mtestscore += kaoHeModelScore.getmTestScore()+";";
-                    kaohe_mreportscore += kaoHeModelScore.getmReportScore()+";";
-                    kaohe_mtestscore_baifengbi += k.getM_test_baifenbi()+";";
-                    kaohe_mreportscore_baifengbi += k.getM_report_baifenbi()+";";
-                    kaohe_mscale += k.getM_scale()+";";
+                    kaohe_mtestscore += kaoHeModelScore.getmTestScore() + ";";
+                    kaohe_mreportscore += kaoHeModelScore.getmReportScore() + ";";
+                    kaohe_mtestscore_baifengbi += k.getM_test_baifenbi() + ";";
+                    kaohe_mreportscore_baifengbi += k.getM_report_baifenbi() + ";";
+                    kaohe_mscale += k.getM_scale() + ";";
                 }
 
                 //拼接之后，如果有数据要去除最后一个分号
-                if(kaohe_mtestscore.length() > 0)
-                {
-                    kaohe_mtestscore = kaohe_mtestscore.substring(0,kaohe_mtestscore.length()-1);
-                    kaohe_mreportscore = kaohe_mreportscore.substring(0,kaohe_mreportscore.length()-1);
-                    kaohe_mtestscore_baifengbi = kaohe_mtestscore_baifengbi.substring(0,kaohe_mtestscore_baifengbi.length()-1);
-                    kaohe_mreportscore_baifengbi = kaohe_mreportscore_baifengbi.substring(0,kaohe_mreportscore_baifengbi.length()-1);
-                    kaohe_mscale = kaohe_mscale.substring(0,kaohe_mscale.length()-1);
+                if (kaohe_mtestscore.length() > 0) {
+                    kaohe_mtestscore = kaohe_mtestscore.substring(0, kaohe_mtestscore.length() - 1);
+                    kaohe_mreportscore = kaohe_mreportscore.substring(0, kaohe_mreportscore.length() - 1);
+                    kaohe_mtestscore_baifengbi = kaohe_mtestscore_baifengbi.substring(0, kaohe_mtestscore_baifengbi.length() - 1);
+                    kaohe_mreportscore_baifengbi = kaohe_mreportscore_baifengbi.substring(0, kaohe_mreportscore_baifengbi.length() - 1);
+                    kaohe_mscale = kaohe_mscale.substring(0, kaohe_mscale.length() - 1);
                 }
 
                 TotalScoreCurrent totalScoreCurrent = totalScoreCurrentService.findTotalScoreCurrentByStuId(s.getId());
@@ -257,8 +261,6 @@ public class TotalscoreCurrentController {
                 totalScoreCurrentService.deleteTotalScoreCurrentByStuId(s.getId());
             }
         }
-
-
 
 
         return "redirect:/passTotalscore/list";

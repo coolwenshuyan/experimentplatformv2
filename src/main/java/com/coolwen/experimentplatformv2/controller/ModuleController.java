@@ -15,6 +15,9 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author 淮南
  * @date 2020/5/12 14:45
@@ -25,6 +28,8 @@ import java.util.List;
 //设置数据回显
 @SessionAttributes(value = {"title", "questDescribe", "questType", "questScore", "questAnswer", "questOrder"})
 public class ModuleController {
+
+    protected static final Logger logger = LoggerFactory.getLogger(ModuleController.class);
     @Autowired
     ExpModelService expModelService;
 
@@ -57,12 +62,12 @@ public class ModuleController {
      * @return 返回到静态资源下的shiyan/addTest.html
      */
     @GetMapping("addQuest")
-    public String addQuest(Model model, HttpSession session ) {
+    public String addQuest(Model model, HttpSession session) {
 
 
 //        从缓存中取到questDescribe，即题目的信息
         String questDescribe = (String) session.getAttribute("questDescribe");
-        System.out.println("打印题目信息~~~~~~" + questDescribe);
+        logger.debug("打印题目信息~~~~~~" + questDescribe);
 //        从缓存中取到mId
         int mId = (int) session.getAttribute("mId");
 
@@ -77,7 +82,7 @@ public class ModuleController {
 //            如果记录不为空，stuList列表
 //            if (stu != null) {
 //                stuList.add(stu);
-//                System.out.println("————————————stuList" + stuList);
+//                logger.debug("————————————stuList" + stuList);
 //            }
         }
 //        如果stuList列表为空
@@ -107,7 +112,7 @@ public class ModuleController {
         } else {
 
 //            如果列表不为空，就返回信息
-            System.out.println("不允许作答————————");
+            logger.debug("不允许作答————————");
             String message = "学生已作答，不允许添加试题";
             session.setAttribute("msg2020612", message);
             return "redirect:/shiyan/list/" + mId;
@@ -145,27 +150,25 @@ public class ModuleController {
 //        添加题目的mid，为前面从list/{mid}里取到的mid
         moduleTestQuest.setmId(id);
 //        在控制台打印得到的这个moduleTestQuest对象
-        System.out.println(moduleTestQuest);
+        logger.debug(moduleTestQuest.toString());
 
         String a = moduleTestQuest.getQuestType();
         String b = moduleTestQuest.getQuestAnswer();
-        if (a.equals("单选")){
+        if (a.equals("单选")) {
             try {
                 Integer.parseInt(b);
                 questService.addModuleTestQuest(moduleTestQuest);
-            }
-            catch (Exception e)
-            {
-                session.setAttribute("errorInformation","单选答案必须是数字");
+            } catch (Exception e) {
+                session.setAttribute("errorInformation", "单选答案必须是数字");
                 return "redirect:/shiyan/addQuest";
             }
-        }else{
+        } else {
 //            利用questService里的保存方法，将数据存到数据库
             questService.addModuleTestQuest(moduleTestQuest);
         }
 
 //        控制台打印看添加进去的问题id是多少
-        System.out.println("添加测试题里面的questID~~~~~~" + moduleTestQuest.getQuestId());
+        logger.debug("添加测试题里面的questID~~~~~~" + moduleTestQuest.getQuestId());
 //        将这个问题id存入session
         session.setAttribute("questId", moduleTestQuest.getQuestId());
 
@@ -231,7 +234,7 @@ public class ModuleController {
     @RequestMapping("deleteQuest/{questId}")
     public String deleteQuest(@PathVariable("questId") int questId) {
 //        在控制台打印找到的问题id
-        System.out.println(questService.findQuestByQuestId(questId));
+        logger.debug(questService.findQuestByQuestId(questId).toString());
 //        将通过问题id查找到的那个问题存入moduleTestQuest对象中，为后面返回试题列表传递mid
         ModuleTestQuest moduleTestQuest = questService.findQuestByQuestId(questId);
 //        删除学生答题记录
@@ -299,17 +302,15 @@ public class ModuleController {
 
         String a = quest1.getQuestType();
         String b = quest1.getQuestAnswer();
-        if (a.equals("单选")){
+        if (a.equals("单选")) {
             try {
                 Integer.parseInt(b);
                 questService.addModuleTestQuest(quest1);
+            } catch (Exception e) {
+                session.setAttribute("errorInformation", "单选答案必须是数字");
+                return "redirect:/shiyan/updateQuest/" + questId;
             }
-            catch (Exception e)
-            {
-                session.setAttribute("errorInformation","单选答案必须是数字");
-                return "redirect:/shiyan/updateQuest/"+questId;
-            }
-        }else{
+        } else {
 //            利用questService里的保存方法，将数据存到数据库
             questService.addModuleTestQuest(quest1);
         }
@@ -351,7 +352,7 @@ public class ModuleController {
     public String upAnswer(@PathVariable("questId") int questId, HttpSession session,
                            String answerDescribe, int answerOrder) {
 //        在控制台打印传入的参数问题id
-        System.out.println(questId);
+        logger.debug(String.valueOf(questId));
 //        实例化一个ModuleTestAnswer对象
         ModuleTestAnswer answer = new ModuleTestAnswer();
 //        新增问题选项的序号到ModuleTestAnswer对象
@@ -425,7 +426,7 @@ public class ModuleController {
 //        从添加模块测试题post方法中存入的问题id取出来，并赋值给qId
         int qId = (int) session.getAttribute("questId");
 //        控制台打印获取的问题id
-        System.out.println("qId:-------" + qId);
+        logger.debug("qId:-------" + qId);
 //        将问题id存入moduleTestAnswer对象，以便每次添加选项的问题id都是该问题的问题id
         moduleTestAnswer.setQuestId(qId);
 //        将添加的ModuleTestAnswer数据存入数据库
@@ -489,7 +490,7 @@ public class ModuleController {
     @RequestMapping("deleteReport/{reportId}")
     public String deleteReport(@PathVariable("reportId") int reportId) {
 //        控制台打印要删除的实验报告id
-        System.out.println("——————————————————" + reportId);
+        logger.debug("——————————————————" + reportId);
 //        调用reportService的方法，通过实验报告的id找到实验报告，并存入一个Report对象
         Report report = reportService.findByReportId(reportId);
 //        调用reportService的方法，删除实验报告的id
@@ -557,10 +558,10 @@ public class ModuleController {
                              @PathVariable("mId") int mId,
                              @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum) {
         ExpModel expModel = expModelService.findExpModelByID(mId);
-        if (expModel.isReport_type()){
-            model.addAttribute("page1",expModelService.findModelList(pageNum));
+        if (expModel.isReport_type()) {
+            model.addAttribute("page1", expModelService.findModelList(pageNum));
             session.removeAttribute("msg2020612");
-            model.addAttribute("msg1","学院版实验报告不需要添加题目!");
+            model.addAttribute("msg1", "学院版实验报告不需要添加题目!");
             return "shiyan/lookTestAndReport";
         }
 //        分页数据条数为10

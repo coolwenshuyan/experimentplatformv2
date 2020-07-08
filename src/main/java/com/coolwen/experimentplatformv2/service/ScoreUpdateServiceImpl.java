@@ -5,9 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 @Service
 public class ScoreUpdateServiceImpl implements ScoreUpdateService {
+    protected static final Logger logger = LoggerFactory.getLogger(ScoreUpdateServiceImpl.class);
     @Autowired
     ModuleTestAnswerStuService moduleTestAnswerStuService;
     @Autowired
@@ -102,7 +104,7 @@ public class ScoreUpdateServiceImpl implements ScoreUpdateService {
     public void allStudentScoreUpdate() {
         List<Student> studentList = studentService.findStudentByNotClassId();
         for(Student s : studentList){
-            System.out.println(s);
+            logger.debug(s.toString());
             singleStudentScoreUpdate(s.getId());
         }
     }
@@ -133,8 +135,8 @@ public class ScoreUpdateServiceImpl implements ScoreUpdateService {
         float mReportScore = 0;
         //根据模块的报告类型，如果是学院报告，就从学院报告表中查询，如果是自定义报告，就从自定义报告中查询
         ExpModel model1 = expModelService.findExpModelByID(mid);
-//        System.out.println(model1.isReport_type());
-//        System.out.println("mid:"+mid);
+//        logger.debug(model1.isReport_type());
+//        logger.debug("mid:"+mid);
         if(model1.isReport_type()) {
             CollegeReport collegeReport1 = collegeReportService.findStuidAndMid(stuid,mid);
             mReportScore = collegeReport1.getCrScore();

@@ -101,7 +101,7 @@ public class QuestionController {
 //        question.setContent("adsadsad");
 //        question.setDic_datetime(new Date());
 //        questionService.add(question);
-//        System.out.println("修改成功");
+//        logger.debug("修改成功");
 //        return "redirect:/questionORreply/{id}/seesee";
 //    }
 

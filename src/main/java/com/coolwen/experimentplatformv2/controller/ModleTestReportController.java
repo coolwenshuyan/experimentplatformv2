@@ -18,7 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 /**
  * 学生模块报告成绩管理
  * 列出所有学生的所有的模块的报告成绩
@@ -30,6 +31,7 @@ import java.util.List;
 @RequestMapping(value = "/reportScoreManage")
 public class ModleTestReportController {
 
+    protected static final Logger logger = LoggerFactory.getLogger(ModleTestReportController.class);
     @Autowired
     public StudentRepository studentRepository;
     @Autowired
@@ -54,7 +56,7 @@ public class ModleTestReportController {
 //        Page<Student> c = studentService.findAll(pageNum);
         //获得所有学生
         Page<Student> c = studentService.findStudentPageAndXuehao(pageNum, select_orderId);
-        System.out.println(">>>>>>>>>>>>>>>>>>c"+c);
+        logger.debug(">>>>>>>>>>>>>>>>>>c"+c);
         model.addAttribute("allStu",c);
         model.addAttribute("selectOrderId",select_orderId);
 
@@ -65,7 +67,7 @@ public class ModleTestReportController {
         //获得所有学生成绩DTO
         List<StudentReportScoreDTO> a = studentRepository.listStudentMReportDTO();
 //        List<StudentTestScoreDTO> a = studentRepository.listStudentMReportAnswerDTO();
-        System.out.println(a);
+        logger.debug(String.valueOf(a));
 
         //统计所以考核模块的个数,生成自增列表,以便thymeleaf生成表头
         long modleNum = kaoheModelRepository.count();
@@ -75,7 +77,7 @@ public class ModleTestReportController {
         for(int i=1;i<=modleNum;i++){
             list.add(i);
         }
-        System.out.println(list);
+        logger.debug(list.toString());
         model.addAttribute("numList",list);
         return "kaohe/score2_manage";
     }
@@ -97,7 +99,7 @@ public class ModleTestReportController {
         //除了班级筛选,其它和上面的一模一样
         Page<Student> c = studentService.pageStudentByClassId(pageNum,classId);
 
-        System.out.println(">>>>>>>>>>>>>>>>>>c"+c);
+        logger.debug(">>>>>>>>>>>>>>>>>>c"+c);
         model.addAttribute("allStu",c);
         model.addAttribute("selectOrderId",select_orderId);
 
@@ -108,7 +110,7 @@ public class ModleTestReportController {
         List<StudentReportScoreDTO> a = studentRepository.listStudentMReportDTO();
 //        List<StudentTestScoreDTO> a = studentRepository.listStudentMReportAnswerDTO();
 
-        System.out.println(a);
+        logger.debug(String.valueOf(a));
         long modleNum = kaoheModelRepository.count();
         model.addAttribute("allInfo",a);
         model.addAttribute("num",modleNum);
@@ -116,7 +118,7 @@ public class ModleTestReportController {
         for(int i=1;i<=modleNum;i++){
             list.add(i);
         }
-        System.out.println(list);
+        logger.debug(String.valueOf(list));
         model.addAttribute("numList",list);
         return "kaohe/score2_manage";
     }

@@ -7,12 +7,16 @@ import javax.persistence.Query;
 import java.io.Serializable;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author CoolWen
  * @version 2018-10-24 23:11
  */
 public class BaseRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRepository<T, ID> implements BaseRepository<T, ID> {
 
+    protected static final Logger logger = LoggerFactory.getLogger(BaseRepositoryImpl.class);
     private final EntityManager entityManager;
 
     //父类没有不带参数的构造方法，这里手动构造父类
@@ -33,7 +37,7 @@ public class BaseRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRep
         Query query = entityManager.createNativeQuery(sql);
         int i = 0;
         for (Object arg : args) {
-            System.out.println(arg);
+            logger.debug(arg.toString());
             query.setParameter(++i, arg);
 
         }
@@ -46,7 +50,7 @@ public class BaseRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRep
         Query query = entityManager.createQuery(hql);
         int i = 0;
         for (Object arg : args) {
-            System.out.println(arg);
+            logger.debug(arg.toString());
             query.setParameter(i++, arg);
 
         }

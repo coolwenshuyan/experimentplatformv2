@@ -18,9 +18,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * 期末理论测试成绩管理
  * 把所有人的期末成绩列到一起
+ *
  * @author 王雨来
  * @version 2020/5/13 12:21
  */
@@ -29,6 +33,7 @@ import java.util.List;
 @RequestMapping(value = "/lastTestScoreManage")
 public class LastTestScoreController {
 
+    protected static final Logger logger = LoggerFactory.getLogger(LastTestScoreController.class);
     @Autowired
     public StudentRepository studentRepository;
     @Autowired
@@ -40,62 +45,64 @@ public class LastTestScoreController {
 
     /**
      * 所有列表
-     * @param model 传值
+     *
+     * @param model          传值
      * @param select_orderId 搜索值
-     * @param pageNum 分页
+     * @param pageNum        分页
      * @return 页面
      */
     @GetMapping(value = "/list")
     public String loadAllScore(Model model,
-                               @RequestParam(required = true, defaultValue = "")String select_orderId ,
-                               @RequestParam(defaultValue = "0", required=true,value = "pageNum")  Integer pageNum) {
+                               @RequestParam(required = true, defaultValue = "") String select_orderId,
+                               @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum) {
 
         Page<Student> c = studentService.findStudentPageAndXuehao(pageNum, select_orderId);
 //        //搜索
-        System.out.println("c>>>>>>"+c.getSize());
-        model.addAttribute("allStu",c);
-        model.addAttribute("selectOrderId",select_orderId);
+        logger.debug("c>>>>>>" + c.getSize());
+        model.addAttribute("allStu", c);
+        model.addAttribute("selectOrderId", select_orderId);
 
         //查询当期班级列表
         //班级列表
 //        List<ClassModel> classList = classService.findAllClass();
         List<ClassModel> classList = classService.findCurrentClass();
-        model.addAttribute("classList",classList);
+        model.addAttribute("classList", classList);
 
         //学生成绩DTO列表
         Page<StudentLastTestScoreDTO> a = studentService.listStudentLastTestAnswerDTO(pageNum);
-        System.out.println(">>>>>>>>>>>>>>>>>"+a);
-        model.addAttribute("allInfo",a);
+        logger.debug(">>>>>>>>>>>>>>>>>" + a);
+        model.addAttribute("allInfo", a);
 
         return "kaohe/lastTestScore";
     }
 
     /**
      * 分班级查看成绩
-     * @param model 传值
-     * @param classId 班级id
+     *
+     * @param model          传值
+     * @param classId        班级id
      * @param select_orderId 搜索值
-     * @param pageNum 分页
+     * @param pageNum        分页
      * @return 页面
      */
     @GetMapping(value = "/{classId}/list")
     public String loadOneClassScore(Model model,
                                     @PathVariable int classId,
-                                    @RequestParam(required = true, defaultValue = "")String select_orderId ,
-                                    @RequestParam(defaultValue = "0", required=true,value = "pageNum")  Integer pageNum) {
-        Page<Student> c = studentService.pageStudentByClassId(pageNum,classId);
+                                    @RequestParam(required = true, defaultValue = "") String select_orderId,
+                                    @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum) {
+        Page<Student> c = studentService.pageStudentByClassId(pageNum, classId);
         //搜索
-        model.addAttribute("allStu",c);
-        model.addAttribute("selectOrderId",select_orderId);
+        model.addAttribute("allStu", c);
+        model.addAttribute("selectOrderId", select_orderId);
 
         //查询班级列表
         List<ClassModel> classList = classService.findCurrentClass();
-        model.addAttribute("classList",classList);
+        model.addAttribute("classList", classList);
 
         //学生成绩DTO列表
-        Page<StudentLastTestScoreDTO> a = studentService.listStudentLastTestScoreDTOBYClassID(pageNum,classId);
-        System.out.println(a);
-        model.addAttribute("allInfo",a);
+        Page<StudentLastTestScoreDTO> a = studentService.listStudentLastTestScoreDTOBYClassID(pageNum, classId);
+        logger.debug(String.valueOf(a));
+        model.addAttribute("allInfo", a);
 
         return "kaohe/lastTestScore";
     }
@@ -108,7 +115,7 @@ public class LastTestScoreController {
 ////        Page<Student> c = studentService.findAll(pageNum);
 //        Page<Student> c = studentService.pageStudentByClassId(pageNum,classId);
 //
-//        System.out.println(">>>>>>>>>>>>>>>>>>c"+c);
+//        logger.debug(">>>>>>>>>>>>>>>>>>c"+c);
 //        model.addAttribute("allStu",c);
 //        model.addAttribute("selectOrderId",select_orderId);
 //
@@ -117,7 +124,7 @@ public class LastTestScoreController {
 //
 //        List<StudentTestScoreDTO> a = studentRepository.listStudentMTestAnswerDTO();
 //
-//        System.out.println(a);
+//        logger.debug(a);
 //        long modleNum = kaoheModelRepository.count();
 //        model.addAttribute("allInfo",a);
 //        model.addAttribute("num",modleNum);
@@ -125,7 +132,7 @@ public class LastTestScoreController {
 //        for(int i=1;i<=modleNum;i++){
 //            list.add(i);
 //        }
-//        System.out.println(list);
+//        logger.debug(list);
 //        model.addAttribute("numList",list);
 //        return "kaohe/score_manage";
 //    }

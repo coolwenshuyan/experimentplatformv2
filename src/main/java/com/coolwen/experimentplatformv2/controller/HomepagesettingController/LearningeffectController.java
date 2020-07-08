@@ -188,7 +188,7 @@ public class LearningeffectController {
         effect.setDic_datetime(new Date());
         //储存图片，并将图片路径储存到数据库
         String realpath = GetServerRealPathUnit.getPath("static/upload/");
-//       System.out.println("realPath:" + realpath);
+//       logger.debug("realPath:" + realpath);
         for (MultipartFile attach : attachs) {
             if (attach.isEmpty()) {
                 continue;
@@ -196,7 +196,7 @@ public class LearningeffectController {
             //图片验证重命名
             String picName = FileUploadUtil.picRename(attach.getContentType());
             String path = realpath + "/" + picName;
-//            System.out.println(path);
+//            logger.debug(path);
             File f = new File(path);
 //            user.setImg(picName);
             effect.setEffect_imgurl(picName);
@@ -243,7 +243,7 @@ public class LearningeffectController {
         effect.setDic_datetime(new Date());
         //储存图片，并将图片路径储存到数据库
         String realpath = GetServerRealPathUnit.getPath("static/upload/");
-//       System.out.println("realPath:" + realpath);
+//       logger.debug("realPath:" + realpath);
         for (MultipartFile attach : attachs) {
             if (attach.isEmpty()) {
                 effect.setEffect_imgurl(effectService.findById(id).getEffect_imgurl());
@@ -252,7 +252,7 @@ public class LearningeffectController {
             //图片验证重命名
             String picName = FileUploadUtil.picRename(attach.getContentType());
             String path = realpath + "/" + picName;
-//            System.out.println(path);
+//            logger.debug(path);
             File f = new File(path);
 //            user.setImg(picName);
             effect.setEffect_imgurl(picName);
@@ -264,8 +264,8 @@ public class LearningeffectController {
         }
         //将信息储存到数据库
         effectService.add(effect);
-        System.out.println(effectService.findById(id).toString());
-        System.out.println("修改成功");
+        logger.debug(effectService.findById(id).toString());
+        logger.debug("修改成功");
         return "redirect:/learning/list";
     }
 

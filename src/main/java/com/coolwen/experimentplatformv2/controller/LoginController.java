@@ -70,7 +70,7 @@ public class LoginController {
             response.getOutputStream().write(verifyCode.getImgBytes());
             response.getOutputStream().flush();
         } catch (IOException e) {
-            System.out.println("错误");
+            logger.debug("错误");
         }
     }
 
@@ -280,10 +280,10 @@ public class LoginController {
                     model.setViewName("register");
                     return model;
                 }
-                System.out.println(">>>>>>>>>>>>>>>>>>>>>>>" + stu);
+                logger.debug(">>>>>>>>>>>>>>>>>>>>>>>" + stu);
                 student.setStuMobile(tel);
                 studentService.addStudent(student);
-                System.out.println(student);
+                logger.debug(student.toString());
                 model.addObject("msg2", "注册成功！！！");
                 model.setViewName("home_page/login");
             }
@@ -301,7 +301,7 @@ public class LoginController {
     @GetMapping("/logout")
     public String Logout() {
         SecurityUtils.getSubject().logout();
-        System.out.println("fsdfasdasdgasdg");
+        logger.debug("fsdfasdasdgasdg");
         return "redirect:/login";
     }
 

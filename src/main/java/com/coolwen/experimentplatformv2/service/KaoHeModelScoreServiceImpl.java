@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author Artell
  * @date 2020/5/12 18:04
@@ -15,6 +18,7 @@ import java.util.List;
 @Service
 public class KaoHeModelScoreServiceImpl implements KaoHeModelScoreService {
 
+    protected static final Logger logger = LoggerFactory.getLogger(KaoHeModelScoreServiceImpl.class);
     @Autowired
     private KaoHeModelScoreRepository kaoHeModelScoreRepository;
 
@@ -39,7 +43,7 @@ public class KaoHeModelScoreServiceImpl implements KaoHeModelScoreService {
     @Override
     public void deleteAllByKaohemId(Integer kaohemid) {
         kaoHeModelScoreRepository.deleteByTKaohemodleId(kaohemid);
-        System.out.println("删除所有成绩记录成功!");
+        logger.debug("删除所有成绩记录成功!");
     }
 
 
@@ -59,9 +63,9 @@ public class KaoHeModelScoreServiceImpl implements KaoHeModelScoreService {
     }
 
     @Override
-    public KaoHeModelScore findKaoheModelScoreByMid(int mid,int stu) {
+    public KaoHeModelScore findKaoheModelScoreByMid(int mid, int stu) {
         Integer a = kaoheModelRepository.findByMid(mid);
-        return kaoHeModelScoreRepository.findByStuIdAndTKaohemodleId(a,stu);
+        return kaoHeModelScoreRepository.findByStuIdAndTKaohemodleId(a, stu);
     }
 
     @Override

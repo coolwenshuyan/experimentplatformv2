@@ -8,6 +8,8 @@ import com.baidu.ueditor.define.State;
 import com.baidu.ueditor.hunter.ImageHunter;
 import com.baidu.ueditor.spring.EditorUploader;
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -25,6 +27,8 @@ import java.util.Map;
  */
 //@Component
 public class MyEditorUploader implements EditorUploader {
+
+    protected static final Logger logger = LoggerFactory.getLogger(MyEditorUploader.class);
 
     @Override
     public State binaryUpload(HttpServletRequest request, Map<String, Object> conf) {
@@ -50,7 +54,7 @@ public class MyEditorUploader implements EditorUploader {
         String savePath = (String) conf.get("savePath");
         savePath = savePath + suffix;
         savePath = PathFormat.parse(savePath, originFileName);
-        System.out.println(savePath);
+        logger.debug(savePath);
 
 
         BaseState baseState = new BaseState();

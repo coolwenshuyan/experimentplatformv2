@@ -13,6 +13,8 @@ import com.coolwen.experimentplatformv2.model.TotalScorePass;
 import com.coolwen.experimentplatformv2.service.StudentService;
 import com.coolwen.experimentplatformv2.service.TotalScoreCurrentService;
 import com.coolwen.experimentplatformv2.service.TotalScorePassService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,6 +34,7 @@ import java.util.List;
 @RequestMapping(value = "/grade")
 public class ExpGradeController {
 
+    protected static final Logger logger = LoggerFactory.getLogger(ExpGradeController.class);
     @Autowired
     TotalScoreCurrentService totalScoreCurrentService;  //考核成绩查询的service层
 
@@ -56,7 +59,7 @@ public class ExpGradeController {
         if(student.getClassId()>0) {
             //检查此学生有没有考核资格
             List<Student> studentOne = studentService.findStudentIsCurrentkaoheByStuid(stuId);
-            System.out.println(">>>>>>>>>>>>"+studentOne.size());
+            logger.debug(">>>>>>>>>>>>"+studentOne.size());
             if(studentOne.size()>0) {
                 //查询该学生的考核实验模块成绩
                 List<ModuleGradesDto> moduleGrades = totalScoreCurrentService.ModuleGrade(student.getId());
@@ -93,9 +96,9 @@ public class ExpGradeController {
                             Float.parseFloat(kaohereportbaifenbi[i]),
                             Float.parseFloat(String.format("%.1f",Float.parseFloat(kaohetest[i])*Float.parseFloat(kaohetestbaifenbi[i]) +
                                     Float.parseFloat(kaohereport[i])*Float.parseFloat(kaohereportbaifenbi[i]))));
-//                    System.out.println(Float.parseFloat(kaohetest[i])+">>>"+Float.parseFloat(kaohetestbaifenbi[i]) +
+//                    logger.debug(Float.parseFloat(kaohetest[i])+">>>"+Float.parseFloat(kaohetestbaifenbi[i]) +
 //                            ">>>"+Float.parseFloat(kaohereport[i])+">>>"+Float.parseFloat(kaohereportbaifenbi[i]));
-//                    System.out.println(moduleGrades[i].getM_score());
+//                    logger.debug(moduleGrades[i].getM_score());
                 }
                 model.addAttribute("ModuleGrades", moduleGrades);
             }

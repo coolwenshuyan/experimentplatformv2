@@ -52,7 +52,7 @@ public class TotalscorePassController {
     public String expModelList(Model model, @RequestParam(value = "pageNum",defaultValue = "0",required = true) int pageNum){
         Page<TotalScorePass> totalScorePasses = totalScorePassService.findAll(pageNum);
         for(TotalScorePass i:totalScorePasses){
-            System.out.println(i);
+            logger.debug(i);
 
         Student student = studentService.findStudentById(i.getStuId());
         ClassModel classModel = clazzService.findById(student.getId());
@@ -79,7 +79,7 @@ public class TotalscorePassController {
         model.addAttribute("classList",classList);
 
         model.addAttribute("pageTotalScore",totalScore);
-//        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+totalScore);
+//        logger.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+totalScore);
         return "kaohe/all_score_pass";
     }
 
@@ -98,7 +98,7 @@ public class TotalscorePassController {
         model.addAttribute("classId",classId);
 
         model.addAttribute("pageTotalScore",totalScore);
-//        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+totalScore);
+//        logger.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+totalScore);
         return "kaohe/all_score_pass";
     }
 

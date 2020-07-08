@@ -167,4 +167,24 @@ public class CollegeReport {
     public void setCrTcState(Boolean crTcState) {
         this.crTcState = crTcState;
     }
+
+    @Override
+    public String toString() {
+        return "CollegeReport{" +
+                "id=" + id +
+                ", stuid=" + stuid +
+                ", mid=" + mid +
+                ", crClassName='" + crClassName + '\'' +
+                ", crDress='" + crDress + '\'' +
+                ", crDate=" + crDate +
+                ", crTeacher='" + crTeacher + '\'' +
+                ", crExpPurpose='" + crExpPurpose + '\'' +
+                ", crExpEvr='" + crExpEvr + '\'' +
+                ", crExpContent='" + crExpContent + '\'' +
+                ", crExpSummary='" + crExpSummary + '\'' +
+                ", crTcComment='" + crTcComment + '\'' +
+                ", crScore=" + crScore +
+                ", crTcState=" + crTcState +
+                '}';
+    }
 }

@@ -152,13 +152,13 @@ public class KaoheModelController {
     @RequestMapping(value = {"/{mid}/moveIn"}, method = RequestMethod.POST)
     public String add(@PathVariable int mid, KaoheModel moveIn) {
 
-        System.out.println(">>>>>>>>>>>>" + moveIn);
+        logger.debug(">>>>>>>>>>>>" + moveIn);
         KaoheModel u = new KaoheModel();
         ExpModel expModel = expModelService.findExpModelByID(mid);
         u.setM_id(expModel.getM_id());
 //        u.setExperiment_name(expModel.getM_name());
 //        u.setClass_hour(expModel.getClasshour());
-        System.out.println(">>>>>>>>>>>>>>>>>>>>" + moveIn.getM_order());
+        logger.debug(">>>>>>>>>>>>>>>>>>>>" + moveIn.getM_order());
         u.setM_order(moveIn.getM_order());
         u.setM_scale(moveIn.getM_scale());
 //        u.setShiyan_Purpose(expModel.getPurpose());
@@ -175,12 +175,12 @@ public class KaoheModelController {
             u.setKaohe_baifenbi(0);
             u.setTest_baifenbi(0);
         }
-//        System.out.println(u);
+//        logger.debug(u);
         kaoheModelService.add(u);
         expModel.setNeedKaohe(true);
         //学生考核模块成绩记录表，只处理当期有考核权限的学生
         for (Student i : studentService.findStudentByNotClassId()) {
-            System.out.println(i);
+            logger.debug(String.valueOf(i));
             kaoHeModelScoreService.add(new KaoHeModelScore(u.getId(), i.getId(), 0, 0, u.getM_order(), u.getM_scale()));
             //更新表13中学生总表记录中考核模块数
             TotalScoreCurrent totalScoreCurrent = totalScoreCurrentService.findTotalScoreCurrentByStuId(i.getId());
@@ -191,7 +191,7 @@ public class KaoheModelController {
         // 表13 考核项目数增加
 
         expModelService.save(expModel);
-        System.out.println(">>>>>>>>>>>>add");
+        logger.debug(">>>>>>>>>>>>add");
         kaoheModelService.deleteMTestAnswerByMid(mid);
 
         collegeReportService.deleteCollege(mid);
@@ -204,10 +204,10 @@ public class KaoheModelController {
      */
     @RequestMapping(value = "/{id}/update", method = RequestMethod.GET)
     public String update(@PathVariable int id, Model model) {
-        System.out.println("id:>>>>>>>>>>>>>>>>>>>>>>>" + id);
+        logger.debug("id:>>>>>>>>>>>>>>>>>>>>>>>" + id);
         KaoheModelAndExpInfoDTO kaoheModelAndExpInfoDTO = kaoheModelService.findKaoheModelAndExpInfoDTOByKaoheid(id);
 //        KaoheModel kaoheModel = kaoheModelService.findById(id);
-//        System.out.println(kaoheModel.toString());
+//        logger.debug(kaoheModel.toString());
         model.addAttribute("kaohemodel", kaoheModelAndExpInfoDTO);
 
         return "/kaohe/kaoheupdate";

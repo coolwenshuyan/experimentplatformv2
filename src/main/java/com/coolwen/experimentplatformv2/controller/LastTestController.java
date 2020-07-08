@@ -20,6 +20,9 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author 淮南
  * @date 2020/5/12 14:45
@@ -31,6 +34,7 @@ import java.util.List;
 @SessionAttributes(value = {"questDescribe", "questType", "questScore", "questAnswer", "questOrder"})
 public class LastTestController {
 
+    protected static final Logger logger = LoggerFactory.getLogger(LastTestController.class);
     /**
      * 注入模块测试题、测试题的选项的service
      */
@@ -52,7 +56,7 @@ public class LastTestController {
 
 //        从缓存中取到questDescribe，即题目的信息
         String questDescribe = (String) session.getAttribute("questDescribe");
-        System.out.println("打印题目信息~~~~~~" + questDescribe);
+        logger.debug("打印题目信息~~~~~~" + questDescribe);
 
         int mId = -1;
 //        开始拦截，即学生已作答的模块不允许添加试题
@@ -66,7 +70,7 @@ public class LastTestController {
 //            如果记录不为空，stuList列表
 //            if (stu != null) {
 //                stuList.add(stu);
-////                System.out.println("————————————stuList" + stuList);
+////                logger.debug("————————————stuList" + stuList);
 //            }
         }
 
@@ -96,7 +100,7 @@ public class LastTestController {
             return "shiyan/addLastTest";
         } else {
 //            如果列表不为空，就返回信息
-            System.out.println("不允许作答————————");
+            logger.debug("不允许作答————————");
             String message = "学生已作答，不允许添加试题";
             session.setAttribute("msg2020612", message);
             return "redirect:/shiyan/lastTestList";
@@ -120,7 +124,7 @@ public class LastTestController {
                            String questDescribe,
                            String questType, float questScore,
                            String questAnswer, int questOrder) {
-        System.out.println("开始添加++++++——————————");
+        logger.debug("开始添加++++++——————————");
 //        在试题表添加试题信息
 //        通过模块测试题的题目找到整条试题的信息
         moduleTestQuest.setQuestDescribe(questDescribe);
@@ -131,21 +135,19 @@ public class LastTestController {
 //        模块id默认为-1，即整体测试的模块id为-1
         moduleTestQuest.setmId(-1);
 //        控制台打印ModuleTestQuest对象
-        System.out.println(moduleTestQuest);
+        logger.debug(moduleTestQuest.toString());
 
         String a = moduleTestQuest.getQuestType();
         String b = moduleTestQuest.getQuestAnswer();
-        if (a.equals("单选")){
+        if (a.equals("单选")) {
             try {
                 Integer.parseInt(b);
                 questService.addModuleTestQuest(moduleTestQuest);
-            }
-            catch (Exception e)
-            {
-                session.setAttribute("errorInformation","单选答案必须是数字");
+            } catch (Exception e) {
+                session.setAttribute("errorInformation", "单选答案必须是数字");
                 return "redirect:/shiyan/addLastQuest";
             }
-        }else{
+        } else {
 
 //            利用questService里的保存方法，将数据存到数据库
             questService.addModuleTestQuest(moduleTestQuest);
@@ -187,7 +189,7 @@ public class LastTestController {
 //        从添加模块测试题post方法中存入的问题id取出来，并赋值给qId
         int qId = (int) session.getAttribute("questId");
 //        控制台打印获取的问题id
-        System.out.println("qId:-------" + qId);
+        logger.debug("qId:-------" + qId);
 //        将问题id存入moduleTestAnswer对象，以便每次添加选项的问题id都是该问题的问题id
         moduleTestAnswer.setQuestId(qId);
 //        将添加的ModuleTestAnswer数据存入数据库
@@ -276,9 +278,9 @@ public class LastTestController {
     /**
      * 修改整体测试题的试题信息的post方法
      *
-     * @param questId       需要修改的模块测试题的问题id
-     * @param quest         ModuleTestQuest对象
-     * @param model         绑定参数给前端传值
+     * @param questId 需要修改的模块测试题的问题id
+     * @param quest   ModuleTestQuest对象
+     * @param model   绑定参数给前端传值
      * @return 返回整体测试题列表
      */
     @PostMapping("updateLastQuest/{questId}")
@@ -295,17 +297,15 @@ public class LastTestController {
 
         String a = quest1.getQuestType();
         String b = quest1.getQuestAnswer();
-        if (a.equals("单选")){
+        if (a.equals("单选")) {
             try {
                 Integer.parseInt(b);
                 questService.addModuleTestQuest(quest1);
+            } catch (Exception e) {
+                session.setAttribute("errorInformation", "单选答案必须是数字");
+                return "redirect:/shiyan/updateLastQuest/" + questId;
             }
-            catch (Exception e)
-            {
-                session.setAttribute("errorInformation","单选答案必须是数字");
-                return "redirect:/shiyan/updateLastQuest/"+questId;
-            }
-        }else{
+        } else {
 //            利用questService里的保存方法，将数据存到数据库
             questService.addModuleTestQuest(quest1);
         }

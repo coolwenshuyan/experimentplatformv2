@@ -30,7 +30,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.util.Date;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 /**
  * @Description 首页显示的数据，后台管理系统中 首页-->平台公告页面的增删改查
  * @Author 朱治汶
@@ -95,7 +96,7 @@ public class NewsInfoController {
         //查询实验模块总数
         int modenum = (int) expModelRepository.count();
         model.addAttribute("modenum", modenum);
-        System.out.println(modenum);
+        logger.debug(String.valueOf(modenum));
         //查询平台总用户数
         int studentnum = (int) studentRepository.count();
         int teachernum = (int) teacherRepository.count();
@@ -103,11 +104,11 @@ public class NewsInfoController {
         //查询参与考核人数
         int studentmodel = newsInfoService.findAllmodelpeople();
         model.addAttribute("studentmodel", studentmodel);
-        System.out.println(studentmodel);
+        logger.debug(String.valueOf(studentmodel));
         //查询通过考核人数
         int passpeople = newsInfoService.findAllPass();
         model.addAttribute("passpeople", passpeople);
-        System.out.println(passpeople);
+        logger.debug(String.valueOf(passpeople));
 
         //访问量
         // 获取访问量信息
@@ -255,7 +256,7 @@ public class NewsInfoController {
             }
             //关闭流
             in.close();
-            //System.out.println(content);
+            //logger.debug(content);
             // 解析获取的数据
             Long count = Long.valueOf(content.toString());
             count++; // 访问量加1

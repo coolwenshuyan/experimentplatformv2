@@ -5,6 +5,8 @@ import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.pam.ModularRealmAuthenticator;
 import org.apache.shiro.realm.Realm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,10 +22,12 @@ import java.util.List;
  * @Version: 1.0
  */
 public class UserModularRealmAuthenticator extends ModularRealmAuthenticator {
+    protected static final Logger logger = LoggerFactory.getLogger(UserModularRealmAuthenticator.class);
+
     @Override
     protected AuthenticationInfo doAuthenticate(AuthenticationToken authenticationToken)
             throws AuthenticationException {
-        System.out.println("UserModularRealmAuthenticator:method doAuthenticate() execute ");
+        logger.debug("UserModularRealmAuthenticator:method doAuthenticate() execute ");
         // 判断getRealms()是否返回为空
         assertRealmsConfigured();
         // 强制转换回自定义的CustomizedToken
@@ -39,14 +43,13 @@ public class UserModularRealmAuthenticator extends ModularRealmAuthenticator {
                 typeRealms.add(realm);
             }
         }
-        System.out.println(typeRealms.size());
+        logger.debug(String.valueOf(typeRealms.size()));
         // 判断是单Realm还是多Realm
-        if (typeRealms.size() == 1){
-            System.out.println("doSingleRealmAuthentication() execute ");
+        if (typeRealms.size() == 1) {
+            logger.debug("doSingleRealmAuthentication() execute ");
             return doSingleRealmAuthentication(typeRealms.get(0), loginToken);
-        }
-        else{
-            System.out.println("doMultiRealmAuthentication() execute ");
+        } else {
+            logger.debug("doMultiRealmAuthentication() execute ");
             return doMultiRealmAuthentication(typeRealms, loginToken);
         }
     }

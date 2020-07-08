@@ -25,7 +25,7 @@ public interface QuestionRepository extends JpaRepository<Question, Integer> {
     public Question findById(int id);
 
 //    通过登录的seesion的用户名查出id等DTO里内容
-    @Query(value = "select  new com.coolwen.experimentplatformv2.model.DTO.QuestionStudentDto(q.id,q.sid,q.content,q.dic_datetime,s.stuUname,q.isreply) from Question q,Student s where q.sid=s.id order by q.isreply,q.dic_datetime desc ")
+    @Query(value = "select  new com.coolwen.experimentplatformv2.model.DTO.QuestionStudentDto(q.id,q.sid,q.content,q.dic_datetime,s.stuUname,q.isreply,c.courseName) from Question q,Student s,CourseInfo c where q.sid=s.id and q.course_id=c.id order by q.isreply,q.dic_datetime desc ")
     public Page<QuestionStudentDto> findAndUname(Pageable pageable);
 
 //    查出提问学生姓名
@@ -37,4 +37,7 @@ public interface QuestionRepository extends JpaRepository<Question, Integer> {
     @Transactional
     @Query(value = "update t_question set isreply = ? where id = ?", nativeQuery = true)
     void setIsreply(boolean b);
+
+    @Query(value = "select  new com.coolwen.experimentplatformv2.model.DTO.QuestionStudentDto(q.id,q.sid,q.content,q.dic_datetime,s.stuUname,q.isreply,c.courseName) from Question q,Student s,CourseInfo c where q.sid=s.id and q.course_id=c.id and q.course_id=?1 order by q.isreply,q.dic_datetime desc ")
+    Page<QuestionStudentDto> findAllByCourseId(int courseId, Pageable pageable);
 }

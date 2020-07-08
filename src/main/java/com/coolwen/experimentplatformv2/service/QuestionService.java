@@ -35,4 +35,6 @@ public interface QuestionService {
     public String findQuestionUname(int id);
 
     void setIsreply(boolean b);
+
+    Page<QuestionStudentDto> findAllByCourseId(Pageable pageable, int courseId);
 }

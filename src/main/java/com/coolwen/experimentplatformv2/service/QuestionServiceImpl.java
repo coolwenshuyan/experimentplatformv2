@@ -6,6 +6,7 @@ import com.coolwen.experimentplatformv2.model.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
  *
  *  @author yellow
  */
-@org.springframework.stereotype.Service
+@Service
 public class QuestionServiceImpl implements QuestionService {
 
 
@@ -67,6 +68,11 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public void setIsreply(boolean b) {
         questionRepository.setIsreply(b);
+    }
+
+    @Override
+    public Page<QuestionStudentDto> findAllByCourseId(Pageable pageable, int courseId) {
+        return questionRepository.findAllByCourseId(courseId,pageable);
     }
 
 

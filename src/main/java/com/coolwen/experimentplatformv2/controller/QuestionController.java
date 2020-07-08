@@ -1,11 +1,15 @@
 package com.coolwen.experimentplatformv2.controller;
 
+import com.coolwen.experimentplatformv2.controller.HomepagesettingController.LearningeffectController;
 import com.coolwen.experimentplatformv2.dao.*;
 import com.coolwen.experimentplatformv2.exception.UserException;
 import com.coolwen.experimentplatformv2.model.*;
 import com.coolwen.experimentplatformv2.model.DTO.QuestionStudentDto;
+import com.coolwen.experimentplatformv2.service.CourseInfoService;
 import com.coolwen.experimentplatformv2.service.QuestionService;
 import com.coolwen.experimentplatformv2.service.ReplyService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,12 +33,14 @@ public class QuestionController {
 //    注入
     @Autowired
     private QuestionService questionService;
-
     @Autowired
     private ReplyService replyService;
-
     @Autowired
     StudentRepository studentRepository;
+    @Autowired
+    CourseInfoService courseInfoService;
+
+    protected static final Logger logger = LoggerFactory.getLogger(QuestionController.class);
 
 //    //用户提问点击进入提交页
 //    @GetMapping(value = "/add")
@@ -64,11 +70,36 @@ public class QuestionController {
 
     //老师端看到question列表，查出来
     @GetMapping(value = "/list")
-    public String QuestionList(Model model, @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum) {
+    public String QuestionList(Model model,HttpSession session,
+                               @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum) {
+
+        User user = (User) session.getAttribute("admin");
+        logger.debug("user:>>"+user);
 //        分页查询，每页最多五条数据
-        Pageable pageable = PageRequest.of(pageNum, 5);
+        Pageable pageable = PageRequest.of(pageNum, 10);
         Page<QuestionStudentDto> page = questionService.findAndUname(pageable);
         model.addAttribute("questionPageInfo", page);
+
+        List<CourseInfo> courseInfoList =  courseInfoService.getclass_by_arrangeteacher(user.getId());
+        model.addAttribute("courseInfoList",courseInfoList);
+        return "shouye/dayiManage";
+    }
+
+    @GetMapping(value = "/{courseId}/list")
+    public String questionList(Model model,
+                               HttpSession session,
+                               @PathVariable int courseId,
+                               @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum) {
+
+        User user = (User) session.getAttribute("admin");
+        logger.debug("user:>>"+user);
+//        分页查询，每页最多五条数据
+        Pageable pageable = PageRequest.of(pageNum, 10);
+        Page<QuestionStudentDto> page = questionService.findAllByCourseId(pageable,courseId);
+        model.addAttribute("questionPageInfo", page);
+
+        List<CourseInfo> courseInfoList =  courseInfoService.getclass_by_arrangeteacher(user.getId());
+        model.addAttribute("courseInfoList",courseInfoList);
         return "shouye/dayiManage";
     }
 

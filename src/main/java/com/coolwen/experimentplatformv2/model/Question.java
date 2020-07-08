@@ -20,6 +20,7 @@ public class Question {
     private String content;     //问题内容
     private Date dic_datetime;    //记录时间
     private Boolean isreply;    //是否回复
+    private int course_id;
 
 
     public Question(int sid, String content, Date dic_datetime, Boolean isreply) {
@@ -71,6 +72,14 @@ public class Question {
         this.isreply = isreply;
     }
 
+    public int getCourse_id() {
+        return course_id;
+    }
+
+    public void setCourse_id(int course_id) {
+        this.course_id = course_id;
+    }
+
     @Override
     public String toString() {
         return "Question{" +
@@ -79,6 +88,7 @@ public class Question {
                 ", content='" + content + '\'' +
                 ", dic_datetime=" + dic_datetime +
                 ", isreply=" + isreply +
+                ", course_id=" + course_id +
                 '}';
     }
 }

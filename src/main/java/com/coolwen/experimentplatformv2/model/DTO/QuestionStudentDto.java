@@ -15,6 +15,7 @@ public class QuestionStudentDto {
     private Date dic_datetime;  //时间
     private String stu_uname;   //学生姓名
     private Boolean isreply;    //是否回复
+    private String courseName;
 
     public QuestionStudentDto(int id, int sid, String content, Date dic_datetime, String stu_uname, Boolean isreply) {
         this.id = id;
@@ -23,6 +24,16 @@ public class QuestionStudentDto {
         this.dic_datetime = dic_datetime;
         this.stu_uname = stu_uname;
         this.isreply = isreply;
+    }
+
+    public QuestionStudentDto(int id, int sid, String content, Date dic_datetime, String stu_uname, Boolean isreply, String courseName) {
+        this.id = id;
+        this.sid = sid;
+        this.content = content;
+        this.dic_datetime = dic_datetime;
+        this.stu_uname = stu_uname;
+        this.isreply = isreply;
+        this.courseName = courseName;
     }
 
     public QuestionStudentDto() { }
@@ -75,6 +86,14 @@ public class QuestionStudentDto {
         this.isreply = isreply;
     }
 
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+
     @Override
     public String toString() {
         return "QuestionStudentDto{" +
@@ -84,6 +103,7 @@ public class QuestionStudentDto {
                 ", dic_datetime=" + dic_datetime +
                 ", stu_uname='" + stu_uname + '\'' +
                 ", isreply=" + isreply +
+                ", courseName='" + courseName + '\'' +
                 '}';
     }
 }

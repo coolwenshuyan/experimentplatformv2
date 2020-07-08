@@ -134,15 +134,13 @@ public class KaoheModelController {
         boolean choose = true;
         model.addAttribute("Choose",choose);
 
-        // 这是一个整数列表,用来存放所有的考核模块的实验模块id,在视图上用来判断此实验是否已经在考核中
+        // 这是一个整数列表,用来存放所有的考核模块的实验模块id,用来判断此实验是否已经在考核中
         List<Integer> check = kaoheModelService.inKaoheList(arrangeId);
 //        model.addAttribute("checkList", check);
 
+        //本安排的实验模块
         ArrangeClass arrangeClass = arrangeClassService.findById(arrangeId);
-        //这个是所有的实验模块
-//        Page<ExpModel> a = expModelService.findModelList(pageNum);
         Page<ExpModel> a = expModelService.findOneCourseModelList(arrangeClass.getCourseId(),pageNum);
-
         //设置是否已经移入了考核
         List<ExpModel> tempts = a.getContent();
         for (int i=0;i<tempts.size();i++)
@@ -177,7 +175,7 @@ public class KaoheModelController {
     }
 
     /**
-     * 列出所有考核模块 以下均为相同内容,不再赘述
+     * 列出所有考核模块
      * @param model 传值
      * @param pageNum 分页
      * @return 页面
@@ -188,14 +186,55 @@ public class KaoheModelController {
         // 所有的考核模块
 //        Pageable pageable = PageRequest.of(pageNum, 5);
 //        Page<KaoheModel> page = kaoheModelService.findAll(pageable);
-        Page<KaoheModelAndExpInfoDTO> page = kaoheModelService.findAllKaoheModelAndExpInfoDTO(pageNum);
+        //判断是否选择了安排
+        boolean choose = false;
+        model.addAttribute("Choose",choose);
 
+//        Page<KaoheModelAndExpInfoDTO> page = kaoheModelService.findAllKaoheModelAndExpInfoDTO(pageNum);
+//
+//        model.addAttribute("kaoheModelPageInfo", page);
+//        System.out.println("page:" + page.getTotalElements());
+//
+//        //分页
+//        ObjectMapper mapper = new ObjectMapper();
+//        System.out.println("json:" + mapper.writeValueAsString(page));
+
+        //所有的下拉列表数据
+        List<ArrangeInfoDTO> arrangeInfoDTOs =  arrangeClassService.findArrangeInfoDTOByTeacherId(1);
+        model.addAttribute("arrangeInfoDTOs",arrangeInfoDTOs);
+        logger.debug("下拉列表数据>>>>>:"+arrangeInfoDTOs);
+
+        return "kaohe/checkModule";
+    }
+
+    /**
+     * 筛选考核模块
+     * @param model
+     * @param arrangeId
+     * @param pageNum
+     * @return
+     * @throws JsonProcessingException
+     */
+    @RequestMapping(value = "/checkModule/{arrangeId}", method = RequestMethod.GET)
+    public String listCheckModule(Model model,
+                                  @PathVariable int arrangeId,
+                                  @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum) throws JsonProcessingException {
+        //判断是否选择了安排
+        boolean choose = true;
+        model.addAttribute("Choose",choose);
+
+        //本安排的考核实验模块
+        Page<KaoheModelAndExpInfoDTO> page = kaoheModelService.findAllKaoheModelAndExpInfoDTOByArrangeId(arrangeId,pageNum);
         model.addAttribute("kaoheModelPageInfo", page);
-        System.out.println("page:" + page.getTotalElements());
+//        System.out.println("page:" + page.getTotalElements());
 
-        //分页
-        ObjectMapper mapper = new ObjectMapper();
-        System.out.println("json:" + mapper.writeValueAsString(page));
+        //所有的下拉列表数据
+        List<ArrangeInfoDTO> arrangeInfoDTOs =  arrangeClassService.findArrangeInfoDTOByTeacherId(1);
+        model.addAttribute("arrangeInfoDTOs",arrangeInfoDTOs);
+        logger.debug("下拉列表数据>>>>>:"+arrangeInfoDTOs);
+
+        //回显当前所选的安排
+        model.addAttribute("selected",arrangeId);
         return "kaohe/checkModule";
     }
 

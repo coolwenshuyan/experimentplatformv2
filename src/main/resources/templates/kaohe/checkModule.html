@@ -57,8 +57,8 @@
     <select name="interest" lay-filter="aihao" onchange="window.open(this.options[this.selectedIndex].value,target='_self')" style="margin-top: 13px;">
         <option>--请选择--</option>
         <div th:each="arrangeInfo:${arrangeInfoDTOs}" >
-            <option th:value="|/kaohemodel/Module/${arrangeInfo.getArrangeId()}/|"  th:text="${arrangeInfo.getCourseName()+'-'+arrangeInfo.getClassName()}" th:if="${arrangeInfo.getArrangeId() ne selected}">18信管01</option>
-            <option th:value="|/kaohemodel/Module/${arrangeInfo.getArrangeId()}/|"  th:text="${arrangeInfo.getCourseName()+'-'+arrangeInfo.getClassName()}" selected="selected" th:if="${arrangeInfo.getArrangeId() eq selected}">18信管01</option>
+            <option th:value="|/kaohemodel/checkModule/${arrangeInfo.getArrangeId()}/|"  th:text="${arrangeInfo.getCourseName()+'-'+arrangeInfo.getClassName()}" th:if="${arrangeInfo.getArrangeId() ne selected}">18信管01</option>
+            <option th:value="|/kaohemodel/checkModule/${arrangeInfo.getArrangeId()}/|"  th:text="${arrangeInfo.getCourseName()+'-'+arrangeInfo.getClassName()}" selected="selected" th:if="${arrangeInfo.getArrangeId() eq selected}">18信管01</option>
         </div>
     </select>
 
@@ -74,6 +74,7 @@
         <input type="hidden" name="classid" id="classid" th:value="${classid}">
         <button>获取模块</button>
     </form>-->
+    <div th:if="${Choose}">
     <div class="layui-form">
         <table class="layui-table">
             <!--					<colgroup>-->
@@ -122,6 +123,7 @@
 
     </div>
 
+
     <div class="modal-footer no-margin-top">
         <ul class="pagination pull-right no-margin">
 
@@ -157,6 +159,10 @@
             </li>
 
         </ul>
+    </div>
+    </div>
+    <div th:if="${not Choose}">
+        <p>请选择课程安排</p>
     </div>
 </div>
 

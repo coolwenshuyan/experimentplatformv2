@@ -55,4 +55,6 @@ public interface KaoheModelService {
     public Page<KaoheModelAndExpInfoDTO> findByArrange_idIn(int pageNum, List<Integer> ids);
 
     List<Integer> findKaoheModelByArrangeId(int arrangeId);
+
+    Page<KaoheModelAndExpInfoDTO> findAllKaoheModelAndExpInfoDTOByArrangeId(int arrangeId, Integer pageNum);
 }

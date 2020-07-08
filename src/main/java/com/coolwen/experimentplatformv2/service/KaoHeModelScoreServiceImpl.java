@@ -93,4 +93,14 @@ public class KaoHeModelScoreServiceImpl implements KaoHeModelScoreService {
     public List<KaoHeModelScore> findKaoheModuleScoreByStuId(int stuid) {
         return kaoHeModelScoreRepository.findKaoHeModelScoreByStuId(stuid);
     }
+
+    @Override
+    public Integer findmTestFalseByClassIdAndMid(int classId, int Mid) {
+        return kaoHeModelScoreRepository.findmTestFalseByClassIdAndMid(classId,Mid);
+    }
+
+    @Override
+    public Integer findmReportFalseByClassIdAndMid(int classId, int Mid) {
+        return kaoHeModelScoreRepository.findmReportFalseByClassIdAndMid(classId, Mid);
+    }
 }

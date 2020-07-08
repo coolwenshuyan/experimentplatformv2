@@ -40,6 +40,6 @@ public interface ExpModelRepository extends BaseRepository<ExpModel,Integer> {
     @Query("select exp from ExpModel exp where exp.courseId = ?1")
     Page<ExpModel> findOneCourseModelList(int courseId, Pageable pageable);
 
-//    @Query("select e from KaoheModel kh left join ExpModel e on e.m_id = kh.m_id where e.course_id = ?1")
-//    Page<ExpModel> findExpModelsByCourse_id(int courseId,PageRequest pageRequest);
+    @Query("select e from KaoheModel kh left join ExpModel e on e.m_id = kh.m_id where e.courseId = ?1")
+    Page<ExpModel> findExpModelsByCourse_id(int courseId,PageRequest pageRequest);
 }

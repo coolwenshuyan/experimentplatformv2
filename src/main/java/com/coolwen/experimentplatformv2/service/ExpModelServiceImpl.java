@@ -99,8 +99,6 @@ public class ExpModelServiceImpl implements ExpModelService {
 
     @Override
     public Page<ExpModel> findKaoheProgressMainByCourseId(int courseId, int PageNum) {
-//        return expModelRepository.findExpModelsByCourse_id(courseId,PageRequest.of(PageNum,6));
-        return null;
-
+        return expModelRepository.findExpModelsByCourse_id(courseId,PageRequest.of(PageNum,6));
     }
 }

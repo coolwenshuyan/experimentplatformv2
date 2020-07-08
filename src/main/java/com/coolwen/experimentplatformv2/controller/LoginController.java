@@ -109,7 +109,7 @@ public class LoginController {
         if (comsys_role.contains("ROLE_STUDENT")) {
             LoginToken token = new LoginToken("zhuzhiwen", ShiroKit.md5("123", "zhuzhiwen"), "student");
             subject.login(token);
-            Student student2 = (Student) subject.getPrincipal();
+//            Student student2 = (Student) subject.getPrincipal();
 //            身份类型是学生
             Student student = studentService.findByStuXuehao(number);
             session.setAttribute("username", student.getStuUname());
@@ -255,13 +255,13 @@ public class LoginController {
 //                    }
                 student.setStuUname(username);
                 student.setStuPassword(password);
-                if (stu_isinschool && stu_xuehao == "") {
+                if (stu_isinschool && stu_xuehao.equals("")) {
 //                        throw new UserException("在校学生须填写学号!");
                     model.addObject("xuehaomsg", "在校学生须填写学号!");
                     model.setViewName("register");
                     return model;
                 }
-                if (stu_xuehao != "") {
+                if (!stu_xuehao.equals("")) {
                     Student student2 = studentService.findByStuXuehao(stu_xuehao);
                     if (student2 != null) {
 //                            throw new UserException("学号已经被使用!");
@@ -312,7 +312,7 @@ public class LoginController {
                                @RequestParam("type") String registType,
                                @RequestParam("tel") String tel, HttpSession session) {
         ModelAndView model = new ModelAndView();
-        String uName = (String) session.getAttribute("username");
+//        String uName = (String) session.getAttribute("username");
         if (((String) session.getAttribute("username")).equals("student")) {
             //studentService.updateByUnmae(uName);
         }

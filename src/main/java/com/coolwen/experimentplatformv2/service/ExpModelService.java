@@ -34,5 +34,5 @@ public interface ExpModelService {
     Page<KaoheModuleProgressDTO> findExpModels(int course_id, int class_id, int m_id,int pageNum);
 
 
-
+    Page<ExpModel> findOneCourseModelList(int courseId ,Integer pageNum);
 }

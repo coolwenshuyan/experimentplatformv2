@@ -1,146 +1,138 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>考核实验设置</title>
-    <link rel="stylesheet" type="text/css" href="../../static/css/layui.css"/>
-    <link rel="stylesheet" type="text/css" href="../../static/css/page.css"/>
-    <link rel="stylesheet" type="text/css" href="../../static/css/bootstrap.min.css"/>
-    <style>
-        .text-overflow {
-            display: block; /*内联对象需加*/
-            width: 31em; /*指定宽度*/
-            word-break: keep-all; /* 不换行 */
-            white-space: nowrap; /* 强制在同一行内显示所有文本，直到文本结束或者遭遇 br 对象。不换行 */
-            overflow: hidden; /* 内容超出宽度时隐藏超出部分的内容 */
-            text-overflow: ellipsis; /* IE 专有属性，当对象内文本溢出时显示省略标记() ；需与overflow:hidden;一起使用。*/
-        }
+	<meta charset="UTF-8">
+	<title>考核实验设置</title>
+	<link rel="stylesheet" type="text/css" href="../../static/css/layui.css" />
+	<link rel="stylesheet" type="text/css" href="../../static/css/page.css"/>
+	<link rel="stylesheet" type="text/css" href="../../static/css/bootstrap.min.css"/>
+	<style>
+		.text-overflow {
+			display:block;/*内联对象需加*/
+			width:31em;/*指定宽度*/
+			word-break:keep-all;/* 不换行 */
+			white-space:nowrap;/* 强制在同一行内显示所有文本，直到文本结束或者遭遇 br 对象。不换行 */
+			overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
+			text-overflow:ellipsis;/* IE 专有属性，当对象内文本溢出时显示省略标记() ；需与overflow:hidden;一起使用。*/
+		}
 
-        table {
-            width: 30em;
-            table-layout: fixed; /* 只有定义了表格的布局算法为fixed，下面td的定义才能起作用。 */
-        }
+		table{
+			width:30em;
+			table-layout:fixed;/* 只有定义了表格的布局算法为fixed，下面td的定义才能起作用。 */
+		}
+		td{
+			width:100%;
+			word-break:keep-all;/* 不换行 */
+			white-space:nowrap;/* 不换行 */
+			overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
+			text-overflow:ellipsis;/* 当对象内文本溢出时显示省略标记() ；需与overflow:hidden;一起使用。*/
+		}
 
-        td {
-            width: 100%;
-            word-break: keep-all; /* 不换行 */
-            white-space: nowrap; /* 不换行 */
-            overflow: hidden; /* 内容超出宽度时隐藏超出部分的内容 */
-            text-overflow: ellipsis; /* 当对象内文本溢出时显示省略标记() ；需与overflow:hidden;一起使用。*/
-        }
-
-        .layui-table th {
-            text-align: center;
-            font-weight: 900;
-        }
-    </style>
+		.layui-table th {
+			text-align: center;
+			font-weight: 900;
+		}
+	</style>
 </head>
 <body>
 <div id="app" class="layui-container">
-    <!--	<img src="../../static/images/LOGO2.png"> <br><br>-->
-    <!--	<span class="layui-breadcrumb">-->
-    <!--  			<a href="/">首页</a>-->
-    <!--		&lt;!&ndash;<a href="/demo/">师资队伍</a>&ndash;&gt;-->
-    <!--  			<a><cite>考核实验</cite></a>-->
-    <!--			</span> <br><br><br>-->
+<!--	<img src="../../static/images/LOGO2.png"> <br><br>-->
+<!--	<span class="layui-breadcrumb">-->
+<!--  			<a href="/">首页</a>-->
+<!--		&lt;!&ndash;<a href="/demo/">师资队伍</a>&ndash;&gt;-->
+<!--  			<a><cite>考核实验</cite></a>-->
+<!--			</span> <br><br><br>-->
 
-    <a href="/kaohemodel/checkModule">
-        <button type="button" class="layui-btn layui-btn-primary" style="border-color: #174f37;color: #174f37;">考核模块
-        </button>
-    </a>
-    <a href="/kaohemodel/allModule">
-        <button type="button" class="layui-btn layui-btn-primary"
-                style="border-color: #174f37;color: #ffffff;background: #009688">全部模块
-        </button>
-    </a>
+	<a href="/kaohemodel/checkModule"><button type="button" class="layui-btn layui-btn-primary" style="border-color: #174f37;color: #174f37;">考核模块</button></a>
+	<a href="/kaohemodel/allModule"><button type="button" class="layui-btn layui-btn-primary" style="border-color: #174f37;color: #ffffff;background: #009688">全部模块</button></a>
 
-    <select lay-filter="selectCourse" id="selectCourse" name="selectCourse">
-        <option>——请选择课程——</option>
-    </select>
-    <button onclick="selectGroup()">获取模块</button>
-    <ul id="selectPerms" name="selectPerms" class="list-group list-group-flush">
-    </ul>
+	<select name="interest" lay-filter="aihao" onchange="window.open(this.options[this.selectedIndex].value,target='_self')" style="margin-top: 13px;">
+		<option>--请选择--</option>
+		<div th:each="arrangeInfo:${arrangeInfoDTOs}" >
+			<option th:value="|/kaohemodel/Module/${arrangeInfo.getArrangeId()}/|"  th:text="${arrangeInfo.getCourseName()+'-'+arrangeInfo.getClassName()}" th:if="${arrangeInfo.getArrangeId() ne selected}">18信管01</option>
+			<option th:value="|/kaohemodel/Module/${arrangeInfo.getArrangeId()}/|"  th:text="${arrangeInfo.getCourseName()+'-'+arrangeInfo.getClassName()}" selected="selected" th:if="${arrangeInfo.getArrangeId() eq selected}">18信管01</option>
+		</div>
+	</select>
 
-    <div class="layui-form">
-        <table class="layui-table">
-            <!--			<colgroup>-->
-            <!--				<col width="150">-->
-            <!--				<col width="150">-->
-            <!--				<col width="200">-->
-            <!--				<col>-->
-            <!--			</colgroup>-->
-            <thead>
-            <tr>
-                <th width="5%">ID</th>
-                <th>实验名</th>
-                <th>实验类型</th>
-                <th>实验目的</th>
-                <th width="7%">课时</th>
-                <th>操作</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr align="center" th:each="b:${allKaohe}">
-                <td th:text="${b.getM_id()}">1</td>
-                <td th:text="${b.getM_name()}">模块1</td>
-                <td th:text="${b.getM_type()}">拓展创新</td>
-                <td th:text="${b.getPurpose()}">拓展创新</td>
-                <td th:text="${b.getClasshour()}">32</td>
-                <td>
-                    <!--					<div th:each="c:${checkList}" >-->
-                    <!--					<p th:text="${c}">是否在内</p>-->
-                    <!--					</div>-->
+	<div th:if="${Choose}">
+		<div class="layui-form">
+			<table class="layui-table">
+	<!--			<colgroup>-->
+	<!--				<col width="150">-->
+	<!--				<col width="150">-->
+	<!--				<col width="200">-->
+	<!--				<col>-->
+	<!--			</colgroup>-->
+				<thead>
+				<tr>
+					<th width="5%">ID</th>
+					<th>实验名</th>
+					<th>实验类型</th>
+					<th>实验目的</th>
+					<th width="7%">课时</th>
+					<th>操作</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr align="center" th:each="b:${allKaohe}">
+					<td th:text="${b.getM_id()}">1</td>
+					<td th:text="${b.getM_name()}">模块1</td>
+					<td th:text="${b.getM_type()}">拓展创新</td>
+					<td th:text="${b.getPurpose()}">拓展创新</td>
+					<td th:text="${b.getClasshour()}">32</td>
+					<td >
+	<!--					<div th:each="c:${checkList}" >-->
+	<!--					<p th:text="${c}">是否在内</p>-->
+	<!--					</div>-->
 
-                    <!--					th:if="${b.needKaohe eq 1}-->
-                    <a th:href="@{|/kaohemodel/${b.getM_id()}/moveIn|}" th:if="${!b.isNeedKaohe()}">
-                        <button type="add" @click="isTrue" class="layui-btn layui-btn-sm">移入考核</button>
-                    </a>
+	<!--					th:if="${b.needKaohe eq 1}-->
+						<a th:href="@{|/kaohemodel/${b.getM_id()}/${selected}/moveIn|}" th:if="${!b.isNeedKaohe()}" ><button type="add"  @click="isTrue" class="layui-btn layui-btn-sm" >移入考核</button></a>
 
 
-                </td>
-            </tr>
 
-            </tbody>
-        </table>
-    </div>
+					</td>
+				</tr>
 
-    <div class="modal-footer no-margin-top">
-        <ul class="pagination pull-right no-margin">
+				</tbody>
+			</table>
+		</div>
 
-            <!-- 首页 -->
-            <li>
-                <a th:href="'/kaohemodel/allModule?pageNum=0'">首页</a>
-            </li>
+		<div class="modal-footer no-margin-top">
+			<ul class="pagination pull-right no-margin">
 
-            <!-- 上一页 -->
-            <li th:if="${allKaohe.hasPrevious()}">
-                <a th:href="'/kaohemodel/allModule?pageNum=' + ${allKaohe.previousPageable().getPageNumber()}"
-                   th:text="上一页"></a>
-            </li>
+				<!-- 首页 -->
+				<li>
+					<a th:href="'/kaohemodel/allModule?pageNum=0'">首页</a>
+				</li>
 
-            <!-- 中间页 -->
-            <li th:each="pageNum:${#numbers.sequence(0, allKaohe.getTotalPages() - 1)}">
-                <a th:href="'/kaohemodel/allModule?pageNum=' + ${pageNum}" th:text="${pageNum + 1}"
-                   th:if="${pageNum ne allKaohe.pageable.getPageNumber()}"></a>
-                <a th:href="'/kaohemodel/allModule?pageNum=' + ${pageNum}" th:text="${pageNum + 1}"
-                   th:if="${pageNum eq allKaohe.pageable.getPageNumber()}"
-                   th:style="'font-weight:bold;background: #6faed9;'"></a>
-            </li>
+				<!-- 上一页 -->
+				<li th:if="${allKaohe.hasPrevious()}">
+					<a th:href="'/kaohemodel/allModule?pageNum=' + ${allKaohe.previousPageable().getPageNumber()}" th:text="上一页"></a>
+				</li>
 
-            <!-- 下一页 -->
-            <li th:if="${allKaohe.hasNext()}">
-                <a th:href="'/kaohemodel/allModule?pageNum=' + ${allKaohe.nextPageable().getPageNumber()}"
-                   th:text="下一页"></a>
-            </li>
+				<!-- 中间页 -->
+				<li th:each="pageNum:${#numbers.sequence(0, allKaohe.getTotalPages() - 1)}">
+					<a th:href="'/kaohemodel/allModule?pageNum=' + ${pageNum}" th:text="${pageNum + 1}" th:if="${pageNum ne allKaohe.pageable.getPageNumber()}"></a>
+					<a th:href="'/kaohemodel/allModule?pageNum=' + ${pageNum}" th:text="${pageNum + 1}" th:if="${pageNum eq allKaohe.pageable.getPageNumber()}" th:style="'font-weight:bold;background: #6faed9;'"></a>
+				</li>
 
-            <!-- 尾页 -->
-            <li>
-                <a th:href="'/kaohemodel/allModule?pageNum=' + ${allKaohe.getTotalPages() - 1}">尾页</a>
-            </li>
+				<!-- 下一页 -->
+				<li th:if="${allKaohe.hasNext()}">
+					<a th:href="'/kaohemodel/allModule?pageNum=' + ${allKaohe.nextPageable().getPageNumber()}" th:text="下一页"></a>
+				</li>
 
-        </ul>
-    </div>
+				<!-- 尾页 -->
+				<li>
+					<a th:href="'/kaohemodel/allModule?pageNum=' + ${allKaohe.getTotalPages() - 1}">尾页</a>
+				</li>
 
+			</ul>
+		</div>
+	</div>
+
+	<div th:if="${not Choose}">
+		<p>请选择课程安排</p>
+	</div>
 </div>
 
 
@@ -154,53 +146,18 @@
 <script src="../../static/js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="../../static/js/jquery.z-pager.js" type="text/javascript" charset="utf-8"></script>
 <script>
-    var app = new Vue({
-        el: "#app",
+	var app = new Vue({
+		el:"#app",
 
-        methods: {
-            isTrue: function () {
-                confirm("确认移入考核？")
-            }
-        }
-    })
+		methods:{
+			isTrue:function(){
+				confirm("确认移入考核？")
+			}
+		}
+	})
 
-</script>
-<script type="application/javascript">
-    layui.use(['jquery', 'layer'], function () {
-        var $ = layui.jquery,
-            layer = layui.layer;
-        $.ajax({
-            type: "GET",
-            url: "/kaohemodel/course",
-            async: true,
-            success: function (data) {
-                var cList = data;
-                console.log(cList);
-                var cSelect = "<option>——请选择课程——</option>";
-                for (var i = 0; i < cList.length; i++) {
-                    cSelect += ("<option value = '" + cList[i].id + "'>" + cList[i].courseName + "</option>");
-                }
-                $("#selectCourse").empty();
-                $("#selectCourse").append(cSelect);
-            }
-        })
-        window.selectGroup = function selectGroup() {
-            var cid = $("#selectCourse").val();
-            console.log(cid);
-            //获取当前课程下面的所有没有加入的模块，简单做可以使用form，请参考考核模块的方法
-            $.ajax({
-                type: "GET",
-                //接口待改
-                url: "/kaohemodel/course" + cid,
-                async: true,
-                success: function (data) {
-                    var cList = data;
-                    console.log(cList);
 
-                }
-            })
-        }
-    });
+
 </script>
 
 </body>

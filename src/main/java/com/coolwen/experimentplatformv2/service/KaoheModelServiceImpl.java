@@ -77,8 +77,8 @@ public class KaoheModelServiceImpl implements KaoheModelService {
 //    }
 
     @Override
-    public List<Integer> inKaoheList() {
-        return kaoheModelRepository.findAllMid();
+    public List<Integer> inKaoheList(int arrangeId) {
+        return kaoheModelRepository.findAllMid(arrangeId);
     }
 
     @Override
@@ -200,6 +200,11 @@ public class KaoheModelServiceImpl implements KaoheModelService {
     public Page<KaoheModelAndExpInfoDTO> findByArrange_idIn(int pageNum, List<Integer> ids) {
         Pageable pageable = PageRequest.of(pageNum, 10);
         return kaoheModelRepository.findByArrange_idIn(pageable, ids);
+    }
+
+    @Override
+    public List<Integer> findKaoheModelByArrangeId(int arrangeId) {
+        return kaoheModelRepository.findKaoheModelByArrangeId(arrangeId);
     }
 
 

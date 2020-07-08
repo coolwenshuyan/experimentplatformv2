@@ -112,7 +112,13 @@
 				</div>
 			</div>
 
-			<form class="layui-form" th:object="${moveIn}" th:method="post">
+			<form class="layui-form" th:object="${moveIn}" th:method="post" >
+<!--				th:action="@{|/${}/${arrangeId}/moveIn|}"-->
+<!--				<div class="layui-form-item" style="display:none">-->
+<!--					<div class="layui-input-block">-->
+<!--						<input th:value="${arrangeId}" type="text" name="arrange_id" lay-verify="title" autocomplete="off" placeholder="请输入报告成绩占比" class="layui-input" title="请输入0-1之间的数" pattern="^(1|(0(.\d{1,10})?))$">-->
+<!--					</div>-->
+<!--				</div>-->
 
 				<div class="layui-form-item">
 					<label class="layui-form-label">

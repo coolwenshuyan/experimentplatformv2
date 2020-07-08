@@ -5,12 +5,17 @@ import com.coolwen.experimentplatformv2.model.ArrangeClass;
 import com.coolwen.experimentplatformv2.model.DTO.ArrangeClassDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.coolwen.experimentplatformv2.model.DTO.ArrangeInfoDTO;
+import com.coolwen.experimentplatformv2.model.Student;
+import com.coolwen.experimentplatformv2.specification.SimpleSpecificationBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,6 +99,12 @@ public class ArrangeClassServiceImpl implements ArrangeClassService {
     @Override
     public ArrangeClass findByCourseIdAndTeacherIdAndClassId(int courseId, int teacherId, int classId) {
         return arrangeClassRepository.findByCourseIdAndTeacherIdAndClassId(courseId,teacherId,classId);}
+
+    @Override
+    public List<ArrangeInfoDTO> findArrangeInfoDTOByTeacherId(int teacherId) {
+        return arrangeClassRepository.findArrangeInfoDTOByTeacherId(teacherId);
+    }
+
 
 //    @Override
 //    public Page<ArrangeClassDto> findBycidAndtidAndclaidLike(Pageable pageable, String courseId, String teacherId, String classId) {

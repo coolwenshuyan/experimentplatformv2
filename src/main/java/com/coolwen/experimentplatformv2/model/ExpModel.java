@@ -13,6 +13,9 @@ public class ExpModel {
     @Column(name = "m_id")
     //模块id
     private int m_id;
+    //实验所属课程ID
+    @Column(nullable = false)
+    private int courseId;
     //模块名称
     @Column(length = 80,nullable = false)
     private String m_name;
@@ -65,6 +68,7 @@ public class ExpModel {
     public String toString() {
         return "ExpModel{" +
                 "m_id=" + m_id +
+                ", courseId=" + courseId +
                 ", m_name='" + m_name + '\'' +
                 ", m_manager='" + m_manager + '\'' +
                 ", course_id=" + course_id +
@@ -220,4 +224,11 @@ public class ExpModel {
         this.needKaohe = needKaohe;
     }
 
+    public int getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
+    }
 }

@@ -37,5 +37,6 @@ public interface ExpModelRepository extends BaseRepository<ExpModel,Integer> {
     Page<KaoheModuleProgressDTO> findExpModels(int course_id, int class_id, int m_id, PageRequest pageRequest);
 
 
-
+    @Query("select exp from ExpModel exp where exp.courseId = ?1")
+    Page<ExpModel> findOneCourseModelList(int courseId, Pageable pageable);
 }

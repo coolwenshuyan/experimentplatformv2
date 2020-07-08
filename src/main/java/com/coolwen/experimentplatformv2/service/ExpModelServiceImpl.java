@@ -91,5 +91,9 @@ public class ExpModelServiceImpl implements ExpModelService {
         return expModelRepository.findExpModels(course_id,class_id,m_id,PageRequest.of(pageNum,pageSize));
     }
 
-
+    @Override
+    public Page<ExpModel> findOneCourseModelList(int courseId,Integer pageNum) {
+        Pageable pageable = PageRequest.of(pageNum,10);
+        return expModelRepository.findOneCourseModelList(courseId,pageable);
+    }
 }

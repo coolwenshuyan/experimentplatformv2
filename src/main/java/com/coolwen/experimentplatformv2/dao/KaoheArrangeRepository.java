@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface KaoheModelRepository extends BaseRepository<KaoheModel, Integer>, JpaSpecificationExecutor<KaoheModel> {
+public interface KaoheArrangeRepository extends BaseRepository<KaoheModel, Integer>, JpaSpecificationExecutor<KaoheModel> {
 
 
     @Query("select u from KaoheModel u where u.id = ?1") //这里的User对应Model层
@@ -28,8 +28,8 @@ public interface KaoheModelRepository extends BaseRepository<KaoheModel, Integer
 //    @Query("select ExpKaohe from ExpModel em,KaoheModel km where em.m_id=km.id")
 //    List<ExpKaohe> loadallmodel(int mId);
 
-    @Query("select k.m_id from KaoheModel as k where k.arrange_id = ?1")
-    List<Integer> findAllMid(int arrangeId);
+    @Query("select k.m_id from KaoheModel as k")
+    List<Integer> findAllMid();
 
     @Query("select count(k) from KaoheModel k")
     Integer findKaoheNum();
@@ -59,14 +59,15 @@ public interface KaoheModelRepository extends BaseRepository<KaoheModel, Integer
             "on khm.m_id = em.m_id ")
     Page<KaoheModelAndExpInfoDTO> findAllKaoheModelAndExpInfoDTO(Pageable pageable);
 
+
     @Query("select new com.coolwen.experimentplatformv2.model.DTO.KaoheModelAndExpInfoDTO " +
             "(khm.id,khm.m_id,khm.m_order,khm.m_scale,khm.m_test_baifenbi,khm.m_report_baifenbi,em.m_name,em.classhour,em.purpose,em.m_type) " +
             "from KaoheModel khm left join ExpModel em " +
-            "on khm.m_id = em.m_id where khm.arrange_id in(:ids)")
-    Page<KaoheModelAndExpInfoDTO> findByArrange_idIn(Pageable pageable, List<Integer> ids);
-
-    @Query("select khm.m_id from KaoheModel khm where khm.arrange_id = ?1")
-    List<Integer> findKaoheModelByArrangeId(int arrangeId);
+            "on khm.m_id = em.m_id " +
+            "where em.courseId in (" +
+            "select ac.courseId from ArrangeClass ac where ac.teacherId = ?1" +
+            ") ")
+    Page<KaoheModelAndExpInfoDTO> findAllKaoheModelAndExpInfoDTOByTeacherIdAndCourseIdAndClassId(Pageable pageable,int teacherId,int courseId);
 
 
 }

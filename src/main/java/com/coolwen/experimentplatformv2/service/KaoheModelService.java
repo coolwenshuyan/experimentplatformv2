@@ -25,7 +25,7 @@ public interface KaoheModelService {
 
 //    boolean isItInKaohe(int mid);
 
-    public List<Integer> inKaoheList();
+    public List<Integer> inKaoheList(int arrangeId);
 
     public long countKaoheModel();
 
@@ -53,4 +53,6 @@ public interface KaoheModelService {
     Page<KaoheModelAndExpInfoDTO> findAllKaoheModelAndExpInfoDTO(int pageNum);
 
     public Page<KaoheModelAndExpInfoDTO> findByArrange_idIn(int pageNum, List<Integer> ids);
+
+    List<Integer> findKaoheModelByArrangeId(int arrangeId);
 }

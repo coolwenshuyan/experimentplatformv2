@@ -53,9 +53,19 @@
     <a href="/kaohemodel/allModule">
         <button type="button" class="layui-btn layui-btn-primary" style="border-color: #174f37;color: #174f37;">全部模块
         </button>
-    </a> <select id="selectCourse" name="selectCourse" onchange="selectCourse()">
-    <option>——请选择课程——</option>
-</select>
+    </a>
+    <select name="interest" lay-filter="aihao" onchange="window.open(this.options[this.selectedIndex].value,target='_self')" style="margin-top: 13px;">
+        <option>--请选择--</option>
+        <div th:each="arrangeInfo:${arrangeInfoDTOs}" >
+            <option th:value="|/kaohemodel/Module/${arrangeInfo.getArrangeId()}/|"  th:text="${arrangeInfo.getCourseName()+'-'+arrangeInfo.getClassName()}" th:if="${arrangeInfo.getArrangeId() ne selected}">18信管01</option>
+            <option th:value="|/kaohemodel/Module/${arrangeInfo.getArrangeId()}/|"  th:text="${arrangeInfo.getCourseName()+'-'+arrangeInfo.getClassName()}" selected="selected" th:if="${arrangeInfo.getArrangeId() eq selected}">18信管01</option>
+        </div>
+    </select>
+
+    <!--<select id="selectCourse" name="selectCourse" onchange="selectCourse()">
+
+        <option>——请选择课程——</option>
+    </select>
     <select id="selectClass" name="selectClass" onchange="selectClass()">
         <option>——请选择班级——</option>
     </select>
@@ -63,7 +73,7 @@
         <input type="hidden" name="courseid" id="courseid" th:value="${courseid}">
         <input type="hidden" name="classid" id="classid" th:value="${classid}">
         <button>获取模块</button>
-    </form>
+    </form>-->
     <div class="layui-form">
         <table class="layui-table">
             <!--					<colgroup>-->
@@ -181,7 +191,7 @@
             console.log("当前页码数：" + currentPage);*/
 
 </script>
-<script type="application/javascript">
+<!--<script type="application/javascript">
     layui.use(['jquery', 'layer'], function () {
         var $ = layui.jquery,
             layer = layui.layer;
@@ -262,7 +272,7 @@
             // })
         }
     });
-</script>
+</script>-->
 
 
 <!--<script type="text/javascript">-->

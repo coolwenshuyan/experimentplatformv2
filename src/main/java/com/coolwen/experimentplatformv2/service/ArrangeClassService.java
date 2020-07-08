@@ -3,11 +3,11 @@ package com.coolwen.experimentplatformv2.service;
 
 import com.coolwen.experimentplatformv2.model.ArrangeClass;
 import com.coolwen.experimentplatformv2.model.DTO.ArrangeClassDto;
+import com.coolwen.experimentplatformv2.model.DTO.ArrangeInfoDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
-
 
 public interface ArrangeClassService {
 
@@ -24,6 +24,8 @@ public interface ArrangeClassService {
     List<ArrangeClassDto> findByTeacherIdAndCourseId(int tid, int cid);
 
     List<Integer> findArrangeIdByTeacherIdAndCourseId(int tid, int cid);
+
+    List<ArrangeInfoDTO> findArrangeInfoDTOByTeacherId(int teacherId);
 
     ArrangeClass findByCourseIdAndTeacherIdAndClassId(int courseId, int teacherId, int classId);
 }

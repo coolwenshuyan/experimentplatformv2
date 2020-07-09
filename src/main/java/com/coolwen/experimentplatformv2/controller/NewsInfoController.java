@@ -29,7 +29,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 /**
@@ -80,6 +83,8 @@ public class NewsInfoController {
         String ids = setInfo.getSet_rotateimg();
         //数据库中存储为拼接（例：1,2,3,4），拆分后，查询图片存储路径并存入model
         String[] sid = ids.split(",");
+        logger.debug("轮播数量:"+sid.length);
+
         for (int i = 0; i < sid.length; i++) {
 //            String imgurl = setInfoService.findexpimg(Integer.parseInt(sid[i]));
 //            String imgurl = expModelRepository.findexpimg(Integer.parseInt(sid[i]));
@@ -92,6 +97,17 @@ public class NewsInfoController {
             }
 
         }
+
+        List<ExpModel> expModels = new ArrayList<>();
+        for (int i = 0; i < sid.length; i++) {
+            try {
+                expModels.add(expModelRepository.findById(Integer.parseInt(sid[i])).get());
+            }catch (Exception e){
+
+            }
+        }
+        model.addAttribute("expModels",expModels);
+
         //平台统计
         //查询实验模块总数
         int modenum = (int) expModelRepository.count();

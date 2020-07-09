@@ -36,5 +36,10 @@ public interface KaoHeModelScoreService {
 
     List<KaoHeModelScore> findKaoheModuleScoreByStuId(int stuid);
 
+    Integer findmTestFalseByClassIdAndMid(int classId,int Mid);
+
+    Integer findmReportFalseByClassIdAndMid(int classId,int Mid);
+
+
 
 }

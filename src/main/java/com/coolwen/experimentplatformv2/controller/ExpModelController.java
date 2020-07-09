@@ -5,6 +5,7 @@ import com.coolwen.experimentplatformv2.config.ShiroConfig;
 import com.coolwen.experimentplatformv2.model.*;
 import com.coolwen.experimentplatformv2.model.DTO.KaoHeModelStuDTO;
 import com.coolwen.experimentplatformv2.model.DTO.KaoheModuleProgressDTO;
+import com.coolwen.experimentplatformv2.model.DTO.KaoheProgressMainDTO;
 import com.coolwen.experimentplatformv2.service.*;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -61,6 +63,8 @@ public class ExpModelController {
     CollegeReportService collegeReportService;
     @Autowired
     DockerService dockerService;
+    @Autowired
+    CourseInfoService courseInfoService;
 
     protected static final Logger logger = LoggerFactory.getLogger(ExpModelController.class);
 
@@ -556,7 +560,7 @@ public class ExpModelController {
         return "kuangjia/shiyan";
     }
 
-    //考核模块进度查询
+    //考核模块进度查询详情
     @GetMapping("/kaoheProgressQuery/{id}")
     public String kaoheProgressQuery(@PathVariable("id")int id,@RequestParam(value = "pageNum",defaultValue = "0",required = true)int pageNum,Model model){
         model.addAttribute("mid",id);
@@ -569,6 +573,45 @@ public class ExpModelController {
         model.addAttribute("testStateFalseNum",clazzService.findStuMTestByClassId(class_id,id));
         model.addAttribute("reportStateFalseNum",clazzService.findStuMReportStateByClassId(class_id,id));
         return "kaohe/progress_management";
+    }
+
+
+    //考核模块进度查询
+    @GetMapping("/kaoheProgress")
+    public String kaoheProgress(@RequestParam(value = "course",required = true,defaultValue = "0")int courseId,
+                                @RequestParam(value = "class",required = true,defaultValue = "0")int classId,
+                                @RequestParam(value = "pageNum",defaultValue = "0")int pageNum,
+                                Model model
+                                )
+    {
+
+        model.addAttribute("courseList",courseInfoService.findAll());
+        model.addAttribute("classList",clazzService.findAllClass());
+        if(courseId == 0 && classId == 0){
+            return "kaohe/progress";
+        }else if(courseId == 0 && classId != 0){
+            return "kaohe/progress";
+        }else if(courseId != 0 && classId == 0){
+            return "kaohe/progress";
+        }
+        model.addAttribute("courseId",courseId);
+        model.addAttribute("classId",classId);
+        SecurityUtils.getSubject().getSession().setAttribute("proGressCourse_id",courseId);
+        SecurityUtils.getSubject().getSession().setAttribute("class_id",classId);
+        int mTestFalseNum = 0;
+        int mReportFalseNum = 0;
+        List<KaoheProgressMainDTO> list = new ArrayList<>();
+        KaoheProgressMainDTO kaoheProgressMainDTO = null;
+        Page<ExpModel> page = expModelService.findKaoheProgressMainByCourseId(courseId,pageNum);
+        int totalNum = clazzService.findStudentNumByClassId(classId);
+        for (ExpModel e : page){
+            mTestFalseNum = kaoHeModelScoreService.findmTestFalseByClassIdAndMid(classId,e.getM_id());
+            mReportFalseNum = kaoHeModelScoreService.findmReportFalseByClassIdAndMid(classId,e.getM_id());
+            kaoheProgressMainDTO = new KaoheProgressMainDTO(e.getM_id(),e.getM_name(),e.getImageurl(),totalNum,mTestFalseNum,mReportFalseNum);
+            list.add(kaoheProgressMainDTO);
+        }
+        model.addAttribute("list",list);
+        return "kaohe/progress";
     }
 
 

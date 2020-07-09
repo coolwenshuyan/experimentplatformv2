@@ -25,6 +25,8 @@ public interface CourseInfoService {
     //根据教师ID和课程ID获得课程安排表中对应的该课程的班级对列
     List<ClassModel> getclass_by_arrangecourseid(int teacher_id,int course_id);
 
+    List<CourseInfo> findAll();
+
 
 
 }

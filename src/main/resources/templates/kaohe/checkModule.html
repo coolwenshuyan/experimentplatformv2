@@ -254,6 +254,11 @@
             var courseid = $("#selectCourse").val();
             var classid = $("#selectClass").val();
             console.log('courseid=' + courseid + 'classid=' + classid);
+            // if (isNaN(courseid.value) && courseid.value != 0) {
+            //     courseid = '';
+            // }if (isNaN(classid.value) && classid.value != 0) {
+            //     courseid = '';
+            // }
             $("#courseid").val(courseid);
             $("#classid").val(classid);
             //获取当前课程下面的所有没有加入的模块，简单做可以使用form，不用js来做

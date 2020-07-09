@@ -1,26 +1,28 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1" />
-        <meta name="renderer" content="webkit" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>管理中心 - 旅游大数据虚拟仿真实验教学平台</title>
-        <link rel="stylesheet" href="../../static/new/css/reset.css" />
-        <link rel="stylesheet" href="//cdn.staticfile.org/element-ui/2.13.2/theme-chalk/index.css" />
-        <link rel="stylesheet" href="../../static/new/css/shiyan.css" />
-    </head>
-    <body>
-        <div id="app">
-            <el-container>
-                <el-header height="80px">
-                    <div class="logo">
-                        <img src="../../static/new/images/sctu_w.png" />
-                        <p>旅游大数据虚拟仿真实验教学平台</p>
-                        <span>管理中心</span>
-                    </div>
-                    <div class="user-menu">
-                        <el-dropdown trigger="click" placement="bottom" @command="userMenuHandle">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1"/>
+    <meta name="renderer" content="webkit"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>管理中心 - 旅游大数据虚拟仿真实验教学平台</title>
+    <link rel="stylesheet" th:href="@{/new/css/reset.css}" href="../../static/new/css/reset.css"/>
+    <link rel="stylesheet" th:href="@{//cdn.staticfile.org/element-ui/2.13.2/theme-chalk/index.css}"
+          href="//cdn.staticfile.org/element-ui/2.13.2/theme-chalk/index.css"/>
+    <link rel="stylesheet" th:href="@{/new/css/shiyan.css}" href="../../static/new/css/shiyan.css"/>
+    <link rel="stylesheet" th:href="@{/css/layui.css}" href="../../static/css/layui.css"/>
+</head>
+<body>
+<div id="app">
+    <el-container>
+        <el-header height="80px">
+            <div class="logo">
+                <img src="../../static/new/images/sctu_w.png"/>
+                <p>旅游大数据虚拟仿真实验教学平台</p>
+                <span>管理中心</span>
+            </div>
+            <div class="user-menu">
+                <el-dropdown trigger="click" placement="bottom" @command="userMenuHandle">
                             <span class="el-dropdown-link">
                                 <span>管理员</span>
                                 <i class="el-icon-arrow-down el-icon--right"></i>
@@ -113,45 +115,52 @@
                             </el-submenu>
 
 
-                            <el-menu-item index="monitor">
-                                <i class="el-icon-stopwatch"></i>
-                                <span slot="title">平台服务监控</span>
-                            </el-menu-item>
-                        </el-menu>
-                    </el-aside>
-                    <el-main>
-                        <iframe src="/setinfo/addplat" id="iframe" frameborder="0" width="100%" height="100%"></iframe>
-                        <iframe src="//172.17.55.54:3000/d/9CWBz0bik/ji-qun-jian-kong?orgId=1&kiosk" id="monitor" frameborder="0" width="100%" height="100%"></iframe>
-                    </el-main>
-                </el-container>
-            </el-container>
-        </div>
-        <script src="//cdn.staticfile.org/vue/2.6.11/vue.min.js"></script>
-        <script src="//cdn.staticfile.org/element-ui/2.13.2/index.js"></script>
-        <script>
-            var app = new Vue({
-                el: '#app',
-                data: {},
-                methods: {
-                    userMenuHandle(command) {
-                        if (command == 'logout') {
-                            window.location.href = '/logout'
-                        }
-                    },
-                    handleSelect(key) {
-                        if (key == 'monitor') {
-                            document.getElementById('iframe').style.display = 'none'
-                            document.getElementById('monitor').style.zIndex = 100
-                            document.getElementById('monitor').style.visibility = 'visible'
-                        } else {
-                            document.getElementById('monitor').style.zIndex = -10
-                            document.getElementById('monitor').style.visibility = 'hidden'
-                            document.getElementById('iframe').style.display = 'block'
-                            document.getElementById('iframe').src = key
-                        }
-                    }
+                    <el-menu-item index="monitor">
+                        <i class="el-icon-stopwatch"></i>
+                        <span slot="title">平台服务监控</span>
+                    </el-menu-item>
+                </el-menu>
+            </el-aside>
+            <el-main>
+                <iframe src="/setinfo/addplat" id="iframe" frameborder="0" width="100%" height="100%"></iframe>
+                <iframe src="//172.17.55.54:3000/d/9CWBz0bik/ji-qun-jian-kong?orgId=1&kiosk" id="monitor"
+                        frameborder="0" width="100%" height="100%"></iframe>
+            </el-main>
+        </el-container>
+    </el-container>
+</div>
+<script th:src="@{//cdn.staticfile.org/vue/2.6.11/vue.min.js}"
+        src="//cdn.staticfile.org/vue/2.6.11/vue.min.js"></script>
+<script th:src="@{//cdn.staticfile.org/element-ui/2.13.2/index.js}"
+        src="//cdn.staticfile.org/element-ui/2.13.2/index.js"></script>
+<script th:src="@{/js/layui.all.js}" type="text/javascript" charset="utf-8"
+        src="../../static/js/layui.all.js"></script>
+<script th:src="@{/js/layui.js}" type="text/javascript" charset="utf-8"
+        src="../../static/js/layui.js"></script>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {},
+        methods: {
+            userMenuHandle(command) {
+                if (command == 'logout') {
+                    window.location.href = '/logout'
                 }
-            })
-        </script>
-    </body>
+            },
+            handleSelect(key) {
+                if (key == 'monitor') {
+                    document.getElementById('iframe').style.display = 'none'
+                    document.getElementById('monitor').style.zIndex = 100
+                    document.getElementById('monitor').style.visibility = 'visible'
+                } else {
+                    document.getElementById('monitor').style.zIndex = -10
+                    document.getElementById('monitor').style.visibility = 'hidden'
+                    document.getElementById('iframe').style.display = 'block'
+                    document.getElementById('iframe').src = key
+                }
+            }
+        }
+    })
+</script>
+</body>
 </html>

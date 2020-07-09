@@ -1,63 +1,54 @@
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
+<head  th:with="title='资源更新'">
     <meta charset="UTF-8"/>
-    <title>Document</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport"
           content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
-    <link rel="stylesheet" th:href="@{/css/layui.css}" href="../../static/css/layui.css">
 </head>
-
 <body>
-<div id="app" class="layui-container">
-    <div class="x-nav" style="margin-bottom: 30px">
-          <span class="">
-            <a href="" th:href="@{|/admin/res/list|}">资源列表</a>
-              <a><cite>资源更新</cite></a>
-          </span>
-    </div>
-
-    <!--    <div class="layui-fluid" id="content">-->
-    <!--<div th:include="res/inc :: head"></div>-->
-    <div class="class=layui-form">
-        <form class="layui-form" th:method="post" th:object="${res}" id="updateForm">
-
-            <div class="layui-form-item">
-                <label for="L_email" class="layui-form-label">
-                    <span class="x-red">*</span>res名称：</label>
-                <div class="layui-input-inline">
-                    <input type="text" id="L_email" name="class_collage"
-                           path="name" th:field="${res.name}"
-                           required="" lay-verify="nickname" autocomplete="off" class="layui-input"></div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">
-                    <span class="x-red">*</span>res地址：</label>
-                <div class="layui-input-inline">
-                    <input type="text" id="L_username" name="class_major"
-                           path="sn" th:field="${res.url}"
-                           required="" lay-verify="nikename" autocomplete="off" class="layui-input"></div>
-            </div>
-            <div class="layui-form-item">
-                <label for="L_pass" class="layui-form-label">
-                    <span class="x-red">*</span>res权限字符串：</label>
-                <div class="layui-input-inline">
-                    <input type="text" id="L_pass"
-                           path="sn" th:field="${res.permission}"
-                           name="class_grade" required="" lay-verify="pass" autocomplete="off" class="layui-input">
-                </div>
-            </div>
-
-            <div class="layui-btn-container" style="margin-left: 130px">
-                <input type="submit" class="layui-btn" value="更新资源"/>
-                <input type="reset" class="layui-btn"/>
-            </div>
-        </form>
-    </div>
+<div th:include="res/inc :: head" class="layui-row"></div>
+<div class="x-nav">
+<span class="layui-breadcrumb" style="visibility: visible">
+    <a th:href="@{|/admin/res/list|}">资源列表</a>
+    <a><cite>资源更新</cite></a></span>
 </div>
-<!--<script src="../../static/js/layui.all.js" type="text/javascript" charset="utf-8"></script>-->
-<!--<script src="../../static/js/layui.js" type="text/javascript" charset="utf-8"></script>-->
+<div id="content" class="layui-fluid">
+    <form class="layui-form" role="form" th:method="post" th:object="${res}" id="addForm">
+        <div class="layui-form-item">
+            <label for="L_email" class="layui-form-label">
+                <span class="x-red">*</span>res名称:</label>
+            <div class="layui-input-inline">
+                <input type="text" id="L_email" name="class_collage" required=""
+                       th:field="${res.name}"
+                       lay-verify="nickname" autocomplete="off" class="layui-input"></div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="x-red">*</span>res地址:</label>
+            <div class="layui-input-inline">
+                <input type="text" id="L_username" name="class_major"
+                       th:field="${res.permission}"
+                       required="" lay-verify="nikename" autocomplete="off" class="layui-input"></div>
+        </div>
+        <div class="layui-form-item">
+            <label for="L_pass" class="layui-form-label">
+                <span class="x-red">*</span>res权限字符串:</label>
+            <div class="layui-input-inline">
+                <input type="text" id="L_pass" name="class_grade"
+                       th:field="${res.permission}"
+                       required="" lay-verify="pass" autocomplete="off" class="layui-input"></div>
+        </div>
+        <div class="layui-btn-container" style="margin-left: 130px">
+            <input type="submit" class="layui-btn" value="更新资源"/>
+            <input type="reset" class="layui-btn"/>
+        </div>
+    </form>
 </div>
+<script src="../../static/js/jquery-3.4.1.min.js" th:href="@{/js/jquery-3.4.1.min.js}" type="text/javascript"
+        charset="utf-8"></script>
+<script src="../../static/js/layui.all.js" th:href="@{/js/layui.all.js}" type="text/javascript"
+        charset="utf-8"></script>
 </body>
 </html>

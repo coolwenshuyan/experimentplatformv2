@@ -19,7 +19,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 /**
  * 2020/6/3
@@ -72,12 +75,12 @@ public class KaoheModelController {
 //        List<Integer> check = kaoheModelService.inKaoheList();
 //        model.addAttribute("checkList", check);
 
-        //这个是所有的实验模块
-        Page<ExpModel> a = expModelService.findModelList(pageNum);
-
-
-//        List<ExpModel> b= null;
-        model.addAttribute("allKaohe", a);
+//        //这个是所有的实验模块
+//        Page<ExpModel> a = expModelService.findModelList(pageNum);
+//
+//
+////        List<ExpModel> b= null;
+//        model.addAttribute("allKaohe", a);
 
 
 //        User user = (User) session.getAttribute("admin");
@@ -124,16 +127,28 @@ public class KaoheModelController {
     }
 
 
-    @RequestMapping(value = "/Module/{arrangeId}/", method = RequestMethod.GET)
+    @RequestMapping(value = "/Module/{arrangeId}", method = RequestMethod.GET)
     public String loadOneCourseModel(Model model,
                                      HttpSession session,
                                      @PathVariable int arrangeId,
                                @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum) {
 
+        //所有的下拉列表数据
+        List<ArrangeInfoDTO> arrangeInfoDTOs =  arrangeClassService.findArrangeInfoDTOByTeacherId(1);
+        model.addAttribute("arrangeInfoDTOs",arrangeInfoDTOs);
+
+        //当前选择的安排表Id,用于判断按钮跳转连接,以及下拉列表回显
+        model.addAttribute("selected",arrangeId);
+
         //判断是否选择了安排
         boolean choose = true;
-        model.addAttribute("Choose",choose);
 
+        if(arrangeId == -1) {
+            choose = false;
+            model.addAttribute("Choose", choose);
+            return "kaohe/allModule";
+        }
+        model.addAttribute("Choose", choose);
         // 这是一个整数列表,用来存放所有的考核模块的实验模块id,用来判断此实验是否已经在考核中
         List<Integer> check = kaoheModelService.inKaoheList(arrangeId);
 //        model.addAttribute("checkList", check);
@@ -160,17 +175,13 @@ public class KaoheModelController {
         model.addAttribute("allKaohe", a);
 
 
-        //查询此课程安排下的所有考核模块,用于判断每个模块是否在考核中
-        List<Integer> kaoHeModelId =kaoheModelService.findKaoheModelByArrangeId(arrangeId);
-        model.addAttribute("allKaoHeModelId",kaoHeModelId);
+//        //查询此课程安排下的所有考核模块,用于判断每个模块是否在考核中
+//        List<Integer> kaoHeModelId =kaoheModelService.findKaoheModelByArrangeId(arrangeId);
+//        model.addAttribute("allKaoHeModelId",kaoHeModelId);
 
 
-        //所有的下拉列表数据
-        List<ArrangeInfoDTO> arrangeInfoDTOs =  arrangeClassService.findArrangeInfoDTOByTeacherId(1);
-        model.addAttribute("arrangeInfoDTOs",arrangeInfoDTOs);
 
-        //当前选择的安排表Id,用于判断按钮跳转连接,以及下拉列表回显
-        model.addAttribute("selected",arrangeId);
+//        System.out.println("准备好了");
         return "kaohe/allModule";
     }
 
@@ -219,15 +230,6 @@ public class KaoheModelController {
     public String listCheckModule(Model model,
                                   @PathVariable int arrangeId,
                                   @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum) throws JsonProcessingException {
-        //判断是否选择了安排
-        boolean choose = true;
-        model.addAttribute("Choose",choose);
-
-        //本安排的考核实验模块
-        Page<KaoheModelAndExpInfoDTO> page = kaoheModelService.findAllKaoheModelAndExpInfoDTOByArrangeId(arrangeId,pageNum);
-        model.addAttribute("kaoheModelPageInfo", page);
-//        System.out.println("page:" + page.getTotalElements());
-
         //所有的下拉列表数据
         List<ArrangeInfoDTO> arrangeInfoDTOs =  arrangeClassService.findArrangeInfoDTOByTeacherId(1);
         model.addAttribute("arrangeInfoDTOs",arrangeInfoDTOs);
@@ -235,6 +237,21 @@ public class KaoheModelController {
 
         //回显当前所选的安排
         model.addAttribute("selected",arrangeId);
+
+        //判断是否选择了安排
+        boolean choose = true;
+
+        if(arrangeId == -1) {
+            choose = false;
+            model.addAttribute("Choose", choose);
+            return "kaohe/checkModule";
+        }
+
+        model.addAttribute("Choose", choose);
+        //本安排的考核实验模块
+        Page<KaoheModelAndExpInfoDTO> page = kaoheModelService.findAllKaoheModelAndExpInfoDTOByArrangeId(arrangeId,pageNum);
+        model.addAttribute("kaoheModelPageInfo", page);
+
         return "kaohe/checkModule";
     }
 
@@ -255,10 +272,9 @@ public class KaoheModelController {
         // 获得此模块的信息
         ExpModel expModel = expModelService.findExpModelByID(mid);
         model.addAttribute("expInfo", expModel);
-
-
-
-        model.addAttribute("moveIn", new KaoheModel());
+        KaoheModel kaoheModel = new KaoheModel();
+        kaoheModel.setArrange_id(arrangeId);
+        model.addAttribute("moveIn", kaoheModel);
         return "kaohe/moveIn";
 
 
@@ -268,22 +284,40 @@ public class KaoheModelController {
      * 移入考核
      */
     @RequestMapping(value = {"/{mid}/{arrangeId}/moveIn"}, method = RequestMethod.POST)
-    public String add(@PathVariable int mid,@PathVariable int arrangeId,KaoheModel moveIn) {
+    public String add(@PathVariable int mid,@PathVariable int arrangeId,KaoheModel moveIn,String arrangeStart,String arrangeEnd) {
 
-        logger.debug(">>>>>>>>>>>>" + moveIn);
+        logger.debug("arrangeStart>>>>>>>>>>>>" + arrangeStart);
         KaoheModel u = new KaoheModel();
-        ExpModel expModel = expModelService.findExpModelByID(mid);
+//        ExpModel expModel = expModelService.findExpModelByID(mid);
         u.setArrange_id(arrangeId);
-        u.setM_id(expModel.getM_id());
+        u.setM_id(mid);
+//        u.setM_id(expModel.getM_id());
 //        u.setExperiment_name(expModel.getM_name());
 //        u.setClass_hour(expModel.getClasshour());
-        logger.debug(">>>>>>>>>>>>>>>>>>>>" + moveIn.getM_order());
+        logger.debug(">>>>>>>>>>>>>>>>>>>>" + moveIn);
         u.setM_order(moveIn.getM_order());
         u.setM_scale(moveIn.getM_scale());
 //        u.setShiyan_Purpose(expModel.getPurpose());
 //        u.setShiyan_Types(expModel.getM_type());
         u.setM_test_baifenbi(moveIn.getM_test_baifenbi());
         u.setM_report_baifenbi(moveIn.getM_report_baifenbi());
+        //增加时间
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date starsDate = null;
+        Date endDate = null;
+        try {
+            if(arrangeStart != ""){
+                starsDate = simpleDateFormat.parse(arrangeStart);
+            }
+            if(arrangeEnd != ""){
+                endDate = simpleDateFormat.parse(arrangeEnd);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        u.setKaohe_starttime(starsDate);
+        u.setKaohe_endtime(endDate);
 
         //从考核模块中取出整体测试百分比
         List<KaoheModel> kaoheModels = kaoheModelService.findAll();
@@ -296,7 +330,7 @@ public class KaoheModelController {
         }
 //        logger.debug(u);
         kaoheModelService.add(u);
-        expModel.setNeedKaohe(true);
+//        expModel.setNeedKaohe(true);
         //学生考核模块成绩记录表，只处理当期有考核权限的学生
         for (Student i : studentService.findStudentByNotClassId()) {
             logger.debug(String.valueOf(i));
@@ -309,11 +343,13 @@ public class KaoheModelController {
         // 当期限定
         // 表13 考核项目数增加
 
-        expModelService.save(expModel);
-        logger.debug(">>>>>>>>>>>>add");
+//        expModelService.save(expModel);
+//        logger.debug(">>>>>>>>>>>>add");
+        //删除考核模块测试答案
         kaoheModelService.deleteMTestAnswerByMid(mid);
-
+        //删除学院版报告
         collegeReportService.deleteCollege(mid);
+        //删除自定义版答题报告
         reportAnswerService.deleteReportAnswerByMid(mid);
         return "redirect:/kaohemodel/Module/"+arrangeId+"/";
     }

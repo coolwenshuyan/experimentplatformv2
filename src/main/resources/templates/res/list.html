@@ -1,19 +1,25 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:include="layout :: htmlhead" th:with="title='后台管理'">
     <meta charset="UTF-8"/>
     <title>资源表示</title>
 </head>
 <body>
 <div th:include="res/inc :: head"></div>
+<div class="x-nav" style="margin-bottom: 30px">
+          <span class="layui-breadcrumb">
+            <a href="">资源管理</a>
+            <a>
+              <cite>资源表示</cite></a>
+          </span>
+</div>
 <div class="layui-fluid">
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md12">
             <div class="layui-card">
                 <div class="layui-card-body">
                     <div class="layui-inline">
-                        <a class="admin_link layui-btn" href="/admin/res/add" >添加资源</a>
+                        <a class="admin_link layui-btn" href="/admin/res/add">添加资源</a>
                         <!--<a class="layui-btn" lay-filter="add" lay-submit>添加资源</a>-->
                     </div>
                     <table class="layui-table layui-form">
@@ -31,26 +37,19 @@
                             <td th:text="${res.url }"></td>
                             <td th:text="${res.permission }">&nbsp;</td>
                             <td>
-                                <a th:href="@{|/admin/res/update/${res.id }|}" class="list_op layui-btn"  type="button">更新</a>&nbsp;
+                                <a th:href="@{|/admin/res/update/${res.id }|}" class="list_op layui-btn" type="button">更新</a>&nbsp;
                             </td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
-
-                <!--<div class="layui-card-body ">-->
-                    <!--<div class="page">-->
-                        <!--<div>-->
-                            <!--<a class="prev">&lt;&lt;</a>-->
-                            <!--<a class="next">&gt;&gt;</a>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
             </div>
         </div>
     </div>
 </div>
-<script src="../../static/js/jquery-3.4.1.min.js" type="text/javascript" charset="utf-8"></script>
-<script src="../../static/js/layui.all.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/jquery-3.4.1.min.js" th:href="@{/js/jquery-3.4.1.min.js}" type="text/javascript"
+        charset="utf-8"></script>
+<script src="../../static/js/layui.all.js" th:href="@{/js/layui.all.js}" type="text/javascript"
+        charset="utf-8"></script>
 </body>
 </html>

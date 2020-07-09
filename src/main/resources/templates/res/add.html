@@ -1,63 +1,21 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout :: htmlhead" th:with="title='资源添加'">
     <meta charset="UTF-8"/>
-    <!--<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>-->
-    <title>Title</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport"
           content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
-    <link rel="stylesheet" th:href="@{/css/layui.css}" href="../../static/css/layui.css">
 </head>
 <body>
-<div class="x-nav" style="margin-bottom: 30px">
-          <span class="layui-breadcrumb">
-            <a href="">XX</a>
-            <a href="">XX</a>
-            <a>
-              <cite>添加资源</cite></a>
-          </span>
+<div th:include="res/inc :: head" class="layui-row"></div>
+<div class="x-nav">
+<span class="layui-breadcrumb">
+    <a th:href="@{|/admin/res/list|}">资源列表</a>
+    <a><cite>添加资源</cite></a></span>
 </div>
 <div id="content" class="layui-fluid">
-    <!--<div th:include="role/inc :: head"  class="layui-row"></div>-->
     <form class="layui-form" role="form" th:method="post" th:object="${res}" id="addForm">
-        <!--<table width="800" cellspacing="0" cellPadding="0">-->
-            <!--&lt;!&ndash;<thead>&ndash;&gt;-->
-            <!--&lt;!&ndash;<tr>&ndash;&gt;-->
-                <!--&lt;!&ndash;<td colspan="2">添加资源功能</td>&ndash;&gt;-->
-            <!--&lt;!&ndash;</tr>&ndash;&gt;-->
-            <!--&lt;!&ndash;</thead>&ndash;&gt;-->
-
-            <!--<tr class="layui-form-item">-->
-                <!--<label for="L_email" class="layui-form-label">-->
-                    <!--<span class="x-red">*</span>res名称:</label>-->
-                <!--<div class="layui-input-inline">-->
-                    <!--<input type="text" id="L_email" name="class_collage" required="" lay-verify="nickname"-->
-
-                           <!--autocomplete="off" class="layui-input"></div>-->
-            <!--</tr>-->
-            <!--&lt;!&ndash;<tr>&ndash;&gt;-->
-                <!--&lt;!&ndash;<td class="rightTd" width="200px">res名称:</td>&ndash;&gt;-->
-                <!--&lt;!&ndash;<td class="leftTd"><input type="text" th:field="${res.name}" size="30"/></td>&ndash;&gt;-->
-            <!--&lt;!&ndash;</tr>&ndash;&gt;-->
-            <!--<tr>-->
-                <!--<td class="rightTd">res地址:</td>-->
-                <!--<td class="leftTd">-->
-                    <!--<input th:field="${res.url}" size="30"/>-->
-                <!--</td>-->
-            <!--</tr>-->
-            <!--<tr>-->
-                <!--<td class="rightTd">res权限字符串:</td>-->
-                <!--<td class="leftTd">-->
-                    <!--<input th:field="${res.permission}" size="30"/>-->
-                <!--</td>-->
-            <!--</tr>-->
-            <!--<tr>-->
-                <!--<td colspan="2" class="centerTd"><input type="submit" value="添加资源"/><input type="reset"/></td>-->
-            <!--</tr>-->
-        <!--</table>-->
-
         <div class="layui-form-item">
             <label for="L_email" class="layui-form-label">
                 <span class="x-red">*</span>res名称:</label>
@@ -67,7 +25,7 @@
                        lay-verify="nickname" autocomplete="off" class="layui-input"></div>
         </div>
         <div class="layui-form-item">
-            <label  class="layui-form-label">
+            <label class="layui-form-label">
                 <span class="x-red">*</span>res地址:</label>
             <div class="layui-input-inline">
                 <input type="text" id="L_username" name="class_major"
@@ -78,7 +36,7 @@
             <label for="L_pass" class="layui-form-label">
                 <span class="x-red">*</span>res权限字符串:</label>
             <div class="layui-input-inline">
-                <input type="text" id="L_pass"  name="class_grade"
+                <input type="text" id="L_pass" name="class_grade"
                        th:field="${res.permission}"
                        required="" lay-verify="pass" autocomplete="off" class="layui-input"></div>
         </div>
@@ -89,5 +47,9 @@
         </div>
     </form>
 </div>
+<script src="../../static/js/jquery-3.4.1.min.js" th:href="@{/js/jquery-3.4.1.min.js}" type="text/javascript"
+        charset="utf-8"></script>
+<script src="../../static/js/layui.all.js" th:href="@{/js/layui.all.js}" type="text/javascript"
+        charset="utf-8"></script>
 </body>
 </html>

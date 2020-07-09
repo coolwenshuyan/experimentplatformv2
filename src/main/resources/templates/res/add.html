@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:include="layout :: htmlhead" th:with="title='资源添加'">
+<head  th:with="title='资源添加'">
     <meta charset="UTF-8"/>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -40,7 +40,6 @@
                        th:field="${res.permission}"
                        required="" lay-verify="pass" autocomplete="off" class="layui-input"></div>
         </div>
-
         <div class="layui-btn-container" style="margin-left: 130px">
             <input type="submit" class="layui-btn" value="添加资源"/>
             <input type="reset" class="layui-btn"/>

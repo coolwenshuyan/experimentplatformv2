@@ -4,57 +4,164 @@
     <meta charset="UTF-8"/>
     <!--<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>-->
     <title>Title</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="stylesheet" href="../../static/css/font.css">
+    <link rel="stylesheet" href="../../static/css/xadmin.css">
+    <link rel="stylesheet" href="../../static/css/layui.css">
+    <script type="text/javascript" src="../../static/js/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../../static/js/xadmin.js"></script>
+    <style>
+        .layui-form-label{
+            width: 100px;
+        }
+        .layui-input-block {
+            margin-left: 130px;
+            min-height: 36px;
+        }
+    </style>
 </head>
 <body>
-<div id="content">
+<!--<div id="content">-->
+    <!--<div th:include="user/inc :: head"></div>-->
+    <!--<form role="form" th:method="post" th:object="${user}" id="addForm">-->
+        <!--<table width="800" cellspacing="0" cellPadding="0">-->
+            <!--<thead>-->
+            <!--<tr>-->
+                <!--<td colspan="2">添加用户功能</td>-->
+            <!--</tr>-->
+            <!--</thead>-->
+            <!--<tr>-->
+                <!--<td class="rightTd" width="200px">用户名(必须是英文):</td>-->
+                <!--<td class="leftTd"><input type="text" th:field="${user.username}" size="30"/></td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+                <!--<td class="rightTd">显示名称(可以是中文):</td>-->
+                <!--<td class="leftTd">-->
+                    <!--<input th:field="${user.nickname}" size="30"/>-->
+                <!--</td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+                <!--<td class="rightTd">用户密码:</td>-->
+                <!--<td>-->
+                    <!--<input type="password" th:field="${user.password}" size="30"/>-->
+                <!--</td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+                <!--<td class="rightTd">状态:</td>-->
+                <!--<td>-->
+                    <!--<select path="status" th:field="${user.status}">-->
+                        <!--<option value=""> &#45;&#45; 请选择 &#45;&#45;</option>-->
+                        <!--<option th:value="0" th:text="启用"></option>-->
+                        <!--<option th:value="1" th:text="停用"></option>-->
+                    <!--</select>-->
+                <!--</td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+                <!--<td class="rightTd">角色:</td>-->
+                <!--<td>-->
+                    <!--<span th:each="role:${roles}" >-->
+                        <!--<input type="checkbox" class="rids" name="rids" th:text="${role.name } "-->
+                               <!--th:value="${role.id }"/>-->
+                        <!--</span>-->
+                <!--</td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+                <!--<td colspan="2" class="centerTd"><input type="submit" value="添加用户"/><input type="reset"/></td>-->
+            <!--</tr>-->
+        <!--</table>-->
+    <!--</form>-->
+<!--</div>-->
+
+<div class="x-nav" style="margin-bottom: 30px">
+          <span class="layui-breadcrumb" style="visibility: visible">
+            <a th:href="@{|/admin/user/list|}">用户列表</a>
+            <span lay-separator>/</span>
+            <a>
+              <cite>用户添加</cite></a>
+          </span>
+</div>
+<div class="layui-fluid">
     <div th:include="user/inc :: head"></div>
-    <form role="form" th:method="post" th:object="${user}" id="addForm">
-        <table width="800" cellspacing="0" cellPadding="0">
-            <thead>
-            <tr>
-                <td colspan="2">添加用户功能</td>
-            </tr>
-            </thead>
-            <tr>
-                <td class="rightTd" width="200px">用户名(必须是英文):</td>
-                <td class="leftTd"><input type="text" th:field="${user.username}" size="30"/></td>
-            </tr>
-            <tr>
-                <td class="rightTd">显示名称(可以是中文):</td>
-                <td class="leftTd">
-                    <input th:field="${user.nickname}" size="30"/>
-                </td>
-            </tr>
-            <tr>
-                <td class="rightTd">用户密码:</td>
-                <td>
-                    <input type="password" th:field="${user.password}" size="30"/>
-                </td>
-            </tr>
-            <tr>
-                <td class="rightTd">状态:</td>
-                <td>
-                    <select path="status" th:field="${user.status}">
-                        <option value=""> -- 请选择 --</option>
+
+    <div class="layui-row">
+        <form class="layui-form" role="form" th:method="post" th:object="${role}">
+            <div class="layui-form-item">
+                <label class="layui-form-label">
+                    <span class="x-red">*</span>用户名(英文):</label>
+                <div class="layui-input-inline">
+                    <input type="text" required="" lay-verify="nickname" th:field="${user.username}" autocomplete="off" class="layui-input"></div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">
+                    <span class="x-red">*</span>显示名称:</label>
+                <div class="layui-input-inline">
+                    <input type="text" required="" lay-verify="nickname" th:field="${user.nickname}" autocomplete="off" class="layui-input"></div>
+            </div>
+            <div class="layui-form-item">
+                <label  class="layui-form-label">
+                    <span class="x-red">*</span>用户密码:</label>
+                <div class="layui-input-inline">
+                    <input type="text" required="" lay-verify="nickname" th:field="${user.password}" autocomplete="off" class="layui-input"></div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label" >状态</label>
+                <div class="layui-input-block" style="width: 190px;">
+                    <select name="interest" lay-filter="aihao" path="status" th:field="${user.status}">
+                        <option value=""></option>
                         <option th:value="0" th:text="启用"></option>
                         <option th:value="1" th:text="停用"></option>
                     </select>
-                </td>
-            </tr>
-            <tr>
-                <td class="rightTd">角色:</td>
-                <td>
-                    <span th:each="role:${roles}" >
-                        <input type="checkbox" class="rids" name="rids" th:text="${role.name } "
-                               th:value="${role.id }"/>
-                        </span>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2" class="centerTd"><input type="submit" value="添加用户"/><input type="reset"/></td>
-            </tr>
-        </table>
-    </form>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">角色</label>
+                <div class="layui-input-block"  th:each="role:${roles}" >
+                    <input type="checkbox" class="rids" name="rids" th:text="${role.name } "
+                           th:value="${role.id }">
+                    <!--<input type="radio"  value="教师" title="教师">-->
+
+                </div>
+            </div>
+
+            <div class="layui-btn-container" style="margin-left: 130px">
+                <input type="submit" class="layui-btn" value="添加用户">
+                <input type="reset" class="layui-btn" value="重置">
+            </div>
+        </form>
+    </div>
 </div>
+
+
+<script src="../../static/js/layui.all.js" type="text/javascript" charset="utf-8"></script>
+<script>layui.use(['form', 'layer','jquery','form'],
+    function() {
+        $ = layui.jquery;
+        var form = layui.form,
+            layer = layui.layer;
+
+        //自定义验证规则
+        form.verify({
+            nikename: function(value) {
+                if (value.length < 1) {
+                    return '请重新填写';
+                }
+            },
+            pass: function(value) {
+                if (value.length < 1) {
+                    return '请重新填写';
+                }
+            },
+            repass: function(value) {
+                if (value.length < 1) {
+                    return '请重新填写';
+                }
+            }
+        });
+
+    });</script>
+
 </body>
 </html>

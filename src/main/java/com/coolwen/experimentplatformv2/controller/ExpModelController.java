@@ -426,6 +426,24 @@ public class ExpModelController {
 
         session.removeAttribute("msg2020612");
 
+        User user = (User) session.getAttribute("teacher");
+        logger.debug("输出老师账号——————————" + user);
+        List<CourseInfo> courseInfoList = courseInfoService.getclassByCharge(user.getId());
+        model.addAttribute("course",courseInfoList);
+
+        return "shiyan/lookTestAndReport";
+    }
+
+    @GetMapping("/moduleList/{courseId}")
+    public String chooseCourse(Model model,HttpSession session,
+                               @PathVariable("courseId") int courseId,
+                               @RequestParam(value = "pageNum",defaultValue = "0",required = true) int pageNum) {
+
+        model.addAttribute("page1",expModelService.findOneCourseModelList(courseId,pageNum));
+        User user = (User) session.getAttribute("teacher");
+        logger.debug("输出老师账号——————————" + user);
+        List<CourseInfo> courseInfoList = courseInfoService.getclassByCharge(user.getId());
+        model.addAttribute("course",courseInfoList);
         return "shiyan/lookTestAndReport";
     }
 

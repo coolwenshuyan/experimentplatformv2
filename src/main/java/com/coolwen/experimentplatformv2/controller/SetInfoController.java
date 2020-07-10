@@ -81,7 +81,7 @@ public class SetInfoController {
             setInfo1.setSet_aboutus("无数据");
             setInfo1.setSet_platintro("无数据");
             setInfo1.setSet_platstep("无数据");
-            setInfo1.setSet_rotateimg("1,2,3,4");
+            setInfo1.setSet_rotateimg("1,2,3,4,5,6");
             logger.debug(setInfo.toString());
             setInfoService.add(setInfo1);
             model.addAttribute("setInfo", setInfo1);
@@ -115,7 +115,7 @@ public class SetInfoController {
             setInfo1.setSet_aboutus("无数据");
             setInfo1.setSet_platintro("无数据");
             setInfo1.setSet_platstep("无数据");
-            setInfo1.setSet_rotateimg("1,2,3,4");
+            setInfo1.setSet_rotateimg("1,2,3,4,5,6");
             setInfoService.add(setInfo1);
             model.addAttribute("setInfo", setInfo1);
             return "shouye/aboutPlatform";
@@ -148,7 +148,7 @@ public class SetInfoController {
             setInfo1.setSet_aboutus("无数据");
             setInfo1.setSet_platintro("无数据");
             setInfo1.setSet_platstep("无数据");
-            setInfo1.setSet_rotateimg("1,2,3,4");
+            setInfo1.setSet_rotateimg("1,2,3,4,5,6");
             setInfoService.add(setInfo1);
             model.addAttribute("setInfo", setInfo1);
             return "shouye/lunbo";
@@ -161,12 +161,14 @@ public class SetInfoController {
         model.addAttribute("id2", sid[1]);
         model.addAttribute("id3", sid[2]);
         model.addAttribute("id4", sid[3]);
+        model.addAttribute("id5", sid[4]);
+        model.addAttribute("id6", sid[5]);
         return "shouye/lunbo";
     }
 
     //完成轮播id存储操作
     @PostMapping(value = "/lunbo")
-    public String addlunbo(String id1, String id2, String id3, String id4, Model model) {
+    public String addlunbo(String id1, String id2, String id3, String id4, String id5, String id6, Model model) {
         SetInfo setInfo = new SetInfo();
         setInfo.setId(1);
         SetInfo setInfo1 = setInfoService.findById(1);
@@ -174,7 +176,7 @@ public class SetInfoController {
         setInfo.setSet_platstep(setInfo1.getSet_platstep());
         setInfo.setSet_aboutus(setInfo1.getSet_aboutus());
         //拼接id存储到数据库中
-        setInfo.setSet_rotateimg(id1 + "," + id2 + "," + id3 + "," + id4);
+        setInfo.setSet_rotateimg(id1 + "," + id2 + "," + id3 + "," + id4 + "," + id5 + "," + id6);
         setInfoService.add(setInfo);
         model.addAttribute("msg", "更新成功");
         return "shouye/lunbo";

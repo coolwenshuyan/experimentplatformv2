@@ -78,6 +78,10 @@ public class UserServiceImpl implements UserService {
             ur.setRoleId(rid);
             userRoleRepository.save(ur);
         }
+        logger.debug("修改密码前:" + user);
+//        给密码加密
+        user.setPassword(ShiroKit.md5(user.getPassword(), user.getUsername()));
+        logger.debug("修改密码后:" + user.toString());
         userRepository.save(user);
         //这里制造个异常，测是事务管理是否生效
         //      int i = 1 / 0;
@@ -86,6 +90,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User update(User user) {
+//        logger.debug("修改密码前:" + user);
+////        给密码加密
+//        user.setPassword(ShiroKit.md5(user.getPassword(), user.getUsername()));
+//        logger.debug("修改密码后:" + user.toString());
         return userRepository.save(user);
     }
 

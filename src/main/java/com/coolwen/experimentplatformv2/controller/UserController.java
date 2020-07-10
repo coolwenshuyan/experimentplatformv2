@@ -95,7 +95,10 @@ public class UserController {
         User tu = userService.load(id);
         tu.setNickname(user.getNickname());
         tu.setStatus(user.getStatus());
-//        tu.setPassword(user.getPassword());
+//        if (user.getPassword()== "" && user.getPassword().isEmpty() && user.getPassword() == null){
+//            tu.setPassword(tu.getPassword());
+//        }
+        tu.setPassword(user.getPassword());
         String[] trids = req.getParameterValues("rids");
         List<Integer> rids = new ArrayList<Integer>();
         for (String rid : trids) {

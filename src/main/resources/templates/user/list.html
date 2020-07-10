@@ -14,6 +14,8 @@
 </head>
 <body>
 <div th:include="user/inc :: head"></div>
+
+
 <!--<div id="content">-->
     <!--<table width="800" cellspacing="0" cellPadding="0" id="listTable" border="1">-->
         <!--<thead>-->
@@ -48,29 +50,31 @@
                 <!--</span>-->
             <!--</td>-->
 
-            <!--<td th:if="${stat.index > 0}"><span th:text="${user.id}">1800998873</span></td>-->
-            <!--<td th:if="${stat.index > 0}"><span th:text="${user.username }"><a th:href="${user.id }" class="list_link">张三</a></span></td>-->
-            <!--<td th:if="${stat.index > 0}"><span th:text="${user.nickname }"></span></td>-->
-            <!--<td th:if="${stat.index > 0}"><span th:if="${user.status} eq true">-->
-                <!--<span class="emp">停用</span>-->
-                    <!--<a th:href="@{|updateStatus/${user.id }|}" class="list_op">启用</a>-->
-                <!--</span>-->
-            <!--</td>-->
-            <!--<td th:if="${stat.index > 0}"><span th:if="${user.status eq false}">-->
-                <!--<span>启用</span>-->
-                <!--<a th:href="@{|updateStatus/${user.id }|}" class="list_op">停用</a>-->
-                <!--</th:if>-->
-                <!--</span>-->
-            <!--</td>-->
-            <!--<td th:if="${stat.index > 0}"><span>-->
-                    <!--<a th:href="@{|update/${user.id }|}" class="list_op">更新</a>-->
-                    <!--<a th:href="@{|listRes/${user.id }|}" class="list_op">查询管理资源</a>-->
-                <!--</span>-->
-            <!--</td>-->
+            <!--&lt;!&ndash;<td th:if="${stat.index > 0}"><span th:text="${user.id}">1800998873</span></td>&ndash;&gt;-->
+            <!--&lt;!&ndash;<td th:if="${stat.index > 0}"><span th:text="${user.username }"><a th:href="${user.id }" class="list_link">张三</a></span></td>&ndash;&gt;-->
+            <!--&lt;!&ndash;<td th:if="${stat.index > 0}"><span th:text="${user.nickname }"></span></td>&ndash;&gt;-->
+            <!--&lt;!&ndash;<td th:if="${stat.index > 0}"><span th:if="${user.status} eq true">&ndash;&gt;-->
+                <!--&lt;!&ndash;<span class="emp">停用</span>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<a th:href="@{|updateStatus/${user.id }|}" class="list_op">启用</a>&ndash;&gt;-->
+                <!--&lt;!&ndash;</span>&ndash;&gt;-->
+            <!--&lt;!&ndash;</td>&ndash;&gt;-->
+            <!--&lt;!&ndash;<td th:if="${stat.index > 0}"><span th:if="${user.status eq false}">&ndash;&gt;-->
+                <!--&lt;!&ndash;<span>启用</span>&ndash;&gt;-->
+                <!--&lt;!&ndash;<a th:href="@{|updateStatus/${user.id }|}" class="list_op">停用</a>&ndash;&gt;-->
+                <!--&lt;!&ndash;</th:if>&ndash;&gt;-->
+                <!--&lt;!&ndash;</span>&ndash;&gt;-->
+            <!--&lt;!&ndash;</td>&ndash;&gt;-->
+            <!--&lt;!&ndash;<td th:if="${stat.index > 0}"><span>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<a th:href="@{|update/${user.id }|}" class="list_op">更新</a>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<a th:href="@{|listRes/${user.id }|}" class="list_op">查询管理资源</a>&ndash;&gt;-->
+                <!--&lt;!&ndash;</span>&ndash;&gt;-->
+            <!--&lt;!&ndash;</td>&ndash;&gt;-->
         <!--</tr>-->
         <!--</tbody>-->
     <!--</table>-->
 <!--</div>-->
+
+
 <div class="x-nav" style="margin-bottom: 30px">
           <span class="layui-breadcrumb" style="visibility: visible">
             <a th:href="@{|/admin/user/list|}">用户管理</a>
@@ -100,29 +104,28 @@
                         </thead>
                         <tbody>
                         <tr th:each="user,stat:${users}">
-                            <td th:if="${stat.index eq 0}"><span th:text="${user.id}">1800998873</span></td>
-                            <td th:if="${stat.index eq 0}"><span th:text="${user.username }">
-                                <a th:href="${user.id }" class="list_link">张三</a></span></td>
-                            <td th:if="${stat.index eq 0}"><span th:text="${user.nickname }"></span></td>
-                            <td th:if="${stat.index eq 0}">
-                                <span th:if="${user.status} eq true">
-                <span class="emp">停用</span>
-                <a th:href="@{|updateStatus/${user.id }|}" class="list_op">启用</a>
-                </span>
-
+                            <td ><span th:text="${user.id}">1800998873</span></td>
+                            <td ><span th:text="${user.username }"><a th:href="${user.id }" class="list_link">张三</a></span></td>
+                            <td ><span th:text="${user.nickname }"></span></td>
+                            <td >
+                                <span>
+                                    <span th:if="${user.status} eq false">启用</span>
+                                    <span th:if="${user.status} eq true">停用</span>
+                                </span>
                             </td>
-                            <td th:if="${stat.index eq 0}">
-                                                <span th:if="${user.status eq false}">
-                                                    <span>启用</span>
-                                                    <a th:href="@{|updateStatus/${user.id }|}" class="layui-btn layui-btn-danger">停用</a>
-                                                    </th:if>
-                                                </span>
+                            <td >
+                                <span>
+                                    <a th:if="${user.status eq true}" th:href="@{|updateStatus/${user.id }|}"
+                                       class="layui-btn layui-bg-red">启用</a>
+                                    <a th:if="${user.status eq false}" th:href="@{|updateStatus/${user.id }|}"
+                                       class="layui-btn layui-bg-red">停用</a>
+                                    </th:if>
+                                </span>
                             </td>
-                            <td th:if="${stat.index eq 0}"><span>
-                                <a th:href="@{|update/${user.id }|}" type="button" class="layui-btn">更新</a>
-                                <a th:href="@{|listRes/${user.id }|}" type="button" class="layui-btn layui-btn-normal">查询管理资源</a>
-
-                </span>
+                            <td ><span>
+                                <a th:href="@{|update/${user.id }|}" class="layui-btn layui-bg-green">更新</a>
+                                <a th:href="@{|listRes/${user.id }|}" class="layui-btn layui-bg-green">查询管理资源</a>
+                                </span>
                             </td>
                         </tr>
                         </tbody>

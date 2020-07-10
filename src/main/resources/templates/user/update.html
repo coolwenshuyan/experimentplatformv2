@@ -7,11 +7,12 @@
     <link rel="stylesheet" href="../../static/css/font.css">
     <link rel="stylesheet" href="../../static/css/xadmin.css">
     <link rel="stylesheet" href="../../static/css/layui.css">
+
+    <!--<script type="text/javascript" th:src="@{/js/jquery-2.1.1.min.js}"></script>-->
+    <!--<script src="../../static/js/layui.all.js" type="text/javascript" charset="utf-8"></script>-->
+    <script type="text/javascript" th:src="@{/js/jquery-2.1.1.min.js}"></script>
     <script type="text/javascript" src="../../static/js/layui.js" charset="utf-8"></script>
     <script type="text/javascript" src="../../static/js/xadmin.js"></script>
-    <!--<script type="text/javascript" th:src="@{/js/jquery-2.1.1.min.js}"></script>-->
-    <script src="../../static/js/layui.all.js" type="text/javascript" charset="utf-8"></script>
-    <script type="text/javascript" th:src="@{/js/jquery-2.1.1.min.js}"></script>
     <script type="text/javascript">
         $(function () {
             var hasRoles = new Array();
@@ -27,6 +28,11 @@
         });
     </script>
     <title>更新用户</title>
+    <!--<style>-->
+        <!--.layui-form input[type=checkbox], .layui-form input[type=radio], .layui-form select{-->
+            <!--display: inherit;-->
+        <!--}-->
+    <!--</style>-->
 </head>
 <body>
 <!--<div id="content">-->
@@ -95,7 +101,7 @@
     <div th:include="user/inc :: head"></div>
 
     <div class="layui-row">
-        <form class="layui-form" role="form" th:method="post" th:object="${role}">
+        <form class="layui-form" role="form" th:method="post" th:object="${user}">
             <div class="layui-form-item">
                 <label class="layui-form-label">
                     <span class="x-red">*</span>用户名(英文):</label>
@@ -108,35 +114,42 @@
                 <div class="layui-input-inline">
                     <input type="text" required="" lay-verify="nickname" th:field="${user.nickname}" autocomplete="off" class="layui-input"></div>
             </div>
+            <!--<div class="layui-form-item">-->
+                <!--<label  class="layui-form-label">-->
+                    <!--<span class="x-red">*</span>原用户密码:</label>-->
+                <!--<div class="layui-input-inline">-->
+                    <!--<input type="password" required="" lay-verify="nickname" th:field="${user.password}" autocomplete="off" class="layui-input"></div>-->
+            <!--</div>-->
+
             <div class="layui-form-item">
                 <label  class="layui-form-label">
-                    <span class="x-red">*</span>用户密码:</label>
+                    <span class="x-red">*</span>修改用户密码:</label>
                 <div class="layui-input-inline">
-                    <input type="text" required="" lay-verify="nickname" th:field="${user.password}" autocomplete="off" class="layui-input"></div>
+                    <input type="password" required=""  th:field="${user.password}" autocomplete="off" class="layui-input"></div>
             </div>
 
             <div class="layui-form-item">
-                <label class="layui-form-label" >状态</label>
-                <div class="layui-input-block" style="width: 190px;">
-                    <select name="interest" lay-filter="aihao" path="status" th:field="${user.status}">
+                <span class="layui-form-label" >状态</span>
+                <div class="layui-input-inline" style="width: 190px;height: 38px">
+                    <select name="interest" lay-filter="aihao" path="status" th:field="${user.status}"
+                            class="layui-select" style="width: 190px;height: 38px;display: inherit;">
                         <option value=""> -- 请选择 --</option>
-                        <option th:selected="${user.status==false}" value="0">启用</option>
-                        <option th:selected="${user.status== true}" value="1">停用</option>
+                        <option th:selected="${user.status==false}" value="0" >启用</option>
+                        <option th:selected="${user.status== true}" value="1" >停用</option>
                     </select>
                 </div>
             </div>
 
             <div class="layui-form-item">
-                <label class="layui-form-label">角色</label>
-                <div class="layui-input-block">
-                    <!--<input type="radio"  value="学生" title="学生" checked="">-->
-                    <!--<input type="radio"  value="教师" title="教师">-->
+                <span class="layui-form-label">角色</span>
+                <div class="layui-input-inline" >
                     <span th:each="hr:${hasRole}">
-                        <input type="hidden" class="hasRole" name="hasRole" th:value="${hr}"/></span>
-                    <span th:each="role:${roles}">
-                        <input type="checkbox" class="rids" name="rids" th:text="${role.name } "
-                               th:value="${role.id }"/>
-                        </span>
+                        <input type="hidden" class="hasRole" name="hasRole" th:value="${hr}"/>
+                    </span>
+                    <span th:each="role:${roles}" style="font-size: 15px">
+                        <input type="checkbox" class="rids layui-form-checkbox" name="rids" th:text="${role.name } "
+                               th:value="${role.id }" style="width: 15px;display: inherit;"/>
+                    </span>
                 </div>
             </div>
 

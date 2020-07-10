@@ -9,10 +9,12 @@
 </head>
 <body>
 <div th:include="res/inc :: head" class="layui-row"></div>
-<div class="x-nav">
+<div class="x-nav" style="margin-bottom: 30px">
 <span class="layui-breadcrumb" style="visibility: visible">
     <a th:href="@{|/admin/res/list|}">资源列表</a>
-    <a><cite>资源更新</cite></a></span>
+    <span lay-separator>/</span>
+    <a><cite>资源更新</cite></a>
+</span>
 </div>
 <div id="content" class="layui-fluid">
     <form class="layui-form" role="form" th:method="post" th:object="${res}" id="addForm">

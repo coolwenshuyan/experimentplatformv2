@@ -101,4 +101,10 @@ public class ExpModelServiceImpl implements ExpModelService {
     public Page<ExpModel> findKaoheProgressMainByCourseId(int courseId, int PageNum) {
         return expModelRepository.findExpModelsByCourse_id(courseId,PageRequest.of(PageNum,6));
     }
+
+    @Override
+    public Page<ExpModel> findAllByTeacher(Integer pageNum,int id) {
+        Pageable pageable = PageRequest.of(pageNum,10);
+        return expModelRepository.findAllByTeacher(pageable,id);
+    }
 }

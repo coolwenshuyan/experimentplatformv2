@@ -2,31 +2,80 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>资源管理</title>
+    <script type="text/javascript" th:src="@{/js/jquery-2.1.1.min.js}"></script>
+    <link rel="stylesheet" href="../../static/css/font.css" th:href="@{../../static/css/font.css}">
+    <link rel="stylesheet" href="../../static/css/xadmin.css" th:href="@{../../static/css/xadmin.css}">
+    <link rel="stylesheet" href="../../static/css/layui.css" th:href="@{../../static/css/layui.css}">
+    <script src="../../static/js/layui.js" charset="utf-8" th:src="@{../../static/js/layui.js}"></script>
+    <script type="text/javascript" src="../../static/js/xadmin.js" th:src="@{../../static/js/xadmin.js}"></script>
+    <link rel="stylesheet" href="../../static/css/modules/layer/default/layer.css">
 </head>
 <body>
-<div id="content">
-    <div th:include="user/inc :: head"></div>
-    <h4 th:text=" ${user.username }+'----'+${user.nickname}"></h4>
-    <!--<input type="hidden" id="roleId" th:text="${role.id }"/>-->
-    <table width="800" cellspacing="0" cellPadding="0" id="listTable" border="1">
-        <thead>
-        <tr>
-            <td>资源名称</td>
-            <td>资源url</td>
-            <td>资源权限字符串</td>
-        </tr>
-        </thead>
-        <!--<tbody th:each="rid ${rids}">-->
-        <!--<input type="hidden" class="hasRes" th:text="${rid }"/>-->
-        <tr th:each="res:${reses}">
-            <td th:text="${res.name }"
-            ></td>
-            <td th:text="${res.url}"></td>
-            <td th:text="${res.permission }">&nbsp;</td>
-        </tr>
-        </tbody>
-    </table>
+<!--<div id="content">-->
+    <!--<div th:include="user/inc :: head"></div>-->
+    <!--<h4 th:text=" ${user.username }+'&#45;&#45;&#45;&#45;'+${user.nickname}"></h4>-->
+    <!--&lt;!&ndash;<input type="hidden" id="roleId" th:text="${role.id }"/>&ndash;&gt;-->
+    <!--<table width="800" cellspacing="0" cellPadding="0" id="listTable" border="1">-->
+        <!--<thead>-->
+        <!--<tr>-->
+            <!--<td>资源名称</td>-->
+            <!--<td>资源url</td>-->
+            <!--<td>资源权限字符串</td>-->
+        <!--</tr>-->
+        <!--</thead>-->
+        <!--&lt;!&ndash;<tbody th:each="rid ${rids}">&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="hidden" class="hasRes" th:text="${rid }"/>&ndash;&gt;-->
+        <!--<tr th:each="res:${reses}">-->
+            <!--<td th:text="${res.name }"-->
+            <!--&gt;</td>-->
+            <!--<td th:text="${res.url}"></td>-->
+            <!--<td th:text="${res.permission }">&nbsp;</td>-->
+        <!--</tr>-->
+        <!--</tbody>-->
+    <!--</table>-->
+<!--</div>-->
+<div class="x-nav" style="margin-bottom: 30px">
+          <span class="layui-breadcrumb" style="visibility: visible">
+            <a th:href="@{|/admin/user/list|}">用户列表</a>
+            <span lay-separator>/</span>
+            <a>
+              <cite>查询资源管理</cite></a>
+          </span>
+</div>
+
+<div th:include="user/inc :: head"></div>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <div class="layui-inline">
+                        <a href="/admin/role/add" class="admin_link layui-btn">添加</a>
+                    </div>
+                    <table class="layui-table layui-form">
+
+                        <thead>
+                        <tr>
+                            <td>资源名称</td>
+                            <td>资源url</td>
+                            <td>资源权限字符串</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+
+                        <tr th:each="res:${reses}">
+                            <td th:text="${res.name }"></td>
+                            <td th:text="${res.url}"></td>
+                            <td th:text="${res.permission }">&nbsp;</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

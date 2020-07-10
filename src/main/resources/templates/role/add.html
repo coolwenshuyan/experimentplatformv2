@@ -3,33 +3,52 @@
 <head>
     <meta charset="UTF-8"/>
     <!--<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>-->
-    <title>Title</title>
+    <title>角色添加</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="stylesheet" href="../../static/css/font.css">
+    <link rel="stylesheet" href="../../static/css/xadmin.css">
+    <link rel="stylesheet" href="../../static/css/layui.css">
+    <script type="text/javascript" src="../../static/js/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../../static/js/xadmin.js"></script>
 </head>
 <body>
-<div id="content">
-    <div th:include="role/inc :: head"></div>
-    <form role="form" th:method="post" th:object="${role}" id="addForm">
-        <table width="800" cellspacing="0" cellPadding="0">
-            <thead>
-            <tr>
-                <td colspan="2">添加角色功能</td>
-            </tr>
-            </thead>
-            <tr>
-                <td class="rightTd" width="200px">角色名称:</td>
-                <td class="leftTd"><input type="text" th:field="${role.name}" size="30"/></td>
-            </tr>
-            <tr>
-                <td class="rightTd">角色SN:</td>
-                <td class="leftTd">
-                    <input th:field="${role.sn}" size="30"/>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2" class="centerTd"><input type="submit" value="添加角色"/><input type="reset"/></td>
-            </tr>
-        </table>
-    </form>
+
+<div th:include="role/inc :: head"></div>
+
+<div class="x-nav" style="margin-bottom: 30px">
+          <span class="layui-breadcrumb">
+            <a th:href="@{|/admin/role/list|}">角色列表</a>
+            <!--<a href="">XX</a>-->
+            <a>
+              <cite>角色添加</cite></a>
+          </span>
 </div>
+
+<div class="layui-fluid">
+    <div class="layui-row">
+        <form class="layui-form" role="form" th:method="post" th:object="${role}" id="addForm">
+            <div class="layui-form-item">
+                <label for="L_email" class="layui-form-label">
+                    <span class="x-red">*</span>角色名称：</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="L_email" th:field="${role.name}" name="class_collage" required="" lay-verify="nickname" autocomplete="off" class="layui-input"></div>
+            </div>
+            <div class="layui-form-item">
+                <label  class="layui-form-label">
+                    <span class="x-red">*</span>角色SN：</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="L_username" th:field="${role.sn}" name="class_major"  required="" lay-verify="nikename" autocomplete="off" class="layui-input"></div>
+            </div>
+
+            <div class="layui-btn-container" style="margin-left: 130px">
+                <input type="submit" class="layui-btn" value="添加">
+                <input type="reset" class="layui-btn" value="重置">
+            </div>
+        </form>
+    </div>
+</div>
+<script src="../../static/js/layui.all.js" type="text/javascript" charset="utf-8"></script>
 </body>
 </html>

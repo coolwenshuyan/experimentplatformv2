@@ -26,37 +26,12 @@
     </style>
 </head>
 <body>
-<!--<div th:include="role/inc :: head"></div>-->
-<!--<div id="content">-->
-    <!--<table width="800" cellspacing="0" cellPadding="0" id="listTable" border="1">-->
-        <!--<thead>-->
-        <!--<tr>-->
-            <!--<td>角色标识</td>-->
-            <!--<td>角色名称</td>-->
-            <!--<td>角色sn</td>-->
-            <!--<td>操作</td>-->
-        <!--</tr>-->
-        <!--</thead>-->
-        <!--<tbody>-->
-        <!--<tr th:each="role:${roles}">-->
-            <!--<td th:text="${role.id}"></td>-->
-            <!--<td th:text="${role.name }">-->
-            <!--<td th:text="${role.sn }"></td>-->
-            <!--<td>-->
-                <!--<a th:href="@{|update/${role.id }|}" class="list_op">更新</a>-->
-                <!--&nbsp;<a th:href="@{|listRes/${role.id }|}" class="list_op">查询管理资源</a>-->
-            <!--</td>-->
-        <!--</tr>-->
-        <!--</tbody>-->
-    <!--</table>-->
-<!--</div>-->
-
 <div class="x-nav" style="margin-bottom: 30px">
           <span class="layui-breadcrumb">
             <a href="">角色管理</a>
             <!--<a href="">XX</a>-->
             <a>
-              <cite>角色表示</cite></a>
+              <cite>角色列表</cite></a>
           </span>
 </div>
 <div th:include="role/inc :: head"></div>
@@ -93,14 +68,6 @@
                         </tbody>
                     </table>
                 </div>
-                <!--<div class="layui-card-body ">-->
-                    <!--<div class="page">-->
-                        <!--<div>-->
-                            <!--<a class="prev">&lt;&lt;</a>-->
-                            <!--<a class="next">&gt;&gt;</a>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
             </div>
         </div>
     </div>

@@ -42,4 +42,7 @@ public interface ExpModelRepository extends BaseRepository<ExpModel,Integer> {
 
     @Query("select e from KaoheModel kh left join ExpModel e on e.m_id = kh.m_id where e.courseId = ?1")
     Page<ExpModel> findExpModelsByCourse_id(int courseId,PageRequest pageRequest);
+
+    @Query("select e from ExpModel e left join CourseInfo c on e.courseId = c.id left join User u on u.id = c.teacherId where u.id=?1")
+    Page<ExpModel> findAllByTeacher(Pageable pageable,int id);
 }

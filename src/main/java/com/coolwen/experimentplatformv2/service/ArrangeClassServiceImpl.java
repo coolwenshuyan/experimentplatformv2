@@ -101,6 +101,12 @@ public class ArrangeClassServiceImpl implements ArrangeClassService {
         return arrangeClassRepository.findByCourseIdAndTeacherIdAndClassId(courseId,teacherId,classId);}
 
     @Override
+    public List<Student> findStudentByarrangeID(int arrageid) {
+
+        return arrangeClassRepository.findStudentByarrangeID(arrageid);
+    }
+
+    @Override
     public List<ArrangeInfoDTO> findArrangeInfoDTOByTeacherId(int teacherId) {
         return arrangeClassRepository.findArrangeInfoDTOByTeacherId(teacherId);
     }

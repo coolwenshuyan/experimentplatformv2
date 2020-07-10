@@ -3,6 +3,7 @@ package com.coolwen.experimentplatformv2.controller;
 import com.coolwen.experimentplatformv2.kit.ShiroKit;
 import com.coolwen.experimentplatformv2.model.Admin;
 import com.coolwen.experimentplatformv2.model.Student;
+import com.coolwen.experimentplatformv2.model.User;
 import com.coolwen.experimentplatformv2.service.AdminService;
 import com.coolwen.experimentplatformv2.service.StudentService;
 import com.coolwen.experimentplatformv2.utils.CasUtils;
@@ -169,8 +170,8 @@ public class LoginController {
             }
             if (loginType.equals("admin")) {
                 logger.debug("老师登陆");
-//                User admin = (User) subject.getPrincipal();
-//                session.setAttribute("admin", admin);
+                User admin = (User) subject.getPrincipal();
+                session.setAttribute("admin", admin);
                 model.setViewName("redirect:/learning/kuangjia");
 //                return "redirect:/learning/kuangjia";
             }

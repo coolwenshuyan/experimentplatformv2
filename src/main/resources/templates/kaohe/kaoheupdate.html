@@ -7,6 +7,9 @@
     <!--<link rel="stylesheet" type="text/css" href="css/page.css"/>-->
     <link rel="stylesheet" type="text/css" href="../../static/css/code.css">
 
+    <link rel="stylesheet" th:href="@{/js/laydate/theme/default/laydate.css}">
+    <link rel="stylesheet" th:href="@{/css/laydate.css}">
+
     <style type="text/css">
         body{
             background-color: rgb(242,242,242);
@@ -19,7 +22,7 @@
 
         .layui-input,
         .layui-textarea {
-            width: 35%;
+            width: 90%;
         }
         .layui-form-label {
             width: 100px;
@@ -34,7 +37,7 @@
         }
 
         table{
-            width:30em;
+            width:0;
             table-layout:fixed;/* 只有定义了表格的布局算法为fixed，下面td的定义才能起作用。 */
         }
         td{
@@ -114,6 +117,29 @@
             </div>
         </div>
 
+        <div class="layui-form">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">开始时间</label>
+                        <div class="layui-input-inline">
+                            <input th:value="${kaohemodel.kaohe_starttime}" name="arrangeStart" type="text" class="layui-input" id="test5"  placeholder="yyyy-MM-dd HH:mm:ss">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">结束时间</label>
+                        <div class="layui-input-inline">
+                            <input th:value="${kaohemodel.kaohe_endtime}" name="arrangeEnd" type="text" class="layui-input" id="test2" placeholder="yyyy-MM-dd HH:mm:ss">
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
         <div class="layui-form-item">
             <div class="layui-input-block">
                 <button type="submit" class="layui-btn bo" lay-submit="" lay-filter="demo1">修改</button>
@@ -123,8 +149,30 @@
     </form>
 </div>
 
-<script src="../../static/js/layui.js" type="text/javascript" charset="utf-8"></script>
+<script th:src="@{/js/layui.js}" type="text/javascript" charset="utf-8"></script>
 <!-- <script src="js/layui.all.js" type="text/javascript" charset="utf-8"></script> -->
+
+<script th:src="@{/js/laydate/laydate.js}" type="text/javascript" charset="utf-8"></script>
+
+<script>
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+
+
+        //日期时间选择器
+        laydate.render({
+            elem: '#test5'
+            ,type: 'datetime'
+        });
+        //日期时间选择器
+        laydate.render({
+            elem: '#test2'
+            ,type: 'datetime'
+        });
+    });
+
+
+</script>
 </body>
 
 </html>

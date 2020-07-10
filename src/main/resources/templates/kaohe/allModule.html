@@ -37,9 +37,15 @@
 <body>
 <div id="app" class="layui-container">
 
-	<a href="/kaohemodel/checkModule"><button type="button" class="layui-btn layui-btn-primary" style="border-color: #174f37;color: #174f37;">考核模块</button></a>
-	<a href="/kaohemodel/allModule"><button type="button" class="layui-btn layui-btn-primary" style="border-color: #174f37;color: #ffffff;background: #009688">全部模块</button></a>
-
+	<a th:href="${selected2}">
+		<button type="button" class="layui-btn layui-btn-primary"
+				style="border-color: #174f37;color: #ffffff;background: #009688">考核模块
+		</button>
+	</a>
+	<a th:href="${selected1}">
+		<button type="button" class="layui-btn layui-btn-primary" style="border-color: #174f37;color: #174f37;">全部模块
+		</button>
+	</a>
 	<select name="interest" lay-filter="aihao" onchange="window.open(this.options[this.selectedIndex].value,target='_self')" style="margin-top: 13px;">
 		<option th:value="|/kaohemodel/Module/-1|">--请选择--</option>
 		<div th:each="arrangeInfo:${arrangeInfoDTOs}" >

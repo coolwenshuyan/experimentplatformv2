@@ -1,6 +1,8 @@
 package com.coolwen.experimentplatformv2.model.DTO;
 
 
+import java.util.Date;
+
 public class KaoheModelAndExpInfoDTO {
 
 
@@ -31,7 +33,14 @@ public class KaoheModelAndExpInfoDTO {
     //实验类型
     private String shiyan_Types;
 
-    public KaoheModelAndExpInfoDTO(int id, int m_id, int m_order, float m_scale, float m_test_baifenbi, float m_report_baifenbi, String experiment_name, int class_hour, String shiyan_Purpose, String shiyan_Types) {
+    private Date kaohe_starttime;
+
+    private Date kaohe_endtime;
+
+    public KaoheModelAndExpInfoDTO() {
+    }
+
+    public KaoheModelAndExpInfoDTO(int id, int m_id, int m_order, float m_scale, float m_test_baifenbi, float m_report_baifenbi, String experiment_name, int class_hour, String shiyan_Purpose, String shiyan_Types, Date kaohe_starttime, Date kaohe_endtime) {
         this.id = id;
         this.m_id = m_id;
         this.m_order = m_order;
@@ -42,9 +51,26 @@ public class KaoheModelAndExpInfoDTO {
         this.class_hour = class_hour;
         this.shiyan_Purpose = shiyan_Purpose;
         this.shiyan_Types = shiyan_Types;
+        this.kaohe_starttime = kaohe_starttime;
+        this.kaohe_endtime = kaohe_endtime;
     }
 
-    public KaoheModelAndExpInfoDTO() {
+    @Override
+    public String toString() {
+        return "KaoheModelAndExpInfoDTO{" +
+                "id=" + id +
+                ", m_id=" + m_id +
+                ", m_order=" + m_order +
+                ", m_scale=" + m_scale +
+                ", m_test_baifenbi=" + m_test_baifenbi +
+                ", m_report_baifenbi=" + m_report_baifenbi +
+                ", Experiment_name='" + Experiment_name + '\'' +
+                ", class_hour=" + class_hour +
+                ", shiyan_Purpose='" + shiyan_Purpose + '\'' +
+                ", shiyan_Types='" + shiyan_Types + '\'' +
+                ", kaohe_starttime=" + kaohe_starttime +
+                ", kaohe_endtime=" + kaohe_endtime +
+                '}';
     }
 
     public int getId() {
@@ -95,7 +121,6 @@ public class KaoheModelAndExpInfoDTO {
         this.m_report_baifenbi = m_report_baifenbi;
     }
 
-
     public String getExperiment_name() {
         return Experiment_name;
     }
@@ -128,19 +153,19 @@ public class KaoheModelAndExpInfoDTO {
         this.shiyan_Types = shiyan_Types;
     }
 
-    @Override
-    public String toString() {
-        return "KaoheModel{" +
-                "id=" + id +
-                ", m_id=" + m_id +
-                ", m_order=" + m_order +
-                ", m_scale=" + m_scale +
-                ", m_test_baifenbi=" + m_test_baifenbi +
-                ", m_report_baifenbi=" + m_report_baifenbi +
-                ", Experiment_name='" + Experiment_name + '\'' +
-                ", class_hour=" + class_hour +
-                ", shiyan_Purpose='" + shiyan_Purpose + '\'' +
-                ", shiyan_Types='" + shiyan_Types + '\'' +
-                '}';
+    public Date getKaohe_starttime() {
+        return kaohe_starttime;
+    }
+
+    public void setKaohe_starttime(Date kaohe_starttime) {
+        this.kaohe_starttime = kaohe_starttime;
+    }
+
+    public Date getKaohe_endtime() {
+        return kaohe_endtime;
+    }
+
+    public void setKaohe_endtime(Date kaohe_endtime) {
+        this.kaohe_endtime = kaohe_endtime;
     }
 }

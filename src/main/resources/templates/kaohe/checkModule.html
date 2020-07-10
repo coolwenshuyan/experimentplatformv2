@@ -45,12 +45,12 @@
     <!--<a href="/demo/">师资队伍</a>-->
     <!--  			<a><cite>考核模块</cite></a>-->
     <!--			</span> <br><br><br>-->
-    <a href="/kaohemodel/checkModule">
+    <a th:href="${selected2}">
         <button type="button" class="layui-btn layui-btn-primary"
                 style="border-color: #174f37;color: #ffffff;background: #009688">考核模块
         </button>
     </a>
-    <a href="/kaohemodel/allModule">
+    <a th:href="${selected1}">
         <button type="button" class="layui-btn layui-btn-primary" style="border-color: #174f37;color: #174f37;">全部模块
         </button>
     </a>
@@ -61,6 +61,7 @@
             <option th:value="|/kaohemodel/checkModule/${arrangeInfo.getArrangeId()}|"  th:text="${arrangeInfo.getCourseName()+'-'+arrangeInfo.getClassName()}" selected="selected" th:if="${arrangeInfo.getArrangeId() eq selected}">18信管01</option>
         </div>
     </select>
+
 
     <!--<select id="selectCourse" name="selectCourse" onchange="selectCourse()">
 
@@ -105,7 +106,7 @@
                 <td>
                     <a type="update" class="layui-btn layui-btn-sm" th:href="@{|/kaohemodel/${kaoheModel.id}/update|}">修改</a>
                     <a type="delete" class="layui-btn layui-btn-sm app" @click="isTrue" style="background-color: red;"
-                       th:href="@{|/kaohemodel/${kaoheModel.id}/delete|}">移出考核</a>
+                       th:href="@{|/kaohemodel/${kaoheModel.id}/${selected}/delete|}">移出考核</a>
 
                 </td>
             </tr>

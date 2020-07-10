@@ -46,7 +46,7 @@ public interface KaoheArrangeRepository extends BaseRepository<KaoheModel, Integ
     void updateAllGreatestWeight(float kaoheBaifenbi, float testBaifenbi);
 
     @Query("select new com.coolwen.experimentplatformv2.model.DTO.KaoheModelAndExpInfoDTO " +
-            "(khm.id,khm.m_id,khm.m_order,khm.m_scale,khm.m_test_baifenbi,khm.m_report_baifenbi,em.m_name,em.classhour,em.purpose,em.m_type) " +
+            "(khm.id,khm.m_id,khm.m_order,khm.m_scale,khm.m_test_baifenbi,khm.m_report_baifenbi,em.m_name,em.classhour,em.purpose,em.m_type,khm.kaohe_starttime,khm.kaohe_endtime) " +
             "from KaoheModel khm left join ExpModel em " +
             "on khm.m_id = em.m_id " +
             "where khm.id = ?1")
@@ -54,14 +54,14 @@ public interface KaoheArrangeRepository extends BaseRepository<KaoheModel, Integ
 
 
     @Query("select new com.coolwen.experimentplatformv2.model.DTO.KaoheModelAndExpInfoDTO " +
-            "(khm.id,khm.m_id,khm.m_order,khm.m_scale,khm.m_test_baifenbi,khm.m_report_baifenbi,em.m_name,em.classhour,em.purpose,em.m_type) " +
+            "(khm.id,khm.m_id,khm.m_order,khm.m_scale,khm.m_test_baifenbi,khm.m_report_baifenbi,em.m_name,em.classhour,em.purpose,em.m_type,khm.kaohe_starttime,khm.kaohe_endtime) " +
             "from KaoheModel khm left join ExpModel em " +
             "on khm.m_id = em.m_id ")
     Page<KaoheModelAndExpInfoDTO> findAllKaoheModelAndExpInfoDTO(Pageable pageable);
 
 
     @Query("select new com.coolwen.experimentplatformv2.model.DTO.KaoheModelAndExpInfoDTO " +
-            "(khm.id,khm.m_id,khm.m_order,khm.m_scale,khm.m_test_baifenbi,khm.m_report_baifenbi,em.m_name,em.classhour,em.purpose,em.m_type) " +
+            "(khm.id,khm.m_id,khm.m_order,khm.m_scale,khm.m_test_baifenbi,khm.m_report_baifenbi,em.m_name,em.classhour,em.purpose,em.m_type,khm.kaohe_starttime,khm.kaohe_endtime) " +
             "from KaoheModel khm left join ExpModel em " +
             "on khm.m_id = em.m_id " +
             "where em.courseId in (" +

@@ -348,7 +348,8 @@ public class KaoheModelController {
         kaoheModelService.add(u);
 //        expModel.setNeedKaohe(true);
         //学生考核模块成绩记录表，只处理当期有考核权限的学生
-        for (Student i : studentService.findStudentByNotClassId()) {
+        List<Student> studentslist = arrangeClassService.findStudentByarrangeID(arrangeId);
+        for (Student i : studentslist) {
             logger.debug(String.valueOf(i));
             kaoHeModelScoreService.add(new KaoHeModelScore(u.getId(), i.getId(), 0, 0, u.getM_order(), u.getM_scale()));
             //更新表13中学生总表记录中考核模块数
@@ -363,7 +364,7 @@ public class KaoheModelController {
 //        logger.debug(">>>>>>>>>>>>add");
 
         //studentService.findStudentby
-        List<Student> studentslist = arrangeClassService.findStudentByarrangeID(arrangeId);
+
         for (Student temp_st:studentslist) {
             int studentid = temp_st.getId();
             //删除考核模块测试答案

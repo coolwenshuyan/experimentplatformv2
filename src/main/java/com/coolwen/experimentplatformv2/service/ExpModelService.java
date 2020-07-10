@@ -5,6 +5,7 @@ import com.coolwen.experimentplatformv2.model.ExpModel;
 import com.coolwen.experimentplatformv2.model.ModuleTestQuest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -37,4 +38,6 @@ public interface ExpModelService {
     Page<ExpModel> findOneCourseModelList(int courseId ,Integer pageNum);
 
     Page<ExpModel> findKaoheProgressMainByCourseId(int courseId,int PageNum);
+
+    Page<ExpModel> findAllByTeacher(Integer pageNum, int id);
 }

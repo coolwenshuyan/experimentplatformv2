@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="../../static/css/font.css">
-    <link rel="stylesheet" href="../../static/css/xadmin.css">
-    <link rel="stylesheet" href="../../static/css/layui.css">
+    <link rel="stylesheet" href="../../static/css/font.css" th:href="@{/css/font.css}">
+    <link rel="stylesheet" href="../../static/css/xadmin.css" th:href="@{/css/xadmin.css}">
+    <link rel="stylesheet" href="../../static/css/layui.css" th:href="@{/css/layui.css}">
     <script src="../../static/js/layui.js" charset="utf-8"></script>
     <script type="text/javascript" src="../../static/js/xadmin.js"></script>
     <link rel="stylesheet" href="../../static/css/modules/layer/default/layer.css">
@@ -34,6 +34,24 @@
             });
         });
     </script>
+    <style>
+        .d1{
+            margin-left:1rem;
+            margin-right:1rem;
+            padding-top: 0.5rem;
+            margin-bottom: 0.5rem;
+            line-height: 2rem;
+            font-size: 15px;
+            /*display: flex;*/
+            /*float: left;*/
+        }
+        .d2{
+            float: right;
+        }
+        .d3{
+            float: left;
+        }
+    </style>
 </head>
 <body>
 
@@ -47,15 +65,22 @@
 </div>
 <div th:include="role/inc :: head"></div>
 <div class="layui-fluid">
+
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md12">
             <div class="layui-card">
-                <div class="layui-card-body">
-                    <div class="layui-inline">
-                        <a href="/admin/role/add" class="admin_link layui-btn">添加</a>
+                <div class="d1">
+                    <div class="d3">
+                        <p th:text=" ${role.name }+'----'+${role.sn}"></p>
+                        <input type="hidden" id="roleId" th:value="${role.id }"/>
                     </div>
-                    <table class="layui-table layui-form">
 
+                    <div class="d2">
+                        <a class="layui-btn" th:href="@{|/admin/role/list|}">返回</a>
+                    </div>
+                </div>
+                <div class="layui-card-body">
+                    <table class="layui-table layui-form">
                         <thead>
                         <tr>
                             <td>资源名称</td>
@@ -72,10 +97,8 @@
                             <td th:text="${res.url}"></td>
                             <td th:text="${res.permission }">&nbsp;</td>
                             <td>
-                                <a class="layui-btn list_op" th:href="@{|/admin/res/update/${res.id }|}" >修改</a>
+                                <input type="checkbox" name="setPermission" class="setPermission" th:value="${res.id}" style="display: inherit"/>
                                 &nbsp;
-                                <!--                           <a class="layui-btn list_op" th:href="@{|listRes/${role.id }|}">查询管理资源</a>-->
-                                <a class="layui-btn layui-btn-danger" th:href="@{|delete/${res.id }|}" >删除</a>
                             </td>
                         </tr>
                         </tbody>

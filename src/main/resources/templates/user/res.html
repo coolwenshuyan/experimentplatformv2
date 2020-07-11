@@ -12,29 +12,6 @@
     <link rel="stylesheet" href="../../static/css/modules/layer/default/layer.css">
 </head>
 <body>
-<!--<div id="content">-->
-    <!--<div th:include="user/inc :: head"></div>-->
-    <!--<h4 th:text=" ${user.username }+'&#45;&#45;&#45;&#45;'+${user.nickname}"></h4>-->
-    <!--&lt;!&ndash;<input type="hidden" id="roleId" th:text="${role.id }"/>&ndash;&gt;-->
-    <!--<table width="800" cellspacing="0" cellPadding="0" id="listTable" border="1">-->
-        <!--<thead>-->
-        <!--<tr>-->
-            <!--<td>资源名称</td>-->
-            <!--<td>资源url</td>-->
-            <!--<td>资源权限字符串</td>-->
-        <!--</tr>-->
-        <!--</thead>-->
-        <!--&lt;!&ndash;<tbody th:each="rid ${rids}">&ndash;&gt;-->
-        <!--&lt;!&ndash;<input type="hidden" class="hasRes" th:text="${rid }"/>&ndash;&gt;-->
-        <!--<tr th:each="res:${reses}">-->
-            <!--<td th:text="${res.name }"-->
-            <!--&gt;</td>-->
-            <!--<td th:text="${res.url}"></td>-->
-            <!--<td th:text="${res.permission }">&nbsp;</td>-->
-        <!--</tr>-->
-        <!--</tbody>-->
-    <!--</table>-->
-<!--</div>-->
 <div class="x-nav" style="margin-bottom: 30px">
           <span class="layui-breadcrumb" style="visibility: visible">
             <a th:href="@{|/admin/user/list|}">用户列表</a>
@@ -51,7 +28,7 @@
             <div class="layui-card">
                 <div class="layui-card-body">
                     <div class="layui-inline">
-                        <a href="/admin/role/add" class="admin_link layui-btn">添加</a>
+                        <a class="layui-btn layui-btn-primary" th:href="@{|/admin/user/list|}">返回</a>
                     </div>
                     <table class="layui-table layui-form">
 

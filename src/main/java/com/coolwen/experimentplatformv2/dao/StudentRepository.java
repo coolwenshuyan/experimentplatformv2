@@ -158,4 +158,10 @@ public interface StudentRepository extends BaseRepository<Student, Integer>, Jpa
     List<StuTotalScoreCurrentDTO> listAllStuTotalScoreCurrentDTOOfPass();
 
 
+    // 得到所有的报告记录
+    @Query("select new com.coolwen.experimentplatformv2.model.DTO.StudentReportScoreDTO " +
+            "(st.id, st.stuName, st.classId, expm.m_name, khms.mReportScore, khms.mReportstate,khm.m_id,expm.report_type) " +
+            "from Student st ,KaoHeModelScore khms ,ExpModel expm ,KaoheModel khm " +
+            "where st.id=khms.stuId and khms.tKaohemodleId=khm.id and khm.m_id = expm.m_id  and khm.arrange_id=?1")
+    public List<StudentReportScoreDTO> listStudentMReportDTOByArrangeClassId(int arrangeClassId);
 }

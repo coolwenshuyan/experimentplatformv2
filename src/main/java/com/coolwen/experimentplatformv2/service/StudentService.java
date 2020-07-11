@@ -76,4 +76,7 @@ public interface StudentService {
     List<StuTotalScoreCurrentDTO> listAllStuTotalScoreCurrentDTOOfPass();
 
     Student findStudentByXueHao(String xuehao);
+
+
+    public Page<Student> findStudentPageAndXuehaoAndClass(int page, int classId, String select_orderId);
 }

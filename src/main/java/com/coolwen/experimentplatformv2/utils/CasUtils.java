@@ -99,6 +99,10 @@ public class CasUtils {
         return date;
     }
 
+    /**
+     * 获取登陆老师工号
+     * @return
+     */
     public static String getLoginUserInfor() {
         Assertion assertion = (Assertion) SecurityUtils.getSubject().getSession().getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION);
         String ssoid = assertion.getPrincipal().getName();

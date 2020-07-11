@@ -15,8 +15,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 /**
  * @author Artell
  * @version 2020/5/15 21:31
@@ -282,6 +284,15 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student findStudentByXueHao(String xuehao) {
         return studentRepository.findByStuXuehao(xuehao);
+    }
+
+    @Override
+    public Page<Student> findStudentPageAndXuehaoAndClass(int page, int classId, String select_orderId) {
+        Pageable pager = PageRequest.of(page, size);
+        Page<Student> studentsPage = studentRepository.findAll(new SimpleSpecificationBuilder<Student>(
+                "stuXuehao", ":", select_orderId).add("classId", "=", classId)
+                .generateSpecification(), pager);
+        return studentsPage;
     }
 
 

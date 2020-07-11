@@ -7,6 +7,7 @@ import com.coolwen.experimentplatformv2.model.DTO.KaoheModelAndExpInfoDTO;
 import com.coolwen.experimentplatformv2.service.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,7 @@ import java.util.List;
 /**
  * 对考核进行编辑管理
  * 列出所有模块/所有考核模块,将实验模块移入/移出考核,修改/添加考核信息
+ *
  * @author 王雨来
  * @version 2020/5/13 12:21
  */
@@ -64,9 +66,11 @@ public class KaoheModelController {
     private ModuleTestAnswerStuService moduleTestAnswerStuService;//模块测试和学生信息处理
 
     protected static final Logger logger = LoggerFactory.getLogger(TeacherController.class);
+
     /**
      * 列出所有模块
-     * @param model 传值
+     *
+     * @param model   传值
      * @param pageNum 分页
      * @return 列表页面
      */
@@ -89,8 +93,10 @@ public class KaoheModelController {
 //        logger.debug("user:>>"+user);
 
 //        List<CourseInfo> courseInfoList =  courseInfoService.getclass_by_arrangeteacher(user.getId());
-        List<ArrangeInfoDTO> arrangeInfoDTOs =  arrangeClassService.findArrangeInfoDTOByTeacherId(1);
-        model.addAttribute("arrangeInfoDTOs",arrangeInfoDTOs);
+        User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
+        logger.debug("登陆用户信息:" + user);
+        List<ArrangeInfoDTO> arrangeInfoDTOs = arrangeClassService.findArrangeInfoDTOByTeacherId(user.getId());
+        model.addAttribute("arrangeInfoDTOs", arrangeInfoDTOs);
 
 //        if(arrangeInfoDTOs.size()>0){
 //            return "redirect:/kaohemodel/Module/"+arrangeInfoDTOs.get(0);
@@ -99,9 +105,9 @@ public class KaoheModelController {
 //            return "redirect:/Module/"+-1;
 //        }
         boolean choose = false;
-        model.addAttribute("Choose",choose);
-        model.addAttribute("selected1","/kaohemodel/allModule");
-        model.addAttribute("selected2","/kaohemodel/checkModule");
+        model.addAttribute("Choose", choose);
+        model.addAttribute("selected1", "/kaohemodel/allModule");
+        model.addAttribute("selected2", "/kaohemodel/checkModule");
 //        List <ExpModels> b = null;
 //        for (ExpModel x:a){
 //            ExpModels c = new ExpModels(x.getM_id(),
@@ -135,46 +141,44 @@ public class KaoheModelController {
     public String loadOneCourseModel(Model model,
                                      HttpSession session,
                                      @PathVariable int arrangeId,
-                               @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum) {
+                                     @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum) {
 
         //所有的下拉列表数据
-        List<ArrangeInfoDTO> arrangeInfoDTOs =  arrangeClassService.findArrangeInfoDTOByTeacherId(1);
-        model.addAttribute("arrangeInfoDTOs",arrangeInfoDTOs);
+        List<ArrangeInfoDTO> arrangeInfoDTOs = arrangeClassService.findArrangeInfoDTOByTeacherId(1);
+        model.addAttribute("arrangeInfoDTOs", arrangeInfoDTOs);
 
         //当前选择的安排表Id,用于判断按钮跳转连接,以及下拉列表回显
-        model.addAttribute("selected",arrangeId);
+        model.addAttribute("selected", arrangeId);
 
         //判断是否选择了安排
         boolean choose = true;
 
-        if(arrangeId == -1) {
+        if (arrangeId == -1) {
             choose = false;
             model.addAttribute("Choose", choose);
-            model.addAttribute("selected1","/kaohemodel/allModule");
-            model.addAttribute("selected2","/kaohemodel/checkModule");
+            model.addAttribute("selected1", "/kaohemodel/allModule");
+            model.addAttribute("selected2", "/kaohemodel/checkModule");
             return "kaohe/checkModule";
         }
 
         model.addAttribute("Choose", choose);
-        model.addAttribute("selected1","/kaohemodel/Module/"+arrangeId);
-        model.addAttribute("selected2","/kaohemodel/checkModule/"+arrangeId);
+        model.addAttribute("selected1", "/kaohemodel/Module/" + arrangeId);
+        model.addAttribute("selected2", "/kaohemodel/checkModule/" + arrangeId);
         // 这是一个整数列表,用来存放所有的考核模块的实验模块id,用来判断此实验是否已经在考核中
         List<Integer> check = kaoheModelService.inKaoheList(arrangeId);
 //        model.addAttribute("checkList", check);
 
         //本安排的实验模块
         ArrangeClass arrangeClass = arrangeClassService.findById(arrangeId);
-        Page<ExpModel> a = expModelService.findOneCourseModelList(arrangeClass.getCourseId(),pageNum);
+        Page<ExpModel> a = expModelService.findOneCourseModelList(arrangeClass.getCourseId(), pageNum);
         //设置是否已经移入了考核
         List<ExpModel> tempts = a.getContent();
-        for (int i=0;i<tempts.size();i++)
-        {
+        for (int i = 0; i < tempts.size(); i++) {
             ExpModel temp_exp = tempts.get(i);
             int temp_m_id = temp_exp.getM_id();
             boolean temp_flag = false;
-            for (int j=0;j<check.size();j++) {
-                if(check.get(j).equals(temp_m_id))
-                {
+            for (int j = 0; j < check.size(); j++) {
+                if (check.get(j).equals(temp_m_id)) {
                     temp_flag = true;
                     break;
                 }
@@ -189,14 +193,14 @@ public class KaoheModelController {
 //        model.addAttribute("allKaoHeModelId",kaoHeModelId);
 
 
-
 //        System.out.println("准备好了");
         return "kaohe/allModule";
     }
 
     /**
      * 列出所有考核模块
-     * @param model 传值
+     *
+     * @param model   传值
      * @param pageNum 分页
      * @return 页面
      * @throws JsonProcessingException
@@ -208,7 +212,7 @@ public class KaoheModelController {
 //        Page<KaoheModel> page = kaoheModelService.findAll(pageable);
         //判断是否选择了安排
         boolean choose = false;
-        model.addAttribute("Choose",choose);
+        model.addAttribute("Choose", choose);
 
 //        Page<KaoheModelAndExpInfoDTO> page = kaoheModelService.findAllKaoheModelAndExpInfoDTO(pageNum);
 //
@@ -220,18 +224,19 @@ public class KaoheModelController {
 //        System.out.println("json:" + mapper.writeValueAsString(page));
 
         //所有的下拉列表数据
-        List<ArrangeInfoDTO> arrangeInfoDTOs =  arrangeClassService.findArrangeInfoDTOByTeacherId(1);
-        model.addAttribute("arrangeInfoDTOs",arrangeInfoDTOs);
-        logger.debug("下拉列表数据>>>>>:"+arrangeInfoDTOs);
+        List<ArrangeInfoDTO> arrangeInfoDTOs = arrangeClassService.findArrangeInfoDTOByTeacherId(1);
+        model.addAttribute("arrangeInfoDTOs", arrangeInfoDTOs);
+        logger.debug("下拉列表数据>>>>>:" + arrangeInfoDTOs);
 
-        model.addAttribute("selected1","/kaohemodel/allModule");
-        model.addAttribute("selected2","/kaohemodel/checkModule");
+        model.addAttribute("selected1", "/kaohemodel/allModule");
+        model.addAttribute("selected2", "/kaohemodel/checkModule");
 
         return "kaohe/checkModule";
     }
 
     /**
      * 筛选考核模块
+     *
      * @param model
      * @param arrangeId
      * @param pageNum
@@ -242,40 +247,37 @@ public class KaoheModelController {
     public String listCheckModule(Model model,
                                   @PathVariable int arrangeId,
                                   @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum) throws JsonProcessingException {
+        User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
+        logger.debug("登陆用户信息:" + user);
         //所有的下拉列表数据
-        List<ArrangeInfoDTO> arrangeInfoDTOs =  arrangeClassService.findArrangeInfoDTOByTeacherId(1);
-        model.addAttribute("arrangeInfoDTOs",arrangeInfoDTOs);
-        logger.debug("下拉列表数据>>>>>:"+arrangeInfoDTOs);
+        List<ArrangeInfoDTO> arrangeInfoDTOs = arrangeClassService.findArrangeInfoDTOByTeacherId(user.getId());
+        model.addAttribute("arrangeInfoDTOs", arrangeInfoDTOs);
+        logger.debug("下拉列表数据>>>>>:" + arrangeInfoDTOs);
 
         //回显当前所选的安排
-        model.addAttribute("selected",arrangeId);
+        model.addAttribute("selected", arrangeId);
 
 
         //判断是否选择了安排
         boolean choose = true;
 
-        if(arrangeId == -1) {
+        if (arrangeId == -1) {
             choose = false;
             model.addAttribute("Choose", choose);
-            model.addAttribute("selected1","/kaohemodel/allModule");
-            model.addAttribute("selected2","/kaohemodel/checkModule");
+            model.addAttribute("selected1", "/kaohemodel/allModule");
+            model.addAttribute("selected2", "/kaohemodel/checkModule");
             return "kaohe/checkModule";
         }
 
         model.addAttribute("Choose", choose);
-        model.addAttribute("selected1","/kaohemodel/Module/"+arrangeId);
-        model.addAttribute("selected2","/kaohemodel/checkModule/"+arrangeId);
+        model.addAttribute("selected1", "/kaohemodel/Module/" + arrangeId);
+        model.addAttribute("selected2", "/kaohemodel/checkModule/" + arrangeId);
         //本安排的考核实验模块
-        Page<KaoheModelAndExpInfoDTO> page = kaoheModelService.findAllKaoheModelAndExpInfoDTOByArrangeId(arrangeId,pageNum);
+        Page<KaoheModelAndExpInfoDTO> page = kaoheModelService.findAllKaoheModelAndExpInfoDTOByArrangeId(arrangeId, pageNum);
         model.addAttribute("kaoheModelPageInfo", page);
 
         return "kaohe/checkModule";
     }
-
-
-
-
-
 
 
     /**
@@ -301,7 +303,7 @@ public class KaoheModelController {
      * 移入考核
      */
     @RequestMapping(value = {"/{mid}/{arrangeId}/moveIn"}, method = RequestMethod.POST)
-    public String add(@PathVariable int mid,@PathVariable int arrangeId,KaoheModel moveIn,String arrangeStart,String arrangeEnd) {
+    public String add(@PathVariable int mid, @PathVariable int arrangeId, KaoheModel moveIn, String arrangeStart, String arrangeEnd) {
 
         logger.debug("arrangeStart>>>>>>>>>>>>" + arrangeStart);
         KaoheModel u = new KaoheModel();
@@ -323,10 +325,10 @@ public class KaoheModelController {
         Date starsDate = null;
         Date endDate = null;
         try {
-            if(arrangeStart != ""){
+            if (arrangeStart != "") {
                 starsDate = simpleDateFormat.parse(arrangeStart);
             }
-            if(arrangeEnd != ""){
+            if (arrangeEnd != "") {
                 endDate = simpleDateFormat.parse(arrangeEnd);
             }
         } catch (ParseException e) {
@@ -338,10 +340,10 @@ public class KaoheModelController {
 
         //从考核模块中取出整体测试百分比
         List<KaoheModel> kaoheModels = kaoheModelService.findAll();
-        if (kaoheModels.size()>0){
+        if (kaoheModels.size() > 0) {
             u.setKaohe_baifenbi(kaoheModels.get(0).getKaohe_baifenbi());
             u.setTest_baifenbi(kaoheModels.get(0).getTest_baifenbi());
-        }else {
+        } else {
             u.setKaohe_baifenbi(0);
             u.setTest_baifenbi(0);
         }
@@ -355,7 +357,7 @@ public class KaoheModelController {
             kaoHeModelScoreService.add(new KaoHeModelScore(u.getId(), i.getId(), 0, 0, u.getM_order(), u.getM_scale()));
             //更新表13中学生总表记录中考核模块数
             TotalScoreCurrent totalScoreCurrent = totalScoreCurrentService.findTotalScoreCurrentByStuId(i.getId());
-            totalScoreCurrent.setKaoheNum(totalScoreCurrent.getKaoheNum()+1);
+            totalScoreCurrent.setKaoheNum(totalScoreCurrent.getKaoheNum() + 1);
             totalScoreCurrentService.add(totalScoreCurrent);
         }
         // 当期限定
@@ -366,7 +368,7 @@ public class KaoheModelController {
 
         //studentService.findStudentby
 
-        for (Student temp_st:studentslist) {
+        for (Student temp_st : studentslist) {
             int studentid = temp_st.getId();
             //删除考核模块测试答案
             moduleTestAnswerStuService.deleteByStuIdModelId(mid, studentid);
@@ -382,7 +384,7 @@ public class KaoheModelController {
 //        collegeReportService.deleteCollege(mid);
 //        //删除自定义版答题报告
 //        reportAnswerService.deleteReportAnswerByMid(mid);
-        return "redirect:/kaohemodel/Module/"+arrangeId+"/";
+        return "redirect:/kaohemodel/Module/" + arrangeId + "/";
     }
 
     /**
@@ -403,7 +405,7 @@ public class KaoheModelController {
      * 修改考核配置
      */
     @RequestMapping(value = "/{id}/update", method = RequestMethod.POST)
-    public String update(@PathVariable int id, KaoheModel kaoheModel,String arrangeStart,String arrangeEnd) {
+    public String update(@PathVariable int id, KaoheModel kaoheModel, String arrangeStart, String arrangeEnd) {
         KaoheModel u = kaoheModelService.findById(id);
 //        u.setClass_hour(kaoheModel.getClass_hour());
         //模块id，从查询记录中得到
@@ -424,10 +426,10 @@ public class KaoheModelController {
         Date starsDate = null;
         Date endDate = null;
         try {
-            if(arrangeStart != ""){
+            if (arrangeStart != "") {
                 starsDate = simpleDateFormat.parse(arrangeStart);
             }
-            if(arrangeEnd != ""){
+            if (arrangeEnd != "") {
                 endDate = simpleDateFormat.parse(arrangeEnd);
             }
         } catch (ParseException e) {
@@ -440,14 +442,14 @@ public class KaoheModelController {
         kaoheModelService.add(u);
         //批量更新学生成绩
         scoreUpdateService.allStudentScoreUpdate2(u.getArrange_id());
-        return "redirect:/kaohemodel/checkModule/"+u.getArrange_id();
+        return "redirect:/kaohemodel/checkModule/" + u.getArrange_id();
     }
 
     /**
      * 移出考核
      */
     @RequestMapping(value = "/{id}/{arrangeId}/delete", method = RequestMethod.GET)
-    public String delete(@PathVariable int id,@PathVariable int arrangeId) {
+    public String delete(@PathVariable int id, @PathVariable int arrangeId) {
 
         // 遍历当期需要参加考核的学生 ,查到这个学生的,这个考核模块的成绩
         // 更新考核额数
@@ -463,7 +465,7 @@ public class KaoheModelController {
 //        //删除所有学生此模块的成绩
 //        kaoheModelService.deleteByMid(mid);
         List<Student> studentslist = arrangeClassService.findStudentByarrangeID(arrangeId);
-        for (Student temp_st:studentslist) {
+        for (Student temp_st : studentslist) {
             int studentid = temp_st.getId();
             //删除考核模块测试答案
             moduleTestAnswerStuService.deleteByStuIdModelId(mid, studentid);
@@ -478,9 +480,8 @@ public class KaoheModelController {
         scoreUpdateService.allStudentScoreUpdate2(arrangeId);
 //        kaoHeModelScoreService.deleteAllByKaohemId(id);
 //        System.out.println("移出成功");
-        return "redirect:/kaohemodel/checkModule/"+arrangeId;
+        return "redirect:/kaohemodel/checkModule/" + arrangeId;
     }
-
 
 
 }

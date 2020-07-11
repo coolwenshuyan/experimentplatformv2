@@ -90,4 +90,17 @@ public class ArrangeClass {
     public void setSkAddress(String skAddress) {
         this.skAddress = skAddress;
     }
+
+    @Override
+    public String toString() {
+        return "ArrangeClass{" +
+                "id=" + id +
+                ", courseId=" + courseId +
+                ", teacherId=" + teacherId +
+                ", classId=" + classId +
+                ", arrangeStart=" + arrangeStart +
+                ", arrangeEnd=" + arrangeEnd +
+                ", skAddress='" + skAddress + '\'' +
+                '}';
+    }
 }

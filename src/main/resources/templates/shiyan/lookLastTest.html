@@ -47,83 +47,101 @@
             <div class="layui-row layui-col-space15">
                 <div class="layui-col-md12">
                     <div class="layui-card">
-                        <a href="addLastTest.html" th:href="@{|addLastQuest|}">
-                            <button type="layui-btn" class="layui-btn layui-bg-green" id="new">新建</button>
-                        </a>
-                        <div class="layui-card-body ">
-                            <form class="layui-form layui-col-space5" method="post">
+<!--                        <a href="addLastTest.html" th:href="@{|addLastQuest|}">-->
+<!--                            <button type="layui-btn" class="layui-btn layui-bg-green" id="new">新建</button>-->
+<!--                        </a>-->
 
-                                <!--<div class="layui-inline layui-show-xs-block">-->
-                                    <!--<input type="text" name="search" th:value="${search}" placeholder="请输入实验模块号" autocomplete="off" class="layui-input">-->
-                                <!--</div>-->
-                                <!--<div class="layui-inline layui-show-xs-block">-->
-                                    <!--<button class="layui-btn"  lay-submit="" lay-filter="sreach">-->
-                                        <!--<i class="layui-icon">搜索</i></button>-->
-                                <!--</div>-->
+                        <select name="interest" lay-filter="aihao" onchange="window.open(this.options[this.selectedIndex].value,target='_self')" style="margin-top: 13px;">
+                            <option th:value="|/shiyan/lastTestList|">--请选择--</option>
+                            <div th:each="arrangeInfo:${arrangeInfoDTOs}" >
+                                <option th:value="|/shiyan/lastTestList/${arrangeInfo.getArrangeId()}|"  th:text="${arrangeInfo.getCourseName()+'-'+arrangeInfo.getClassName()}" th:if="${arrangeInfo.getArrangeId() ne selected}">18信管01</option>
+                                <option th:value="|/shiyan/lastTestList/${arrangeInfo.getArrangeId()}|"  th:text="${arrangeInfo.getCourseName()+'-'+arrangeInfo.getClassName()}" selected="selected" th:if="${arrangeInfo.getArrangeId() eq selected}">18信管01</option>
+                            </div>
+                        </select>
 
-                                <div class="layui-inline layui-show-xs-block">
-                                    <p th:text="${session.msg2020612}"></p>
-                                </div>
-
-                                <!---->
-                                <!--<div class="layui-inline layui-show-xs-block">
-                                    <a class="layui-btn"  lay-submit="" title="增加" onclick="xadmin.open('增加','班级新增.html')"><i class="layui-icon"></i>增加</a>
-                                </div>-->
-                            </form>
+                        <div th:if="${not Choose}">
+                            <p>请选择课程安排</p>
                         </div>
-                       
-                        <div class="layui-card-body ">
-                            <table class="layui-table layui-form">
-                                <thead>
-                                  <tr>
-                                    
-                                    <th>问题序号</th>
-                                    <th>题目</th>
-                                    <th>分值(链接)</th>
-                                    <th>实验模块号</th>
-                                    <th>问题类型</th>
-                                    <th>操作</th>
-                                </thead>
-                                <tbody>
-                                  <tr th:each="Quest:${termList.content}">
-                                    
-                                    <td th:text="${Quest.questOrder}">1</td>
-                                    <td th:text="${Quest.questDescribe}">java</td>
-                                    <td th:text="${Quest.questScore}">100</td>
-                                    <td th:text="${Quest.mId}">1</td>
-                                    <td th:text="${Quest.questType}">单选</td>
-                                    <td class="td-manage">
-                                      <a title="编辑" th:href="@{|updateLastQuest/${Quest.questId}|}">
-                                        <!--<i class="layui-icon">&#xe642;</i>-->
-                                        <button type="layui-btn" class="layui-btn layui-bg-green" >修改</button>
-                                      </a>
-                                      <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;" th:href="@{|deleteLastQuest/${Quest.questId}|}">
-                                        <!--<i class="layui-icon">&#xe640;</i>-->
-                                        <button type="layui-btn" class="layui-btn layui-bg-red">删除</button>
-                                      </a>
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                        </div>
-                        <div class="layui-card-body ">
-                            <div class="page">
-                                <div>
-                                  <!--<a class="prev" href="">&lt;&lt;</a>-->
-                                  <!--<a class="num" href="">1</a>-->
-                                  <!--<span class="current">2</span>-->
-                                  <!--<a class="num" href="">3</a>-->
-                                  <!--<a class="num" href="">489</a>-->
-                                  <!--<a class="next" href="">&gt;&gt;</a>-->
 
-                                    <p>当前 <span th:text="${termList.number}+1"></span> 页,
-                                        总 <span th:text="${termList.totalPages}"></span> 页,
-                                        共 <span th:text="${termList.totalElements}"></span> 条记录</p>
-                                    <a th:href="@{/shiyan/lastTestList}">首页</a>
-                                    <a th:href="@{/shiyan/lastTestList(page=${termList.hasPrevious()}?${termList.number}-1:0)}">上一页</a>
-                                    <a th:href="@{/shiyan/lastTestList(page=${termList.hasNext()}?${termList.number}+1:${termList.number})}">下一页</a>
-                                    <a th:href="@{/shiyan/lastTestList(page=${termList.totalPages}-1)}">尾页</a>
+                        <div th:if="${Choose}">
+                            <a href="addLastTest.html" th:href="@{|/shiyan/addLastQuest/${arrangeId}|}">
+                                <button type="layui-btn" class="layui-btn layui-bg-green" id="new">新建</button>
+                            </a>
+                            <div class="layui-card-body ">
+                                <form class="layui-form layui-col-space5" method="post">
 
+                                    <!--<div class="layui-inline layui-show-xs-block">-->
+                                        <!--<input type="text" name="search" th:value="${search}" placeholder="请输入实验模块号" autocomplete="off" class="layui-input">-->
+                                    <!--</div>-->
+                                    <!--<div class="layui-inline layui-show-xs-block">-->
+                                        <!--<button class="layui-btn"  lay-submit="" lay-filter="sreach">-->
+                                            <!--<i class="layui-icon">搜索</i></button>-->
+                                    <!--</div>-->
+
+                                    <div class="layui-inline layui-show-xs-block">
+                                        <p th:text="${session.msg2020612}"></p>
+                                    </div>
+
+                                    <!---->
+                                    <!--<div class="layui-inline layui-show-xs-block">
+                                        <a class="layui-btn"  lay-submit="" title="增加" onclick="xadmin.open('增加','班级新增.html')"><i class="layui-icon"></i>增加</a>
+                                    </div>-->
+                                </form>
+                            </div>
+
+                            <div class="layui-card-body ">
+                                <table class="layui-table layui-form">
+                                    <thead>
+                                      <tr>
+
+                                        <th>问题序号</th>
+                                        <th>题目</th>
+                                        <th>分值(链接)</th>
+                                        <th>实验模块号</th>
+                                        <th>问题类型</th>
+                                        <th>操作</th>
+                                    </thead>
+                                    <tbody>
+                                      <tr th:each="Quest:${termList.content}">
+
+                                        <td th:text="${Quest.questOrder}">1</td>
+                                        <td th:text="${Quest.questDescribe}">java</td>
+                                        <td th:text="${Quest.questScore}">100</td>
+                                        <td th:text="${Quest.mId}">1</td>
+                                        <td th:text="${Quest.questType}">单选</td>
+                                        <td class="td-manage">
+                                          <a title="编辑" th:href="@{|/shiyan/updateLastQuest/${Quest.questId}|}">
+                                            <!--<i class="layui-icon">&#xe642;</i>-->
+                                            <button type="layui-btn" class="layui-btn layui-bg-green" >修改</button>
+                                          </a>
+                                          <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;" th:href="@{|/shiyan/deleteLastQuest/${Quest.questId}|}">
+                                            <!--<i class="layui-icon">&#xe640;</i>-->
+                                            <button type="layui-btn" class="layui-btn layui-bg-red">删除</button>
+                                          </a>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                            </div>
+                            <div class="layui-card-body ">
+                                <div class="page">
+                                    <div>
+                                      <!--<a class="prev" href="">&lt;&lt;</a>-->
+                                      <!--<a class="num" href="">1</a>-->
+                                      <!--<span class="current">2</span>-->
+                                      <!--<a class="num" href="">3</a>-->
+                                      <!--<a class="num" href="">489</a>-->
+                                      <!--<a class="next" href="">&gt;&gt;</a>-->
+
+                                        <p>当前 <span th:text="${termList.number}+1"></span> 页,
+                                            总 <span th:text="${termList.totalPages}"></span> 页,
+                                            共 <span th:text="${termList.totalElements}"></span> 条记录</p>
+                                        <a th:href="@{/shiyan/lastTestList}">首页</a>
+                                        <a th:href="@{/shiyan/lastTestList(page=${termList.hasPrevious()}?${termList.number}-1:0)}">上一页</a>
+                                        <a th:href="@{/shiyan/lastTestList(page=${termList.hasNext()}?${termList.number}+1:${termList.number})}">下一页</a>
+                                        <a th:href="@{/shiyan/lastTestList(page=${termList.totalPages}-1)}">尾页</a>
+
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -64,7 +64,7 @@
 <div class="layui-row layui-col-space10">
     <div class="layui-col-md6">
         <!--<form class="layui-form" action="">	-->
-        <form class="layui-form" th:action="@{/shiyan/addLastQuest}" method="post" th:object="${Lastquest}">
+        <form class="layui-form" th:action="@{|/shiyan/addLastQuest/${mId}|}" method="post" th:object="${Lastquest}">
             <div class="layui-form-item">
                 <label class="layui-form-label">题目</label>
                 <div class="layui-input-block">
@@ -172,7 +172,7 @@
 
             <div class="layui-form-item  bt">
                 <!--<a class="layui-input-block">-->
-                    <a th:href="@{|/shiyan/addLastAnswer|}" class="layui-btn layui-btn-primary layui-bg-green" lay-submit>增加选项</a>
+                    <a th:href="@{|/shiyan/addLastAnswer/${arrangeId}|}" class="layui-btn layui-btn-primary layui-bg-green" lay-submit>增加选项</a>
                 <!--</a>-->
             </div>
 

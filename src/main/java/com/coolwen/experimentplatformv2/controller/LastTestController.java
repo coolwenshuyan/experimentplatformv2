@@ -1,12 +1,11 @@
 package com.coolwen.experimentplatformv2.controller;
 
+import com.coolwen.experimentplatformv2.model.DTO.ArrangeInfoDTO;
 import com.coolwen.experimentplatformv2.model.ModuleTestAnswer;
 import com.coolwen.experimentplatformv2.model.ModuleTestAnswerStu;
 import com.coolwen.experimentplatformv2.model.ModuleTestQuest;
-import com.coolwen.experimentplatformv2.service.ModuleTestAnswerService;
-import com.coolwen.experimentplatformv2.service.ModuleTestAnswerStuService;
-import com.coolwen.experimentplatformv2.service.ModuleTestQuestService;
-import com.coolwen.experimentplatformv2.service.ScoreUpdateService;
+import com.coolwen.experimentplatformv2.model.User;
+import com.coolwen.experimentplatformv2.service.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -50,18 +49,22 @@ public class LastTestController {
     @Autowired
     private ModuleTestAnswerStuService moduleTestAnswerStuService;
 
+    @Autowired
+    private ArrangeClassService arrangeClassService;
 
-    @GetMapping("addLastQuest")
-    public String addQuest(Model model, HttpSession session) {
 
+    @GetMapping("addLastQuest/{arrangeId}")
+    public String addQuest(Model model, HttpSession session,@PathVariable int arrangeId) {
+
+        logger.debug("arrangeId"+arrangeId);
 //        从缓存中取到questDescribe，即题目的信息
         String questDescribe = (String) session.getAttribute("questDescribe");
         logger.debug("打印题目信息~~~~~~" + questDescribe);
 
-        int mId = -1;
+//        int mId = -1;
 //        开始拦截，即学生已作答的模块不允许添加试题
 //        找到当前模块的所有试题
-        List<ModuleTestQuest> questList = questService.find(mId);
+        List<ModuleTestQuest> questList = questService.find(arrangeId);
         List<ModuleTestAnswerStu> stuList = new ArrayList();
 //        遍历试题
         for (ModuleTestQuest q : questList) {
@@ -95,7 +98,7 @@ public class LastTestController {
 //                清除提示缓存
                 session.removeAttribute("errorInformation");
             }
-            model.addAttribute("mId", mId);
+            model.addAttribute("mId", arrangeId);
 //            返回到静态资源下的shiyan/addTest.html
             return "shiyan/addLastTest";
         } else {
@@ -119,8 +122,8 @@ public class LastTestController {
      * @param questOrder      整体测试题的序号
      * @return 返回整体测试题列表
      */
-    @PostMapping("addLastQuest")
-    public String addQuest(ModuleTestQuest moduleTestQuest, HttpSession session, Model model,
+    @PostMapping("addLastQuest/{arrangeId}")
+    public String addQuest(ModuleTestQuest moduleTestQuest, HttpSession session, Model model,@PathVariable int arrangeId,
                            String questDescribe,
                            String questType, float questScore,
                            String questAnswer, int questOrder) {
@@ -133,7 +136,8 @@ public class LastTestController {
         moduleTestQuest.setQuestAnswer(questAnswer);
         moduleTestQuest.setQuestOrder(questOrder);
 //        模块id默认为-1，即整体测试的模块id为-1
-        moduleTestQuest.setmId(-1);
+        logger.debug("arrangeId:"+arrangeId);
+        moduleTestQuest.setmId(arrangeId);
 //        控制台打印ModuleTestQuest对象
         logger.debug(moduleTestQuest.toString());
 
@@ -163,7 +167,7 @@ public class LastTestController {
         model.addAttribute("questAnswer", questAnswer);
         model.addAttribute("questOrder", questOrder);
 
-        return "redirect:/shiyan/addLastQuest";
+        return "redirect:/shiyan/addLastQuest/"+arrangeId;
     }
 
     /**
@@ -171,8 +175,9 @@ public class LastTestController {
      *
      * @return 返回静态资源下的shiyan/addAnswer.html
      */
-    @GetMapping("addLastAnswer")
-    public String addAnswer() {
+    @GetMapping("addLastAnswer/{arrangeId}")
+    public String addAnswer(Model model,@PathVariable int arrangeId) {
+        model.addAttribute("arrangeId",arrangeId);
 //       返回静态资源下的shiyan/addLastAnswer.html
         return "shiyan/addLastAnswer";
     }
@@ -184,8 +189,8 @@ public class LastTestController {
      * @param session          数据的缓存空间
      * @return 返回添加模块测试题页面
      */
-    @PostMapping("addLastAnswer")
-    public String addAnswer(ModuleTestAnswer moduleTestAnswer, HttpSession session) {
+    @PostMapping("addLastAnswer/{arrangeId}")
+    public String addAnswer(ModuleTestAnswer moduleTestAnswer, HttpSession session,@PathVariable int arrangeId) {
 //        从添加模块测试题post方法中存入的问题id取出来，并赋值给qId
         int qId = (int) session.getAttribute("questId");
 //        控制台打印获取的问题id
@@ -195,7 +200,7 @@ public class LastTestController {
 //        将添加的ModuleTestAnswer数据存入数据库
         answerService.addAnswers(moduleTestAnswer);
 //        返回添加模块测试题页面
-        return "redirect:/shiyan/addLastQuest";
+        return "redirect:/shiyan/addLastQuest/"+arrangeId;
     }
 
 
@@ -224,9 +229,43 @@ public class LastTestController {
         model.addAttribute("questAnswer", questAnswer);
         String questOrder = "";
         model.addAttribute("questOrder", questOrder);
+//        将分页信息传给前端
+        model.addAttribute("termList", termList);
+
+        User user = (User) session.getAttribute("admin");
+        logger.debug("user:>>"+user);
+        List<ArrangeInfoDTO> arrangeInfoDTOs =  arrangeClassService.findArrangeInfoDTOByTeacherId(user.getId());
+        model.addAttribute("arrangeInfoDTOs",arrangeInfoDTOs);
+
+        boolean choose = false;
+        model.addAttribute("Choose",choose);
+
+        return "shiyan/lookLastTest";
+    }
+
+    @RequestMapping("lastTestList/{arrangeId}")
+    public String list1(HttpSession session,
+                        @PathVariable int arrangeId,
+                        @RequestParam(value = "page", defaultValue = "0", required = true) Integer page,
+                        Model model) {
+//        分页数据的条数为10，即没10条数据进行分页
+        Pageable pageable = PageRequest.of(page, 10);
+//        分页的条件是以模块id，即mid为条件分页
+        logger.debug("arrangeId:"+arrangeId);
+        model.addAttribute("arrangeId",-arrangeId);
+        Page<ModuleTestQuest> termList = questService.findByLastPage(pageable, -arrangeId);
 
 //        将分页信息传给前端
         model.addAttribute("termList", termList);
+
+        User user = (User) session.getAttribute("admin");
+        logger.debug("user:>>"+user);
+        List<ArrangeInfoDTO> arrangeInfoDTOs =  arrangeClassService.findArrangeInfoDTOByTeacherId(user.getId());
+        model.addAttribute("arrangeInfoDTOs",arrangeInfoDTOs);
+
+        boolean choose = true;
+        model.addAttribute("Choose",choose);
+
         return "shiyan/lookLastTest";
     }
 

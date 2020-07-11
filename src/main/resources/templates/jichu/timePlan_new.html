@@ -67,7 +67,7 @@
                                 <select name="teacherId" lay-filter="aihao" required="required" lay-verify="required">
                                     <option value="">请选择教师</option>
                                     <a th:each="user:${userList}">
-                                        <option th:value="${user.getId()}">[[${user.username}]]</option>
+                                        <option th:value="${user.getId()}">[[${user.nickname}]]</option>
                                     </a>
                                 </select>
                             </div>

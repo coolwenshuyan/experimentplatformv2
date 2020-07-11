@@ -89,7 +89,7 @@
                                         <select name="teacherName" lay-filter="aihao">
                                             <option value="">请选择教师</option>
                                             <a th:each="user:${userList}">
-                                                <option th:value="${user.getUsername()}">[[${user.username}]]</option>
+                                                <option th:value="${user.getNickname()}">[[${user.nickname}]]</option>
                                             </a>
                                         </select>
                                     </div>

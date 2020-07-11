@@ -250,6 +250,7 @@ public class KaoheModelController {
         //回显当前所选的安排
         model.addAttribute("selected",arrangeId);
 
+
         //判断是否选择了安排
         boolean choose = true;
 

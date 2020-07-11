@@ -59,8 +59,9 @@ public class MyShiroCaseUrlRealm extends CasRealm {
         logger.debug("授权开始------------------------>>>>>>>>>>>>>>>>>>>>>>>>");
         Map<Object, Object> map = CasUtils.getUserInfo(SecurityUtils.getSubject().getSession());
         String comsys_role = (String) map.get("comsys_role");
+        String comsys_name = (String) map.get("comsys_name");
         logger.debug("授权角色信息:" + comsys_role);
-        logger.debug("授权账号信息:" + principals.getPrimaryPrincipal());
+        logger.debug("授权账号:" + principals.getPrimaryPrincipal() + "授权用户名:" + comsys_name);
         int uid = 0;
         if (comsys_role.contains("ROLE_STUDENT")) {
             Student student = (Student) SecurityUtils.getSubject().getSession().getAttribute("student");
@@ -68,9 +69,10 @@ public class MyShiroCaseUrlRealm extends CasRealm {
             uid = student.getId();
             logger.debug("授权用户:" + uid + "," + student.getStuName());
         } else if (comsys_role.contains("ROLE_TEACHER")) {
-            String gonghao = CasUtils.getLoginUserInfor();
+            String gonghao = (String) map.get("comsys_teaching_number");
             logger.debug("授权老师工号信息:" + "," + gonghao);
             User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
+            //把老师工号存入系统
             user.setGonghao(gonghao);
             userService.add(user);
             uid = user.getId();
@@ -113,6 +115,7 @@ public class MyShiroCaseUrlRealm extends CasRealm {
             SecurityUtils.getSubject().getSession().setAttribute("student", student);
         }
         if (xuehao.length() == 18) {
+            //查询本地老师信息
             User user = userService.findByUsername(xuehao);
 //            Admin admin = adminService.findByUname(xuehao);
             logger.debug("登陆老师信息:" + user);

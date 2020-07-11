@@ -107,7 +107,8 @@ public class MyShiroRealm extends AuthorizingRealm {
         Cache c = this.getAuthenticationCache();
         Set<Object> keys = c.keys();
         for (Object o : keys) {
-            logger.debug("授权缓存:" + o + "-----" + c.get(o) + "----------");
+            logger.debug("授权缓存:", o);
+            logger.debug("授权缓存:", c.get(o));
         }
         super.clearCachedAuthenticationInfo(sp);
         //   super.clearCachedAuthenticationInfo(principals);
@@ -121,7 +122,8 @@ public class MyShiroRealm extends AuthorizingRealm {
         Cache c = this.getAuthorizationCache();
         Set<Object> keys = c.keys();
         for (Object o : keys) {
-            logger.debug("认证缓存:" + o + "----------" + c.get(o) + "----------");
+            logger.debug("认证缓存: {0}.", o);
+            logger.debug("认证缓存: {0}.", c.get(o));
         }
 //        User user = ((User) principals.getPrimaryPrincipal());
 //        SimplePrincipalCollection spc = new SimplePrincipalCollection(user.getUsername(), getName());

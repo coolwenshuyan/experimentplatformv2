@@ -9,27 +9,30 @@ import cn.afterturn.easypoi.excel.annotation.Excel;
 
 
 public class StudentReportScoreDTO {
-//    学生id
+    //    学生id
     @Excel(name = "学生id", orderNum = "0")
     private int sid;
-//    真实姓名
+    //    真实姓名
     @Excel(name = "学生姓名", orderNum = "1")
     private String sName;
-//    班级号
+    //    班级号
     @Excel(name = "班级号", orderNum = "2")
     private int sClass;
-//    实验名称
+    //    实验名称
     @Excel(name = "实验名称", orderNum = "3")
     private String mName;
-//    成绩
+    //    成绩
     @Excel(name = "测试成绩", orderNum = "4")
     private float mScore;
-//   完成状态
+    //   完成状态
     private boolean Done;
 
     private int mid;
 
     private boolean reportType;
+
+    //安排id
+    private int arrageId;
 
     public StudentReportScoreDTO(int sid, String sName, int sClass, String mName, float mScore, boolean done, int mid) {
         this.sid = sid;
@@ -118,7 +121,7 @@ public class StudentReportScoreDTO {
 
     @Override
     public String toString() {
-        return "StudentTestScoreDTO{" +
+        return "StudentReportScoreDTO{" +
                 "sid=" + sid +
                 ", sName='" + sName + '\'' +
                 ", sClass=" + sClass +
@@ -126,6 +129,16 @@ public class StudentReportScoreDTO {
                 ", mScore=" + mScore +
                 ", Done=" + Done +
                 ", mid=" + mid +
+                ", reportType=" + reportType +
+                ", arrageId=" + arrageId +
                 '}';
+    }
+
+    public int getArrageId() {
+        return arrageId;
+    }
+
+    public void setArrageId(int arrageId) {
+        this.arrageId = arrageId;
     }
 }

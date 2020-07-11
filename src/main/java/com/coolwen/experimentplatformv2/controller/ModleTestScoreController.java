@@ -109,7 +109,7 @@ public class ModleTestScoreController {
         //查询当期班级
         List<ClassModel> classList = classService.findCurrentClass();
         model.addAttribute("classList", classList);
-
+        logger.debug("sssssclass"+String.valueOf(classList));
         List<StudentTestScoreDTO> a = studentRepository.listStudentMTestAnswerDTO();
 
         logger.debug(String.valueOf(a));

@@ -98,7 +98,7 @@
 										<select name="interest" lay-filter="aihao" onchange="window.open(this.options[this.selectedIndex].value,target='_self')" style="margin-top: 15px;height: 30px;width: 100px;border-color: lightgray;">
 												<option>请选择</option>
 											<div th:each="clazz:${classList}" >
-												<option th:value="|/testScoreManage/${clazz.getId()}/list|"  th:text="${clazz.getClassName()}">18信管01</option>
+												<option th:value="|/testScoreManage/${clazz.getClassId()}/list|"  th:text="${clazz.getClassName()}">18信管01</option>
 											</div>
 										</select>
 

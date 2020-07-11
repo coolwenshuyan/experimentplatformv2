@@ -438,7 +438,7 @@ public class KaoheModelController {
 
         kaoheModelService.add(u);
         //批量更新学生成绩
-        scoreUpdateService.allStudentScoreUpdate();
+        scoreUpdateService.allStudentScoreUpdate2(u.getArrange_id());
         return "redirect:/kaohemodel/checkModule/"+u.getArrange_id();
     }
 
@@ -474,7 +474,7 @@ public class KaoheModelController {
         // 删除表11中该考核模块
         kaoheModelService.delete(id);
         //批量更新学生成绩
-        scoreUpdateService.allStudentScoreUpdate();
+        scoreUpdateService.allStudentScoreUpdate2(arrangeId);
 //        kaoHeModelScoreService.deleteAllByKaohemId(id);
 //        System.out.println("移出成功");
         return "redirect:/kaohemodel/checkModule/"+arrangeId;

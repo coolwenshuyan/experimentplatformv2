@@ -35,6 +35,9 @@ public class ScoreUpdateServiceImpl implements ScoreUpdateService {
     @Autowired
     CollegeReportService collegeReportService; //学院报告服务
 
+    @Autowired
+    ArrangeClassService arrangeClassService;//安排表
+
     @Override
     public void singleStudentScoreUpdate(int id) {
         //判断学生班级是否往期
@@ -106,6 +109,81 @@ public class ScoreUpdateServiceImpl implements ScoreUpdateService {
         for(Student s : studentList){
             logger.debug(s.toString());
             singleStudentScoreUpdate(s.getId());
+        }
+    }
+
+    @Override
+    public void singleStudentScoreUpdate2(int id, int arrageid) {
+        //判断学生班级是否往期
+        ClassModel classModel = clazzService.findClassModelByStuId(id);
+        if(classModel.getClassIscurrent() == true){
+            return;
+        }
+        //找到所有考试模块
+        List<KaoheModel> kaoheModelList = kaoheModelService.findKaoheModelByArrangeId2(arrageid);
+        //存储分数
+        float mTestScore = 0;
+        float mReportScore = 0;
+        float mTotalScore = 0;
+        float testScore = 0;
+        float test_baifenbi = 0;
+        float kaohe_baifenbi = 0;
+        for(KaoheModel k : kaoheModelList){
+            //循环存储，减少数据库操作
+            test_baifenbi = k.getTest_baifenbi();
+            kaohe_baifenbi = k.getKaohe_baifenbi();
+
+            //循环前，每个模块测试成绩和报告成绩设置为0
+            mTestScore = 0;
+            mReportScore = 0;
+
+            //找到该考生在该模块的考核模块成绩表
+            KaoHeModelScore kaoHeModelScore = kaoHeModelScoreService.findKaoheModelScoreByMid(k.getM_id(),id);
+
+            //模块测试没有做，不进行统计
+            if (kaoHeModelScore.ismTeststate()){
+                //模块题目比对获取分数
+                mTestScore = moduleTestScore(k.getM_id(),id);
+            }
+            //模块报告没有做，不进行统计
+            if (kaoHeModelScore.ismReportstate()){
+                //模块报告分数获取
+                mReportScore = moduleReportScore(k.getM_id(),id);
+            }
+
+            //更新模块测试分数
+            kaoHeModelScore.setmTestScore(mTestScore);
+            //更新模块报告分数
+            kaoHeModelScore.setmReportScore(mReportScore);
+            //更新模块成绩
+            kaoHeModelScore.setmScore(mTestScore * k.getM_test_baifenbi() + mReportScore * k.getM_report_baifenbi());
+            //存储考核模块成绩
+            kaoHeModelScoreService.add(kaoHeModelScore);
+            //更新整体模块成绩
+            mTotalScore += kaoHeModelScore.getmScore() * k.getM_scale();
+
+        }
+        //找到该学生的当期总评成绩表
+        TotalScoreCurrent totalScoreCurrent = totalScoreCurrentService.findTotalScoreCurrentByStuId(id);
+        //更新整体模块成绩
+        totalScoreCurrent.setmTotalScore(mTotalScore);
+
+        //计算课程整体测试成绩
+        testScore = moduleTestScore(-1*arrageid,id);
+        //更新整体测试成绩
+        totalScoreCurrent.setTestScore(testScore);
+        //更新总成绩
+        totalScoreCurrent.setTotalScore(mTotalScore * kaohe_baifenbi + testScore * test_baifenbi);
+        totalScoreCurrentService.add(totalScoreCurrent);
+    }
+
+    //根据安排表操作
+    @Override
+    public void allStudentScoreUpdate2(int arrageid) {
+        List<Student> studentList = arrangeClassService.findStudentByarrangeID(arrageid);
+        for(Student s : studentList){
+            logger.debug(s.toString());
+            singleStudentScoreUpdate2(s.getId(),arrageid);
         }
     }
 

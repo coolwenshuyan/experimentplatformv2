@@ -74,4 +74,7 @@ public interface KaoheModelRepository extends BaseRepository<KaoheModel, Integer
             "on khm.m_id = em.m_id " +
             "where khm.arrange_id = ?1")
     Page<KaoheModelAndExpInfoDTO> findAllKaoheModelAndExpInfoDTOByArrangeId(int arrangeId,Pageable pageable);
+
+    @Query("select khm from KaoheModel khm where khm.arrange_id = ?1")
+    List<KaoheModel> findKaoheModelByArrangeId2(int arrageid);
 }

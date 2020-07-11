@@ -213,5 +213,10 @@ public class KaoheModelServiceImpl implements KaoheModelService {
         return kaoheModelRepository.findAllKaoheModelAndExpInfoDTOByArrangeId(arrangeId,pageable);
     }
 
+    @Override
+    public List<KaoheModel> findKaoheModelByArrangeId2(int arrageid) {
+        return kaoheModelRepository.findKaoheModelByArrangeId2(arrageid);
+    }
+
 
 }

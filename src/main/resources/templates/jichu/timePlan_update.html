@@ -65,7 +65,7 @@
                             <div class="layui-input-block">
                                 <select th:value="${arrangeClass.getTeacherId()}" name="teacherId" lay-filter="aihao" required="required" lay-verify="required">
                                     <a th:each="user:${userList}">
-                                        <option th:value="${user.getId()}">[[${user.username}]]</option>
+                                        <option th:value="${user.getId()}">[[${user.nickname}]]</option>
                                     </a>
                                 </select>
                             </div>

@@ -74,22 +74,22 @@ public class LastTestScoreController {
 
         User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
         logger.debug("登陆用户信息:" + user);
-        Page<Student> c = studentService.findStudentPageAndXuehao(pageNum, select_orderId);
-//        //搜索
-        logger.debug("c>>>>>>" + c.getSize());
-        model.addAttribute("allStu", c);
-        model.addAttribute("selectOrderId", select_orderId);
-
-        //查询当期班级列表
-        //班级列表
-//        List<ClassModel> classList = classService.findAllClass();
-        List<ClassModel> classList = classService.findCurrentClass();
-        model.addAttribute("classList", classList);
-
-        //学生成绩DTO列表
-        Page<StudentLastTestScoreDTO> a = studentService.listStudentLastTestAnswerDTO(pageNum);
-        logger.debug(">>>>>>>>>>>>>>>>>" + a);
-        model.addAttribute("allInfo", a);
+//        Page<Student> c = studentService.findStudentPageAndXuehao(pageNum, select_orderId);
+////        //搜索
+//        logger.debug("当前学生信息为:" + c.getContent());
+//        model.addAttribute("allStu", c);
+//        model.addAttribute("selectOrderId", select_orderId);
+//
+//        //查询当期班级列表
+//        //班级列表
+////        List<ClassModel> classList = classService.findAllClass();
+//        List<ClassModel> classList = classService.findCurrentClass();
+//        model.addAttribute("classList", classList);
+//
+//        //学生成绩DTO列表
+//        Page<StudentLastTestScoreDTO> a = studentService.listStudentLastTestAnswerDTO(pageNum);
+//        logger.debug("学生成绩信息为:" + a.getContent());
+//        model.addAttribute("allInfo", a);
 
         boolean choose = false;
         model.addAttribute("Choose", choose);
@@ -160,11 +160,10 @@ public class LastTestScoreController {
 //    }
 
     /**
-     *
      * @param model
-     * @param arrangeId 安排表id
+     * @param arrangeId      安排表id
      * @param select_orderId 学号
-     * @param pageNum 页码
+     * @param pageNum        页码
      * @return
      */
     @GetMapping(value = "/report/{arrangeId}")
@@ -188,6 +187,7 @@ public class LastTestScoreController {
 //            model.addAttribute("selected1", "/report/allModule");
             return "redirect:/lastTestScoreManage/list";
         }
+        model.addAttribute("selected", arrangeId);
         model.addAttribute("Choose", choose);
         //本安排的实验模块
         ArrangeClass arrangeClass = arrangeClassService.findById(arrangeId);
@@ -206,8 +206,9 @@ public class LastTestScoreController {
 
         //学生成绩DTO列表
         //todo 是否需要传递其他参数？？？？
-        Page<StudentLastTestScoreDTO> a = studentService.listStudentLastTestAnswerDTO(pageNum);
-        logger.debug("学生成绩信息:" + a);
+        Page<StudentLastTestScoreDTO> a = studentService.listStudentLastTestAnswerDTO(pageNum, arrangeId);
+//        Page<StudentLastTestScoreDTO> a = studentService.listStudentLastTestAnswerDTO(pageNum);
+        logger.debug("学生成绩信息:" + a.getContent());
         model.addAttribute("allInfo", a);
 
         return "kaohe/lastTestScore";

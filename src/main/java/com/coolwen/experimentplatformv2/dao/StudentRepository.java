@@ -164,4 +164,12 @@ public interface StudentRepository extends BaseRepository<Student, Integer>, Jpa
             "from Student st ,KaoHeModelScore khms ,ExpModel expm ,KaoheModel khm " +
             "where st.id=khms.stuId and khms.tKaohemodleId=khm.id and khm.m_id = expm.m_id  and khm.arrange_id=?1")
     public List<StudentReportScoreDTO> listStudentMReportDTOByArrangeClassId(int arrangeClassId);
+
+
+    //只处理当期班级的学生成绩
+    @Query("select new com.coolwen.experimentplatformv2.model.DTO.StudentLastTestScoreDTO " +
+            "(st.stuXuehao, st.stuName, clas.className,tsc.totalScore) " +
+            "from Student st left join TotalScoreCurrent tsc on st.id = tsc.stuId " +
+            "left join ClassModel clas on clas.classId = st.classId left join ArrangeClass ac on clas.classId=ac.classId where clas.classIscurrent = false and ac.id=?1")
+    public Page<StudentLastTestScoreDTO> listStudentLastTestScoreDTOByArranId(Pageable page, int arrangeClassId);
 }

@@ -4,10 +4,14 @@ import com.coolwen.experimentplatformv2.dao.KaoheModelRepository;
 import com.coolwen.experimentplatformv2.dao.StudentRepository;
 import com.coolwen.experimentplatformv2.filter.FileExcelUtil;
 import com.coolwen.experimentplatformv2.model.ClassModel;
+import com.coolwen.experimentplatformv2.model.DTO.ArrangeInfoDTO;
 import com.coolwen.experimentplatformv2.model.DTO.StudentTestScoreDTO;
 import com.coolwen.experimentplatformv2.model.Student;
+import com.coolwen.experimentplatformv2.model.User;
+import com.coolwen.experimentplatformv2.service.ArrangeClassService;
 import com.coolwen.experimentplatformv2.service.ClazzService;
 import com.coolwen.experimentplatformv2.service.StudentService;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -45,6 +49,9 @@ public class ModleTestScoreController {
     public StudentService studentService;
     @Autowired
     public ClazzService classService;
+
+    @Autowired
+    public ArrangeClassService arrangeClassService;
 
 
 //    @GetMapping(value = "/list")
@@ -100,6 +107,22 @@ public class ModleTestScoreController {
                                @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum) {
 
         //与[ModleTestReportController]大同小异
+        if(select_orderId == null || select_orderId.length() <= 0){
+            boolean choose = false;
+            model.addAttribute("Choose",choose);
+        }else {
+            boolean choose = true;
+            model.addAttribute("Choose",choose);
+        }
+
+        User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
+        logger.debug("登陆用户信息:" + user);
+        //所有的下拉列表数据
+        List<ArrangeInfoDTO> arrangeInfoDTOs = arrangeClassService.findArrangeInfoDTOByTeacherId(user.getId());
+        model.addAttribute("arrangeInfoDTOs",arrangeInfoDTOs);
+
+
+
 //        Page<Student> c = studentService.findAll(pageNum);
         Page<Student> c = studentService.findStudentPageAndXuehao(pageNum, select_orderId);
 
@@ -126,6 +149,7 @@ public class ModleTestScoreController {
     }
 
     /**
+     * 查询当前的安排表里面的所有学生的模块测试成绩
      * @param model
      * @param classId
      * @param select_orderId

@@ -160,7 +160,7 @@ public class StudentServiceImpl implements StudentService {
         Pageable pager = PageRequest.of(pageNum, size);
 //        return studentRepository.listStuTotalScoreCurrentDTO(pager);
         Page<StuTotalScoreCurrentDTO> listStuTotalScoreCurrentDTOPage;
-        if (select_orderId == "" || select_orderId.equals("")) {
+        if (ShiroKit.isEmpty(select_orderId)) {
             listStuTotalScoreCurrentDTOPage = studentRepository.listStuTotalScoreCurrentDTO(pager);
         } else {
             select_orderId = "%" + select_orderId + "%";
@@ -251,7 +251,7 @@ public class StudentServiceImpl implements StudentService {
         Pageable pager = PageRequest.of(pageNum, size);
 //        return studentRepository.listStuTotalScoreCurrentDTO(pager);
         Page<StuTotalScoreCurrentDTO> listStuTotalScoreCurrentDTOPage;
-        if (select_orderId == "" || select_orderId.equals("")) {
+        if (ShiroKit.isEmpty(select_orderId)) {
             logger.debug("不筛选");
             listStuTotalScoreCurrentDTOPage = studentRepository.listStuTotalScoreCurrentDTOOfPass(pager);
         } else {
@@ -293,6 +293,26 @@ public class StudentServiceImpl implements StudentService {
                 "stuXuehao", ":", select_orderId).add("classId", "=", classId)
                 .generateSpecification(), pager);
         return studentsPage;
+    }
+
+    @Override
+    public Page<StudentLastTestScoreDTO> listStudentLastTestAnswerDTO(int pageNum, int arrangeId) {
+        Pageable pager = PageRequest.of(pageNum, size);
+        return studentRepository.listStudentLastTestScoreDTOByArranId(pager, arrangeId);
+    }
+
+    @Override
+    public Page<StuTotalScoreCurrentDTO> listStuTotalScoreCurrentDTO(int pageNum, String selectOrderId, int arrageId) {
+        Pageable pager = PageRequest.of(pageNum, size);
+//        return studentRepository.listStuTotalScoreCurrentDTO(pager);
+        Page<StuTotalScoreCurrentDTO> listStuTotalScoreCurrentDTOPage;
+        if (ShiroKit.isEmpty(selectOrderId)) {
+            listStuTotalScoreCurrentDTOPage = studentRepository.listStuTotalScoreCurrentDTOByArrageId(pager, arrageId);
+        } else {
+            selectOrderId = "%" + selectOrderId + "%";
+            listStuTotalScoreCurrentDTOPage = studentRepository.listStuTotalScoreCurrentDTOByArrageId(arrageId, selectOrderId, pager);
+        }
+        return listStuTotalScoreCurrentDTOPage;
     }
 
 

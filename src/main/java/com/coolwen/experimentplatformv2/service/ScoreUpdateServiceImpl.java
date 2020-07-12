@@ -164,7 +164,7 @@ public class ScoreUpdateServiceImpl implements ScoreUpdateService {
 
         }
         //找到该学生的当期总评成绩表
-        TotalScoreCurrent totalScoreCurrent = totalScoreCurrentService.findTotalScoreCurrentByStuId(id);
+        TotalScoreCurrent totalScoreCurrent = totalScoreCurrentService.findTotalScoreCurrentByStuId2(id,arrageid);
         //更新整体模块成绩
         totalScoreCurrent.setmTotalScore(mTotalScore);
 

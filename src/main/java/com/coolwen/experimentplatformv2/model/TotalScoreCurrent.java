@@ -13,23 +13,27 @@ public class TotalScoreCurrent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "t_totalscore_current")
-    @TableGenerator(name = "t_totalscore_current", initialValue = 0, allocationSize = 1,table = "seq_table")
+    @TableGenerator(name = "t_totalscore_current", initialValue = 0, allocationSize = 1, table = "seq_table")
     private int id;
 
-    @Column(length = 11,nullable = false)
+    @Column(length = 11, nullable = false)
     private int stuId;
 
-    @Column(length = 11,nullable = false)
+    @Column(length = 11, nullable = false)
     private int kaoheNum;
 
-    @Column(nullable = false,columnDefinition = "float default 0")
+    @Column(nullable = false, columnDefinition = "float default 0")
     private float mTotalScore;
 
-    @Column(nullable = false,columnDefinition = "float default 0")
+    @Column(nullable = false, columnDefinition = "float default 0")
     private float testScore;
 
-    @Column(nullable = false,columnDefinition = "float default 0")
+    @Column(nullable = false, columnDefinition = "float default 0")
     private float totalScore;
+
+
+    @Column(name = "arrange_id")
+    private int arrageId;
 
     public TotalScoreCurrent() {
     }
@@ -88,6 +92,14 @@ public class TotalScoreCurrent {
         this.totalScore = totalScore;
     }
 
+    public int getArrageId() {
+        return arrageId;
+    }
+
+    public void setArrageId(int arrageId) {
+        this.arrageId = arrageId;
+    }
+
     @Override
     public String toString() {
         return "TotalScoreCurrent{" +
@@ -97,6 +109,7 @@ public class TotalScoreCurrent {
                 ", mTotalScore=" + mTotalScore +
                 ", testScore=" + testScore +
                 ", totalScore=" + totalScore +
+                ", arrageId=" + arrageId +
                 '}';
     }
 }

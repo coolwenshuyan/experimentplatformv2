@@ -31,7 +31,7 @@
                 <span class="x-red">*</span>res地址:</label>
             <div class="layui-input-inline">
                 <input type="text" id="L_username" name="class_major"
-                       th:field="${res.permission}"
+                       th:field="${res.url}"
                        required="" lay-verify="nikename" autocomplete="off" class="layui-input"></div>
         </div>
         <div class="layui-form-item">
@@ -44,7 +44,7 @@
         </div>
         <div class="layui-btn-container" style="margin-left: 130px">
             <input type="submit" class="layui-btn" value="更新资源"/>
-            <input type="reset" class="layui-btn"/>
+            <a class="layui-btn layui-btn-primary" th:href="@{|/admin/res/list|}">返回</a>
         </div>
     </form>
 </div>
@@ -52,5 +52,17 @@
         charset="utf-8"></script>
 <script src="../../static/js/layui.all.js" th:href="@{/js/layui.all.js}" type="text/javascript"
         charset="utf-8"></script>
+<!--<script>-->
+    <!--//Demo-->
+    <!--layui.use('form', function(){-->
+        <!--var form = layui.form;-->
+
+        <!--//监听提交-->
+        <!--form.on('submit(formDemo)', function(data){-->
+            <!--layer.msg(JSON.stringify(data.field));-->
+            <!--return false;-->
+        <!--});-->
+    <!--});-->
+<!--</script>-->
 </body>
 </html>

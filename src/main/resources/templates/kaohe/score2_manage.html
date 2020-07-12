@@ -224,38 +224,70 @@
         </table>
     </div>
 
-    <div class="modal-footer no-margin-top" th:if="${ Choose} ">
+<!--    <div class="modal-footer no-margin-top" th:if="${ Choose} ">-->
+<!--        <ul class="pagination pull-right no-margin">-->
+
+<!--            &lt;!&ndash; 首页 &ndash;&gt;-->
+<!--            <li>-->
+<!--                <a th:href="'/reportScoreManage/list?pageNum=0'">首页</a>-->
+<!--            </li>-->
+
+<!--            &lt;!&ndash; 上一页 &ndash;&gt;-->
+<!--            <li th:if="${allStu.hasPrevious()}">-->
+<!--                <a th:href="'/reportScoreManage/list?pageNum=' + ${allStu.previousPageable().getPageNumber()}"-->
+<!--                   th:text="上一页"></a>-->
+<!--            </li>-->
+
+<!--            &lt;!&ndash; 中间页 &ndash;&gt;-->
+<!--            <li th:each="pageNum:${#numbers.sequence(0, allStu.getTotalPages() - 1)}">-->
+<!--                <a th:href="'/reportScoreManage/list?pageNum=' + ${pageNum}" th:text="${pageNum + 1}"-->
+<!--                   th:if="${pageNum ne allStu.pageable.getPageNumber()}"></a>-->
+<!--                <a th:href="'/reportScoreManage/list?pageNum=' + ${pageNum}" th:text="${pageNum + 1}"-->
+<!--                   th:if="${pageNum eq allStu.pageable.getPageNumber()}"-->
+<!--                   th:style="'font-weight:bold;background: #6faed9;'"></a>-->
+<!--            </li>-->
+
+<!--            &lt;!&ndash; 下一页 &ndash;&gt;-->
+<!--            <li th:if="${allStu.hasNext()}">-->
+<!--                <a th:href="'/reportScoreManage/list?pageNum=' + ${allStu.nextPageable().getPageNumber()}"-->
+<!--                   th:text="下一页"></a>-->
+<!--            </li>-->
+
+<!--            &lt;!&ndash; 尾页 &ndash;&gt;-->
+<!--            <li>-->
+<!--                <a th:href="'/reportScoreManage/list?pageNum=' + ${allStu.getTotalPages() - 1}">尾页</a>-->
+<!--            </li>-->
+
+<!--        </ul>-->
+<!--    </div>-->
+
+    <div class="modal-footer no-margin-top " th:if="${ Choose}">
         <ul class="pagination pull-right no-margin">
 
             <!-- 首页 -->
             <li>
-                <a th:href="'/reportScoreManage/list?pageNum=0'">首页</a>
+                <a th:href="${path}+'?pageNum=0'">首页</a>
             </li>
 
             <!-- 上一页 -->
             <li th:if="${allStu.hasPrevious()}">
-                <a th:href="'/reportScoreManage/list?pageNum=' + ${allStu.previousPageable().getPageNumber()}"
-                   th:text="上一页"></a>
+                <a th:href="${path}+'?pageNum=' + ${allStu.previousPageable().getPageNumber()}" th:text="上一页"></a>
             </li>
 
             <!-- 中间页 -->
             <li th:each="pageNum:${#numbers.sequence(0, allStu.getTotalPages() - 1)}">
-                <a th:href="'/reportScoreManage/list?pageNum=' + ${pageNum}" th:text="${pageNum + 1}"
-                   th:if="${pageNum ne allStu.pageable.getPageNumber()}"></a>
-                <a th:href="'/reportScoreManage/list?pageNum=' + ${pageNum}" th:text="${pageNum + 1}"
-                   th:if="${pageNum eq allStu.pageable.getPageNumber()}"
-                   th:style="'font-weight:bold;background: #6faed9;'"></a>
+                <a th:href="${path}+'?pageNum=' + ${pageNum}" th:text="${pageNum + 1}" th:if="${pageNum ne allStu.pageable.getPageNumber()}"></a>
+                <a th:href="${path}+'?pageNum=' + ${pageNum}" th:text="${pageNum + 1}" th:if="${pageNum eq allStu.pageable.getPageNumber()}" th:style="'font-weight:bold;background: #6faed9;'"></a>
             </li>
 
             <!-- 下一页 -->
             <li th:if="${allStu.hasNext()}">
-                <a th:href="'/reportScoreManage/list?pageNum=' + ${allStu.nextPageable().getPageNumber()}"
-                   th:text="下一页"></a>
+                <a th:href="${path}+'?pageNum=' + ${allStu.nextPageable().getPageNumber()}" th:text="下一页"></a>
             </li>
 
             <!-- 尾页 -->
             <li>
-                <a th:href="'/reportScoreManage/list?pageNum=' + ${allStu.getTotalPages() - 1}">尾页</a>
+                <a th:href="${path}+'?pageNum=' + ${allStu.getTotalPages() - 1}">尾页</a>
             </li>
 
         </ul>

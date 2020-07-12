@@ -214,6 +214,7 @@ public class ModleTestReportController {
         logger.debug(list.toString());
         model.addAttribute("numList", list);
 
+        model.addAttribute("path","/reportScoreManage/report/"+arrangeId);
 
         return "kaohe/score2_manage";
     }

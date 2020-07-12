@@ -78,6 +78,10 @@ public interface KaoheModelRepository extends BaseRepository<KaoheModel, Integer
     @Query("select khm from KaoheModel khm where khm.arrange_id = ?1")
     List<KaoheModel> findKaoheModelByArrangeId2(int arrageid);
 
-    @Query("select count(khm) from KaoheModel khm where khm.arrange_id = ?1")
-    int countByArrangeId(int arrangeId);
+    @Modifying
+    @Transactional(readOnly = false)
+    @Query("update KaoheModel k set k.kaohe_baifenbi= ?1,k.test_baifenbi= ?2 where k.arrange_id=?3")
+//    @Query("update MoneyPO m set m.isDeleted=?2 where  m.money=?1")
+    void updateAllGreatestWeight(float kaoheBaifenbi, float testBaifenbi,int arrangeId);
+
 }

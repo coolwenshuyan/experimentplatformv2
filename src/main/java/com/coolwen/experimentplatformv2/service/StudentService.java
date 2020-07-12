@@ -82,7 +82,5 @@ public interface StudentService {
 
     Page<StudentLastTestScoreDTO> listStudentLastTestAnswerDTO(int pageNum, int arrangeId);
 
-    Page<Student> pageStudentByArrangeId(Integer pageNum, int arrangeId);
-
-    List<StudentTestScoreDTO> listStudentMTestAnswerDTOByArrangeId(int arrangeId);
+    Page<StuTotalScoreCurrentDTO> listStuTotalScoreCurrentDTO(int pageNum, String select_orderId,int arrageId);
 }

@@ -171,17 +171,18 @@ public class ModleTestReportController {
         logger.debug("安排信息为:" + arrangeClass);
         int classId = arrangeClass.getClassId();
         int courseId = arrangeClass.getCourseId();
+        model.addAttribute("selectOrderId", select_orderId);
+        ClassModel classModel = classService.findById(classId);
+        //查询当期班级
+//        List<ClassModel> classList = classService.findCurrentClass();
+        model.addAttribute("classList", classModel);
         //        Page<Student> c = studentService.findAll(pageNum);
         //获得当前班级所有学生
 //        Page<Student> c = studentService.findStudentPageAndXuehao(pageNum, select_orderId);
         Page<Student> studentPage = studentService.findStudentPageAndXuehaoAndClass(pageNum, classId, select_orderId);
         logger.debug("当前班级所有学生:" + studentPage.getContent());
         model.addAttribute("allStu", studentPage);
-        model.addAttribute("selectOrderId", select_orderId);
-        ClassModel classModel = classService.findById(classId);
-        //查询当期班级
-//        List<ClassModel> classList = classService.findCurrentClass();
-        model.addAttribute("classList", classModel);
+        
 
         //获得所有学生成绩DTO
 //        List<StudentReportScoreDTO> a = studentRepository.listStudentMReportDTO();

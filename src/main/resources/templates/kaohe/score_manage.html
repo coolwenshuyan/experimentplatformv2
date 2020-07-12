@@ -95,18 +95,10 @@
 								<div class="layui-form-item">
 									<label class="layui-form-label" style="padding-top: 20px; ">班级筛选</label>
 									<div class="layui-input-block" style="width: 17%;">
-<!--										<select name="interest" lay-filter="aihao" onchange="window.open(this.options[this.selectedIndex].value,target='_self')" style="margin-top: 15px;height: 30px;width: 100px;border-color: lightgray;">-->
-<!--												<option>请选择</option>-->
-<!--											<div th:each="clazz:${classList}" >-->
-<!--												<option th:value="|/testScoreManage/${clazz.getId()}/list|"  th:text="${clazz.getClassName()}">18信管01</option>-->
-<!--											</div>-->
-<!--										</select>-->
-
 										<select name="interest" lay-filter="aihao" onchange="window.open(this.options[this.selectedIndex].value,target='_self')" style="margin-top: 15px;height: 30px;width: 100px;border-color: lightgray;">
-											<option th:value="|/testScoreManage/list|">--请选择--</option>
-											<div th:each="arrangeInfo:${arrangeInfoDTOs}" >
-												<option th:value="|/testScoreManage/list/${arrangeInfo.getArrangeId()}|"  th:text="${arrangeInfo.getCourseName()+'-'+arrangeInfo.getClassName()}" th:if="${arrangeInfo.getArrangeId() ne selected}">18信管01</option>
-												<option th:value="|/testScoreManage/list/${arrangeInfo.getArrangeId()}|"  th:text="${arrangeInfo.getCourseName()+'-'+arrangeInfo.getClassName()}" selected="selected" th:if="${arrangeInfo.getArrangeId() eq selected}">18信管01</option>
+												<option>请选择</option>
+											<div th:each="clazz:${classList}" >
+												<option th:value="|/testScoreManage/${clazz.getClassId()}/list|"  th:text="${clazz.getClassName()}">18信管01</option>
 											</div>
 										</select>
 
@@ -133,85 +125,80 @@
 					</tr>
 
 			</table>
-
-			<div th:if="${Choose}">
-				<div class="table-wrapper" >
-					<table id="consumption-data" class="layui-table data top2" lay-size="lg" style="    text-align: center;">
-					<colgroup>
-						<col>
-						<col>
-						<col>
-					</colgroup>
-					<thead class="header">
-
-						<tr >
-							<th >学号</th>
-							<th>姓名</th>
-							<th>班级ID</th>
-							<div th:each="a:${numList}">
-								<th>模块名</th>
-								<th>测试成绩</th>
-								<th>状态</th>
-							</div>
-
-
-
-						</tr>
-					</thead>
-					<tbody class="results">
-	<!--				th:each="one:${allInfo}"-->
-						<div th:each="class:${classList}">
-							<tr th:each="one:${allStu}" th:if="${one.getClassId()} == ${class.getClassId()}">
-								<td ><p th:text="${one.getStuXuehao()}" style="margin-left: -50%;">12345678</p></td>
-								<td ><p th:text="${one.getStuName()}">12345678</p></td>
-								<td ><p th:text="${one.getClassId()}">12345678</p></td>
-								<div th:each="stuInfo,stat:${allInfo}" th:if="${stuInfo.getSid()} == ${one.getId()}">
-									<td th:if="${stat.index >= 0}" ><p th:text="${stuInfo.getmName()}">12345678</p></td>
-									<td th:if="${stat.index >= 0}" ><p th:text="${stuInfo.getmScore()}">12345678</p></td>
-									<td th:if="${stat.index >= 0}" ><p th:text="${stuInfo.isDone()}?'完成':'未完成'">12345678</p></td>
-
-								</div>
-							</tr>
+			
+			<div class="table-wrapper">
+				<table id="consumption-data" class="layui-table data top2" lay-size="lg" style="    text-align: center;">
+				<colgroup>
+					<col>
+					<col>
+					<col>
+				</colgroup>
+				<thead class="header">
+					
+					<tr >
+						<th >学号</th>
+						<th>姓名</th>
+						<th>班级ID</th>
+						<div th:each="a:${numList}">
+							<th>模块名</th>
+							<th>测试成绩</th>
+							<th>状态</th>
 						</div>
 
-					</tbody>
-				</table>
+
+
+					</tr>
+				</thead>
+				<tbody class="results">
+<!--				th:each="one:${allInfo}"-->
+					<div th:each="class:${classList}">
+						<tr th:each="one:${allStu}" th:if="${one.getClassId()} == ${class.getClassId()}">
+							<td ><p th:text="${one.getStuXuehao()}" style="margin-left: -50%;">12345678</p></td>
+							<td ><p th:text="${one.getStuName()}">12345678</p></td>
+							<td ><p th:text="${one.getClassId()}">12345678</p></td>
+							<div th:each="stuInfo,stat:${allInfo}" th:if="${stuInfo.getSid()} == ${one.getId()}">
+								<td th:if="${stat.index >= 0}" ><p th:text="${stuInfo.getmName()}">12345678</p></td>
+								<td th:if="${stat.index >= 0}" ><p th:text="${stuInfo.getmScore()}">12345678</p></td>
+								<td th:if="${stat.index >= 0}" ><p th:text="${stuInfo.isDone()}?'完成':'未完成'">12345678</p></td>
+
+							</div>
+						</tr>
 					</div>
 
-				<div class="modal-footer no-margin-top">
-					<ul class="pagination pull-right no-margin">
-
-						<!-- 首页 -->
-						<li>
-							<a th:href="${path}+'?pageNum=0'">首页</a>
-						</li>
-
-						<!-- 上一页 -->
-						<li th:if="${allStu.hasPrevious()}">
-							<a th:href="${path}+'?pageNum=' + ${allStu.previousPageable().getPageNumber()}" th:text="上一页"></a>
-						</li>
-
-						<!-- 中间页 -->
-						<li th:each="pageNum:${#numbers.sequence(0, allStu.getTotalPages() - 1)}">
-							<a th:href="${path}+'?pageNum=' + ${pageNum}" th:text="${pageNum + 1}" th:if="${pageNum ne allStu.pageable.getPageNumber()}"></a>
-							<a th:href="${path}+'?pageNum=' + ${pageNum}" th:text="${pageNum + 1}" th:if="${pageNum eq allStu.pageable.getPageNumber()}" th:style="'font-weight:bold;background: #6faed9;'"></a>
-						</li>
-
-						<!-- 下一页 -->
-						<li th:if="${allStu.hasNext()}">
-							<a th:href="${path}+'?pageNum=' + ${allStu.nextPageable().getPageNumber()}" th:text="下一页"></a>
-						</li>
-
-						<!-- 尾页 -->
-						<li>
-							<a th:href="${path}+'?pageNum=' + ${allStu.getTotalPages() - 1}">尾页</a>
-						</li>
-
-					</ul>
-				</div>
+				</tbody>
+			</table>
 			</div>
-			<div th:if="${not Choose}">
-				<p>请选择课程安排</p>
+
+			<div class="modal-footer no-margin-top">
+				<ul class="pagination pull-right no-margin">
+
+					<!-- 首页 -->
+					<li>
+						<a th:href="'/testScoreManage/list?pageNum=0'">首页</a>
+					</li>
+
+					<!-- 上一页 -->
+					<li th:if="${allStu.hasPrevious()}">
+						<a th:href="'/testScoreManage/list?pageNum=' + ${allStu.previousPageable().getPageNumber()}" th:text="上一页"></a>
+					</li>
+
+					<!-- 中间页 -->
+					<li th:each="pageNum:${#numbers.sequence(0, allStu.getTotalPages() - 1)}">
+						<a th:href="'/testScoreManage/list?pageNum=' + ${pageNum}" th:text="${pageNum + 1}" th:if="${pageNum ne allStu.pageable.getPageNumber()}"></a>
+						<a th:href="'/testScoreManage/list?pageNum=' + ${pageNum}" th:text="${pageNum + 1}" th:if="${pageNum eq allStu.pageable.getPageNumber()}" th:style="'font-weight:bold;background: #6faed9;'"></a>
+					</li>
+
+					<!-- 下一页 -->
+					<li th:if="${allStu.hasNext()}">
+						<a th:href="'/testScoreManage/list?pageNum=' + ${allStu.nextPageable().getPageNumber()}" th:text="下一页"></a>
+					</li>
+
+					<!-- 尾页 -->
+					<li>
+						<a th:href="'/testScoreManage/list?pageNum=' + ${allStu.getTotalPages() - 1}">尾页</a>
+					</li>
+
+				</ul>
 			</div>
 		</div>
 		

@@ -37,11 +37,13 @@ public class KaoheModelServiceImpl implements KaoheModelService {
     @Override
     public void add(KaoheModel kaoheModel) {
         kaoheModelRepository.save(kaoheModel);
+
     }
 
     @Override
     public void update(KaoheModel kaoheModel) {
         kaoheModelRepository.save(kaoheModel);
+
     }
 
     @Override
@@ -208,12 +210,17 @@ public class KaoheModelServiceImpl implements KaoheModelService {
     @Override
     public Page<KaoheModelAndExpInfoDTO> findAllKaoheModelAndExpInfoDTOByArrangeId(int arrangeId, Integer pageNum) {
         Pageable pageable = PageRequest.of(pageNum, 10);
-        return kaoheModelRepository.findAllKaoheModelAndExpInfoDTOByArrangeId(arrangeId,pageable);
+        return kaoheModelRepository.findAllKaoheModelAndExpInfoDTOByArrangeId(arrangeId, pageable);
     }
 
     @Override
     public List<KaoheModel> findKaoheModelByArrangeId2(int arrageid) {
         return kaoheModelRepository.findKaoheModelByArrangeId2(arrageid);
+    }
+
+    @Override
+    public void updateAllGreatestWeight(float kaoheBaifenbi, float testBaifenbi, int arrageId) {
+        kaoheModelRepository.updateAllGreatestWeight(kaoheBaifenbi, testBaifenbi, arrageId);
     }
 
 

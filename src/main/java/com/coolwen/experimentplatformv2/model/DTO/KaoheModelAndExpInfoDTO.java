@@ -121,7 +121,6 @@ public class KaoheModelAndExpInfoDTO {
         this.m_report_baifenbi = m_report_baifenbi;
     }
 
-
     public String getExperiment_name() {
         return Experiment_name;
     }

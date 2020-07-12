@@ -38,8 +38,6 @@ public interface ArrangeClassRepository extends BaseRepository<ArrangeClass, Int
             "where st.classId = ac.classId and ac.id=?1")
     List<Student> findStudentByarrangeID(int arrageid);
 
-//    ArrangeClass findById(int id);
-
 //    @Query(value = "select new com.coolwen.experimentplatformv2.model.DTO.ArrangeClassDto(a.id,cin.courseName,u.username,c.className,a.arrangeStart,a.arrangeEnd) from t_arrange_class a,t_course_info cin,t_class c,t_user u where a.teacher_id = u.id and a.class_id=c.class_id and a.course_id=cin.id and if(?1 !='',cin.course_name=?1,1=1) and if(?2 !='',u.username=?2,1=1) and if(?3 !='',c.class_name=?3,1=1)",nativeQuery = true)
 //    Page<ArrangeClassDto> findBycidAndtidAndclaidLike(String courseName,String teacherName, String className,Pageable pager);
 }

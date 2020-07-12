@@ -59,4 +59,7 @@ public interface KaoheModelService {
     Page<KaoheModelAndExpInfoDTO> findAllKaoheModelAndExpInfoDTOByArrangeId(int arrangeId, Integer pageNum);
 
     List<KaoheModel> findKaoheModelByArrangeId2(int arrageid);
+
+
+    void updateAllGreatestWeight(float kaoheBaifenbi, float testBaifenbi,int arrageId);
 }

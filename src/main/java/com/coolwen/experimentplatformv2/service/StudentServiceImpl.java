@@ -1,10 +1,8 @@
 package com.coolwen.experimentplatformv2.service;
 
-import com.coolwen.experimentplatformv2.dao.ArrangeClassRepository;
 import com.coolwen.experimentplatformv2.dao.ClazzRepository;
 import com.coolwen.experimentplatformv2.dao.StudentRepository;
 import com.coolwen.experimentplatformv2.kit.ShiroKit;
-import com.coolwen.experimentplatformv2.model.ArrangeClass;
 import com.coolwen.experimentplatformv2.model.ClassModel;
 import com.coolwen.experimentplatformv2.model.DTO.*;
 import com.coolwen.experimentplatformv2.model.Student;
@@ -32,8 +30,6 @@ public class StudentServiceImpl implements StudentService {
     protected static final Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
     @Autowired
     public StudentRepository studentRepository;
-    @Autowired
-    public ArrangeClassRepository arrangeClassRepository;
 
 
     @Autowired
@@ -164,7 +160,7 @@ public class StudentServiceImpl implements StudentService {
         Pageable pager = PageRequest.of(pageNum, size);
 //        return studentRepository.listStuTotalScoreCurrentDTO(pager);
         Page<StuTotalScoreCurrentDTO> listStuTotalScoreCurrentDTOPage;
-        if (select_orderId == "" || select_orderId.equals("")) {
+        if (ShiroKit.isEmpty(select_orderId)) {
             listStuTotalScoreCurrentDTOPage = studentRepository.listStuTotalScoreCurrentDTO(pager);
         } else {
             select_orderId = "%" + select_orderId + "%";
@@ -255,7 +251,7 @@ public class StudentServiceImpl implements StudentService {
         Pageable pager = PageRequest.of(pageNum, size);
 //        return studentRepository.listStuTotalScoreCurrentDTO(pager);
         Page<StuTotalScoreCurrentDTO> listStuTotalScoreCurrentDTOPage;
-        if (select_orderId == "" || select_orderId.equals("")) {
+        if (ShiroKit.isEmpty(select_orderId)) {
             logger.debug("不筛选");
             listStuTotalScoreCurrentDTOPage = studentRepository.listStuTotalScoreCurrentDTOOfPass(pager);
         } else {
@@ -306,15 +302,17 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Page<Student> pageStudentByArrangeId(Integer pageNum, int arrangeId) {
+    public Page<StuTotalScoreCurrentDTO> listStuTotalScoreCurrentDTO(int pageNum, String selectOrderId, int arrageId) {
         Pageable pager = PageRequest.of(pageNum, size);
-        ArrangeClass arrangeClass = arrangeClassRepository.findById(arrangeId).get();
-        return studentRepository.findStudentsByClassId(arrangeClass.getClassId(),pager);
-    }
-
-    @Override
-    public List<StudentTestScoreDTO> listStudentMTestAnswerDTOByArrangeId(int arrangeId) {
-        return studentRepository.listStudentMTestAnswerDTOByArrangeId(arrangeId);
+//        return studentRepository.listStuTotalScoreCurrentDTO(pager);
+        Page<StuTotalScoreCurrentDTO> listStuTotalScoreCurrentDTOPage;
+        if (ShiroKit.isEmpty(selectOrderId)) {
+            listStuTotalScoreCurrentDTOPage = studentRepository.listStuTotalScoreCurrentDTOByArrageId(pager, arrageId);
+        } else {
+            selectOrderId = "%" + selectOrderId + "%";
+            listStuTotalScoreCurrentDTOPage = studentRepository.listStuTotalScoreCurrentDTOByArrageId(arrageId, selectOrderId, pager);
+        }
+        return listStuTotalScoreCurrentDTOPage;
     }
 
 

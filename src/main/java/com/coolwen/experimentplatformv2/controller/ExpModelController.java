@@ -1,6 +1,7 @@
 package com.coolwen.experimentplatformv2.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.coolwen.experimentplatformv2.config.ShiroConfig;
 import com.coolwen.experimentplatformv2.model.*;
 import com.coolwen.experimentplatformv2.model.DTO.KaoHeModelStuDTO;
@@ -579,6 +580,18 @@ public class ExpModelController {
         return "kuangjia/shiyan";
     }
 
+    @GetMapping("/findClassByCourse/{id}")
+    @ResponseBody
+    public String findClassByCourse(@PathVariable("id")int courseId){
+        User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
+        List<ClassModel> classModels = courseInfoService.getclass_by_arrangecourseid(user.getId(),courseId);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("data",classModels);
+        return String.valueOf(jsonObject);
+    }
+
+
+
     //考核模块进度查询详情
     @GetMapping("/kaoheProgressQuery/{id}")
     public String kaoheProgressQuery(@PathVariable("id") int id, @RequestParam(value = "pageNum", defaultValue = "0", required = true) int pageNum, Model model) {
@@ -603,8 +616,9 @@ public class ExpModelController {
                                 Model model
     ) {
 
-        model.addAttribute("courseList", courseInfoService.findAll());
-        model.addAttribute("classList", clazzService.findAllClass());
+        User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
+        List<CourseInfo> courseInfoList = courseInfoService.getclass_by_arrangeteacher(user.getId());
+        model.addAttribute("courseList", courseInfoList);
         if (courseId == 0 && classId == 0) {
             return "kaohe/progress";
         } else if (courseId == 0 && classId != 0) {

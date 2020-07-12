@@ -77,4 +77,7 @@ public interface KaoheModelRepository extends BaseRepository<KaoheModel, Integer
 
     @Query("select khm from KaoheModel khm where khm.arrange_id = ?1")
     List<KaoheModel> findKaoheModelByArrangeId2(int arrageid);
+
+    @Query("select count(khm) from KaoheModel khm where khm.arrange_id = ?1")
+    int countByArrangeId(int arrangeId);
 }

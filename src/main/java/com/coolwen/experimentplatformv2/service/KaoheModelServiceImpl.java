@@ -37,13 +37,11 @@ public class KaoheModelServiceImpl implements KaoheModelService {
     @Override
     public void add(KaoheModel kaoheModel) {
         kaoheModelRepository.save(kaoheModel);
-
     }
 
     @Override
     public void update(KaoheModel kaoheModel) {
         kaoheModelRepository.save(kaoheModel);
-
     }
 
     @Override

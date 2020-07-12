@@ -157,6 +157,7 @@ public interface StudentRepository extends BaseRepository<Student, Integer>, Jpa
             "left join ClassModel cla on st.classId=cla.classId")
     List<StuTotalScoreCurrentDTO> listAllStuTotalScoreCurrentDTOOfPass();
 
+    Page<Student> findStudentsByClassId(int classId,Pageable page);
 
     // 得到所有的报告记录
     @Query("select new com.coolwen.experimentplatformv2.model.DTO.StudentReportScoreDTO " +
@@ -172,4 +173,25 @@ public interface StudentRepository extends BaseRepository<Student, Integer>, Jpa
             "from Student st left join TotalScoreCurrent tsc on st.id = tsc.stuId " +
             "left join ClassModel clas on clas.classId = st.classId left join ArrangeClass ac on clas.classId=ac.classId where clas.classIscurrent = false and ac.id=?1")
     public Page<StudentLastTestScoreDTO> listStudentLastTestScoreDTOByArranId(Pageable page, int arrangeClassId);
+
+//    @Query("select new com.coolwen.experimentplatformv2.model.DTO.StudentTestScoreDTO " +
+//            "(st.id, st.stuName, st.classId, expm.m_name, khms.mTestScore, khms.mTeststate,khm.m_id) " +
+//            "from Student st ,KaoHeModelScore khms ,ExpModel expm ,KaoheModel khm ,ArrangeClass ac " +
+//            "where st.id=khms.stuId and khms.tKaohemodleId=khm.id and khm.m_id = expm.m_id and st.classId = ac.classId and ac.courseId=expm.courseId and ac.id = ?1")
+//    List<StudentTestScoreDTO> listStudentMTestAnswerDTOByArrangeId2(int arrangeId);
+//
+//    @Query("select new com.coolwen.experimentplatformv2.model.DTO.StudentTestScoreDTO " +
+//            "(st.id, st.stuName, st.classId, expm.m_name, khms.mTestScore, khms.mTeststate,khm.m_id) " +
+//            "from Student st left join KaoHeModelScore khms on st.id=khms.stuId " +
+//            "left join KaoheModel khm on khms.tKaohemodleId=khm.id  " +
+//            "left join ExpModel expm on khm.m_id = expm.m_id " +
+//            "left join ArrangeClass ac on ac.courseId = expm.courseId and st.classId = ac.classId " +
+//            "where ac.id = ?1")
+//    List<StudentTestScoreDTO> listStudentMTestAnswerDTOByArrangeId(int arrangeId);
+
+    @Query("select new com.coolwen.experimentplatformv2.model.DTO.StudentTestScoreDTO" +
+            "(st.id, st.stuName, st.classId, expm.m_name, khms.mTestScore, khms.mTeststate,khm.m_id)" +
+            "from Student st ,KaoHeModelScore khms ,ExpModel expm ,KaoheModel khm " +
+            "where st.id=khms.stuId and khms.tKaohemodleId=khm.id and khm.m_id = expm.m_id and khm.arrange_id=?1")
+    public List<StudentTestScoreDTO> listStudentMTestAnswerDTOByArrangeId(int arrangeId);
 }

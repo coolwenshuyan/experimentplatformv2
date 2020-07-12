@@ -136,21 +136,30 @@ public class KaoheModelController {
         return "kaohe/allModule";
     }
 
-
+    /**
+     * 全部模块(安排表筛选)
+     * @param model
+     * @param session
+     * @param arrangeId
+     * @param pageNum
+     * @return
+     */
     @RequestMapping(value = "/Module/{arrangeId}", method = RequestMethod.GET)
     public String loadOneCourseModel(Model model,
                                      HttpSession session,
                                      @PathVariable int arrangeId,
                                      @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum) {
 
+        User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
+        logger.debug("登陆用户信息:" + user);
         //所有的下拉列表数据
-        List<ArrangeInfoDTO> arrangeInfoDTOs = arrangeClassService.findArrangeInfoDTOByTeacherId(1);
+        List<ArrangeInfoDTO> arrangeInfoDTOs = arrangeClassService.findArrangeInfoDTOByTeacherId(user.getId());
         model.addAttribute("arrangeInfoDTOs", arrangeInfoDTOs);
 
         //当前选择的安排表Id,用于判断按钮跳转连接,以及下拉列表回显
         model.addAttribute("selected", arrangeId);
 
-        //判断是否选择了安排
+        // 判断是否选择了安排
         boolean choose = true;
 
         if (arrangeId == -1) {
@@ -168,10 +177,11 @@ public class KaoheModelController {
         List<Integer> check = kaoheModelService.inKaoheList(arrangeId);
 //        model.addAttribute("checkList", check);
 
-        //本安排的实验模块
+        // 本安排的实验模块
         ArrangeClass arrangeClass = arrangeClassService.findById(arrangeId);
         Page<ExpModel> a = expModelService.findOneCourseModelList(arrangeClass.getCourseId(), pageNum);
-        //设置是否已经移入了考核
+
+        // 设置是否已经移入了考核
         List<ExpModel> tempts = a.getContent();
         for (int i = 0; i < tempts.size(); i++) {
             ExpModel temp_exp = tempts.get(i);
@@ -223,8 +233,10 @@ public class KaoheModelController {
 //        ObjectMapper mapper = new ObjectMapper();
 //        System.out.println("json:" + mapper.writeValueAsString(page));
 
+        User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
+        logger.debug("登陆用户信息:" + user);
         //所有的下拉列表数据
-        List<ArrangeInfoDTO> arrangeInfoDTOs = arrangeClassService.findArrangeInfoDTOByTeacherId(1);
+        List<ArrangeInfoDTO> arrangeInfoDTOs = arrangeClassService.findArrangeInfoDTOByTeacherId(user.getId());
         model.addAttribute("arrangeInfoDTOs", arrangeInfoDTOs);
         logger.debug("下拉列表数据>>>>>:" + arrangeInfoDTOs);
 

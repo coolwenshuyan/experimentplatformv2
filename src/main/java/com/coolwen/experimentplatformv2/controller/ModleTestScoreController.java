@@ -105,7 +105,7 @@ public class ModleTestScoreController {
                                @RequestParam(required = true, defaultValue = "") String select_orderId,
                                @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum) {
 
-        if (select_orderId == "" ){
+        if(select_orderId == null || select_orderId.length() <= 0){
             boolean choose = false;
             model.addAttribute("Choose",choose);
         }else {

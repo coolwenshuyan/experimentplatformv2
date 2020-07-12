@@ -32,4 +32,6 @@ public interface TotalScoreCurrentRepository extends BaseRepository<TotalScoreCu
 
     List<TotalScoreCurrent> findAll();
 
+    @Query("select t from TotalScoreCurrent t where t.stuId = ?1 and t.arrageId=?2")
+    TotalScoreCurrent findTotalScoreCurrentByStuId2(int stuid, int arrageid);
 }

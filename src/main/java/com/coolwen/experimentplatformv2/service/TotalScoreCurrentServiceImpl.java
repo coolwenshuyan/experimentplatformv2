@@ -74,4 +74,9 @@ public class TotalScoreCurrentServiceImpl implements TotalScoreCurrentService {
         return totalScoreCurrentRepository.findAll();
     }
 
+    @Override
+    public TotalScoreCurrent findTotalScoreCurrentByStuId2(int stuid, int arrageid) {
+        return totalScoreCurrentRepository.findTotalScoreCurrentByStuId2(stuid,arrageid);
+    }
+
 }

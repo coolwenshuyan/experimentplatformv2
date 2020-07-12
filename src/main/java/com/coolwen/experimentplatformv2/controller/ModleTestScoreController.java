@@ -4,10 +4,14 @@ import com.coolwen.experimentplatformv2.dao.KaoheModelRepository;
 import com.coolwen.experimentplatformv2.dao.StudentRepository;
 import com.coolwen.experimentplatformv2.filter.FileExcelUtil;
 import com.coolwen.experimentplatformv2.model.ClassModel;
+import com.coolwen.experimentplatformv2.model.DTO.ArrangeInfoDTO;
 import com.coolwen.experimentplatformv2.model.DTO.StudentTestScoreDTO;
 import com.coolwen.experimentplatformv2.model.Student;
+import com.coolwen.experimentplatformv2.model.User;
+import com.coolwen.experimentplatformv2.service.ArrangeClassService;
 import com.coolwen.experimentplatformv2.service.ClazzService;
 import com.coolwen.experimentplatformv2.service.StudentService;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -45,6 +49,9 @@ public class ModleTestScoreController {
     public StudentService studentService;
     @Autowired
     public ClazzService classService;
+
+    @Autowired
+    public ArrangeClassService arrangeClassService;
 
 
 //    @GetMapping(value = "/list")

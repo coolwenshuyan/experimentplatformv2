@@ -174,6 +174,7 @@ public class ScoreUpdateServiceImpl implements ScoreUpdateService {
         totalScoreCurrent.setTestScore(testScore);
         //更新总成绩
         totalScoreCurrent.setTotalScore(mTotalScore * kaohe_baifenbi + testScore * test_baifenbi);
+        totalScoreCurrent.setKaoheNum(kaoheModelList.size());
         totalScoreCurrentService.add(totalScoreCurrent);
     }
 

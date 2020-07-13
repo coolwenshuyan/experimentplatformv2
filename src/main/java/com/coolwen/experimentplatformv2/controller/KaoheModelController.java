@@ -132,6 +132,9 @@ public class KaoheModelController {
 //            }
 //            b.add(c);
 //        }
+        model.addAttribute("needPaging",false);
+        model.addAttribute("path","/kaohemodel/allModule");
+
 
         return "kaohe/allModule";
     }
@@ -142,7 +145,7 @@ public class KaoheModelController {
                                      HttpSession session,
                                      @PathVariable int arrangeId,
                                      @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum) {
-
+        model.addAttribute("path","/kaohemodel/Module/"+arrangeId);
         //所有的下拉列表数据
         List<ArrangeInfoDTO> arrangeInfoDTOs = arrangeClassService.findArrangeInfoDTOByTeacherId(1);
         model.addAttribute("arrangeInfoDTOs", arrangeInfoDTOs);
@@ -194,6 +197,13 @@ public class KaoheModelController {
 
 
 //        System.out.println("准备好了");
+
+        if (a.getTotalPages()>0){
+            model.addAttribute("needPaging",true);
+        }else {
+            model.addAttribute("needPaging",false);
+        }
+
         return "kaohe/allModule";
     }
 
@@ -206,7 +216,9 @@ public class KaoheModelController {
      * @throws JsonProcessingException
      */
     @RequestMapping(value = "/checkModule", method = RequestMethod.GET)
-    public String list(Model model, @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum) throws JsonProcessingException {
+    public String list(Model model,
+                       @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum) throws JsonProcessingException {
+        model.addAttribute("path","/kaohemodel/checkModule");
         // 所有的考核模块
 //        Pageable pageable = PageRequest.of(pageNum, 5);
 //        Page<KaoheModel> page = kaoheModelService.findAll(pageable);
@@ -230,7 +242,7 @@ public class KaoheModelController {
 
         model.addAttribute("selected1", "/kaohemodel/allModule");
         model.addAttribute("selected2", "/kaohemodel/checkModule");
-
+        model.addAttribute("needPaging",false);
         return "kaohe/checkModule";
     }
 
@@ -247,6 +259,7 @@ public class KaoheModelController {
     public String listCheckModule(Model model,
                                   @PathVariable int arrangeId,
                                   @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum) throws JsonProcessingException {
+        model.addAttribute("path","/kaohemodel/checkModule/"+arrangeId);
         User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
         logger.debug("登陆用户信息:" + user);
         //所有的下拉列表数据
@@ -276,6 +289,12 @@ public class KaoheModelController {
         Page<KaoheModelAndExpInfoDTO> page = kaoheModelService.findAllKaoheModelAndExpInfoDTOByArrangeId(arrangeId, pageNum);
         model.addAttribute("kaoheModelPageInfo", page);
 
+
+        if (page.getTotalPages()>0){
+            model.addAttribute("needPaging",true);
+        }else {
+            model.addAttribute("needPaging",false);
+        }
         return "kaohe/checkModule";
     }
 

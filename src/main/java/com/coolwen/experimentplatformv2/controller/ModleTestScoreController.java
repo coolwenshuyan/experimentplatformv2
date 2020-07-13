@@ -49,7 +49,6 @@ public class ModleTestScoreController {
     public StudentService studentService;
     @Autowired
     public ClazzService classService;
-
     @Autowired
     public ArrangeClassService arrangeClassService;
 
@@ -106,7 +105,6 @@ public class ModleTestScoreController {
                                @RequestParam(required = true, defaultValue = "") String select_orderId,
                                @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum) {
 
-        //与[ModleTestReportController]大同小异
         if(select_orderId == null || select_orderId.length() <= 0){
             boolean choose = false;
             model.addAttribute("Choose",choose);
@@ -145,25 +143,41 @@ public class ModleTestScoreController {
         }
         logger.debug(String.valueOf(list));
         model.addAttribute("numList", list);
+
+
         return "kaohe/score_manage";
     }
+
 
     /**
      * 查询当前的安排表里面的所有学生的模块测试成绩
      * @param model
-     * @param classId
+     * @param arrangeId
      * @param select_orderId
      * @param pageNum
      * @return
      */
-    @GetMapping(value = "/{classId}/list")
+    @GetMapping(value = "/list/{arrangeId}")
     public String loadOneClassModel(Model model,
-                                    @PathVariable int classId,
+                                    @PathVariable int arrangeId,
                                     @RequestParam(required = true, defaultValue = "") String select_orderId,
                                     @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum) {
 
+        //判断是否选择安排表
+        boolean choose = true;
+        model.addAttribute("Choose",choose);
+
+        User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
+        logger.debug("登陆用户信息:" + user);
+        //所有的下拉列表数据
+        List<ArrangeInfoDTO> arrangeInfoDTOs = arrangeClassService.findArrangeInfoDTOByTeacherId(user.getId());
+        model.addAttribute("arrangeInfoDTOs",arrangeInfoDTOs);
+
+        //当前选择的安排表Id,用于判断按钮跳转连接,以及下拉列表回显
+        model.addAttribute("selected",arrangeId);
+
 //        Page<Student> c = studentService.findAll(pageNum);
-        Page<Student> c = studentService.pageStudentByClassId(pageNum, classId);
+        Page<Student> c = studentService.pageStudentByArrangeId(pageNum, arrangeId);
 
         logger.debug(">>>>>>>>>>>>>>>>>>c" + c);
         model.addAttribute("allStu", c);
@@ -173,11 +187,14 @@ public class ModleTestScoreController {
         List<ClassModel> classList = classService.findCurrentClass();
         model.addAttribute("classList", classList);
 
-        List<StudentTestScoreDTO> a = studentRepository.listStudentMTestAnswerDTO();
+//        List<StudentTestScoreDTO> a = studentService.listStudentMTestAnswerDTOByArrangeId(arrangeId);
+        List<StudentTestScoreDTO> a = studentService.listStudentMTestAnswerDTOByArrangeId(arrangeId);
 
 
-        logger.debug(String.valueOf(a));
-        long modleNum = kaoheModelRepository.count();
+        logger.debug("a>>"+a);
+        int modleNum = kaoheModelRepository.countByArrangeId(arrangeId);
+        logger.debug("modleNum>"+modleNum);
+//        int modleNum = 3;
         model.addAttribute("allInfo", a);
         model.addAttribute("num", modleNum);
         List<Integer> list = new ArrayList<Integer>();
@@ -186,10 +203,16 @@ public class ModleTestScoreController {
         }
         logger.debug(String.valueOf(list));
         model.addAttribute("numList", list);
+
+        model.addAttribute("path","/testScoreManage/list/"+arrangeId);
         return "kaohe/score_manage";
     }
 
-    //测试用导出
+
+    /**
+     * 半导出
+     * @param response
+     */
     @RequestMapping("/exportExcel")
     public void exportExcel(HttpServletResponse response) {
         List<StudentTestScoreDTO> a = studentRepository.listStudentMTestAnswerDTO();

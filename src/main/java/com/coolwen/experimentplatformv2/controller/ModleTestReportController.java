@@ -202,9 +202,16 @@ public class ModleTestReportController {
         long modleNum = b.size();
         logger.debug("modleNum:" + modleNum);
         //加入了班级，但是没有考核模块
-        if (modleNum == 0) {
+/*        if (modleNum == 0) {
             return "redirect:/reportScoreManage/list";
+        }*/
+
+        if (studentPage.getTotalPages()>0){
+            model.addAttribute("needPaging",true);
+        }else {
+            model.addAttribute("needPaging",false);
         }
+
         model.addAttribute("allInfo", a);
         model.addAttribute("num", modleNum);
         List<Integer> list = new ArrayList<Integer>();

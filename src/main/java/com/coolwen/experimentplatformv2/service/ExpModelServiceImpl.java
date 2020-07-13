@@ -93,7 +93,7 @@ public class ExpModelServiceImpl implements ExpModelService {
 
     @Override
     public Page<ExpModel> findOneCourseModelList(int courseId,Integer pageNum) {
-        Pageable pageable = PageRequest.of(pageNum,10);
+        Pageable pageable = PageRequest.of(pageNum,100);
         return expModelRepository.findOneCourseModelList(courseId,pageable);
     }
 

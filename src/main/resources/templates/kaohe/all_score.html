@@ -216,7 +216,7 @@
                         </label>
                     </div>
                 </th>
-                <input type="text" name="arrageId" th:value="${arrageId}">
+                <input type="hidden" name="arrageId" th:value="${arrageId}">
             </form>
         </tr>
 
@@ -259,11 +259,12 @@
             </tbody>
         </table>
     </div>
-    <a th:href="@{/totalscore/GuHuaAll}" th:if="${Choose} ">
-        <button type="updata" class="layui-btn" lay-submit="" lay-filter="demo1"
-                style="margin-left: 72%;margin-top: 2%;">将当期成绩全部存入往期成绩
-        </button>
-    </a>
+    <div th:if="${Choose} ">
+        <a th:href="@{|/totalscore/guhuaall/${arrageId}|}" class="list_op layui-btn" type="button"
+           style="margin-left: 72%;margin-top: 2%;">
+            将当期成绩全部存入往期成绩
+        </a>
+    </div>
 
 </div>
 

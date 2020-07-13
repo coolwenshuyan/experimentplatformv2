@@ -259,8 +259,8 @@ public class TotalscoreCurrentController {
                 kaohe_mreportscore_baifengbi = kaohe_mreportscore_baifengbi.substring(0, kaohe_mreportscore_baifengbi.length() - 1);
                 kaohe_mscale = kaohe_mscale.substring(0, kaohe_mscale.length() - 1);
             }
-
-            TotalScoreCurrent totalScoreCurrent = totalScoreCurrentService.findTotalScoreCurrentByStuId(student.getId());
+            TotalScoreCurrent totalScoreCurrent = totalScoreCurrentService.findTotalScoreCurrentByStuId2(student.getId(), arrageId);
+//            TotalScoreCurrent totalScoreCurrent = totalScoreCurrentService.findTotalScoreCurrentByStuId(student.getId());
             //进行成绩固化操作
             totalScorePass = new TotalScorePass();
             totalScorePass.setStuId(student.getId());

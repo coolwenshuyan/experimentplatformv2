@@ -59,19 +59,22 @@ public class TotalScoreCurrentServiceImpl implements TotalScoreCurrentService {
     }
 
     @Override
-    public TotalScoreCurrent findTotalScoreCurrentByStuId(int stuid) {
+    public List<TotalScoreCurrent> findTotalScoreCurrentByStuId(int stuid) {
         return totalScoreCurrentRepository.findTotalScoreCurrentByStuId(stuid);
     }
 
     @Override
     public void deleteTotalScoreCurrentByStuId(int id) {
-        TotalScoreCurrent totalScoreCurrent = totalScoreCurrentRepository.findTotalScoreCurrentByStuId(id);
-        totalScoreCurrentRepository.delete(totalScoreCurrent);
+        List<TotalScoreCurrent> totalScoreCurrentList = totalScoreCurrentRepository.findTotalScoreCurrentByStuId(id);
+        for (TotalScoreCurrent totalScoreCurrent : totalScoreCurrentList) {
+            totalScoreCurrentRepository.delete(totalScoreCurrent);
+        }
+
     }
 
     @Override
     public void deleteTotalScoreCurrentByStuIdAndArrangeId(int id, int arrangeId) {
-        TotalScoreCurrent totalScoreCurrent = totalScoreCurrentRepository.findTotalScoreCurrentByStuId2(id,arrangeId);
+        TotalScoreCurrent totalScoreCurrent = totalScoreCurrentRepository.findTotalScoreCurrentByStuId2(id, arrangeId);
         totalScoreCurrentRepository.delete(totalScoreCurrent);
     }
 
@@ -82,7 +85,7 @@ public class TotalScoreCurrentServiceImpl implements TotalScoreCurrentService {
 
     @Override
     public TotalScoreCurrent findTotalScoreCurrentByStuId2(int stuid, int arrageid) {
-        return totalScoreCurrentRepository.findTotalScoreCurrentByStuId2(stuid,arrageid);
+        return totalScoreCurrentRepository.findTotalScoreCurrentByStuId2(stuid, arrageid);
     }
 
 }

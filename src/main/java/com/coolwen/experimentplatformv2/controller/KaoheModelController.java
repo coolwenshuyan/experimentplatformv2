@@ -356,7 +356,9 @@ public class KaoheModelController {
             logger.debug(String.valueOf(i));
             kaoHeModelScoreService.add(new KaoHeModelScore(u.getId(), i.getId(), 0, 0, u.getM_order(), u.getM_scale()));
             //更新表13中学生总表记录中考核模块数
-            TotalScoreCurrent totalScoreCurrent = totalScoreCurrentService.findTotalScoreCurrentByStuId(i.getId());
+            //todo 需要知道安排表id
+            int arrageId = 0;
+            TotalScoreCurrent totalScoreCurrent = totalScoreCurrentService.findTotalScoreCurrentByStuId2(i.getId(), arrageId);
             totalScoreCurrent.setKaoheNum(totalScoreCurrent.getKaoheNum() + 1);
             totalScoreCurrentService.add(totalScoreCurrent);
         }

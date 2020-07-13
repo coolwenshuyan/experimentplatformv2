@@ -42,7 +42,7 @@ public interface KaoheModelService {
 
     void deleteKaoHeModuleByMid(KaoheModel kaoheModel);
 
-    public void deleteByMid(int mid);
+//    public void deleteByMid(int mid);
 
     void updateAllGreatestWeight(float kaoheBaifenbi, float testBaifenbi);
 

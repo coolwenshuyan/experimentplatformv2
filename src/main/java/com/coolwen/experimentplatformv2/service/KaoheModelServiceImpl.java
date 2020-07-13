@@ -119,18 +119,18 @@ public class KaoheModelServiceImpl implements KaoheModelService {
         kaoheModelRepository.delete(kaoheModel);
     }
 
-    @Override
-    public void deleteByMid(int mid) {
-
-        KaoheModel km = kaoheModelRepository.findKaoheModelByMid(mid);
-        List<KaoHeModelScore> khms = kaoHeModelScoreRepository.findKaoHeModelScoreByKaoheid(km.getId());
-        // 移除模块时，删除表12中该模块学生成绩记录，更新13模块数量
-        for (KaoHeModelScore i : khms) {
-            TotalScoreCurrent tsc = totalScoreCurrentRepository.findTotalScoreCurrentByStuId(i.getStuId());
-            tsc.setKaoheNum(tsc.getKaoheNum() - 1);
-            totalScoreCurrentRepository.save(tsc);
-            kaoHeModelScoreRepository.delete(i);
-        }
+//    @Override
+//    public void deleteByMid(int mid) {
+//
+//        KaoheModel km = kaoheModelRepository.findKaoheModelByMid(mid);
+//        List<KaoHeModelScore> khms = kaoHeModelScoreRepository.findKaoHeModelScoreByKaoheid(km.getId());
+//        // 移除模块时，删除表12中该模块学生成绩记录，更新13模块数量
+//        for (KaoHeModelScore i : khms) {
+//            TotalScoreCurrent tsc = totalScoreCurrentRepository.findTotalScoreCurrentByStuId(i.getStuId());
+//            tsc.setKaoheNum(tsc.getKaoheNum() - 1);
+//            totalScoreCurrentRepository.save(tsc);
+//            kaoHeModelScoreRepository.delete(i);
+//        }
 
 
 //        logger.debug("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+mid);
@@ -168,7 +168,7 @@ public class KaoheModelServiceImpl implements KaoheModelService {
 //        }
 
 
-    }
+//    }
 
     @Override
     public void updateAllGreatestWeight(float kaoheBaifenbi, float testBaifenbi) {

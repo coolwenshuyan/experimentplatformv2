@@ -167,7 +167,9 @@ public class ExpModelController {
             List<KaoHeModelScore> kaoHeModelScores = kaoHeModelScoreService.findKaoHeModelScoreByTKaohemodleIdAndStuId(kaoheModel.getId());
             for (KaoHeModelScore k : kaoHeModelScores) {
                 //更新学生在删除该考核模块后的当期总评成绩表信息
-                TotalScoreCurrent totalScoreCurrent = totalScoreCurrentService.findTotalScoreCurrentByStuId(k.getStuId());
+                //todo 需要知道安排表id,不然有多个成绩
+                int arrageId = 0;
+                TotalScoreCurrent totalScoreCurrent = totalScoreCurrentService.findTotalScoreCurrentByStuId2(k.getStuId(), arrageId);
                 totalScoreCurrent.setKaoheNum(totalScoreCurrent.getKaoheNum() - 1);
                 totalScoreCurrent.setmTotalScore(totalScoreCurrent.getmTotalScore() - k.getmScore());
                 totalScoreCurrent.setTotalScore(totalScoreCurrent.getmTotalScore() * kaoheModel.getKaohe_baifenbi() + totalScoreCurrent.getTestScore() * kaoheModel.getTest_baifenbi());

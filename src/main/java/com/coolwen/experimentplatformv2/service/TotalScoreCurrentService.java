@@ -26,11 +26,11 @@ public interface TotalScoreCurrentService {
 
     TotalScoreCurrent findTotalScoreCurrentByStuID(int stuId);
 
-    TotalScoreCurrent findTotalScoreCurrentByStuId(int stuid);
+    List<TotalScoreCurrent> findTotalScoreCurrentByStuId(int stuid);
 
     void deleteTotalScoreCurrentByStuId(int id);
 
-    void deleteTotalScoreCurrentByStuIdAndArrangeId(int id,int arrangeId);
+    void deleteTotalScoreCurrentByStuIdAndArrangeId(int id, int arrangeId);
 
     List<TotalScoreCurrent> findAll();
 

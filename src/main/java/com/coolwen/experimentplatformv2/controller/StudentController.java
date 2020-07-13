@@ -494,7 +494,9 @@ public class StudentController {
                     kaohe_mscale = kaohe_mscale.substring(0, kaohe_mscale.length() - 1);
                 }
 
-                TotalScoreCurrent totalScoreCurrent = totalScoreCurrentService.findTotalScoreCurrentByStuId(s.getId());
+                //todo 需要知道安排表id
+                int arrageId = 0;
+                TotalScoreCurrent totalScoreCurrent = totalScoreCurrentService.findTotalScoreCurrentByStuId2(s.getId(), arrageId);
                 //进行成绩固化操作
                 totalScorePass = new TotalScorePass();
                 totalScorePass.setStuId(s.getId());
@@ -650,12 +652,33 @@ public class StudentController {
 
     //班级学生移除操作
     @GetMapping("/deleteStuClass/{id}")
-    public String deleteStuClass(@PathVariable("id") int id) {
-        totalScoreCurrentService.deleteTotalScoreCurrentByStuId(id);
-        List<KaoHeModelScore> kaoHeModelScores = kaoHeModelScoreService.findKaoheModuleScoreByStuId(id);
+    public String deleteStuClass(@PathVariable("id") int stuid) {
+        //查询该学生总评成绩表中记着加安排表ID
+        List<TotalScoreCurrent> totalScoreCurrentList = totalScoreCurrentService.findeAllBystuid(stuid);
+        //获取安排表ID
+        List<Integer> integerList = totalScoreCurrentList.stream().map(TotalScoreCurrent -> TotalScoreCurrent.getArrageId()).collect(Collectors.toList());
+        logger.debug("当前班级所有的安排表ID信息：" + integerList);
+        List<KaoheModel> kaoheModels = kaoheModelService.findByArrange_idIn(integerList);
+        logger.debug("安排表ID为：" + integerList + "考核模块信息：" + kaoheModels);
+        for (KaoheModel km : kaoheModels) {
+            logger.debug("考核模块信息：" + km);
+            //删除该学生考核模块相关测试答题记录
+            reportAnswerService.deleteByStuIdModelId(km.getM_id(), stuid);
+            moduleTestAnswerStuService.deleteByStuIdModelId(km.getM_id(), stuid);
+            collegeReportService.deleteByStuIdModelId(km.getM_id(), stuid);
+            logger.debug("考核模块ID：" + km.getM_id() + "学生ID:" + stuid);
+            KaoHeModelScore pre = kaoHeModelScoreService.findKaoheModelScoreByMid(km.getM_id(), stuid);
+            logger.debug("考核模块ID：" + km.getM_id() + "学生ID:" + stuid + "考核成绩" + pre);
+        }
+
+        totalScoreCurrentService.deleteTotalScoreCurrentByStuId(stuid);
+
+        List<KaoHeModelScore> kaoHeModelScores = kaoHeModelScoreService.findKaoheModuleScoreByStuId(stuid);
         //删除学生考核信息
         kaoHeModelScoreService.deleteAllKaohe(kaoHeModelScores);
-        Student student = studentservice.findStudentById(id);
+
+
+        Student student = studentservice.findStudentById(stuid);
         int preClassId = student.getClassId();
         student.setClassId(0);
         studentservice.saveStudent(student);

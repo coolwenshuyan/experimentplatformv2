@@ -39,6 +39,8 @@ public class CourseInfoController {
     @Autowired
     UserService userService;
 
+
+
     @GetMapping(value = "/list")
     public String courseInfoList(Model model, @RequestParam(defaultValue = "0", required=true,value = "pageNum")  Integer pageNum){
 

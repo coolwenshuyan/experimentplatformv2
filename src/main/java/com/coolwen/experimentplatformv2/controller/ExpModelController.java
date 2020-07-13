@@ -67,6 +67,9 @@ public class ExpModelController {
     @Autowired
     CourseInfoService courseInfoService;
 
+    @Autowired
+    UserService userService;
+
     protected static final Logger logger = LoggerFactory.getLogger(ExpModelController.class);
 
 
@@ -115,7 +118,9 @@ public class ExpModelController {
 
     //添加模块信息页面
     @GetMapping("/addExpModel")
-    public String toAdd() {
+    public String toAdd(Model model) {
+//        List<User> users = userService.list();
+//        model.addAttribute("users",users);
         return "shiyan/newExpModel";
     }
 
@@ -151,7 +156,7 @@ public class ExpModelController {
     }
 
     //进行模块删除
-    //todo需要写个操作函数来处理
+    //todo 需要写个操作函数来处理
     @GetMapping("/deleteExpModel/{id}")
     public String delete(@PathVariable("id") int id) {
         //删除考核模块以及更改学生相关成绩

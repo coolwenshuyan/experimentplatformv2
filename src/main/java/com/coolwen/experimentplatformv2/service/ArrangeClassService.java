@@ -40,4 +40,6 @@ public interface ArrangeClassService {
 
     //删除安排表，（单个学生）
     void deleteArrangeClass(int studentId,int arrangeId);
+
+    List<ArrangeClass> findByClassId(int classId);
 }

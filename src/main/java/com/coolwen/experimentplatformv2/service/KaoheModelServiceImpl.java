@@ -232,6 +232,11 @@ public class KaoheModelServiceImpl implements KaoheModelService {
     }
 
     @Override
+    public List<KaoheModel> findByArrange_idIn(List<Integer> ids) {
+        return kaoheModelRepository.findByArrange_idIn(ids);
+    }
+
+    @Override
     public void deleteByArrangeId(int id) {
         kaoheModelRepository.deleteByArrangeId(id);
     }

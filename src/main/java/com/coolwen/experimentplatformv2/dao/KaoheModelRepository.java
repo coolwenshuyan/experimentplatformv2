@@ -73,7 +73,7 @@ public interface KaoheModelRepository extends BaseRepository<KaoheModel, Integer
             "from KaoheModel khm left join ExpModel em " +
             "on khm.m_id = em.m_id " +
             "where khm.arrange_id = ?1")
-    Page<KaoheModelAndExpInfoDTO> findAllKaoheModelAndExpInfoDTOByArrangeId(int arrangeId,Pageable pageable);
+    Page<KaoheModelAndExpInfoDTO> findAllKaoheModelAndExpInfoDTOByArrangeId(int arrangeId, Pageable pageable);
 
     @Query("select khm from KaoheModel khm where khm.arrange_id = ?1")
     List<KaoheModel> findKaoheModelByArrangeId2(int arrageid);
@@ -82,7 +82,11 @@ public interface KaoheModelRepository extends BaseRepository<KaoheModel, Integer
     @Transactional(readOnly = false)
     @Query("update KaoheModel k set k.kaohe_baifenbi= ?1,k.test_baifenbi= ?2 where k.arrange_id=?3")
 //    @Query("update MoneyPO m set m.isDeleted=?2 where  m.money=?1")
-    void updateAllGreatestWeight(float kaoheBaifenbi, float testBaifenbi,int arrangeId);
+    void updateAllGreatestWeight(float kaoheBaifenbi, float testBaifenbi, int arrangeId);
+
+
+    @Query("select khm from KaoheModel khm where khm.arrange_id  in(:ids)")
+    List<KaoheModel> findByArrange_idIn(List<Integer> ids);
 
     @Modifying
     @Transactional(readOnly = false)

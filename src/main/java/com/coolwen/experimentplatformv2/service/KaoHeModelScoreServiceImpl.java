@@ -64,8 +64,8 @@ public class KaoHeModelScoreServiceImpl implements KaoHeModelScoreService {
 
     @Override
     public KaoHeModelScore findKaoheModelScoreByMid(int mid, int stu) {
-        Integer a = kaoheModelRepository.findByMid(mid);
-        return kaoHeModelScoreRepository.findByStuIdAndTKaohemodleId(a, stu);
+//        Integer a = kaoheModelRepository.findByMid(mid);
+        return kaoHeModelScoreRepository.findByTKaohemodleIdAndStuId(mid, stu);
     }
 
     @Override
@@ -96,7 +96,7 @@ public class KaoHeModelScoreServiceImpl implements KaoHeModelScoreService {
 
     @Override
     public Integer findmTestFalseByClassIdAndMid(int classId, int Mid) {
-        return kaoHeModelScoreRepository.findmTestFalseByClassIdAndMid(classId,Mid);
+        return kaoHeModelScoreRepository.findmTestFalseByClassIdAndMid(classId, Mid);
     }
 
     @Override

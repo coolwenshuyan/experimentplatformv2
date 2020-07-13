@@ -49,9 +49,6 @@ public class ArrangeClassServiceImpl implements ArrangeClassService {
     CollegeReportService collegeReportService;
     @Autowired
     ReportAnswerService reportAnswerService;
-
-
-
     @Value("${SimplePageBuilder.pageSize}")
     int size;
 
@@ -115,7 +112,8 @@ public class ArrangeClassServiceImpl implements ArrangeClassService {
 
     @Override
     public ArrangeClass findByCourseIdAndTeacherIdAndClassId(int courseId, int teacherId, int classId) {
-        return arrangeClassRepository.findByCourseIdAndTeacherIdAndClassId(courseId,teacherId,classId);}
+        return arrangeClassRepository.findByCourseIdAndTeacherIdAndClassId(courseId, teacherId, classId);
+    }
 
     @Override
     public List<Student> findStudentByarrangeID(int arrageid) {
@@ -124,9 +122,14 @@ public class ArrangeClassServiceImpl implements ArrangeClassService {
     }
 
     @Override
+    public List<ArrangeClass> findByClassId(int classId) {
+        return arrangeClassRepository.findByClassId(classId);
+    }
+
+    @Override
     public void currentResults(int studentId, int arrangeId) {
-        TotalScoreCurrent t = totalScoreCurrentService.findTotalScoreCurrentByStuId2(studentId,arrangeId);
-        if(t == null){
+        TotalScoreCurrent t = totalScoreCurrentService.findTotalScoreCurrentByStuId2(studentId, arrangeId);
+        if (t == null) {
             TotalScoreCurrent totalScoreCurrent = new TotalScoreCurrent();
             totalScoreCurrent.setStuId(studentId);
             totalScoreCurrent.setArrageId(arrangeId);
@@ -149,7 +152,7 @@ public class ArrangeClassServiceImpl implements ArrangeClassService {
             //删除自定义版答题报告
             reportAnswerService.deleteByStuIdModelId(mid, studentid);
             //删除考核模块学生记录表
-            List<KaoHeModelScore> kaoHeModelScores = kaoHeModelScoreRepository.findKaoheModuleScoreByStuIdAndArrangeId(studentid,arrangeId);
+            List<KaoHeModelScore> kaoHeModelScores = kaoHeModelScoreRepository.findKaoheModuleScoreByStuIdAndArrangeId(studentid, arrangeId);
             kaoHeModelScoreRepository.deleteAll(kaoHeModelScores);
         }
         // 删除表11中该考核模块
@@ -159,7 +162,7 @@ public class ArrangeClassServiceImpl implements ArrangeClassService {
     @Override
     public void deleteArrangeClass(int studentId, int arrangeId) {
         //删除学生对应课程当期总评成绩
-        totalScoreCurrentService.deleteTotalScoreCurrentByStuIdAndArrangeId(studentId,arrangeId);
+        totalScoreCurrentService.deleteTotalScoreCurrentByStuIdAndArrangeId(studentId, arrangeId);
     }
 
     @Override

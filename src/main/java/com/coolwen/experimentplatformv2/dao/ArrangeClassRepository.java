@@ -15,7 +15,6 @@ import java.util.List;
 public interface ArrangeClassRepository extends BaseRepository<ArrangeClass, Integer>, JpaSpecificationExecutor<ArrangeClass> {
 
 
-
     @Query(value = "select  new com.coolwen.experimentplatformv2.model.DTO.ArrangeClassDto(a.id,cin.courseName,u.nickname,c.className,a.arrangeStart,a.arrangeEnd,a.skAddress) from ArrangeClass a,CourseInfo cin,ClassModel c,User u where a.teacherId = u.id and a.classId=c.classId and a.courseId=cin.id")
     Page<ArrangeClassDto> findByAll(Pageable pageable);
 
@@ -23,7 +22,7 @@ public interface ArrangeClassRepository extends BaseRepository<ArrangeClass, Int
             "(a.id,cin.courseName,u.nickname,c.className,a.arrangeStart,a.arrangeEnd) " +
             "from ArrangeClass a,CourseInfo cin,ClassModel c,User u " +
             "where a.teacherId = u.id and a.classId=c.classId and a.courseId=cin.id and cin.courseName like %?1% and u.nickname like %?2% and c.className like %?3%")
-    Page<ArrangeClassDto> findBycidAndtidAndclaidLike(String courseName,String teacherName, String className,Pageable pager);
+    Page<ArrangeClassDto> findBycidAndtidAndclaidLike(String courseName, String teacherName, String className, Pageable pager);
 
     ArrangeClass findByCourseIdAndTeacherIdAndClassId(int courseId, int teacherId, int classId);
 
@@ -34,9 +33,12 @@ public interface ArrangeClassRepository extends BaseRepository<ArrangeClass, Int
             "where ac.teacherId = u.id and ac.classId=c.classId and ac.courseId=cin.id and ac.teacherId = ?1")
     List<ArrangeInfoDTO> findArrangeInfoDTOByTeacherId(int teacherId);
 
-    @Query(value = "select st from  Student st,ArrangeClass ac "+
+    @Query(value = "select st from  Student st,ArrangeClass ac " +
             "where st.classId = ac.classId and ac.id=?1")
     List<Student> findStudentByarrangeID(int arrageid);
+
+
+    List<ArrangeClass> findByClassId(int classId);
 
 //    @Query(value = "select new com.coolwen.experimentplatformv2.model.DTO.ArrangeClassDto(a.id,cin.courseName,u.username,c.className,a.arrangeStart,a.arrangeEnd) from t_arrange_class a,t_course_info cin,t_class c,t_user u where a.teacher_id = u.id and a.class_id=c.class_id and a.course_id=cin.id and if(?1 !='',cin.course_name=?1,1=1) and if(?2 !='',u.username=?2,1=1) and if(?3 !='',c.class_name=?3,1=1)",nativeQuery = true)
 //    Page<ArrangeClassDto> findBycidAndtidAndclaidLike(String courseName,String teacherName, String className,Pageable pager);

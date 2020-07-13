@@ -1,5 +1,7 @@
 package com.coolwen.experimentplatformv2.model.DTO;
 
+import java.util.Date;
+
 /**
  * @Description
  * @Author 张健银
@@ -25,7 +27,10 @@ public class KaoheModuleProgressDTO {
     private boolean report_type;
     private int stuId;
 
-    public KaoheModuleProgressDTO(String stu_xuehao, String stu_name, String class_name, String m_name, boolean m_teststate, float m_test_score, boolean m_reportstate, float m_report_score, boolean mReportteacherstate, float m_score,int m_mid,int classId,boolean report_type,int stuId) {
+    private Date kaohe_starttime;
+    private Date kaohe_endtime;
+
+    public KaoheModuleProgressDTO(String stu_xuehao, String stu_name, String class_name, String m_name, boolean m_teststate, float m_test_score, boolean m_reportstate, float m_report_score, boolean mReportteacherstate, float m_score,int m_mid,int classId,boolean report_type,int stuId,Date kaohe_starttime,Date kaohe_endtime) {
         this.stu_xuehao = stu_xuehao;
         this.stu_name = stu_name;
         this.class_name = class_name;
@@ -40,6 +45,24 @@ public class KaoheModuleProgressDTO {
         this.classId = classId;
         this.report_type = report_type;
         this.stuId = stuId;
+        this.kaohe_starttime = kaohe_starttime;
+        this.kaohe_endtime = kaohe_endtime;
+    }
+
+    public Date getKaohe_starttime() {
+        return kaohe_starttime;
+    }
+
+    public void setKaohe_starttime(Date kaohe_starttime) {
+        this.kaohe_starttime = kaohe_starttime;
+    }
+
+    public Date getKaohe_endtime() {
+        return kaohe_endtime;
+    }
+
+    public void setKaohe_endtime(Date kaohe_endtime) {
+        this.kaohe_endtime = kaohe_endtime;
     }
 
     public int getStuId() {
@@ -171,6 +194,8 @@ public class KaoheModuleProgressDTO {
                 ", classId=" + classId +
                 ", report_type=" + report_type +
                 ", stuId=" + stuId +
+                ", kaohe_starttime=" + kaohe_starttime +
+                ", kaohe_endtime=" + kaohe_endtime +
                 '}';
     }
 }

@@ -5,6 +5,7 @@ import com.coolwen.experimentplatformv2.model.*;
 import com.coolwen.experimentplatformv2.model.DTO.KaoHeModelStuDTO;
 import com.coolwen.experimentplatformv2.model.DTO.KaoheModelAndExpInfoDTO;
 import com.coolwen.experimentplatformv2.specification.SimpleSpecification;
+import com.coolwen.experimentplatformv2.specification.SimpleSpecificationBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -221,6 +222,13 @@ public class KaoheModelServiceImpl implements KaoheModelService {
     @Override
     public void updateAllGreatestWeight(float kaoheBaifenbi, float testBaifenbi, int arrageId) {
         kaoheModelRepository.updateAllGreatestWeight(kaoheBaifenbi, testBaifenbi, arrageId);
+    }
+
+    @Override
+    public List<KaoheModel> findAllByArrageId(int arrageId) {
+        return kaoheModelRepository.findAll(
+                new SimpleSpecificationBuilder("arrange_id", "=", arrageId).generateSpecification()
+        );
     }
 
 

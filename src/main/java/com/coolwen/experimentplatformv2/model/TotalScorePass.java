@@ -58,6 +58,19 @@ public class TotalScorePass {
     @Column(nullable = false)
     private Date finalDatetime;
 
+    @Column(name = "course_name",nullable = false)
+    private String courseName;
+
+    @Column(name = "class_name",nullable = false)
+    private String className;
+
+    @Column(name = "teacher_name",nullable = false)
+    private String teacherName;
+
+
+    @Column(name = "teacher_gonghao",nullable = false)
+    private String teacherGongHao;
+
     public TotalScorePass() {
     }
 
@@ -197,6 +210,38 @@ public class TotalScorePass {
         this.finalDatetime = finalDatetime;
     }
 
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    public String getTeacherName() {
+        return teacherName;
+    }
+
+    public void setTeacherName(String teacherName) {
+        this.teacherName = teacherName;
+    }
+
+    public String getTeacherGongHao() {
+        return teacherGongHao;
+    }
+
+    public void setTeacherGongHao(String teacherGongHao) {
+        this.teacherGongHao = teacherGongHao;
+    }
+
     @Override
     public String toString() {
         return "TotalScorePass{" +
@@ -209,11 +254,16 @@ public class TotalScorePass {
                 ", kaoheMtestscoreBaifengbi='" + kaoheMtestscoreBaifengbi + '\'' +
                 ", kaoheMreportscoreBaifengbi='" + kaoheMreportscoreBaifengbi + '\'' +
                 ", kaoheMscale='" + kaoheMscale + '\'' +
+                ", mTotalScore=" + mTotalScore +
                 ", testScore=" + testScore +
                 ", testBaifenbi=" + testBaifenbi +
                 ", kaoheBaifenbi=" + kaoheBaifenbi +
                 ", totalScore=" + totalScore +
                 ", finalDatetime=" + finalDatetime +
+                ", courseName='" + courseName + '\'' +
+                ", className='" + className + '\'' +
+                ", teacherName='" + teacherName + '\'' +
+                ", teacherGongHao='" + teacherGongHao + '\'' +
                 '}';
     }
 }

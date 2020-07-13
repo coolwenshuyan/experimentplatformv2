@@ -102,6 +102,8 @@
                             <th>姓名</th>
                             <th>班级</th>
                             <th>模块名</th>
+                            <th>考核起始时间</th>
+                            <th>考核截止时间</th>
                             <th>模块测试状态</th>
                             <th>模块测试成绩</th>
                             <th>模块报告状态</th>
@@ -115,6 +117,8 @@
                             <td th:text="${m.stu_xuehao}">1806101012</td>
                             <td th:text="${m.stu_name}">李</td>
                             <td th:text="${m.class_name}">3班</td>
+                            <td th:text="${m.kaohe_starttime}"></td>
+                            <td th:text="${m.kaohe_endtime}"></td>
                             <td th:text="${m.m_name}">java</td>
                             <td th:text="${m.m_teststate}==true?'完成':'未完成'">完成</td>
                             <td th:text="${m.m_test_score}">18</td>

@@ -33,15 +33,15 @@
 <body>
     <div class="layui-container">
         <div class="layui-row">
-            <form class="layui-form" th:action="@{/expmodel/kaoheProgress}" method="get">
+            <form class="layui-form" lay-filter="dataform" id="dataform">
                 <div class="layui-col-xs4">
                     <div class="layui-form-item ">
                         <label class="layui-form-label">课程选择</label>
                         <div class="layui-input-block">
                             <select name="course" lay-filter="course" id="course" required>
-                                <option value="0">请选择课程</option>
+                                <option value="0" selected>请选择课程</option>
                                 <span th:each="course:${courseList}">
-                                <option th:value="${course.id}"th:selected="${courseId == course.id?true:false}" th:text="${course.courseName}"></option>
+                                <option th:value="${course.id}" th:text="${course.courseName}"></option>
                             </span>
                             </select>
                         </div>
@@ -51,17 +51,13 @@
                     <div class="layui-form-item ">
                         <label class="layui-form-label">班级选择</label>
                         <div class="layui-input-block">
-                            <select name="class" lay-filter="class" required>
-                                <option value="0">请选择班级</option>
-                                <span th:each="class:${classList}">
-                                <option th:value="${class.classId}" th:selected="${classId == class.classId?true:false}" th:text="${class.className}"></option>
-                            </span>
+                            <select name="class" id="class" lay-filter="class" required></span>
                             </select>
                         </div>
                     </div>
                 </div>
                 <div class="layui-col-xs4">
-                    <input type="submit" class="layui-btn" value="查询" id="view">
+                    <button type="submit" class="layui-btn"  id="view" lay-filter="sub">查询</button>
                 </div>
             </form>
 
@@ -100,7 +96,40 @@
 
 
 
-    <script src="../../static/js/jquery-3.4.1.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../../static/js/layui.all.js" type="text/javascript" charset="utf-8"></script>
+    <script th:src="@{../../static/js/jquery-3.4.1.min.js}" type="text/javascript" charset="utf-8"></script>
+    <script th:src="@{../../static/js/layui.all.js}" type="text/javascript" charset="utf-8"></script>
+    <script th:inline="javascript">
+        layui.use(['form','element','jquery'],function () {
+            const $ = layui.jquery;
+            const layer = layui.layer;
+            const form = layui.form
+            let classId
+
+            form.on('select(course)',function (data) {
+                $("#class")[0].options.length=0
+                $.get("/expmodel/findClassByCourse/"+data.value,function (data) {
+                    let flag = 0;
+                    $("#class").append( "<option value='0' selected>请选择班级</option>")
+                    $.each(JSON.parse(data),function (k,v) {
+                        $("#class").append( "<option value='"+v[flag].classId+"'>"+v[flag].className+"</option>")
+                        flag += 1;
+                        form.render('select');
+                    })
+                })
+            })
+
+            form.on('submit(sub)',function () {
+                let parm = $("#dataform").serialize();
+                $.get("/expmodel/kaoheProgress",parm,function () {
+                    $("select [id='class'] option").each(function () {
+                        console.log($(this).value)
+                        if($(this).value == classId){
+                            $(this).attr("selected","selected")
+                        }
+                    })
+                })
+            })
+        })
+    </script>
 </body>
 </html>

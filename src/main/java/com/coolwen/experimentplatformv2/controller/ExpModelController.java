@@ -1,6 +1,7 @@
 package com.coolwen.experimentplatformv2.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.coolwen.experimentplatformv2.config.ShiroConfig;
 import com.coolwen.experimentplatformv2.model.*;
 import com.coolwen.experimentplatformv2.model.DTO.KaoHeModelStuDTO;
@@ -72,7 +73,43 @@ public class ExpModelController {
     //查询模块信息页面
     @GetMapping("/list")
     public String expModelList(Model model, @RequestParam(value = "pageNum", defaultValue = "0", required = true) int pageNum) {
-        model.addAttribute("page", expModelService.findModelList(pageNum));
+        logger.debug("expModelList>>>>>>>>>>>>");
+        User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
+        logger.debug("expModelList输出老师账号：" + user);
+//        List<CourseInfo> courseInfoList = courseInfoService.getclassByCharge(user.getId());
+        List<CourseInfo> courseInfoList = courseInfoService.getclassByCharge(1);
+        model.addAttribute("courseInfoList", courseInfoList);
+        boolean choose = false;
+        model.addAttribute("Choose", choose);
+//        model.addAttribute("page", expModelService.findModelList(pageNum));
+        return "shiyan/lookExpModel";
+    }
+
+    //查询模块信息页面
+    @GetMapping("/expModelListByCourseId/{courseId}")
+    public String expModelListByCourseId(Model model, @PathVariable("courseId") int courseId, @RequestParam(value = "pageNum", defaultValue = "0", required = true) int pageNum, HttpSession session) {
+        boolean choose = true;
+        if (courseId == -1) {
+            choose = false;
+            model.addAttribute("Choose", choose);
+//            model.addAttribute("selected1", "/report/allModule");
+            return "redirect:/expmodel/list";
+        }
+        User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
+        logger.debug("expModelListByCourseId输出老师账号：" + user);
+//        List<CourseInfo> courseInfoList = courseInfoService.getclassByCharge(user.getId());
+        List<CourseInfo> courseInfoList = courseInfoService.getclassByCharge(1);
+        model.addAttribute("courseInfoList", courseInfoList);
+//        model.addAttribute("page", expModelService.findModelList(pageNum));
+        //绑定courseId，以便下拉框选中筛选的课程
+        model.addAttribute("selected", courseId);
+        //判断是否选择了安排
+        model.addAttribute("Choose", choose);
+        logger.debug("课程信息为:：" + courseInfoService.findById(courseId).getCourseName());
+        Page<ExpModel> expModelPage = expModelService.findOneCourseModelList(courseId, pageNum);
+        model.addAttribute("page", expModelPage);
+        logger.debug("模块信息:：" + expModelPage.getContent());
+        session.setAttribute("ExpModelcourseId", courseId);
         return "shiyan/lookExpModel";
     }
 
@@ -102,13 +139,19 @@ public class ExpModelController {
         expModel.setClasshour(m_classhour);
         expModel.setM_inurl(m_inurl);
         expModel.setImageurl(request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/ExperimentPlatform/ExpModelImage/" + file);
+        report_type = true;
         expModel.setReport_type(report_type);
+        int courseId = (int) session.getAttribute("ExpModelcourseId");
+        expModel.setCourseId(courseId);
+        logger.debug("课程信息为:：" + courseInfoService.findById(courseId).getCourseName());
+        logger.debug("添加模块信息为:：" + expModel);
         expModelService.save(expModel);
         session.setAttribute("modelId", expModel.getM_id());
         return "redirect:/expmodel/addTheory";
     }
 
     //进行模块删除
+    //todo需要写个操作函数来处理
     @GetMapping("/deleteExpModel/{id}")
     public String delete(@PathVariable("id") int id) {
         //删除考核模块以及更改学生相关成绩
@@ -240,8 +283,9 @@ public class ExpModelController {
             int unixSep = filename.lastIndexOf('/');
             int winSep = filename.lastIndexOf('\\');
             int pos = (winSep > unixSep ? winSep : unixSep);
-            if (pos != -1)
+            if (pos != -1) {
                 filename = filename.substring(pos + 1);
+            }
             pathString = fIleService.upload(request, file, filename);
         }
         return "{\"code\":0, \"msg\":\"success\", \"fileUrl\":\"" + pathString + "\"}";
@@ -278,8 +322,9 @@ public class ExpModelController {
             int unixSep = filename.lastIndexOf('/');
             int winSep = filename.lastIndexOf('\\');
             int pos = (winSep > unixSep ? winSep : unixSep);
-            if (pos != -1)
+            if (pos != -1) {
                 filename = filename.substring(pos + 1);
+            }
             pathString = fIleService.upload(request, file);
         }
         return "{\"code\":0, \"msg\":\"success\", \"fileUrl\":\"" + pathString + "\"}";
@@ -425,15 +470,14 @@ public class ExpModelController {
     public String moduleList(Model model, HttpSession session,
                              @RequestParam(value = "pageNum", defaultValue = "0", required = true) int pageNum) {
 //        model.addAttribute("page1",expModelService.findModelList(pageNum));
-
         session.removeAttribute("msg2020612");
-
         User user = (User) session.getAttribute("teacher");
-        logger.debug("输出老师账号——————————" + user);
+        logger.debug("moduleList输出老师账号——————————" + user);
         List<CourseInfo> courseInfoList = courseInfoService.getclassByCharge(user.getId());
-        model.addAttribute("course", courseInfoList);
-        model.addAttribute("page1", expModelService.findAllByTeacher(pageNum, user.getId()));
-
+        model.addAttribute("courseInfoList", courseInfoList);
+//        model.addAttribute("page1", expModelService.findAllByTeacher(pageNum, user.getId()));
+        boolean choose = false;
+        model.addAttribute("Choose", choose);
         return "shiyan/lookTestAndReport";
     }
 
@@ -441,12 +485,27 @@ public class ExpModelController {
     public String chooseCourse(Model model, HttpSession session,
                                @PathVariable("courseId") int courseId,
                                @RequestParam(value = "pageNum", defaultValue = "0", required = true) int pageNum) {
+        boolean choose = true;
+        if (courseId == -1) {
+            choose = false;
+            model.addAttribute("Choose", choose);
+//            model.addAttribute("selected1", "/report/allModule");
+            return "redirect:/expmodel/list";
+        }
 
-        model.addAttribute("page1", expModelService.findOneCourseModelList(courseId, pageNum));
         User user = (User) session.getAttribute("teacher");
-        logger.debug("输出老师账号——————————" + user);
+        logger.debug("chooseCourse输出老师账号——————————" + user);
         List<CourseInfo> courseInfoList = courseInfoService.getclassByCharge(user.getId());
-        model.addAttribute("course", courseInfoList);
+        model.addAttribute("courseInfoList", courseInfoList);
+
+        //绑定courseId，以便下拉框选中筛选的课程
+        model.addAttribute("selected", courseId);
+        //判断是否选择了课程
+        model.addAttribute("Choose", choose);
+        logger.debug("课程信息为:：" + courseInfoService.findById(courseId).getCourseName());
+        Page<ExpModel> expModelPage = expModelService.findOneCourseModelList(courseId, pageNum);
+        model.addAttribute("page1", expModelPage);
+        logger.debug("该课程模块信息:" + expModelPage.getContent());
         return "shiyan/lookTestAndReport";
     }
 
@@ -579,6 +638,17 @@ public class ExpModelController {
         return "kuangjia/shiyan";
     }
 
+    @GetMapping("/findClassByCourse/{id}")
+    @ResponseBody
+    public String findClassByCourse(@PathVariable("id") int courseId) {
+        User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
+        List<ClassModel> classModels = courseInfoService.getclass_by_arrangecourseid(user.getId(), courseId);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("data", classModels);
+        return String.valueOf(jsonObject);
+    }
+
+
     //考核模块进度查询详情
     @GetMapping("/kaoheProgressQuery/{id}")
     public String kaoheProgressQuery(@PathVariable("id") int id, @RequestParam(value = "pageNum", defaultValue = "0", required = true) int pageNum, Model model) {
@@ -603,8 +673,9 @@ public class ExpModelController {
                                 Model model
     ) {
 
-        model.addAttribute("courseList", courseInfoService.findAll());
-        model.addAttribute("classList", clazzService.findAllClass());
+        User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
+        List<CourseInfo> courseInfoList = courseInfoService.getclass_by_arrangeteacher(user.getId());
+        model.addAttribute("courseList", courseInfoList);
         if (courseId == 0 && classId == 0) {
             return "kaohe/progress";
         } else if (courseId == 0 && classId != 0) {

@@ -1,12 +1,12 @@
 package com.coolwen.experimentplatformv2.controller;
 
 import com.coolwen.experimentplatformv2.dao.ArrangeClassRepository;
-import com.coolwen.experimentplatformv2.model.ArrangeClass;
-import com.coolwen.experimentplatformv2.model.ClassModel;
-import com.coolwen.experimentplatformv2.model.CourseInfo;
+import com.coolwen.experimentplatformv2.dao.KaoHeModelScoreRepository;
+import com.coolwen.experimentplatformv2.model.*;
 import com.coolwen.experimentplatformv2.model.DTO.ArrangeClassDto;
-import com.coolwen.experimentplatformv2.model.User;
 import com.coolwen.experimentplatformv2.service.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,6 +27,7 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/arrangeclass")
 public class ArrangeClassController {
+    protected static final Logger logger = LoggerFactory.getLogger(ArrangeClassController.class);
 
     @Autowired
     ArrangeClassService arrangeClassService;
@@ -38,6 +39,21 @@ public class ArrangeClassController {
     CourseInfoService courseInfoService;
     @Autowired
     ClazzService classService;
+    @Autowired
+    TotalScoreCurrentService totalScoreCurrentService;
+    @Autowired
+    StudentService studentService;
+    @Autowired
+    KaoheModelService kaoheModelService;
+
+    @Autowired
+    KaoHeModelScoreRepository kaoHeModelScoreRepository;
+    @Autowired
+    ModuleTestAnswerStuService moduleTestAnswerStuService;
+    @Autowired
+    CollegeReportService collegeReportService;
+    @Autowired
+    ReportAnswerService reportAnswerService;
 
 
     @GetMapping(value = "/list")
@@ -146,6 +162,14 @@ public class ArrangeClassController {
 
         //将信息储存到数据库
         arrangeClassService.add(arrangeClass);
+        logger.debug("arrangeClass:"+arrangeClass);
+        ArrangeClass arrangeClass1 = arrangeClassService.findByCourseIdAndTeacherIdAndClassId(courseId,teacherId,classId);
+        //生成当期总评成绩表
+        List<Student> students = studentService.findStudentByClassId(classId);
+        logger.debug("students:"+students);
+        for (Student student:students){
+            arrangeClassService.currentResults(student.getId(),arrangeClass1.getId());
+        }
         return "redirect:/arrangeclass/list";
     }
 
@@ -222,8 +246,51 @@ public class ArrangeClassController {
 
     @GetMapping(value = "/{id}/delete")
     public String delete(@PathVariable int id){
-        //执行删除操作
+
+        List<KaoheModel> kaoheModels = kaoheModelService.findKaoheModelByArrangeId2(id);
+        List<Student> students = arrangeClassService.findStudentByarrangeID(id);
+
+        for (Student student:students){
+            int studentid = student.getId();
+
+            for (KaoheModel k : kaoheModels){
+                int mid = k.getM_id();
+//                int studentid = student.getId();
+                //删除考核模块测试答案
+                moduleTestAnswerStuService.deleteByStuIdModelId(mid, studentid);
+                //删除学院版报告
+                collegeReportService.deleteByStuIdModelId(mid, studentid);
+                //删除自定义版答题报告
+                reportAnswerService.deleteByStuIdModelId(mid, studentid);
+
+            }
+            List<KaoHeModelScore> kaoHeModelScores = kaoHeModelScoreRepository.findKaoheModuleScoreByStuIdAndArrangeId(studentid,id);
+            kaoHeModelScoreRepository.deleteAll(kaoHeModelScores);
+            //删除学生对应课程当期总评成绩
+            arrangeClassService.deleteArrangeClass(studentid,id);
+        }
+        kaoheModelService.deleteByArrangeId(id);
         arrangeClassService.delete(id);
+
+//        List<KaoheModel> kaoheModels = kaoheModelService.findKaoheModelByArrangeId2(id);
+//        for (KaoheModel k : kaoheModels){
+//            //删除考核模块
+//            arrangeClassService.deleteKaohemodel(k.getId(),id);
+//        }
+//
+//        ArrangeClass arrangeClass = arrangeClassService.findById(id);
+//        //查询到当前课程安排中的班级的所有学生
+//        List<Student> students = studentService.findStudentByClassId(arrangeClass.getClassId());
+//        logger.debug("students:"+students);
+//        for (Student student:students){
+//            //删除学生对应课程当期总评成绩
+//            arrangeClassService.deleteArrangeClass(student.getId(),arrangeClass.getId());
+//        }
+//        //执行删除操作
+//        arrangeClassService.delete(id);
+
+
+
         return "redirect:/arrangeclass/list";
     }
 }

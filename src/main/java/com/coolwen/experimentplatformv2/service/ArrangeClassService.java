@@ -31,4 +31,13 @@ public interface ArrangeClassService {
     ArrangeClass findByCourseIdAndTeacherIdAndClassId(int courseId, int teacherId, int classId);
 
     List<Student> findStudentByarrangeID(int arrageid);
+
+    //生成当期总评成绩表(单个学生)
+    void currentResults(int studentId,int arrangeId);
+
+    //删除一个考核模块
+    void deleteKaohemodel(int id,int arrangeId);
+
+    //删除安排表，（单个学生）
+    void deleteArrangeClass(int studentId,int arrangeId);
 }

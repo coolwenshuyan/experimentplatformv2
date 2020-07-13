@@ -1,8 +1,11 @@
 package com.coolwen.experimentplatformv2.service;
 
 import com.coolwen.experimentplatformv2.dao.ArrangeClassRepository;
+import com.coolwen.experimentplatformv2.dao.KaoHeModelScoreRepository;
 import com.coolwen.experimentplatformv2.model.ArrangeClass;
 import com.coolwen.experimentplatformv2.model.DTO.ArrangeClassDto;
+import com.coolwen.experimentplatformv2.model.KaoHeModelScore;
+import com.coolwen.experimentplatformv2.model.TotalScoreCurrent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.coolwen.experimentplatformv2.model.DTO.ArrangeInfoDTO;
@@ -34,6 +37,20 @@ public class ArrangeClassServiceImpl implements ArrangeClassService {
 
     @Autowired
     ArrangeClassRepository arrangeClassRepository;
+    @Autowired
+    TotalScoreCurrentService totalScoreCurrentService;
+    @Autowired
+    KaoheModelService kaoheModelService;
+    @Autowired
+    KaoHeModelScoreRepository kaoHeModelScoreRepository;
+    @Autowired
+    ModuleTestAnswerStuService moduleTestAnswerStuService;
+    @Autowired
+    CollegeReportService collegeReportService;
+    @Autowired
+    ReportAnswerService reportAnswerService;
+
+
 
     @Value("${SimplePageBuilder.pageSize}")
     int size;
@@ -104,6 +121,45 @@ public class ArrangeClassServiceImpl implements ArrangeClassService {
     public List<Student> findStudentByarrangeID(int arrageid) {
 
         return arrangeClassRepository.findStudentByarrangeID(arrageid);
+    }
+
+    @Override
+    public void currentResults(int studentId, int arrangeId) {
+        TotalScoreCurrent t = totalScoreCurrentService.findTotalScoreCurrentByStuId2(studentId,arrangeId);
+        if(t == null){
+            TotalScoreCurrent totalScoreCurrent = new TotalScoreCurrent();
+            totalScoreCurrent.setStuId(studentId);
+            totalScoreCurrent.setArrageId(arrangeId);
+            int kaoheNum = kaoheModelService.findKaoheNum();
+            totalScoreCurrent.setKaoheNum(kaoheNum);
+            totalScoreCurrentService.add(totalScoreCurrent);
+        }
+    }
+
+    @Override
+    public void deleteKaohemodel(int id, int arrangeId) {
+        int mid = kaoheModelService.findById(id).getM_id();
+        List<Student> studentslist = arrangeClassRepository.findStudentByarrangeID(arrangeId);
+        for (Student temp_st : studentslist) {
+            int studentid = temp_st.getId();
+            //删除考核模块测试答案
+            moduleTestAnswerStuService.deleteByStuIdModelId(mid, studentid);
+            //删除学院版报告
+            collegeReportService.deleteByStuIdModelId(mid, studentid);
+            //删除自定义版答题报告
+            reportAnswerService.deleteByStuIdModelId(mid, studentid);
+            //删除考核模块学生记录表
+            List<KaoHeModelScore> kaoHeModelScores = kaoHeModelScoreRepository.findKaoheModuleScoreByStuIdAndArrangeId(studentid,arrangeId);
+            kaoHeModelScoreRepository.deleteAll(kaoHeModelScores);
+        }
+        // 删除表11中该考核模块
+        kaoheModelService.delete(id);
+    }
+
+    @Override
+    public void deleteArrangeClass(int studentId, int arrangeId) {
+        //删除学生对应课程当期总评成绩
+        totalScoreCurrentService.deleteTotalScoreCurrentByStuIdAndArrangeId(studentId,arrangeId);
     }
 
     @Override

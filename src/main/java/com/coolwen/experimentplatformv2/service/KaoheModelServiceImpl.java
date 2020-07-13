@@ -231,5 +231,10 @@ public class KaoheModelServiceImpl implements KaoheModelService {
         );
     }
 
+    @Override
+    public void deleteByArrangeId(int id) {
+        kaoheModelRepository.deleteByArrangeId(id);
+    }
+
 
 }

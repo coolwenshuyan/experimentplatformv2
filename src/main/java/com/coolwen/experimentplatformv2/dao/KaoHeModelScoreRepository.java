@@ -46,6 +46,9 @@ public interface KaoHeModelScoreRepository extends BaseRepository<KaoHeModelScor
 
     @Query("select count(khs)from KaoheModel kh left join KaoHeModelScore khs on kh.id = khs.tKaohemodleId left join Student s on khs.stuId = s.id left join ClassModel cm on cm.classId = s.classId where cm.classId = ?1 and kh.m_id = ?2 and khs.mReportstate = false ")
     Integer findmReportFalseByClassIdAndMid(int classId,int Mid);
+
+    @Query("select khs from KaoHeModelScore khs,KaoheModel k where k.id=khs.tKaohemodleId and khs.stuId = ?1 and k.arrange_id = ?2")
+    List<KaoHeModelScore> findKaoheModuleScoreByStuIdAndArrangeId(int studentId, int arrangeId);
 //
 
 }

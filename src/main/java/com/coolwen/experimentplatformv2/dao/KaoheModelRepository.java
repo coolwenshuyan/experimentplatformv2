@@ -84,4 +84,8 @@ public interface KaoheModelRepository extends BaseRepository<KaoheModel, Integer
 //    @Query("update MoneyPO m set m.isDeleted=?2 where  m.money=?1")
     void updateAllGreatestWeight(float kaoheBaifenbi, float testBaifenbi,int arrangeId);
 
+    @Modifying
+    @Transactional(readOnly = false)
+    @Query("delete from KaoheModel k where k.arrange_id = ?1")
+    void deleteByArrangeId(int id);
 }

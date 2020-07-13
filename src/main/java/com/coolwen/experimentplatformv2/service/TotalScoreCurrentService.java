@@ -30,6 +30,8 @@ public interface TotalScoreCurrentService {
 
     void deleteTotalScoreCurrentByStuId(int id);
 
+    void deleteTotalScoreCurrentByStuIdAndArrangeId(int id,int arrangeId);
+
     List<TotalScoreCurrent> findAll();
 
     TotalScoreCurrent findTotalScoreCurrentByStuId2(int stuid, int arrageid);

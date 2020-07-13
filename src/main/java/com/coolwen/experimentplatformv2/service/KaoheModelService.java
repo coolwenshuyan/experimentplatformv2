@@ -64,4 +64,6 @@ public interface KaoheModelService {
     void updateAllGreatestWeight(float kaoheBaifenbi, float testBaifenbi,int arrageId);
 
     List<KaoheModel> findAllByArrageId(int arrageId);
+
+    void deleteByArrangeId(int id);
 }

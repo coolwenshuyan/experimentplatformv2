@@ -107,4 +107,14 @@ public class ExpModelServiceImpl implements ExpModelService {
         Pageable pageable = PageRequest.of(pageNum,10);
         return expModelRepository.findAllByTeacher(pageable,id);
     }
+
+    @Override
+    public List<ExpModel> findByCourseId(int id) {
+        return expModelRepository.findByCourseId(id);
+    }
+
+    @Override
+    public void deleteAll(List<ExpModel> expModels) {
+        expModelRepository.deleteAll(expModels);
+    }
 }

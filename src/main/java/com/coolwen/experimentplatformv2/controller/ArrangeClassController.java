@@ -124,7 +124,7 @@ public class ArrangeClassController {
     @PostMapping(value = "/add")
     public String add(int courseId,int teacherId,int classId,String arrangeStart,String arrangeEnd,String skAddress,Model model){
 
-        ArrangeClass a = arrangeClassService.findByCourseIdAndTeacherIdAndClassId(courseId,teacherId,classId);
+        ArrangeClass a = arrangeClassService.findByCourseIdAndClassId(courseId,classId);
         if (a != null){
             List<CourseInfo> courseInfoList = courseInfoService.list();
             model.addAttribute("courseInfoList",courseInfoList);
@@ -134,7 +134,7 @@ public class ArrangeClassController {
 
             List<ClassModel> classList = classService.findCurrentClass();
             model.addAttribute("classList",classList);
-            model.addAttribute("msg","添加课程安排失败，已经有该课程安排!!!");
+            model.addAttribute("msg","添加课程安排失败，所选课程和班级，已有安排教师!!!");
             return "jichu/timePlan_new";
         }
 
@@ -163,7 +163,7 @@ public class ArrangeClassController {
         //将信息储存到数据库
         arrangeClassService.add(arrangeClass);
         logger.debug("arrangeClass:"+arrangeClass);
-        ArrangeClass arrangeClass1 = arrangeClassService.findByCourseIdAndTeacherIdAndClassId(courseId,teacherId,classId);
+        ArrangeClass arrangeClass1 = arrangeClassService.findByCourseIdAndClassId(courseId,classId);
         //生成当期总评成绩表
         List<Student> students = studentService.findStudentByClassId(classId);
         logger.debug("students:"+students);
@@ -179,42 +179,24 @@ public class ArrangeClassController {
         //查询到id所对应的整条数据
         ArrangeClass arrangeClass = arrangeClassService.findById(id);
         model.addAttribute("arrangeClass",arrangeClass);
-
-        List<CourseInfo> courseInfoList = courseInfoService.list();
-        model.addAttribute("courseInfoList",courseInfoList);
-
+        CourseInfo courseInfo = courseInfoService.findById(arrangeClass.getCourseId());
+        model.addAttribute("courseInfo",courseInfo);
+        ClassModel classModel = classService.findById(arrangeClass.getClassId());
+        model.addAttribute("classModel",classModel);
         List<User> userList = userService.list();
         model.addAttribute("userList",userList);
 
-        List<ClassModel> classList = classService.findCurrentClass();
-        model.addAttribute("classList",classList);
+//        List<CourseInfo> courseInfoList = courseInfoService.list();
+//        model.addAttribute("courseInfoList",courseInfoList);
+//        List<ClassModel> classList = classService.findCurrentClass();
+//        model.addAttribute("classList",classList);
         return "jichu/timePlan_update";
     }
 
-
     @PostMapping(value = "/{id}/update")
-    public String update(@PathVariable int id,int courseId,int teacherId,int classId,String arrangeStart,String arrangeEnd,String skAddress,Model model){
-
-        ArrangeClass a = arrangeClassService.findByCourseIdAndTeacherIdAndClassId(courseId,teacherId,classId);
+    public String update(@PathVariable int id,int teacherId,String arrangeStart,String arrangeEnd,String skAddress,Model model){
         //查询到id所对应的整条数据
-        ArrangeClass arrangeClass1 = arrangeClassService.findById(id);
-      if (a != null){
-          if (!(arrangeClass1.getCourseId() == a.getCourseId() && arrangeClass1.getTeacherId()==a.getTeacherId() && arrangeClass1.getClassId()==a.getClassId())){
-              model.addAttribute("arrangeClass",arrangeClass1);
-
-                List<CourseInfo> courseInfoList = courseInfoService.list();
-                model.addAttribute("courseInfoList",courseInfoList);
-
-                List<User> userList = userService.list();
-                model.addAttribute("userList",userList);
-
-                List<ClassModel> classList = classService.findCurrentClass();
-                model.addAttribute("classList",classList);
-                model.addAttribute("msg","添加课程安排失败，已经有该课程安排!!!");
-                return "jichu/timePlan_update";
-            }
-        }
-
+        ArrangeClass arrangeClass = arrangeClassService.findById(id);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date starsDate = null;
         Date endDate = null;
@@ -228,12 +210,7 @@ public class ArrangeClassController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
-        ArrangeClass arrangeClass = new ArrangeClass();
-        arrangeClass.setId(id);
-        arrangeClass.setCourseId(courseId);
         arrangeClass.setTeacherId(teacherId);
-        arrangeClass.setClassId(classId);
         arrangeClass.setArrangeStart(starsDate);
         arrangeClass.setArrangeEnd(endDate);
         arrangeClass.setSkAddress(skAddress);
@@ -242,6 +219,58 @@ public class ArrangeClassController {
         arrangeClassService.add(arrangeClass);
         return "redirect:/arrangeclass/list";
     }
+
+
+//    @PostMapping(value = "/{id}/update")
+//    public String update(@PathVariable int id,int courseId,int teacherId,int classId,String arrangeStart,String arrangeEnd,String skAddress,Model model){
+//
+//        ArrangeClass a = arrangeClassService.findByCourseIdAndTeacherIdAndClassId(courseId,teacherId,classId);
+//        //查询到id所对应的整条数据
+//        ArrangeClass arrangeClass1 = arrangeClassService.findById(id);
+//      if (a != null){
+//          if (!(arrangeClass1.getCourseId() == a.getCourseId() && arrangeClass1.getTeacherId()==a.getTeacherId() && arrangeClass1.getClassId()==a.getClassId())){
+//              model.addAttribute("arrangeClass",arrangeClass1);
+//
+//                List<CourseInfo> courseInfoList = courseInfoService.list();
+//                model.addAttribute("courseInfoList",courseInfoList);
+//
+//                List<User> userList = userService.list();
+//                model.addAttribute("userList",userList);
+//
+//                List<ClassModel> classList = classService.findCurrentClass();
+//                model.addAttribute("classList",classList);
+//                model.addAttribute("msg","添加课程安排失败，已经有该课程安排!!!");
+//                return "jichu/timePlan_update";
+//            }
+//        }
+//
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        Date starsDate = null;
+//        Date endDate = null;
+//        try {
+//            if(arrangeStart != ""){
+//                starsDate = simpleDateFormat.parse(arrangeStart);
+//            }
+//            if(arrangeEnd != ""){
+//                endDate = simpleDateFormat.parse(arrangeEnd);
+//            }
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//
+//        ArrangeClass arrangeClass = new ArrangeClass();
+//        arrangeClass.setId(id);
+//        arrangeClass.setCourseId(courseId);
+//        arrangeClass.setTeacherId(teacherId);
+//        arrangeClass.setClassId(classId);
+//        arrangeClass.setArrangeStart(starsDate);
+//        arrangeClass.setArrangeEnd(endDate);
+//        arrangeClass.setSkAddress(skAddress);
+//
+//        //将信息储存到数据库
+//        arrangeClassService.add(arrangeClass);
+//        return "redirect:/arrangeclass/list";
+//    }
 
 
     @GetMapping(value = "/{id}/delete")
@@ -267,7 +296,7 @@ public class ArrangeClassController {
             List<KaoHeModelScore> kaoHeModelScores = kaoHeModelScoreRepository.findKaoheModuleScoreByStuIdAndArrangeId(studentid,id);
             kaoHeModelScoreRepository.deleteAll(kaoHeModelScores);
             //删除学生对应课程当期总评成绩
-            arrangeClassService.deleteArrangeClass(studentid,id);
+            totalScoreCurrentService.deleteTotalScoreCurrentByStuIdAndArrangeId(studentid,id);
         }
         kaoheModelService.deleteByArrangeId(id);
         arrangeClassService.delete(id);

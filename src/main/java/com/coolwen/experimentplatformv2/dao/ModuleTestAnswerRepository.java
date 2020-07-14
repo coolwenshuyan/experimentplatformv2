@@ -3,6 +3,7 @@ package com.coolwen.experimentplatformv2.dao;
 import com.coolwen.experimentplatformv2.dao.basedao.BaseRepository;
 import com.coolwen.experimentplatformv2.model.ModuleTestAnswer;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +31,11 @@ public interface ModuleTestAnswerRepository extends BaseRepository<ModuleTestAns
 //    查找选项id
     @Query("select a.answerId from ModuleTestAnswer a where answerId = ?1")
     int findByAId(int answerId);
+
+    @Modifying
+    @Transactional
+    @Query(value="DELETE t_mtest_answer FROM t_mtest_quest,t_mtest_answer WHERE t_mtest_quest.quest_id=t_mtest_answer.quest_id and t_mtest_quest.m_id = ?",nativeQuery=true)
+    void deleteAnswerByModelId(int mid);
 
 //    String findByAnswerDescribe(String answerDescribe);
 

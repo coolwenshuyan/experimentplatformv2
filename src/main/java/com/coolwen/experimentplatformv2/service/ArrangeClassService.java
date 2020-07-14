@@ -28,7 +28,7 @@ public interface ArrangeClassService {
 
     List<ArrangeInfoDTO> findArrangeInfoDTOByTeacherId(int teacherId);
 
-    ArrangeClass findByCourseIdAndTeacherIdAndClassId(int courseId, int teacherId, int classId);
+    ArrangeClass findByCourseIdAndClassId(int courseId, int classId);
 
     List<Student> findStudentByarrangeID(int arrageid);
 
@@ -38,8 +38,10 @@ public interface ArrangeClassService {
     //删除一个考核模块
     void deleteKaohemodel(int id,int arrangeId);
 
-    //删除安排表，（单个学生）
-    void deleteArrangeClass(int studentId,int arrangeId);
+    List<ArrangeClass> findByCourseID(int id);
+
+    void deleteTotalScoreByArrangeId(int arrangeId);
+
 
     List<ArrangeClass> findByClassId(int classId);
 }

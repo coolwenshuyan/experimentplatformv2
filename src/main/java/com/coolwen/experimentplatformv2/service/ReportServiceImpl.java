@@ -76,4 +76,9 @@ public class ReportServiceImpl implements ReportService {
         return reportRepository.findByMidpaixu(mid);
     }
 
+    @Override
+    public void deleteReportByModelId(int mid) {
+        reportRepository.deleteReportByModelId(mid);
+    }
+
 }

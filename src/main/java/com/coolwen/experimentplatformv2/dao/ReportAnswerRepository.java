@@ -48,4 +48,9 @@ public interface ReportAnswerRepository extends BaseRepository<ReportAnswer,Inte
     @Transactional
     @Query(value="DELETE t_mreport_answer FROM t_mreport,t_mreport_answer WHERE t_mreport.report_id=t_mreport_answer.report_id and t_mreport.m_id = ? and t_mreport_answer.stu_id=?",nativeQuery=true)
     void deleteByStuIdModelId(int m_id, int id);
+
+    @Modifying
+    @Transactional
+    @Query(value="DELETE t_mreport_answer FROM t_mreport,t_mreport_answer WHERE t_mreport.report_id=t_mreport_answer.report_id and t_mreport.m_id = ?",nativeQuery=true)
+    void deleteByModelId(int mid);
 }

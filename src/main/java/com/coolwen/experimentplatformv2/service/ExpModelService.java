@@ -40,4 +40,8 @@ public interface ExpModelService {
     Page<ExpModel> findKaoheProgressMainByCourseId(int courseId,int PageNum);
 
     Page<ExpModel> findAllByTeacher(Integer pageNum, int id);
+
+    List<ExpModel> findByCourseId(int id);
+
+    void deleteAll(List<ExpModel> expModels);
 }

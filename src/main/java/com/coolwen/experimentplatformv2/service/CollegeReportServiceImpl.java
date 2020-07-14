@@ -54,4 +54,9 @@ public class CollegeReportServiceImpl implements CollegeReportService {
         collegeReportRepository.deleteByStuIdModelId(m_id,id);
     }
 
+    @Override
+    public void deleteByModelId(int mid) {
+        collegeReportRepository.deleteByModelId(mid);
+    }
+
 }

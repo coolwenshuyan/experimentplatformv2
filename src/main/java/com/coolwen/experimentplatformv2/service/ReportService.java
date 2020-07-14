@@ -40,4 +40,6 @@ public interface ReportService {
     void deleteReports(List<Report> report);
 
     List<Report> findByMidpaixu(int mid);
+
+    void deleteReportByModelId(int mid);
 }

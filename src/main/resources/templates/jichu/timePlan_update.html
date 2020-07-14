@@ -53,11 +53,7 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">课程</label>
                             <div class="layui-input-block">
-                                <select name="courseId" lay-filter="aihao" required="required" lay-verify="required">
-                                    <a th:each="courseInfo:${courseInfoList}">
-                                        <option th:selected="${arrangeClass.getCourseId()}==${courseInfo.getId()}" th:value="${courseInfo.getId()}">[[${courseInfo.courseName}]]</option>
-                                    </a>
-                                </select>
+                                <input th:value="${courseInfo.getCourseName()}" type="text"  autocomplete="off" class="layui-input layui-disabled" disabled>
                             </div>
                         </div>
                         <div class="layui-form-item">
@@ -65,20 +61,17 @@
                             <div class="layui-input-block">
                                 <select th:value="${arrangeClass.getTeacherId()}" name="teacherId" lay-filter="aihao" required="required" lay-verify="required">
                                     <a th:each="user:${userList}">
-                                        <option th:value="${user.getId()}">[[${user.nickname}]]</option>
+                                        <option th:selected="${arrangeClass.getTeacherId()}==${user.getId()}" th:value="${user.getId()}">[[${user.nickname}]]</option>
                                     </a>
                                 </select>
                             </div>
                             <!--<div class="layui-form-mid layui-word-aux">辅助文字</div>-->
                         </div>
+
                         <div class="layui-form-item">
                             <label class="layui-form-label">班级</label>
                             <div class="layui-input-block">
-                                <select name="classId" lay-filter="aihao" required="required" lay-verify="required">
-                                    <a th:each="class:${classList}">
-                                        <option th:selected="${arrangeClass.getClassId()}==${class.getClassId()}" th:value="${class.getClassId()}">[[${class.className}]]</option>
-                                    </a>
-                                </select>
+                                <input th:value="${classModel.getClassName()}" type="text"  autocomplete="off" class="layui-input layui-disabled" disabled>
                             </div>
                         </div>
 

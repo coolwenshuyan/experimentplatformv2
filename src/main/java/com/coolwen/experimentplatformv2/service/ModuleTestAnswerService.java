@@ -38,4 +38,6 @@ public interface ModuleTestAnswerService {
 //    ModuleTestAnswer findbyAnswerid(int id);
 
     void deleteAllAnswer(List<ModuleTestAnswer> moduleTestAnswers);
+
+    void deleteAnswerByModelId(int mid);
 }

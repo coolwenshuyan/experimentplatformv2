@@ -8,7 +8,9 @@ import com.coolwen.experimentplatformv2.model.Student;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,7 +26,7 @@ public interface ArrangeClassRepository extends BaseRepository<ArrangeClass, Int
             "where a.teacherId = u.id and a.classId=c.classId and a.courseId=cin.id and cin.courseName like %?1% and u.nickname like %?2% and c.className like %?3%")
     Page<ArrangeClassDto> findBycidAndtidAndclaidLike(String courseName, String teacherName, String className, Pageable pager);
 
-    ArrangeClass findByCourseIdAndTeacherIdAndClassId(int courseId, int teacherId, int classId);
+    ArrangeClass findByCourseIdAndClassId(int courseId, int classId);
 
 
     @Query(value = "select  new com.coolwen.experimentplatformv2.model.DTO.ArrangeInfoDTO" +
@@ -39,6 +41,13 @@ public interface ArrangeClassRepository extends BaseRepository<ArrangeClass, Int
 
 
     List<ArrangeClass> findByClassId(int classId);
+
+    List<ArrangeClass> findByCourseId(int id);
+
+    @Modifying
+    @Transactional(readOnly = false)
+    @Query("delete from TotalScoreCurrent ts where ts.arrageId = ?1")
+    void deleteTotalScoreByArrangeId(int arrangeId);
 
 //    @Query(value = "select new com.coolwen.experimentplatformv2.model.DTO.ArrangeClassDto(a.id,cin.courseName,u.username,c.className,a.arrangeStart,a.arrangeEnd) from t_arrange_class a,t_course_info cin,t_class c,t_user u where a.teacher_id = u.id and a.class_id=c.class_id and a.course_id=cin.id and if(?1 !='',cin.course_name=?1,1=1) and if(?2 !='',u.username=?2,1=1) and if(?3 !='',c.class_name=?3,1=1)",nativeQuery = true)
 //    Page<ArrangeClassDto> findBycidAndtidAndclaidLike(String courseName,String teacherName, String className,Pageable pager);

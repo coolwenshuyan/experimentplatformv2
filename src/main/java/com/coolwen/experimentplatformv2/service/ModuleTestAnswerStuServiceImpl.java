@@ -59,4 +59,9 @@ public class ModuleTestAnswerStuServiceImpl implements ModuleTestAnswerStuServic
     public void deleteByStuIdModelId(int m_id, int id) {
         moduleTestAnswerStuRepository.deleteByStuIdModelId(m_id,id);
     }
+
+    @Override
+    public void deleteByModelId(int mid) {
+        moduleTestAnswerStuRepository.deleteByModelId(mid);
+    }
 }

@@ -82,4 +82,9 @@ public class ModuleTestAnswerServiceImpl implements ModuleTestAnswerService {
         answer.deleteAll(moduleTestAnswers);
     }
 
+    @Override
+    public void deleteAnswerByModelId(int mid) {
+        answer.deleteAnswerByModelId(mid);
+    }
+
 }

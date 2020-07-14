@@ -590,8 +590,10 @@ public class StudentController {
     //为班级进行添加学生操作
     @PostMapping("/viewAddStudent/{id}")
     public String addStudent(@RequestParam("stu_xuehao") String xuehao, @PathVariable("id") int classId) {
-        Student student = studentservice.findclassStudentByStuXuehao(xuehao);//分班的学生必须是审核过了
+        logger.debug("进入接口：/viewAddStudent/" + classId);
+        Student student = studentservice.findclassStudentByStuXuehao(xuehao);
         logger.debug("输入学生信息：" + student);
+        //分班的学生必须是审核过了
         if (student == null || student.getClassId() != 0) {
             return "redirect:/studentManage/addStudent/" + classId;
         }
@@ -652,6 +654,7 @@ public class StudentController {
     //班级学生移除操作
     @GetMapping("/deleteStuClass/{id}")
     public String deleteStuClass(@PathVariable("id") int stuid) {
+        logger.debug("进入接口：/deleteStuClass/" + stuid);
         //查询该学生总评成绩表中记着加安排表ID
         List<TotalScoreCurrent> totalScoreCurrentList = totalScoreCurrentService.findeAllBystuid(stuid);
         //获取安排表ID

@@ -32,4 +32,9 @@ public interface CollegeReportRepository extends BaseRepository<CollegeReport, I
     @Transactional
     @Query(value="DELETE t_college_report FROM t_college_report WHERE t_college_report.m_id = ? and t_college_report.stu_id=?",nativeQuery=true)
     void deleteByStuIdModelId(int m_id, int id);
+
+    @Modifying
+    @Transactional(readOnly = false)
+    @Query("delete from CollegeReport c where c.mid = ?1")
+    void deleteByModelId(int mid);
 }

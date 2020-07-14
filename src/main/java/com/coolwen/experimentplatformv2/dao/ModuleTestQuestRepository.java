@@ -7,8 +7,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -70,5 +72,8 @@ public interface ModuleTestQuestRepository extends BaseRepository<ModuleTestQues
     @Query("select q from ExpModel e, ModuleTestQuest q where e.m_id =q.mId and e.m_id = ?1")
     Page<ModuleTestQuest> findByExpPage(@Param("mid") int mid, Pageable pageable);
 
-
+    @Modifying
+    @Transactional(readOnly = false)
+    @Query("delete from ModuleTestQuest q where q.mId = ?1")
+    void deleteQuestByModelId(int mid);
 }

@@ -22,4 +22,6 @@ public interface CollegeReportService {
     void deleteCollegeList(List<CollegeReport> list);
 
     void deleteByStuIdModelId(int m_id, int id);
+
+    void deleteByModelId(int mid);
 }

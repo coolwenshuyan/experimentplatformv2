@@ -111,8 +111,8 @@ public class ArrangeClassServiceImpl implements ArrangeClassService {
     }
 
     @Override
-    public ArrangeClass findByCourseIdAndTeacherIdAndClassId(int courseId, int teacherId, int classId) {
-        return arrangeClassRepository.findByCourseIdAndTeacherIdAndClassId(courseId, teacherId, classId);
+    public ArrangeClass findByCourseIdAndClassId(int courseId, int classId) {
+        return arrangeClassRepository.findByCourseIdAndClassId(courseId,classId);
     }
 
     @Override
@@ -160,10 +160,15 @@ public class ArrangeClassServiceImpl implements ArrangeClassService {
     }
 
     @Override
-    public void deleteArrangeClass(int studentId, int arrangeId) {
-        //删除学生对应课程当期总评成绩
-        totalScoreCurrentService.deleteTotalScoreCurrentByStuIdAndArrangeId(studentId, arrangeId);
+    public List<ArrangeClass> findByCourseID(int id) {
+        return arrangeClassRepository.findByCourseId(id);
     }
+
+    @Override
+    public void deleteTotalScoreByArrangeId(int arrangeId) {
+        arrangeClassRepository.deleteTotalScoreByArrangeId(arrangeId);
+    }
+
 
     @Override
     public List<ArrangeInfoDTO> findArrangeInfoDTOByTeacherId(int teacherId) {

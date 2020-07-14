@@ -128,4 +128,9 @@ public class ModuleTestQuestServiceImpl implements ModuleTestQuestService {
         return questListAnswerRepositoryCustom.listQuestListAnswerAndStuScoreDto(type, mId,stuId);
     }
 
+    @Override
+    public void deleteQuestByModelId(int mid) {
+        questRepository.deleteQuestByModelId(mid);
+    }
+
 }

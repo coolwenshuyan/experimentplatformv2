@@ -61,6 +61,7 @@ public class LastTestController {
         String questDescribe = (String) session.getAttribute("questDescribe");
         logger.debug("打印题目信息~~~~~~" + questDescribe);
 
+
 //        int mId = -1;
 //        开始拦截，即学生已作答的模块不允许添加试题
 //        找到当前模块的所有试题
@@ -248,6 +249,13 @@ public class LastTestController {
                         @PathVariable int arrangeId,
                         @RequestParam(value = "page", defaultValue = "0", required = true) Integer page,
                         Model model) {
+
+        //回显当前所选的安排
+        model.addAttribute("selected", arrangeId);
+
+        //判断是否选择了安排
+        boolean choose = true;
+        model.addAttribute("Choose", choose);
 //        分页数据的条数为10，即没10条数据进行分页
         Pageable pageable = PageRequest.of(page, 10);
 //        分页的条件是以模块id，即mid为条件分页
@@ -263,8 +271,8 @@ public class LastTestController {
         List<ArrangeInfoDTO> arrangeInfoDTOs =  arrangeClassService.findArrangeInfoDTOByTeacherId(user.getId());
         model.addAttribute("arrangeInfoDTOs",arrangeInfoDTOs);
 
-        boolean choose = true;
-        model.addAttribute("Choose",choose);
+//        boolean choose = true;
+//        model.addAttribute("Choose",choose);
 
         return "shiyan/lookLastTest";
     }
@@ -349,6 +357,7 @@ public class LastTestController {
             questService.addModuleTestQuest(quest1);
         }
 //        更新学生成绩
+        //TODO 修改为allStudentScoreUpdate2，带参数
         scoreUpdateService.allStudentScoreUpdate();
         return "redirect:/shiyan/lastTestList";
     }

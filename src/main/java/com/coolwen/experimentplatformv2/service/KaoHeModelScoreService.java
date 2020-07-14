@@ -39,7 +39,4 @@ public interface KaoHeModelScoreService {
     Integer findmTestFalseByClassIdAndMid(int classId,int Mid);
 
     Integer findmReportFalseByClassIdAndMid(int classId,int Mid);
-
-
-
 }

@@ -45,4 +45,7 @@ public interface ExpModelRepository extends BaseRepository<ExpModel,Integer> {
 
     @Query("select e from ExpModel e left join CourseInfo c on e.courseId = c.id left join User u on u.id = c.teacherId where u.id=?1")
     Page<ExpModel> findAllByTeacher(Pageable pageable,int id);
+
+
+    List<ExpModel> findByCourseId(int id);
 }

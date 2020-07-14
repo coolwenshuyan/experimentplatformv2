@@ -1,13 +1,14 @@
 package com.coolwen.experimentplatformv2.controller;
 
 import com.coolwen.experimentplatformv2.dao.CourseInfoRepository;
-import com.coolwen.experimentplatformv2.model.CourseInfo;
-import com.coolwen.experimentplatformv2.model.User;
-import com.coolwen.experimentplatformv2.service.CourseInfoService;
-import com.coolwen.experimentplatformv2.service.UserService;
+import com.coolwen.experimentplatformv2.dao.KaoHeModelScoreRepository;
+import com.coolwen.experimentplatformv2.model.*;
+import com.coolwen.experimentplatformv2.service.*;
 import com.coolwen.experimentplatformv2.utils.FileUploadUtil;
 import com.coolwen.experimentplatformv2.utils.GetServerRealPathUnit;
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,6 +32,7 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/courseinfo")
 public class CourseInfoController {
+    protected static final Logger logger = LoggerFactory.getLogger(CourseInfoController.class);
 
     @Autowired
     CourseInfoService courseInfoService;
@@ -38,6 +40,26 @@ public class CourseInfoController {
     CourseInfoRepository courseInfoRepository;
     @Autowired
     UserService userService;
+    @Autowired
+    ArrangeClassService arrangeClassService;
+    @Autowired
+    KaoheModelService kaoheModelService;
+    @Autowired
+    KaoHeModelScoreRepository kaoHeModelScoreRepository;
+    @Autowired
+    ModuleTestAnswerStuService moduleTestAnswerStuService;
+    @Autowired
+    CollegeReportService collegeReportService;
+    @Autowired
+    ReportAnswerService reportAnswerService;
+    @Autowired
+    ExpModelService expModelService;
+    @Autowired
+    ModuleTestQuestService moduleTestQuestService;
+    @Autowired
+    ModuleTestAnswerService moduleTestAnswerService;
+    @Autowired
+    ReportService reportService;
 
 
 
@@ -128,6 +150,41 @@ public class CourseInfoController {
 
     @GetMapping(value = "/{id}/delete")
     public String delete(@PathVariable int id){
+        List<ArrangeClass> arrangeClasses = arrangeClassService.findByCourseID(id);
+        logger.debug("根据课程id查询到所有相关课程安排:"+arrangeClasses);
+
+        List<ExpModel> expModels = expModelService.findByCourseId(id);
+
+        for (ExpModel expModel : expModels){
+            int mid = expModel.getM_id();
+            //删除考核模块测试答案学生记录
+            moduleTestAnswerStuService.deleteByModelId(mid);
+            //删除学院版报告学生记录
+            collegeReportService.deleteByModelId(mid);
+            //删除自定义版答题报告学生记录
+            reportAnswerService.deleteByModelId(mid);
+            //删除学生考核模块记录
+            List<KaoHeModelScore> kaoHeModelScores = kaoHeModelScoreRepository.findKaoheModuleScoreByModelId(mid);
+            kaoHeModelScoreRepository.deleteAll(kaoHeModelScores);
+            //删除实验模块测试题的答案
+            moduleTestAnswerService.deleteAnswerByModelId(mid);
+            //删除实验模块测试题目
+            moduleTestQuestService.deleteQuestByModelId(mid);
+            //删除实验模块报告测试题
+            reportService.deleteReportByModelId(mid);
+        }
+        for (ArrangeClass a : arrangeClasses){
+            int arrangeId = a.getId();
+            //删除学生总评成绩
+            arrangeClassService.deleteTotalScoreByArrangeId(arrangeId);
+            //删除考核模块
+            kaoheModelService.deleteByArrangeId(arrangeId);
+            //删除安排表
+            arrangeClassService.delete(arrangeId);
+        }
+
+        //删除实验模块
+        expModelService.deleteAll(expModels);
         //执行删除操作
         courseInfoService.delete(id);
         return "redirect:/courseinfo/list";

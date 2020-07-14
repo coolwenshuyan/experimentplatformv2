@@ -5,6 +5,7 @@ import com.coolwen.experimentplatformv2.model.Report;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,4 +43,9 @@ public interface ReportRepository extends BaseRepository<Report, Integer>, JpaSp
 
     @Query("select r from Report r where r.mId = ?1 order by r.reportOrder")
     List<Report> findByMidpaixu(int mid);
+
+    @Modifying
+    @Transactional(readOnly = false)
+    @Query("delete from Report r where r.mId = ?1")
+    void deleteReportByModelId(int mid);
 }

@@ -62,4 +62,5 @@ public interface ModuleTestQuestService {
 
     List<QuestListAnswerAndStuScoreDto> listQuestListAnswerAndStuScoreDto(String type, int mId, int stuId);
 
+    void deleteQuestByModelId(int mid);
 }

@@ -54,4 +54,6 @@ public interface KaoHeModelScoreRepository extends BaseRepository<KaoHeModelScor
     @Query("select khs from KaoHeModelScore khs where khs.tKaohemodleId = ?1 and khs.stuId=?2")
     KaoHeModelScore findByTKaohemodleIdAndStuId(int kaoHeModleId, int stu);
 
+    @Query("select khs from KaoHeModelScore khs,KaoheModel k where k.id=khs.tKaohemodleId and k.m_id = ?1")
+    List<KaoHeModelScore> findKaoheModuleScoreByModelId(int mid);
 }

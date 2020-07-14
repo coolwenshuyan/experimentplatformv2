@@ -38,4 +38,9 @@ public interface ModuleTestAnswerStuRepository extends BaseRepository<ModuleTest
     @Transactional
     @Query(value="DELETE t_mtest_answer_stu FROM t_mtest_quest,t_mtest_answer_stu WHERE t_mtest_quest.quest_id=t_mtest_answer_stu.quest_id and t_mtest_quest.m_id = ? and t_mtest_answer_stu.stu_id=?",nativeQuery=true)
     void deleteByStuIdModelId(int m_id, int id);
+
+    @Modifying
+    @Transactional
+    @Query(value="DELETE t_mtest_answer_stu FROM t_mtest_quest,t_mtest_answer_stu WHERE t_mtest_quest.quest_id=t_mtest_answer_stu.quest_id and t_mtest_quest.m_id = ?",nativeQuery=true)
+    void deleteByModelId(int mid);
 }

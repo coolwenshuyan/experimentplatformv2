@@ -88,16 +88,18 @@ public class TreportGradeController {
      * @param mid   模块id
      * @return 页面
      */
-    @GetMapping(value = "/{stuId}/{mid}/giveMark")
+    @GetMapping(value = "/{stuId}/{mid}/{arrangeId}/giveMark")
     public String GiveAmark(Model model,
                             @PathVariable("stuId") int stuId,
-                            @PathVariable("mid") int mid
+                            @PathVariable("mid") int mid,
+                            @PathVariable("arrangeId") int arrangeId
     ) {
         logger.debug(stuId + ">>>>>>>>>>" + mid);
         List<PScoreDto> score = scoreService.listScorerDTOBystudentId(stuId, mid);
         logger.debug(String.valueOf(score.size()));
 
         model.addAttribute("zjy", score);
+//        model.addAttribute("arrangeId", arrangeId);
         logger.debug(">>>>>>>>>>>>>>>>>>" + score);
         return "kaohe/reportGrade_ma";
     }
@@ -111,10 +113,11 @@ public class TreportGradeController {
      * @param mid     模块id
      * @return 页面
      */
-    @PostMapping(value = "/{stuId}/{mid}/giveMark")
+    @PostMapping(value = "/{stuId}/{mid}/{arrangeId}/giveMark")
     public String giveamark(Model model, HttpServletRequest request,
                             @PathVariable("stuId") int stuId,
-                            @PathVariable("mid") int mid
+                            @PathVariable("mid") int mid,
+                            @PathVariable("arrangeId") int arrangeId
 
     ) {
         List<PScoreDto> score = scoreService.listScorerDTOBystudentId(stuId, mid);
@@ -129,7 +132,7 @@ public class TreportGradeController {
 
         }
         //重新计算成绩
-        scoreUpdateService.singleStudentScoreUpdate(stuId);
+        scoreUpdateService.singleStudentScoreUpdate2(stuId,arrangeId);
 
         KaoHeModelScore khs = kaoHeModelScoreService.findKaoheModelScoreByMid(mid, stuId);
         khs.setmReportteacherstate(true);

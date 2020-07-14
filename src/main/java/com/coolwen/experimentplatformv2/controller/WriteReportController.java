@@ -32,7 +32,7 @@ import java.util.List;
 @Controller
 //老师评分
 @RequestMapping(value = "/WriteReport")
-public class writeReportController {
+public class WriteReportController {
 
     @Autowired
     public StudentRepository studentRepository;

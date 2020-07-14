@@ -64,6 +64,7 @@
 <!--<div style="text-align: center;margin-top:30px;font-size: 20px;">新建-&#45;&#45;实验模块</div>-->
 <div class="layui-container" id="content">
     <div class="layui-row">
+        <h1 th:text="|课程名称:${CourseInfo.getCourseName()}|"></h1>
         <form class="layui-form layui-col-md7" th:action="@{/expmodel/addExpModel}" method="post"
               enctype="multipart/form-data">
             <div class="layui-form-item">
@@ -89,6 +90,16 @@
                 <div class="layui-input-block">
                     <input type="text" name="m_manager" required="required" lay-verify="title" autocomplete="off"
                            placeholder="请输入实验负责人" class="layui-input">
+                    <!--                    <select name="m_manager" lay-filter="aihao"-->
+                    <!--                            onchange="window.open(this.options[this.selectedIndex].value,target='_self')"-->
+                    <!--                            style="margin-top: 15px;height: 30px;width: 150px;border-color: lightgray;">-->
+                    <!--                        <option>请选择</option>-->
+                    <!--                        <div th:each="user:${users}" class="">-->
+                    <!--                            <option th:value="${user.id}"-->
+                    <!--                                    th:text="${user.nickname}">张三-->
+                    <!--                            </option>-->
+                    <!--                        </div>-->
+                    <!--                    </select>-->
                 </div>
             </div>
             <div class="layui-form-item">
@@ -109,10 +120,16 @@
                 </div>
             </div>
             <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <input type="submit" class="layui-btn layui-bg-green" href="../expmodel/addTheory" value="添加理论学习"/>
+                    <a class="layui-btn layui-btn-primary" href="../expmodel/list" th:href="@{/expmodel/list}">取消</a>
+                </div>
+            </div>
+            <div class="layui-form-item" style="visibility: hidden">
                 <label class="layui-form-label">实验平台链接：</label>
                 <div class="layui-input-block">
-                    <input type="text" name="m_inurl" required="required" lay-verify="title" autocomplete="off"
-                           placeholder="请输入实验平台链接" class="layui-input">
+                    <input type="hidden" name="m_inurl" required="required" lay-verify="title" autocomplete="off"
+                           placeholder="请输入实验平台链接" class="layui-input" value="www.sctu.edu.cn">
                 </div>
             </div>
             <div class="layui-form-item" style="visibility: hidden">
@@ -123,12 +140,7 @@
                 </div>
             </div>
 
-            <div class="layui-form-item">
-                <div class="layui-input-block">
-                    <input type="submit" class="layui-btn layui-bg-green" href="../expmodel/addTheory" value="添加理论学习"/>
-                    <a class="layui-btn layui-btn-primary" href="../expmodel/list" th:href="@{/expmodel/list}">取消</a>
-                </div>
-            </div>
+
         </form>
     </div>
 </div>

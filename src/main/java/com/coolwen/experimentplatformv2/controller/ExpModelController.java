@@ -118,9 +118,10 @@ public class ExpModelController {
 
     //添加模块信息页面
     @GetMapping("/addExpModel")
-    public String toAdd(Model model) {
-//        List<User> users = userService.list();
-//        model.addAttribute("users",users);
+    public String toAdd(Model model, HttpSession session) {
+        int courseId = (int) session.getAttribute("ExpModelcourseId");
+        CourseInfo courseInfo = courseInfoService.findById(courseId);
+        model.addAttribute("CourseInfo", courseInfo);
         return "shiyan/newExpModel";
     }
 

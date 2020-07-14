@@ -4,6 +4,7 @@ import com.coolwen.experimentplatformv2.model.*;
 import com.coolwen.experimentplatformv2.model.DTO.ArrangeInfoDTO;
 import com.coolwen.experimentplatformv2.model.DTO.StuTotalScoreCurrentDTO;
 import com.coolwen.experimentplatformv2.service.*;
+import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,10 +108,10 @@ public class TotalscoreCurrentController {
     public String expModelList(Model model,
                                @RequestParam(required = true, defaultValue = "") String select_orderId,
                                @RequestParam(value = "pageNum", defaultValue = "0", required = true) int pageNum) {
-//        User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
-//        logger.debug("登陆用户信息:" + user);
-//        List<ArrangeInfoDTO> arrangeInfoDTOs = arrangeClassService.findArrangeInfoDTOByTeacherId(user.getId());
-        List<ArrangeInfoDTO> arrangeInfoDTOs = arrangeClassService.findArrangeInfoDTOByTeacherId(1);
+        User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
+        logger.debug("登陆用户信息:" + user);
+        List<ArrangeInfoDTO> arrangeInfoDTOs = arrangeClassService.findArrangeInfoDTOByTeacherId(user.getId());
+//        List<ArrangeInfoDTO> arrangeInfoDTOs = arrangeClassService.findArrangeInfoDTOByTeacherId(1);
         model.addAttribute("arrangeInfoDTOs", arrangeInfoDTOs);
         model.addAttribute("arrageId", -1);
         boolean choose = false;
@@ -299,12 +300,13 @@ public class TotalscoreCurrentController {
     @GetMapping(value = "/report/{arrangeId}")
     public String loadOneCourseModel(Model model, @PathVariable int arrangeId, @RequestParam(required = true, defaultValue = "") String select_orderId,
                                      @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum) {
-//        User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
-//        logger.debug("登陆用户信息:" + user);
-        //所有的下拉列表数据
-//        List<ArrangeInfoDTO> arrangeInfoDTOs = arrangeClassService.findArrangeInfoDTOByTeacherId(user.getId());
-        List<ArrangeInfoDTO> arrangeInfoDTOs = arrangeClassService.findArrangeInfoDTOByTeacherId(1);
+        User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
+        logger.debug("登陆用户信息:" + user);
+//        所有的下拉列表数据
+        List<ArrangeInfoDTO> arrangeInfoDTOs = arrangeClassService.findArrangeInfoDTOByTeacherId(user.getId());
+//        List<ArrangeInfoDTO> arrangeInfoDTOs = arrangeClassService.findArrangeInfoDTOByTeacherId(1);
         model.addAttribute("arrangeInfoDTOs", arrangeInfoDTOs);
+        logger.debug("进入/report" + arrangeId);
 
         //当前选择的安排表Id,用于判断按钮跳转连接,以及下拉列表回显
 

@@ -357,6 +357,7 @@ public class LastTestController {
             questService.addModuleTestQuest(quest1);
         }
 //        更新学生成绩
+        //TODO 修改为allStudentScoreUpdate2，带参数
         scoreUpdateService.allStudentScoreUpdate();
         return "redirect:/shiyan/lastTestList";
     }

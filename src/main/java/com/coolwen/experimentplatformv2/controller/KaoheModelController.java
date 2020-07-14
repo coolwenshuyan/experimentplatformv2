@@ -132,8 +132,8 @@ public class KaoheModelController {
 //            }
 //            b.add(c);
 //        }
-        model.addAttribute("needPaging",false);
-        model.addAttribute("path","/kaohemodel/allModule");
+        model.addAttribute("needPaging", false);
+        model.addAttribute("path", "/kaohemodel/allModule");
 
 
         return "kaohe/allModule";
@@ -145,9 +145,13 @@ public class KaoheModelController {
                                      HttpSession session,
                                      @PathVariable int arrangeId,
                                      @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum) {
-        model.addAttribute("path","/kaohemodel/Module/"+arrangeId);
+        model.addAttribute("path", "/kaohemodel/Module/" + arrangeId);
+        User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
+        logger.debug("登陆用户信息:" + user);
         //所有的下拉列表数据
-        List<ArrangeInfoDTO> arrangeInfoDTOs = arrangeClassService.findArrangeInfoDTOByTeacherId(1);
+        List<ArrangeInfoDTO> arrangeInfoDTOs = arrangeClassService.findArrangeInfoDTOByTeacherId(user.getId());
+        //所有的下拉列表数据
+//        List<ArrangeInfoDTO> arrangeInfoDTOs = arrangeClassService.findArrangeInfoDTOByTeacherId(1);
         model.addAttribute("arrangeInfoDTOs", arrangeInfoDTOs);
 
         //当前选择的安排表Id,用于判断按钮跳转连接,以及下拉列表回显
@@ -198,10 +202,10 @@ public class KaoheModelController {
 
 //        System.out.println("准备好了");
 
-        if (a.getTotalPages()>0){
-            model.addAttribute("needPaging",true);
-        }else {
-            model.addAttribute("needPaging",false);
+        if (a.getTotalPages() > 0) {
+            model.addAttribute("needPaging", true);
+        } else {
+            model.addAttribute("needPaging", false);
         }
 
         return "kaohe/allModule";
@@ -218,7 +222,7 @@ public class KaoheModelController {
     @RequestMapping(value = "/checkModule", method = RequestMethod.GET)
     public String list(Model model,
                        @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum) throws JsonProcessingException {
-        model.addAttribute("path","/kaohemodel/checkModule");
+        model.addAttribute("path", "/kaohemodel/checkModule");
         // 所有的考核模块
 //        Pageable pageable = PageRequest.of(pageNum, 5);
 //        Page<KaoheModel> page = kaoheModelService.findAll(pageable);
@@ -236,13 +240,17 @@ public class KaoheModelController {
 //        System.out.println("json:" + mapper.writeValueAsString(page));
 
         //所有的下拉列表数据
-        List<ArrangeInfoDTO> arrangeInfoDTOs = arrangeClassService.findArrangeInfoDTOByTeacherId(1);
+        User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
+        logger.debug("登陆用户信息:" + user);
+        //所有的下拉列表数据
+        List<ArrangeInfoDTO> arrangeInfoDTOs = arrangeClassService.findArrangeInfoDTOByTeacherId(user.getId());
+//        List<ArrangeInfoDTO> arrangeInfoDTOs = arrangeClassService.findArrangeInfoDTOByTeacherId(1);
         model.addAttribute("arrangeInfoDTOs", arrangeInfoDTOs);
         logger.debug("下拉列表数据>>>>>:" + arrangeInfoDTOs);
 
         model.addAttribute("selected1", "/kaohemodel/allModule");
         model.addAttribute("selected2", "/kaohemodel/checkModule");
-        model.addAttribute("needPaging",false);
+        model.addAttribute("needPaging", false);
         return "kaohe/checkModule";
     }
 
@@ -259,7 +267,7 @@ public class KaoheModelController {
     public String listCheckModule(Model model,
                                   @PathVariable int arrangeId,
                                   @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum) throws JsonProcessingException {
-        model.addAttribute("path","/kaohemodel/checkModule/"+arrangeId);
+        model.addAttribute("path", "/kaohemodel/checkModule/" + arrangeId);
         User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
         logger.debug("登陆用户信息:" + user);
         //所有的下拉列表数据
@@ -290,10 +298,10 @@ public class KaoheModelController {
         model.addAttribute("kaoheModelPageInfo", page);
 
 
-        if (page.getTotalPages()>0){
-            model.addAttribute("needPaging",true);
-        }else {
-            model.addAttribute("needPaging",false);
+        if (page.getTotalPages() > 0) {
+            model.addAttribute("needPaging", true);
+        } else {
+            model.addAttribute("needPaging", false);
         }
         return "kaohe/checkModule";
     }
@@ -375,9 +383,8 @@ public class KaoheModelController {
             logger.debug(String.valueOf(i));
             kaoHeModelScoreService.add(new KaoHeModelScore(u.getId(), i.getId(), 0, 0, u.getM_order(), u.getM_scale()));
             //更新表13中学生总表记录中考核模块数
-            //todo 需要知道安排表id
-            int arrageId = 0;
-            TotalScoreCurrent totalScoreCurrent = totalScoreCurrentService.findTotalScoreCurrentByStuId2(i.getId(), arrageId);
+//            int arrageId = 0;
+            TotalScoreCurrent totalScoreCurrent = totalScoreCurrentService.findTotalScoreCurrentByStuId2(i.getId(), arrangeId);
             totalScoreCurrent.setKaoheNum(totalScoreCurrent.getKaoheNum() + 1);
             totalScoreCurrentService.add(totalScoreCurrent);
         }

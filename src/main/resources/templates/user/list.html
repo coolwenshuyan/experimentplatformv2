@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
 >
-<head th:include="layout :: htmlhead" th:with="title='后台管理'">
+<head th:with="title='后台管理'">
     <meta charset="UTF-8"/>
     <title>Title</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <meta name="viewport"
+          content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
     <link rel="stylesheet" href="../../static/css/font.css">
     <link rel="stylesheet" href="../../static/css/xadmin.css">
     <link rel="stylesheet" href="../../static/css/layui.css" th:href="@{../../static/css/layui.css}">
@@ -34,36 +35,39 @@
                         <thead>
                         <tr>
 
-                            <th width="3%">用户标识</th>
+                            <!--                            <th width="3%">用户标识</th>-->
                             <th width="14%">用户名称</th>
                             <th width="14%">用户昵称</th>
-                            <th>用户状态</th>
-                            <th>用户操作</th>
+                            <th width="14%">用户工号</th>
+                            <!--                            <th>用户状态</th>-->
+                            <!--                            <th>用户操作</th>-->
                             <th>操作</th>
 
                         </tr>
                         </thead>
                         <tbody>
                         <tr th:each="user,stat:${users}">
-                            <td ><span th:text="${user.id}">1800998873</span></td>
-                            <td ><span th:text="${user.username }"><a th:href="${user.id }" class="list_link">张三</a></span></td>
-                            <td ><span th:text="${user.nickname }"></span></td>
-                            <td >
-                                <span>
-                                    <span th:if="${user.status} eq false">启用</span>
-                                    <span th:if="${user.status} eq true">停用</span>
-                                </span>
-                            </td>
-                            <td >
-                                <span>
-                                    <a th:if="${user.status eq true}" th:href="@{|updateStatus/${user.id }|}"
-                                       class="layui-btn layui-bg-red">启用</a>
-                                    <a th:if="${user.status eq false}" th:href="@{|updateStatus/${user.id }|}"
-                                       class="layui-btn layui-bg-red">停用</a>
-                                    </th:if>
-                                </span>
-                            </td>
-                            <td ><span>
+<!--                            <td><span th:text="${user.id}">1800998873</span></td>-->
+                            <td><span th:text="${user.username }"><a th:href="${user.id }"
+                                                                     class="list_link">张三</a></span></td>
+                            <td><span th:text="${user.nickname }"></span></td>
+                            <td><span th:text="${user.getGonghao() }"></span></td>
+                            <!--                            <td >-->
+                            <!--                                <span>-->
+                            <!--                                    <span th:if="${user.status} eq false">启用</span>-->
+                            <!--                                    <span th:if="${user.status} eq true">停用</span>-->
+                            <!--                                </span>-->
+                            <!--                            </td>-->
+                            <!--                            <td >-->
+                            <!--                                <span>-->
+                            <!--                                    <a th:if="${user.status eq true}" th:href="@{|updateStatus/${user.id }|}"-->
+                            <!--                                       class="layui-btn layui-bg-red">启用</a>-->
+                            <!--                                    <a th:if="${user.status eq false}" th:href="@{|updateStatus/${user.id }|}"-->
+                            <!--                                       class="layui-btn layui-bg-red">停用</a>-->
+                            <!--                                    </th:if>-->
+                            <!--                                </span>-->
+                            <!--                            </td>-->
+                            <td><span>
                                 <a th:href="@{|update/${user.id }|}" class="layui-btn layui-bg-green">更新</a>
                                 <a th:href="@{|listRes/${user.id }|}" class="layui-btn layui-bg-green">查询管理资源</a>
                                 </span>
@@ -75,8 +79,8 @@
                 <div class="layui-card-body ">
                     <div class="page">
                         <!--<div>-->
-                            <!--<a class="prev" th:href="@{/studentManage/list(pageNum=${studentList.hasPrevious()}?${studentList.number}-1:0)}">&lt;&lt;</a>-->
-                            <!--<a class="next" th:href="@{/studentManage/list(pageNum=${studentList.hasNext()}?${studentList.number}+1:${studentList.number})}">&gt;&gt;</a>-->
+                        <!--<a class="prev" th:href="@{/studentManage/list(pageNum=${studentList.hasPrevious()}?${studentList.number}-1:0)}">&lt;&lt;</a>-->
+                        <!--<a class="next" th:href="@{/studentManage/list(pageNum=${studentList.hasNext()}?${studentList.number}+1:${studentList.number})}">&gt;&gt;</a>-->
                         <!--</div>-->
                     </div>
                 </div>

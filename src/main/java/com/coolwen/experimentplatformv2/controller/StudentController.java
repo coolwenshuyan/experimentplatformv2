@@ -580,7 +580,6 @@ public class StudentController {
 //        logger.debug("ResId:" + resId+"roleId:"+roleId+"c:"+c);
         Student student = studentservice.findByStuXuehao(xuehao);
         logger.debug("输入学生信息：" + student);
-        //todo 移除班级必须把学生的班级ID设置为0
         if (student.getClassId() == 0) {
             resp.getWriter().println("1");
         } else {

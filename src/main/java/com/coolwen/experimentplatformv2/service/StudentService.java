@@ -18,6 +18,8 @@ public interface StudentService {
 
     public Student addStudent(Student student);
 
+    public Student updateStudent(Student student);
+
     Page<StudentVo> findStudentsByStuCheckstate(int pageNum);
 
     StudentVo findStudentsByStuXuehao(String xuehao);
@@ -82,7 +84,7 @@ public interface StudentService {
 
     Page<StudentLastTestScoreDTO> listStudentLastTestAnswerDTO(int pageNum, int arrangeId);
 
-    Page<StuTotalScoreCurrentDTO> listStuTotalScoreCurrentDTO(int pageNum, String select_orderId,int arrageId);
+    Page<StuTotalScoreCurrentDTO> listStuTotalScoreCurrentDTO(int pageNum, String select_orderId, int arrageId);
 
     Page<Student> pageStudentByArrangeId(Integer pageNum, int arrangeId);
 

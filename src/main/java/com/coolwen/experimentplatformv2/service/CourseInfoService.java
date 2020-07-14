@@ -3,6 +3,7 @@ package com.coolwen.experimentplatformv2.service;
 
 import com.coolwen.experimentplatformv2.model.ClassModel;
 import com.coolwen.experimentplatformv2.model.CourseInfo;
+import com.coolwen.experimentplatformv2.model.DTO.CourseInfoDto;
 
 import java.util.List;
 
@@ -23,10 +24,13 @@ public interface CourseInfoService {
     List<CourseInfo> getclass_by_arrangeteacher(int teacher_id);
 
     //根据教师ID和课程ID获得课程安排表中对应的该课程的班级对列
-    List<ClassModel> getclass_by_arrangecourseid(int teacher_id,int course_id);
+    List<ClassModel> getclass_by_arrangecourseid(int teacher_id, int course_id);
 
     List<CourseInfo> findAll();
 
 
+    List<CourseInfo> findByArrangeClassIds(List<Integer> arrageClassIds);
+
+    CourseInfoDto findByCourseInfoIdAndClassId(int courseInfoId, int classId);
 
 }

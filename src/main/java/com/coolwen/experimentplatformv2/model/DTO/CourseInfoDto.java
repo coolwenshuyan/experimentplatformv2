@@ -1,41 +1,43 @@
-package com.coolwen.experimentplatformv2.model;
-
-import javax.persistence.*;
+package com.coolwen.experimentplatformv2.model.DTO;
 
 /**
- * @author 朱治汶
- * @version 1.0
- * @date 2020/6/13 22:06
- **/
-@Entity
-@Table(name = "t_course_info")
-public class CourseInfo {
-    @Id //自动获取id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "courseinfo_id")
-    @TableGenerator(name = "courseinfo_id", initialValue = 0, allocationSize = 1, table = "seq_table")
-    private int id;
+ * @author CoolWen
+ * @version 2020-07-14 21:28
+ */
+public class CourseInfoDto {
+    private int courseInfoId;
 
-    @Column(name = "course_name")
     private String courseName;
 
-    @Column(name = "course_code")
     private String courseCode;
 
-    @Column(name = "teacher_id")
     private int teacherId;
 
-    @Column(name = "course_imgurl")
     private String courseImgurl;
 
-    @Column(name = "course_intruduce")
     private String courseIntruduce;
 
-    public int getId() {
-        return id;
+    private int arrageClassId;
+
+    public CourseInfoDto() {
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public CourseInfoDto(int courseInfoId, String courseName, String courseCode, int teacherId, String courseImgurl, String courseIntruduce, int arrageClassId) {
+        this.courseInfoId = courseInfoId;
+        this.courseName = courseName;
+        this.courseCode = courseCode;
+        this.teacherId = teacherId;
+        this.courseImgurl = courseImgurl;
+        this.courseIntruduce = courseIntruduce;
+        this.arrageClassId = arrageClassId;
+    }
+
+    public int getCourseInfoId() {
+        return courseInfoId;
+    }
+
+    public void setCourseInfoId(int courseInfoId) {
+        this.courseInfoId = courseInfoId;
     }
 
     public String getCourseName() {
@@ -78,15 +80,24 @@ public class CourseInfo {
         this.courseIntruduce = courseIntruduce;
     }
 
+    public int getArrageClassId() {
+        return arrageClassId;
+    }
+
+    public void setArrageClassId(int arrageClassId) {
+        this.arrageClassId = arrageClassId;
+    }
+
     @Override
     public String toString() {
-        return "CourseInfo{" +
-                "id=" + id +
+        return "CourseInfoDto{" +
+                "courseInfoId=" + courseInfoId +
                 ", courseName='" + courseName + '\'' +
                 ", courseCode='" + courseCode + '\'' +
                 ", teacherId=" + teacherId +
                 ", courseImgurl='" + courseImgurl + '\'' +
                 ", courseIntruduce='" + courseIntruduce + '\'' +
+                ", arrageClassId=" + arrageClassId +
                 '}';
     }
 }

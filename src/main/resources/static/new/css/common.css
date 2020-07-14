@@ -1,10 +1,3 @@
-/*
- * @Author: Charlie
- * @Date: 2020-07-14 10:50:57
- * @Last Modified by: Charlie
- * @Last Modified time: 2020-07-14 10:50:57
- */
-
 /* topbar */
 .topbar{width:100%;height:40px;background:#215130;color:#fff;line-height:40px;font-size:14px;}
 .main{width:1200px;margin:0 auto;}
@@ -15,7 +8,7 @@
 .navs{width:1200px;margin:0 auto;height:120px;}
 .logo{float:left;}
 .logo img{height:75px;display:block;float:left;margin-top:22px;}
-.logo p{font-family:'logofont';height:120px;line-height:120px;padding:0 0 0 18px;color:#215130;float:left;font-size:36px;margin-left:-285px;background:#fff;}
+.logo p{font-family:'logofont';height:120px;line-height:120px;padding:0 0 0 18px;color:#215130;float:left;font-size:36px;background:#fff;}
 .nav{float:right;padding:45px 0;}
 .nav li{float:left;line-height:30px;height:30px;font-size:18px;margin:0 10px;position:relative;}
 .nav li:last-child{margin-right:0;}

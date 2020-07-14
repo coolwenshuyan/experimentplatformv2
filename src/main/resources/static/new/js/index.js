@@ -1,13 +1,8 @@
 $(function () {
-	// 轮播图
-	$('.rslides').responsiveSlides({
-		auto: true,
-		pager: true,
-		nav: true
-	})
-	// 滚动公告
+	$('.main-banner').bxSlider()
+	$('.recommend-slide').bxSlider({ pager: false, minSlides: 3, maxSlides: 3, moveSlides: 1, slideWidth: 210, slideMargin: 15 })
+	$('.lessions-slide').bxSlider({ pager: false, minSlides: 4, maxSlides: 4, moveSlides: 1, slideWidth: 285, slideMargin: 20 })
 	marquee()
-	// 图标
 	var myChart1 = echarts.init($('#chart1')[0])
 	var myChart2 = echarts.init($('#chart2')[0])
 	var myChart3 = echarts.init($('#chart3')[0])

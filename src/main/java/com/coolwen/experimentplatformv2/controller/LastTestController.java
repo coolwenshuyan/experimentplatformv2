@@ -248,6 +248,13 @@ public class LastTestController {
                         @PathVariable int arrangeId,
                         @RequestParam(value = "page", defaultValue = "0", required = true) Integer page,
                         Model model) {
+
+        //回显当前所选的安排
+        model.addAttribute("selected", arrangeId);
+
+        //判断是否选择了安排
+        boolean choose = true;
+        model.addAttribute("Choose", choose);
 //        分页数据的条数为10，即没10条数据进行分页
         Pageable pageable = PageRequest.of(page, 10);
 //        分页的条件是以模块id，即mid为条件分页
@@ -263,8 +270,8 @@ public class LastTestController {
         List<ArrangeInfoDTO> arrangeInfoDTOs =  arrangeClassService.findArrangeInfoDTOByTeacherId(user.getId());
         model.addAttribute("arrangeInfoDTOs",arrangeInfoDTOs);
 
-        boolean choose = true;
-        model.addAttribute("Choose",choose);
+//        boolean choose = true;
+//        model.addAttribute("Choose",choose);
 
         return "shiyan/lookLastTest";
     }

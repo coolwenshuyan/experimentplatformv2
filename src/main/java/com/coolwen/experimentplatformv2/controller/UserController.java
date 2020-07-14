@@ -95,6 +95,7 @@ public class UserController {
         User tu = userService.load(id);
         tu.setNickname(user.getNickname());
         tu.setStatus(user.getStatus());
+        tu.setGonghao(user.getGonghao());
 //        if (user.getPassword()== "" && user.getPassword().isEmpty() && user.getPassword() == null){
 //            tu.setPassword(tu.getPassword());
 //        }

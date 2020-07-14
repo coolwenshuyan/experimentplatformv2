@@ -37,15 +37,21 @@
         <form class="layui-form" role="form" th:method="post" th:object="${role}">
             <div class="layui-form-item">
                 <label class="layui-form-label">
-                    <span class="x-red">*</span>用户名(英文):</label>
+                    <span class="x-red">*</span>教师账号:</label>
                 <div class="layui-input-inline">
                     <input type="text" required="" lay-verify="nickname" th:field="${user.username}" autocomplete="off" class="layui-input"></div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">
-                    <span class="x-red">*</span>显示名称:</label>
+                    <span class="x-red">*</span>教师姓名:</label>
                 <div class="layui-input-inline">
                     <input type="text" required="" lay-verify="nickname" th:field="${user.nickname}" autocomplete="off" class="layui-input"></div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">
+                    <span class="x-red">*</span>教师工号:</label>
+                <div class="layui-input-inline">
+                    <input type="text" required="" lay-verify="nickname" th:field="${user.gonghao}" autocomplete="off" class="layui-input"></div>
             </div>
             <div class="layui-form-item">
                 <label  class="layui-form-label">
@@ -76,7 +82,7 @@
             </div>
 
             <div class="layui-btn-container" style="margin-left: 130px">
-                <input type="submit" class="layui-btn" value="添加用户">
+                <input type="submit" class="layui-btn" value="添加">
                 <a class="layui-btn layui-btn-primary" th:href="@{|/admin/user/list|}">返回</a>
             </div>
         </form>

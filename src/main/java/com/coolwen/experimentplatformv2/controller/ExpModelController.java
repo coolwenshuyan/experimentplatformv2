@@ -3,6 +3,7 @@ package com.coolwen.experimentplatformv2.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.coolwen.experimentplatformv2.config.ShiroConfig;
+import com.coolwen.experimentplatformv2.dao.KaoHeModelScoreRepository;
 import com.coolwen.experimentplatformv2.model.*;
 import com.coolwen.experimentplatformv2.model.DTO.KaoHeModelStuDTO;
 import com.coolwen.experimentplatformv2.model.DTO.KaoheModuleProgressDTO;
@@ -70,21 +71,40 @@ public class ExpModelController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    ArrangeClassService arrangeClassService;
+    @Autowired
+    ModuleTestAnswerStuService moduleTestAnswerStuService;
+    @Autowired
+    KaoHeModelScoreRepository kaoHeModelScoreRepository;
+    @Autowired
+    ScoreUpdateService scoreUpdateService;
+
     protected static final Logger logger = LoggerFactory.getLogger(ExpModelController.class);
 
 
     //查询模块信息页面
     @GetMapping("/list")
-    public String expModelList(Model model, @RequestParam(value = "pageNum", defaultValue = "0", required = true) int pageNum) {
+    public String expModelList(Model model,
+                               @RequestParam(value = "pageNum", defaultValue = "0", required = true) int pageNum,
+                               HttpSession session
+    ) {
+        try {
+            int courseId = (int) session.getAttribute("ExpModelcourseId");
+            return "redirect:/expmodel/expModelListByCourseId/"+courseId;
+        }catch (Exception e) {
+        }
         logger.debug("expModelList>>>>>>>>>>>>");
         User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
         logger.debug("expModelList输出老师账号：" + user);
-//        List<CourseInfo> courseInfoList = courseInfoService.getclassByCharge(user.getId());
-        List<CourseInfo> courseInfoList = courseInfoService.getclassByCharge(1);
+        List<CourseInfo> courseInfoList = courseInfoService.getclassByCharge(user.getId());
+//        List<CourseInfo> courseInfoList = courseInfoService.getclassByCharge(1);
         model.addAttribute("courseInfoList", courseInfoList);
         boolean choose = false;
         model.addAttribute("Choose", choose);
 //        model.addAttribute("page", expModelService.findModelList(pageNum));
+
+
         return "shiyan/lookExpModel";
     }
 
@@ -95,6 +115,7 @@ public class ExpModelController {
         if (courseId == -1) {
             choose = false;
             model.addAttribute("Choose", choose);
+            session.removeAttribute("ExpModelcourseId");
 //            model.addAttribute("selected1", "/report/allModule");
             return "redirect:/expmodel/list";
         }
@@ -157,50 +178,78 @@ public class ExpModelController {
     }
 
     //进行模块删除
-    //todo 需要写个操作函数来处理
     @GetMapping("/deleteExpModel/{id}")
     public String delete(@PathVariable("id") int id) {
-        //删除考核模块以及更改学生相关成绩
-        KaoheModel kaoheModel = kaoheModelService.findKaoheModelByMid(id);
-        if (kaoheModel != null) {
-            //如果该模块是考核模块
-            //根据学生条件与考核模块找到学生考核模块成绩
-            List<KaoHeModelScore> kaoHeModelScores = kaoHeModelScoreService.findKaoHeModelScoreByTKaohemodleIdAndStuId(kaoheModel.getId());
-            for (KaoHeModelScore k : kaoHeModelScores) {
-                //更新学生在删除该考核模块后的当期总评成绩表信息
-                //todo 需要知道安排表id,不然有多个成绩
-                int arrageId = 0;
-                TotalScoreCurrent totalScoreCurrent = totalScoreCurrentService.findTotalScoreCurrentByStuId2(k.getStuId(), arrageId);
-                totalScoreCurrent.setKaoheNum(totalScoreCurrent.getKaoheNum() - 1);
-                totalScoreCurrent.setmTotalScore(totalScoreCurrent.getmTotalScore() - k.getmScore());
-                totalScoreCurrent.setTotalScore(totalScoreCurrent.getmTotalScore() * kaoheModel.getKaohe_baifenbi() + totalScoreCurrent.getTestScore() * kaoheModel.getTest_baifenbi());
-                totalScoreCurrentService.add(totalScoreCurrent);
-            }
-            //删除该考核模块与模块信息
-            kaoHeModelScoreService.deleteAllKaohe(kaoHeModelScores);
-            kaoheModelService.deleteKaoHeModuleByMid(kaoheModel);
+
+        ExpModel expModel1 = expModelService.findExpModelByID(id);
+
+        List<ArrangeClass> arrangeClasses = arrangeClassService.findByCourseID(expModel1.getCourseId());
+        logger.debug("根据课程id查询到所有相关课程安排:" + arrangeClasses);
+
+        int mid = expModel1.getM_id();
+        //删除考核模块测试答案学生记录
+        moduleTestAnswerStuService.deleteByModelId(mid);
+        //删除学院版报告学生记录
+        collegeReportService.deleteByModelId(mid);
+        //删除自定义版答题报告学生记录
+        reportAnswerService.deleteByModelId(mid);
+        //删除学生考核模块记录
+        List<KaoHeModelScore> kaoHeModelScores = kaoHeModelScoreRepository.findKaoheModuleScoreByModelId(mid);
+        kaoHeModelScoreRepository.deleteAll(kaoHeModelScores);
+        //删除实验模块测试题的答案
+        moduleTestAnswerService.deleteAnswerByModelId(mid);
+        //删除实验模块测试题目
+        moduleTestQuestService.deleteQuestByModelId(mid);
+        //删除实验模块报告测试题
+        reportService.deleteReportByModelId(mid);
+        //删除实验模块
+        expModelService.deleteExpModelById(mid);
+
+        for (ArrangeClass a : arrangeClasses) {
+            scoreUpdateService.allStudentScoreUpdate2(a.getId());
         }
-        //删除所属的问题以及答案以及相关回复
-        List<ModuleTestQuest> moduleTestQuests = expModelService.findModuleTestQuestByMId(id);
-        for (ModuleTestQuest m : moduleTestQuests) {
-            List<ModuleTestAnswer> moduleTestAnswers = moduleTestAnswerService.findAllByQuestId(m.getQuestId());
-            moduleTestAnswerService.deleteAllAnswer(moduleTestAnswers);
-            expModelService.deleteModuleTestAnswerStuByQuestId(m.getQuestId());
-        }
-        moduleTestQuestService.deleteAllModuleTestQuest(moduleTestQuests);
-        //删除实验模块报告与实验报告回答
-        List<Report> reports = reportService.findReportByMId(id);
-        if (reports != null && !reports.isEmpty()) {
-            for (Report r : reports) {
-                reportAnswerService.deleteReportAnswerByReportId(r.getReportId());
-            }
-        }
-        List<CollegeReport> collegeReportList = collegeReportService.findCollegeReportByMid(id);
-        if (collegeReportList != null && !collegeReportList.isEmpty()) {
-            collegeReportService.deleteCollegeList(collegeReportList);
-        }
-        reportService.deleteReports(reports);
-        expModelService.deleteExpModelById(id);
+
+
+//        //删除考核模块以及更改学生相关成绩
+//        KaoheModel kaoheModel = kaoheModelService.findKaoheModelByMid(id);
+//        if (kaoheModel != null) {
+//            //如果该模块是考核模块
+//            //根据学生条件与考核模块找到学生考核模块成绩
+//            List<KaoHeModelScore> kaoHeModelScores = kaoHeModelScoreService.findKaoHeModelScoreByTKaohemodleIdAndStuId(kaoheModel.getId());
+//            for (KaoHeModelScore k : kaoHeModelScores) {
+//                //更新学生在删除该考核模块后的当期总评成绩表信息
+//                int arrageId = 0;
+//                TotalScoreCurrent totalScoreCurrent = totalScoreCurrentService.findTotalScoreCurrentByStuId2(k.getStuId(), arrageId);
+//                totalScoreCurrent.setKaoheNum(totalScoreCurrent.getKaoheNum() - 1);
+//                totalScoreCurrent.setmTotalScore(totalScoreCurrent.getmTotalScore() - k.getmScore());
+//                totalScoreCurrent.setTotalScore(totalScoreCurrent.getmTotalScore() * kaoheModel.getKaohe_baifenbi() + totalScoreCurrent.getTestScore() * kaoheModel.getTest_baifenbi());
+//                totalScoreCurrentService.add(totalScoreCurrent);
+//            }
+//            //删除该考核模块与模块信息
+//            kaoHeModelScoreService.deleteAllKaohe(kaoHeModelScores);
+//            kaoheModelService.deleteKaoHeModuleByMid(kaoheModel);
+//        }
+//        //删除所属的问题以及答案以及相关回复
+//        List<ModuleTestQuest> moduleTestQuests = expModelService.findModuleTestQuestByMId(id);
+//        for (ModuleTestQuest m : moduleTestQuests) {
+//            List<ModuleTestAnswer> moduleTestAnswers = moduleTestAnswerService.findAllByQuestId(m.getQuestId());
+//            moduleTestAnswerService.deleteAllAnswer(moduleTestAnswers);
+//            expModelService.deleteModuleTestAnswerStuByQuestId(m.getQuestId());
+//        }
+//        moduleTestQuestService.deleteAllModuleTestQuest(moduleTestQuests);
+//        //删除实验模块报告与实验报告回答
+//        List<Report> reports = reportService.findReportByMId(id);
+//        if (reports != null && !reports.isEmpty()) {
+//            for (Report r : reports) {
+//                reportAnswerService.deleteReportAnswerByReportId(r.getReportId());
+//            }
+//        }
+//        List<CollegeReport> collegeReportList = collegeReportService.findCollegeReportByMid(id);
+//        if (collegeReportList != null && !collegeReportList.isEmpty()) {
+//            collegeReportService.deleteCollegeList(collegeReportList);
+//        }
+//        reportService.deleteReports(reports);
+//        expModelService.deleteExpModelById(id);
         return "redirect:/expmodel/list";
     }
 
@@ -498,7 +547,7 @@ public class ExpModelController {
             choose = false;
             model.addAttribute("Choose", choose);
 //            model.addAttribute("selected1", "/report/allModule");
-            return "redirect:/expmodel/list";
+            return "redirect:/expmodel/moduleList";
         }
 
         User user = (User) session.getAttribute("teacher");

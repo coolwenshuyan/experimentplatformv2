@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <title>修改整体模块测试</title>
 
-    <link rel="stylesheet" type="text/css" href="../../static/css/layui.css"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/layui.css}"/>
 
 </head>
 <style type="text/css">
@@ -100,7 +100,7 @@
 
             <div class="layui-form-item">
                 <div class="layui-input-block">
-                    <a href="lookLastTest.html" th:href="@{|/shiyan/lastTestList|}" class="layui-btn layui-btn-primary">返回</a>
+                    <a href="lookLastTest.html" th:href="@{|/shiyan/lastTestList/${arrangeID*(-1)}|}" class="layui-btn layui-btn-primary">返回</a>
                     <button class="layui-btn" lay-submit lay-filter="formDemo">确定</button>
                 </div>
             </div>
@@ -141,7 +141,7 @@
 
                                     <td class="td-manage">
                                         <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;"
-                                           th:href="@{|/shiyan/deleteLastUpAnswer/${answer.answerId}|}">
+                                           th:href="@{|/shiyan/deleteLastUpAnswer/${answer.answerId}/${arrangeID}|}">
                                             <button type="button" class="layui-btn">删除</button>
                                         </a>
                                         <!--<a title="修改" onclick="member_del(this,'要修改的id')" href="javascript:;" th:href="@{|updateAnswer/${answer.answerId}|}" >-->
@@ -156,7 +156,7 @@
                 </div>
 
             </div>
-        <form class="layui-form" method="post" th:action="@{|/shiyan/upLastAnswer/${qid}|}"  >
+        <form class="layui-form" method="post" th:action="@{|/shiyan/upLastAnswer/${qid}/${arrangeID}|}"  >
         <div class="layui-form-item">
                 <label class="layui-form-label">序号</label>
                 <div class="layui-input-block">
@@ -181,7 +181,7 @@
     </div>
 </div>
 
-<script src="../../static/js/layui.all.js" type="text/javascript" charset="utf-8"></script>
+<script th:src="@{/js/layui.all.js}" type="text/javascript" charset="utf-8"></script>
 
 <!--<script>-->
 <!--//Demo-->

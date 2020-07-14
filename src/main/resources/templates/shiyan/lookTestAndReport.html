@@ -74,7 +74,7 @@
                                     <div class="layui-input-block" style="width: 17%;">
                                         <select name="interest" lay-filter="aihao" onchange="window.open(this.options[this.selectedIndex].value,target='_self')"
                                                 style="margin-top: 15px;height: 30px;width: 150px;border-color: lightgray;" >
-                                            <option>请选择</option>
+                                            <option value="/expmodel/moduleList">请选择</option>
                                             <div th:each="course:${courseInfoList}" class="">
                                                 <option th:value="|/expmodel/moduleList/${course.id}|"  th:text="${course.courseName}" th:if="${course.getId() ne selected}">java</option>
                                                 <option th:value="|/expmodel/moduleList/${course.id}|"  th:text="${course.courseName}" selected="selected" th:if="${course.getId()  eq selected}">java</option>

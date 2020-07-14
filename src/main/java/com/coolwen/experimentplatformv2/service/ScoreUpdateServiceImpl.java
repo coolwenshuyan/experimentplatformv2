@@ -66,7 +66,7 @@ public class ScoreUpdateServiceImpl implements ScoreUpdateService {
             mReportScore = 0;
 
             //找到该考生在该模块的考核模块成绩表
-            KaoHeModelScore kaoHeModelScore = kaoHeModelScoreService.findKaoheModelScoreByMid(k.getM_id(), id);
+            KaoHeModelScore kaoHeModelScore = kaoHeModelScoreService.findKaoheModelScoreByMid(k.getId(), id);
 
             //模块测试没有做，不进行统计
             if (kaoHeModelScore.ismTeststate()) {
@@ -126,6 +126,10 @@ public class ScoreUpdateServiceImpl implements ScoreUpdateService {
         }
         //找到所有考试模块
         List<KaoheModel> kaoheModelList = kaoheModelService.findKaoheModelByArrangeId2(arrageid);
+        if(kaoheModelList.size()==0)
+        {
+            return;
+        }
         //存储分数
         float mTestScore = 0;
         float mReportScore = 0;
@@ -143,7 +147,7 @@ public class ScoreUpdateServiceImpl implements ScoreUpdateService {
             mReportScore = 0;
 
             //找到该考生在该模块的考核模块成绩表
-            KaoHeModelScore kaoHeModelScore = kaoHeModelScoreService.findKaoheModelScoreByMid(k.getM_id(), id);
+            KaoHeModelScore kaoHeModelScore = kaoHeModelScoreService.findKaoheModelScoreByMid(k.getId(), id);
 
             //模块测试没有做，不进行统计
             if (kaoHeModelScore.ismTeststate()) {
@@ -180,7 +184,6 @@ public class ScoreUpdateServiceImpl implements ScoreUpdateService {
         //更新总成绩
         totalScoreCurrent.setTotalScore(mTotalScore * kaohe_baifenbi + testScore * test_baifenbi);
         totalScoreCurrent.setKaoheNum(kaoheModelList.size());
-
         totalScoreCurrentService.add(totalScoreCurrent);
     }
 

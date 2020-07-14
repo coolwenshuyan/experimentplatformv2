@@ -150,7 +150,7 @@ public class LastTestController {
                 questService.addModuleTestQuest(moduleTestQuest);
             } catch (Exception e) {
                 session.setAttribute("errorInformation", "单选答案必须是数字");
-                return "redirect:/shiyan/addLastQuest";
+                return "redirect:/shiyan/addLastQuest/"+arrangeId;
             }
         } else {
 
@@ -217,10 +217,12 @@ public class LastTestController {
     public String list(HttpSession session,
                        @RequestParam(value = "page", defaultValue = "0", required = true) Integer page,
                        Model model) {
+        session.removeAttribute("questDescribe");
+        session.removeAttribute("questId");
 //        分页数据的条数为10，即没10条数据进行分页
-        Pageable pageable = PageRequest.of(page, 10);
+//        Pageable pageable = PageRequest.of(page, 10);
 //        分页的条件是以模块id，即mid为条件分页
-        Page<ModuleTestQuest> termList = questService.findByLastPage(pageable, -1);
+//        Page<ModuleTestQuest> termList = questService.findByLastPage(pageable, -1);
 //        清理添加模块测试题数据回显的缓存，以便下次点击添加时时干净的页面
         String questDescribe = "";
         model.addAttribute("questDescribe", questDescribe);
@@ -231,7 +233,7 @@ public class LastTestController {
         String questOrder = "";
         model.addAttribute("questOrder", questOrder);
 //        将分页信息传给前端
-        model.addAttribute("termList", termList);
+//        model.addAttribute("termList", termList);
 
         User user = (User) session.getAttribute("admin");
         logger.debug("user:>>"+user);
@@ -249,6 +251,19 @@ public class LastTestController {
                         @PathVariable int arrangeId,
                         @RequestParam(value = "page", defaultValue = "0", required = true) Integer page,
                         Model model) {
+
+        session.removeAttribute("questDescribe");
+        session.removeAttribute("questId");
+
+        String questDescribe = "";
+        model.addAttribute("questDescribe", questDescribe);
+        String questScore = "";
+        model.addAttribute("questScore", questScore);
+        String questAnswer = "";
+        model.addAttribute("questAnswer", questAnswer);
+        String questOrder = "";
+        model.addAttribute("questOrder", questOrder);
+
 
         //回显当前所选的安排
         model.addAttribute("selected", arrangeId);
@@ -307,8 +322,8 @@ public class LastTestController {
      * @param model   绑定参数给前端传值
      * @return 返回到静态资源下的shiyan/updateLastTest.html
      */
-    @GetMapping("updateLastQuest/{questId}")
-    public String updateQuest(@PathVariable("questId") int questId, Model model) {
+    @GetMapping("updateLastQuest/{questId}/{arrangeId}")
+    public String updateQuest(@PathVariable("questId") int questId, @PathVariable("arrangeId") int arrangeId,Model model) {
 //        通过问题id找到这个问题并存入ModuleTestQuest对象
         ModuleTestQuest quest = questService.findQuestByQuestId(questId);
 //        用model绑定找到的问题，传给前端
@@ -319,6 +334,7 @@ public class LastTestController {
         model.addAttribute("UpLastAnswer", UpAnswer);
 //        用model绑定问题id，传给前端
         model.addAttribute("qid", questId);
+        model.addAttribute("arrangeID",arrangeId);
         return "shiyan/updateLastTest";
     }
 
@@ -330,8 +346,9 @@ public class LastTestController {
      * @param model   绑定参数给前端传值
      * @return 返回整体测试题列表
      */
-    @PostMapping("updateLastQuest/{questId}")
+    @PostMapping("updateLastQuest/{questId}/{arrangeId}")
     public String updateQuest(@PathVariable("questId") int questId,
+                              @PathVariable("arrangeId") int arrangeId,
                               ModuleTestQuest quest, HttpSession session,
                               Model model) {
 //        通过问题id找到这个问题并存入ModuleTestQuest对象
@@ -350,16 +367,16 @@ public class LastTestController {
                 questService.addModuleTestQuest(quest1);
             } catch (Exception e) {
                 session.setAttribute("errorInformation", "单选答案必须是数字");
-                return "redirect:/shiyan/updateLastQuest/" + questId;
+                return "redirect:/shiyan/updateLastQuest/" + questId+"/"+arrangeId;
             }
         } else {
 //            利用questService里的保存方法，将数据存到数据库
             questService.addModuleTestQuest(quest1);
         }
 //        更新学生成绩
-        //TODO 修改为allStudentScoreUpdate2，带参数
-        scoreUpdateService.allStudentScoreUpdate();
-        return "redirect:/shiyan/lastTestList";
+
+        scoreUpdateService.allStudentScoreUpdate2(arrangeId);
+        return "redirect:/shiyan/lastTestList/"+arrangeId*-1;
     }
 
     /**
@@ -369,15 +386,15 @@ public class LastTestController {
      * @param questId 需要修改的模块测试题的问题id
      * @return 返回修改整体测试题的试题信息页面
      */
-    @GetMapping("upLastAnswer/{questId}")
-    public String upAnswer(@PathVariable("questId") int questId, Model model) {
+    @GetMapping("upLastAnswer/{questId}/{arrangeId}")
+    public String upAnswer(@PathVariable("questId") int questId,@PathVariable("arrangeId") int arrangeId, Model model) {
 //        通过问题id找到这个问题并存入ModuleTestQuest对象
         ModuleTestQuest quest = questService.findQuestByQuestId(questId);
 //        通过问题id找到问题的选项，并存入list中，主要用来绑定数据到前端显示
         List<ModuleTestAnswer> upAnswer = answerService.findAllByQuestId(quest.getQuestId());
 //        将找到并存入的list传给前端
         model.addAttribute("UpLastAnswer", upAnswer);
-        return "redirect:/shiyan/updateLastQuest/" + questId;
+        return "redirect:/shiyan/updateLastQuest/" + questId+"/"+arrangeId;
     }
 
     /**
@@ -388,8 +405,9 @@ public class LastTestController {
      * @param answerOrder    问题选项序号
      * @return 返回修改整体测试题的试题信息页面
      */
-    @PostMapping("upLastAnswer/{questId}")
+    @PostMapping("upLastAnswer/{questId}/{arrangeId}")
     public String upAnswer(@PathVariable("questId") int questId,
+                           @PathVariable("arrangeId") int arrangeId,
                            String answerDescribe, int answerOrder,
                            HttpSession session) {
 //        实例化一个ModuleTestAnswer对象
@@ -404,8 +422,8 @@ public class LastTestController {
 //        清除提示缓存
         session.removeAttribute("errorInformation");
 //        更新学生成绩
-        scoreUpdateService.allStudentScoreUpdate();
-        return "redirect:/shiyan/updateLastQuest/" + questId;
+        scoreUpdateService.allStudentScoreUpdate2(arrangeId);
+        return "redirect:/shiyan/updateLastQuest/" + questId+"/"+arrangeId;
     }
 
     /**
@@ -414,11 +432,12 @@ public class LastTestController {
      * @param answerId 需要删除的模块测试题的问题id
      * @return 返回添加整体测试题息页面
      */
-    @RequestMapping("deleteLastAnswer/{answerId}")
-    public String deleteAnswer(@PathVariable("answerId") int answerId) {
+    @RequestMapping("deleteLastAnswer/{answerId}/{arrangeId}")
+    public String deleteAnswer(@PathVariable("answerId") int answerId,
+                               @PathVariable("arrangeId") int arrangeId) {
 //        调用answerService的方法删除选项id来删除选项
         answerService.deleteAnswer(answerId);
-        return "redirect:/shiyan/addLastQuest";
+        return "redirect:/shiyan/addLastQuest/"+arrangeId;
     }
 
     /**
@@ -427,15 +446,17 @@ public class LastTestController {
      * @param answerId 需要删除的模块测试题的问题id
      * @return 返回添加整体测试题息页面
      */
-    @RequestMapping("deleteLastUpAnswer/{answerId}")
-    public String deleteUpAnswer(@PathVariable("answerId") int answerId) {
+    @RequestMapping("deleteLastUpAnswer/{answerId}/{arrangeId}")
+    public String deleteUpAnswer(@PathVariable("answerId") int answerId,
+                                 @PathVariable("arrangeId") int arrangeId
+    ) {
 //        通过调用answerService的方法，用选项id找到问题id
         int qId = answerService.findQuestIdByAnswerId(answerId);
 //        调用answerService的方法删除选项id来删除选项
         answerService.deleteAnswer(answerId);
 //        更新学生成绩
-        scoreUpdateService.allStudentScoreUpdate();
-        return "redirect:/shiyan/updateLastQuest/" + qId;
+//        scoreUpdateService.allStudentScoreUpdate2(arrangeId);
+        return "redirect:/shiyan/updateLastQuest/" + qId+"/"+arrangeId;
     }
 
 

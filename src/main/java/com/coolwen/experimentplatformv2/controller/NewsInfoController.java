@@ -11,11 +11,13 @@ import com.coolwen.experimentplatformv2.dao.ExpModelRepository;
 import com.coolwen.experimentplatformv2.dao.NewsInfoRepository;
 import com.coolwen.experimentplatformv2.dao.StudentRepository;
 import com.coolwen.experimentplatformv2.dao.TeacherRepository;
-import com.coolwen.experimentplatformv2.model.ExpModel;
-import com.coolwen.experimentplatformv2.model.NewsInfo;
-import com.coolwen.experimentplatformv2.model.SetInfo;
+import com.coolwen.experimentplatformv2.model.*;
+import com.coolwen.experimentplatformv2.model.DTO.CourseInfoDto;
+import com.coolwen.experimentplatformv2.service.ClassService;
+import com.coolwen.experimentplatformv2.service.CourseInfoService;
 import com.coolwen.experimentplatformv2.service.NewsInfoService;
 import com.coolwen.experimentplatformv2.service.SetInfoService;
+import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +37,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 /**
  * @Description 首页显示的数据，后台管理系统中 首页-->平台公告页面的增删改查
  * @Author 朱治汶
@@ -43,6 +46,7 @@ import org.slf4j.LoggerFactory;
  */
 @Controller
 @RequestMapping(value = "/newsinfo")
+@SessionAttributes("arrageId_sctudemo")
 public class NewsInfoController {
     protected static final Logger logger = LoggerFactory.getLogger(NewsInfoController.class);
     @Autowired
@@ -57,6 +61,12 @@ public class NewsInfoController {
     StudentRepository studentRepository;
     @Autowired
     TeacherRepository teacherRepository;
+
+    @Autowired
+    private ClassService classService;
+
+    @Autowired
+    private CourseInfoService courseInfoService;
 
     @Value("${web.count-path}")
     private String count;
@@ -83,7 +93,7 @@ public class NewsInfoController {
         String ids = setInfo.getSet_rotateimg();
         //数据库中存储为拼接（例：1,2,3,4），拆分后，查询图片存储路径并存入model
         String[] sid = ids.split(",");
-        logger.debug("轮播数量:"+sid.length);
+        logger.debug("轮播数量:" + sid.length);
 
         for (int i = 0; i < sid.length; i++) {
 //            String imgurl = setInfoService.findexpimg(Integer.parseInt(sid[i]));
@@ -102,11 +112,11 @@ public class NewsInfoController {
         for (int i = 0; i < sid.length; i++) {
             try {
                 expModels.add(expModelRepository.findById(Integer.parseInt(sid[i])).get());
-            }catch (Exception e){
+            } catch (Exception e) {
 
             }
         }
-        model.addAttribute("expModels",expModels);
+        model.addAttribute("expModels", expModels);
 
         //平台统计
         //查询实验模块总数
@@ -136,8 +146,8 @@ public class NewsInfoController {
 
 
     //前端实验大厅入口
-    @GetMapping(value = "/shiyan")
-    public String model(Model model, HttpSession session) {
+    @GetMapping(value = "/shiyan/{courInforId}")
+    public String model(Model model, @PathVariable int courInforId) {
         logger.debug("shiyan接口进入");
 //        Map<Object, Object> map = CasUtils.getUserInfo(SecurityUtils.getSubject().getSession());
 //        String comsys_role = (String) map.get("comsys_role");
@@ -150,8 +160,15 @@ public class NewsInfoController {
 ////        Student student = (Student) session.getAttribute("student");
 //        //暂时做了修改，如果没有登录，跳转到登录页
 //        if (comsys_role.contains("ROLE_STUDENT")) {
-            model.addAttribute("disMid", false);
-            return "kuangjia/shiyan";
+        //获取登陆学生的信息
+        Student student = (Student) SecurityUtils.getSubject().getSession().getAttribute("student");
+        logger.debug("登陆信息:" + student);
+        ClassModel classModel = classService.findClassById(student.getClassId());
+        CourseInfoDto courseInfoDto = courseInfoService.findByCourseInfoIdAndClassId(courInforId, classModel.getClassId());
+        logger.debug("课程信息:" + courseInfoDto);
+        model.addAttribute("arrageId_sctudemo", courseInfoDto.getArrageClassId());
+        model.addAttribute("disMid", false);
+        return "kuangjia/shiyan";
 //        } else {
 //            //是老师就跳转到实验管理界面
 //            return "redirect:/learning/kuangjia";

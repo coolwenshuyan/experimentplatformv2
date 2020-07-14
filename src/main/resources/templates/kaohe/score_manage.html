@@ -93,7 +93,7 @@
 						<th colspan="3" style="padding: 0">
 
 								<div class="layui-form-item">
-									<label class="layui-form-label" style="padding-top: 20px; ">班级筛选</label>
+									<label class="layui-form-label" style="padding-top: 20px; ">课程班级筛选</label>
 									<div class="layui-input-block" style="width: 17%;">
 <!--										<select name="interest" lay-filter="aihao" onchange="window.open(this.options[this.selectedIndex].value,target='_self')" style="margin-top: 15px;height: 30px;width: 100px;border-color: lightgray;">-->
 <!--												<option>请选择</option>-->
@@ -114,23 +114,23 @@
 
 								</div>
 						</th>
-						<th colspan="3" style="padding: 0">
-							<form th:action="@{/testScoreManage/list}">
-							<li>
-								<div class="layui-input-block ak" style="float: left; position: relative;">
-									<label class="layui-form-label">学号搜索</label>
-									<input style="width: auto;" type="text"  th:value="${select_orderId}" id="select_orderId" name="select_orderId" lay-verify="required" placeholder="请输入学号" autocomplete="off" class="layui-input">
-								</div>
-								<button class="layui-btn" lay-submit="" id="searchBtn" data-type="getInfo" style="float: left;">搜索</button>
+<!--						<th colspan="3" style="padding: 0">-->
+<!--							<form th:action="@{/testScoreManage/list}">-->
+<!--							<li>-->
+<!--								<div class="layui-input-block ak" style="float: left; position: relative;">-->
+<!--									<label class="layui-form-label">学号搜索</label>-->
+<!--									<input style="width: auto;" type="text"  th:value="${select_orderId}" id="select_orderId" name="select_orderId" lay-verify="required" placeholder="请输入学号" autocomplete="off" class="layui-input">-->
+<!--								</div>-->
+<!--								<button class="layui-btn" lay-submit="" id="searchBtn" data-type="getInfo" style="float: left;">搜索</button>-->
 
-							</li>
+<!--							</li>-->
 
-							</form>
-<!--							<a th:action="@{/testScoreManage/exportExcel}">-->
-<!--								<button type="导出" class="layui-btn" lay-submit="" lay-filter="demo1">导出</button>-->
-<!--							</a>-->
-						</th>
-					</tr>
+<!--							</form>-->
+<!--&lt;!&ndash;							<a th:action="@{/testScoreManage/exportExcel}">&ndash;&gt;-->
+<!--&lt;!&ndash;								<button type="导出" class="layui-btn" lay-submit="" lay-filter="demo1">导出</button>&ndash;&gt;-->
+<!--&lt;!&ndash;							</a>&ndash;&gt;-->
+<!--						</th>-->
+<!--					</tr>-->
 
 			</table>
 

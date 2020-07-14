@@ -150,10 +150,12 @@ public class StudentController {
                               String stu_uname,
                               String stu_name,
                               String stu_xuehao,
-                              int classid,
+                              String classid,
                               Boolean stuIsinschool,
                               String stu_password
     ) {
+        logger.debug("进入接口：/editStudent/" + id);
+        logger.debug("班级id为：" + classid);
         Student student = studentservice.findStudentById(id);
         student.setStuUname(stu_uname);
         student.setStuName(stu_name);
@@ -162,10 +164,14 @@ public class StudentController {
         } else {
             student.setStuXuehao("");
         }
+        if (ShiroKit.isEmpty(classid)) {
+            classid = "0";
+        }
         student.setStuIsinschool(stuIsinschool);
-        student.setStuPassword(ShiroKit.md5(stu_password, stu_uname));
-        student.setClassId(classid);
-        studentservice.saveStudent(student);
+        student.setStuPassword(stu_password);
+        student.setClassId(Integer.parseInt(classid));
+        logger.debug("修改学生信息为：" + student);
+        studentservice.updateStudent(student);
         return "redirect:/studentManage/list";
     }
 
@@ -205,8 +211,10 @@ public class StudentController {
     @GetMapping("/passReviewd/{id}")
     public String passReview(@PathVariable("id") int id) {
         Student student = studentservice.findStudentById(id);
+        logger.debug("" + student);
         student.setStuCheckstate(true);
-        studentservice.saveStudent(student);
+        //todo 只修改
+        studentservice.updateStudent(student);
         return "redirect:/studentManage/toBeReviewd";
     }
 

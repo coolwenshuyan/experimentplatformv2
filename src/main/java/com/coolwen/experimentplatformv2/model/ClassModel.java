@@ -86,4 +86,17 @@ public class ClassModel {
     public void setClassIscurrent(boolean classIscurrent) {
         this.classIscurrent = classIscurrent;
     }
+
+    @Override
+    public String toString() {
+        return "ClassModel{" +
+                "classId=" + classId +
+                ", classCollage='" + classCollage + '\'' +
+                ", classMajor='" + classMajor + '\'' +
+                ", classGrade='" + classGrade + '\'' +
+                ", className='" + className + '\'' +
+                ", classTeacher='" + classTeacher + '\'' +
+                ", classIscurrent=" + classIscurrent +
+                '}';
+    }
 }

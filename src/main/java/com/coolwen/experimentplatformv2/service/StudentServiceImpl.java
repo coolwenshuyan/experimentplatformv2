@@ -72,6 +72,12 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public Student updateStudent(Student student) {
+        student.setStuPassword(ShiroKit.md5(student.getStuPassword(), student.getStuXuehao()));
+        return studentRepository.save(student);
+    }
+
+    @Override
     public Page<StudentVo> findStudentsByStuCheckstate(int pageNum) {
         Pageable pageable = PageRequest.of(pageNum, 10);
         return studentRepository.findStudentsByStuCheckstate(pageable);
@@ -105,6 +111,14 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public void saveStudent(Student student) {
+        if (ShiroKit.isEmpty(student.getStuUname()) || ShiroKit.isEmpty(student.getStuPassword())) {
+            throw new RuntimeException("用户名或者密码不能为空！");
+        }
+        Student u = studentRepository.findAllByStuUname(student.getStuUname());
+        if (u != null) {
+            throw new RuntimeException("用户名已经存在!");
+        }
+        student.setStuPassword(ShiroKit.md5(student.getStuPassword(), student.getStuUname()));
         studentRepository.save(student);
     }
 
@@ -323,7 +337,7 @@ public class StudentServiceImpl implements StudentService {
     public Page<Student> pageStudentByArrangeId(Integer pageNum, int arrangeId) {
         Pageable pager = PageRequest.of(pageNum, size);
         ArrangeClass arrangeClass = arrangeClassRepository.findById(arrangeId).get();
-        return studentRepository.findStudentsByClassId(arrangeClass.getClassId(),pager);
+        return studentRepository.findStudentsByClassId(arrangeClass.getClassId(), pager);
     }
 
     @Override

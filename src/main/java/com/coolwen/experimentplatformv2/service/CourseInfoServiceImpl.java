@@ -3,6 +3,7 @@ package com.coolwen.experimentplatformv2.service;
 import com.coolwen.experimentplatformv2.dao.CourseInfoRepository;
 import com.coolwen.experimentplatformv2.model.ClassModel;
 import com.coolwen.experimentplatformv2.model.CourseInfo;
+import com.coolwen.experimentplatformv2.model.DTO.CourseInfoDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,12 +51,22 @@ public class CourseInfoServiceImpl implements CourseInfoService {
     }
 
     @Override
-    public List<ClassModel> getclass_by_arrangecourseid(int teacher_id,int course_id) {
-        return courseInfoRepository.getclass_by_arrangecourseid(teacher_id,course_id);
+    public List<ClassModel> getclass_by_arrangecourseid(int teacher_id, int course_id) {
+        return courseInfoRepository.getclass_by_arrangecourseid(teacher_id, course_id);
     }
 
     @Override
     public List<CourseInfo> findAll() {
         return courseInfoRepository.findAll();
+    }
+
+    @Override
+    public List<CourseInfo> findByArrangeClassIds(List<Integer> arrageClassIds) {
+        return courseInfoRepository.findAllById(arrageClassIds);
+    }
+
+    @Override
+    public CourseInfoDto findByCourseInfoIdAndClassId(int courseInfoId, int classId) {
+        return courseInfoRepository.findByCourseInfoIdAndClassId(courseInfoId, classId);
     }
 }

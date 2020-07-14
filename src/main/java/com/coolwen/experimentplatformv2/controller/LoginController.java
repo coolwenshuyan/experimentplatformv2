@@ -145,7 +145,7 @@ public class LoginController {
         if (!loginCode.equals(code)) {
             model.addObject("msg", "验证码错误");
             model.setViewName("home_page/login");
-            return model;
+//            return model;
 //            model1.addAttribute("msg1","验证码错误");
 //            return "home_page/login";
         }
@@ -153,15 +153,23 @@ public class LoginController {
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);
         Message message = new Message();
         try {
-            subject.login(token);
+//            subject.login(token);
             if (loginType.equals("student")) {
                 logger.debug("学生登陆信息");
-                Student student = (Student) subject.getPrincipal();
+//                Student student = (Student) subject.getPrincipal();
+                //TODO 没有对学生验证
+                Student student = studentService.findByUname(username);
+                if (ShiroKit.isEmpty(student)) {
+                    model.addObject("msg", "此账号暂未通过审核!");
+                    logger.debug("学生登陆信息");
+                    model.setViewName("home_page/login");
+                    return model;
+                }
                 if (!student.isStuCheckstate()) {
                     model.addObject("msg", "此账号暂未通过审核!");
                     model.setViewName("home_page/login");
                 } else {
-                    session.setAttribute("username", student.getStuUname());
+                    session.setAttribute("student", student);
 //                    session.setAttribute("student", student);
                     session.setAttribute("loginType", loginType);
                     model.setViewName("redirect:/newsinfo/newslist");//设置登陆成功之后默认跳转页面
@@ -169,6 +177,7 @@ public class LoginController {
                 }
             }
             if (loginType.equals("admin")) {
+                subject.login(token);
                 logger.debug("老师登陆");
                 User admin = (User) subject.getPrincipal();
                 session.setAttribute("admin", admin);

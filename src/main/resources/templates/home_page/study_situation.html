@@ -8,6 +8,7 @@
 		<title>学习效果 - 旅游大数据虚拟仿真实验教学平台</title>
 		<link rel="stylesheet" href="../../static/new/css/reset.css" />
 		<link rel="stylesheet" href="../../static/new/css/common.css" />
+		<link rel="stylesheet" href="//cdn.staticfile.org/bxslider/4.2.15/jquery.bxslider.min.css" />
 		<link rel="stylesheet" href="../../static/new/css/effect.css" />
 	</head>
 	<body>
@@ -20,7 +21,6 @@
 				</div>
 				<div class="user-info" th:if="${session.username} != null">
 					<span th:text="|欢迎你，${session.username} |"></span>
-					<!--<a th:href="@{/logout}">退出登录</a>-->
 				</div>
 			</div>
 		</div>
@@ -43,16 +43,63 @@
 				<div class="current">学习效果</div>
 				<div class="crumb">当前位置：<a href="/newsinfo/newslist">首页</a> > 学习效果</div>
 			</div>
+			<div class="lessions-area">
+				<div class="lessions-list">
+					<div class="lessions-slide">
+						<div class="slide">
+							<div class="lession-item active">课程名称1</div>
+						</div>
+						<div class="slide">
+							<div class="lession-item">课程名称2</div>
+						</div>
+						<div class="slide">
+							<div class="lession-item">课程名称3</div>
+						</div>
+						<div class="slide">
+							<div class="lession-item">课程名称4</div>
+						</div>
+						<div class="slide">
+							<div class="lession-item">课程名称5</div>
+						</div>
+						<div class="slide">
+							<div class="lession-item">课程名称6</div>
+						</div>
+					</div>
+				</div>
+			</div>
 			<div class="effect-show">
 				<div class="effect-left">
 					<h3>效果分析</h3>
 					<div id="chart" class="chart"></div>
 				</div>
 				<div class="effect-right">
-					<h3>学习效果案例</h3>
+					<h3>效果展示</h3>
 					<div class="reports">
-						<div class="report" th:each="effect:${learningPageInfo.content}">
-							<a th:href="@{|effectDetails/${effect.id}|}"><img th:src="@{'/upload/'+${effect.effect_imgurl}}" /></a>
+						<div class="reports-slide">
+							<div class="slide" th:each="effect:${learningPageInfo.content}">
+								<div class="report-item">
+									<a th:href="@{|effectDetails/${effect.id}|}">
+										<img src="../../static/new/images/1.jpg" th:src="@{'/upload/'+${effect.effect_imgurl}}" />
+										<p>效果展示名称1</p>
+									</a>
+								</div>
+							</div>
+							<div class="slide" th:each="effect:${learningPageInfo.content}">
+								<div class="report-item">
+									<a th:href="@{|effectDetails/${effect.id}|}">
+										<img src="../../static/new/images/1.jpg" th:src="@{'/upload/'+${effect.effect_imgurl}}" />
+										<p>效果展示名称2</p>
+									</a>
+								</div>
+							</div>
+							<div class="slide" th:each="effect:${learningPageInfo.content}">
+								<div class="report-item">
+									<a th:href="@{|effectDetails/${effect.id}|}">
+										<img src="../../static/new/images/1.jpg" th:src="@{'/upload/'+${effect.effect_imgurl}}" />
+										<p>效果展示名称3</p>
+									</a>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -62,9 +109,17 @@
 			<p>copyright © 2020 旅游大数据虚拟仿真实验教学平台</p>
 		</footer>
 		<script src="//cdn.staticfile.org/jquery/1.8.0/jquery.min.js"></script>
+		<script src="//cdn.staticfile.org/bxslider/4.2.15/jquery.bxslider.min.js"></script>
 		<script src="//cdn.staticfile.org/echarts/4.8.0/echarts.common.min.js"></script>
 		<script>
 			$(function () {
+				$('.lessions-slide').bxSlider({ pager: false, minSlides: 6, maxSlides: 6, moveSlides: 1, slideWidth: 285, slideMargin: 16 })
+				$('.reports-slide').bxSlider({ pager: false, minSlides: 3, maxSlides: 3, moveSlides: 1, slideWidth: 210, slideMargin: 20 })
+				$('.lession-item').click(function (e) {
+					e.preventDefault()
+					$('.lession-item').removeClass('active')
+					$(this).addClass('active')
+				})
 				var myChart1 = echarts.init($('#chart')[0])
 				myChart1.setOption(getOption(1))
 			})
@@ -90,7 +145,7 @@
 								{ value: 280, name: '中等' },
 								{ value: 125, name: '低分' },
 								{
-									name: '成绩总数\n' + 579+ '份',
+									name: '成绩总数\n' + 579 + '份',
 									value: 0,
 									label: {
 										formatter: '{b}',
@@ -102,23 +157,6 @@
 									}
 								}
 							]
-                            // data: [
-                            //     { value: parseInt('[[${excellentstu}]]'), name: '高分' },
-                            //     { value: parseInt('[[${qualifiedstu}]]'), name: '中等' },
-                            //     { value: parseInt('[[${unqualifiedstu}]]'), name: '低分' },
-                            //     {
-                            //         name: '成绩总数\n' + (parseInt('[[${excellentstu}]]') + parseInt('[[${qualifiedstu}]]') + parseInt('[[${unqualifiedstu}]]')) + '份',
-                            //         value: 0,
-                            //         label: {
-                            //             formatter: '{b}',
-                            //             position: 'center',
-                            //             fontSize: 18,
-                            //             fontWeight: 'bold',
-                            //             align: 'center',
-                            //             lineHeight: 28
-                            //         }
-                            //     }
-                            // ]
 						}
 					]
 				})

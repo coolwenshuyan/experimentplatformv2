@@ -2,7 +2,7 @@
  * @Author: Charlie
  * @Date: 2020-07-14 10:52:57
  * @Last Modified by: Charlie
- * @Last Modified time: 2020-07-14 14:49:52
+ * @Last Modified time: 2020-07-15 16:08:14
  */
 a,a:hover{color:inherit;}
 .layui-layout-admin .layui-header{background:#215130;height:80px;}
@@ -25,8 +25,10 @@ a,a:hover{color:inherit;}
 .bx-wrapper{margin:0;padding:0;border:0;box-shadow:none;}
 .bx-wrapper .bx-prev{left:-50px;}
 .bx-wrapper .bx-next{right:-50px;}
-.lession-item{position:relative;width:100%;height:385px;border:1px solid #ccc;box-sizing:border-box;}
+.lession-item{position:relative;width:285px;height:385px;border:1px solid #ccc;box-sizing:border-box;}
 .lession-item img{display:block;width:100%;height:100%;}
 .lession-item p{height:36px;line-height:36px;background:rgba(0,0,0,0.7);position:absolute;bottom:0;left:0;width:100%;color:#fff;text-align:center;}
 .select-btn{margin:20px auto 0;width:120px;height:40px;text-align:center;background:#215130;line-height:40px;color:#fff;border-radius:3px;cursor:pointer;}
 .select-btn:hover{opacity:0.7;}
+.not-slide{display:flex;justify-content:space-between;}
+.not-slide .slide{width:285px;margin:0 auto;}

@@ -68,4 +68,6 @@ public interface KaoheModelService {
     List<KaoheModel> findByArrange_idIn(List<Integer> ids);
 
     void deleteByArrangeId(int id);
+
+    List<KaoheModel> findKaoHeModelByArrangeidAndMid(int arrangeId, Integer mid);
 }

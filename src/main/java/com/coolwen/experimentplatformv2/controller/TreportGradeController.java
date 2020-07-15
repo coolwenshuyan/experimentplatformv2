@@ -4,6 +4,7 @@ import com.coolwen.experimentplatformv2.dao.KaoheModelRepository;
 import com.coolwen.experimentplatformv2.dao.StudentRepository;
 import com.coolwen.experimentplatformv2.model.DTO.PScoreDto;
 import com.coolwen.experimentplatformv2.model.KaoHeModelScore;
+import com.coolwen.experimentplatformv2.model.KaoheModel;
 import com.coolwen.experimentplatformv2.model.ReportAnswer;
 import com.coolwen.experimentplatformv2.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -132,10 +133,14 @@ public class TreportGradeController {
 
         }
 
+        //如果是考核模块，改变学生填写报告教师评分状态为true
+        List<KaoheModel> kaoheModels1 = kaoheModelService.findKaoHeModelByArrangeidAndMid(arrangeId,mid);
+        if(kaoheModels1.size()>0) {
+            KaoHeModelScore khs = kaoHeModelScoreService.findKaoheModelScoreByMid(kaoheModels1.get(0).getId(), stuId);
+            khs.setmReportteacherstate(true);
+            kaoHeModelScoreService.update(khs);
+        }
 
-        KaoHeModelScore khs = kaoHeModelScoreService.findKaoheModelScoreByMid(mid, stuId);
-        khs.setmReportteacherstate(true);
-        kaoHeModelScoreService.update(khs);
         //重新计算成绩
         scoreUpdateService.singleStudentScoreUpdate2(stuId,arrangeId);
 //        model.addAttribute("zjy",score);

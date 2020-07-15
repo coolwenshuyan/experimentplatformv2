@@ -2,10 +2,8 @@ package com.coolwen.experimentplatformv2.controller;
 
 import com.coolwen.experimentplatformv2.dao.KaoheModelRepository;
 import com.coolwen.experimentplatformv2.dao.StudentRepository;
-import com.coolwen.experimentplatformv2.model.KaoHeModelScore;
-import com.coolwen.experimentplatformv2.model.Report;
-import com.coolwen.experimentplatformv2.model.ReportAnswer;
-import com.coolwen.experimentplatformv2.model.Student;
+import com.coolwen.experimentplatformv2.kit.ShiroKit;
+import com.coolwen.experimentplatformv2.model.*;
 import com.coolwen.experimentplatformv2.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -58,6 +56,9 @@ public class WriteReportController {
     @Autowired
     private ExpModelService expModelService;
 
+    @Autowired
+    private KaoheModelService kaoheModelService;
+
 //    @GetMapping(value = "/add")
 //    public String loadAllModel(Model model) {
 //        List<StudentTestScoreDTO> page = studentRepository.listStudentMTestAnswerDTO();
@@ -90,6 +91,19 @@ public class WriteReportController {
                             @PathVariable("mid")int mid,
                             HttpSession session){
 
+        int arrangeId=0;
+        //对通过SESSION来获取安排ID进行判断
+        try {
+            arrangeId = (int) session.getAttribute("arrageId_sctudemo");
+            if(ShiroKit.isEmpty(arrangeId)||arrangeId<=0)
+            {
+                return "redirect:/choose/course/list";
+            }
+        }catch (Exception e)
+        {
+            return "redirect:/choose/course/list";
+        }
+
         //获得所有报告（排序）
         List<Report> reports= reportService.findByMidpaixu(mid);
         model.addAttribute("TiMuList",reports);
@@ -114,11 +128,21 @@ public class WriteReportController {
         List<ReportAnswer> reportAnswers1 = reportAnswerService.findByStuId(stuId);
         model.addAttribute("DaAnList",reportAnswers1);
 
+
         //判断是否是考核模块，是考核模块则查询考核模块得分
-        Boolean isNeedKaohe = expModelService.findExpModelByID(mid).isNeedKaohe();
+        Boolean isNeedKaohe = false;
+
+        //如果是考核模块，改变学生填写报告教师评分状态为true
+        List<KaoheModel> kaoheModels1 = kaoheModelService.findKaoHeModelByArrangeidAndMid(arrangeId,mid);
+        if(kaoheModels1.size()>0) {
+            isNeedKaohe = true;
+        }
         model.addAttribute("isNeedKaohe",isNeedKaohe);
+//        //判断是否是考核模块，是考核模块则查询考核模块得分
+//        Boolean isNeedKaohe = expModelService.findExpModelByID(mid).isNeedKaohe();
+//        model.addAttribute("isNeedKaohe",isNeedKaohe);
         if (isNeedKaohe){
-            KaoHeModelScore kaoHeModelScore = kaoHeModelScoreService.findKaoheModelScoreByMid(mid,stuId);
+            KaoHeModelScore kaoHeModelScore = kaoHeModelScoreService.findKaoheModelScoreByMid(kaoheModels1.get(0).getId(),stuId);
             model.addAttribute("kaoHeModelScore",kaoHeModelScore);
 
         }
@@ -131,7 +155,7 @@ public class WriteReportController {
      * 保存学生的报告
      * @param model
      * @param request 请求
-     * @param httpSession 获得学生填写的报告
+     * @param httpSession1 获得学生填写的报告
      * @param mid
      * @return
      */
@@ -142,16 +166,28 @@ public class WriteReportController {
                             @PathVariable("mid")int mid){
         //获取当前登录的学生id
 //        Student student = (Student) SecurityUtils.getSubject().getPrincipal();
+        int arrangeId=0;
+        //对通过SESSION来获取安排ID进行判断
+        try {
+            arrangeId = (int) session.getAttribute("arrageId_sctudemo");
+            if(ShiroKit.isEmpty(arrangeId)||arrangeId<=0)
+            {
+                return "redirect:/choose/course/list";
+            }
+        }catch (Exception e)
+        {
+            return "redirect:/choose/course/list";
+        }
         Student student = (Student) session.getAttribute("student");
         int stuId=student.getId();
-
-        try {
-            KaoHeModelScore kaoHeModelScore = kaoHeModelScoreService.findKaoheModelScoreByMid(mid,stuId);
+        List<KaoheModel> kaoheModels1 = kaoheModelService.findKaoHeModelByArrangeidAndMid(arrangeId,mid);
+        KaoHeModelScore kaoHeModelScore = null;
+        if(kaoheModels1.size()>0)
+        {
+            kaoHeModelScore = kaoHeModelScoreService.findKaoheModelScoreByMid(kaoheModels1.get(0).getId(),stuId);
             if (kaoHeModelScore.ismReportteacherstate()){
                 return "redirect:/WriteReport/"+mid+"/Timu";
             }
-        }catch (Exception e){
-
         }
 
 
@@ -203,12 +239,17 @@ public class WriteReportController {
             }
         }
 
-        try {
-            KaoHeModelScore khs = kaoHeModelScoreService.findKaoheModelScoreByMid(mid ,stuId);
-            khs.setmReportstate(true);
-            kaoHeModelScoreService.update(khs);
-        }catch(Exception e){
-
+//        try {
+//            KaoHeModelScore khs = kaoHeModelScoreService.findKaoheModelScoreByMid(mid ,stuId);
+//            khs.setmReportstate(true);
+//            kaoHeModelScoreService.update(khs);
+//        }catch(Exception e){
+//
+//        }
+        if(kaoheModels1.size()>0)
+        {
+            kaoHeModelScore.setmReportstate(true);
+            kaoHeModelScoreService.update(kaoHeModelScore);
         }
 
 
@@ -228,13 +269,23 @@ public class WriteReportController {
         model.addAttribute("DaAnList",reportAnswers1);
 
         //判断是否是考核模块，是考核模块则查询考核模块得分
-        Boolean isNeedKaohe = expModelService.findExpModelByID(mid).isNeedKaohe();
+        Boolean isNeedKaohe = false;
+        if(kaoheModels1.size()>0)
+        {
+            isNeedKaohe = true;
+        }
         model.addAttribute("isNeedKaohe",isNeedKaohe);
         if (isNeedKaohe){
-            KaoHeModelScore kaoHeModelScore = kaoHeModelScoreService.findKaoheModelScoreByMid(mid,stuId);
+//            KaoHeModelScore kaoHeModelScore = kaoHeModelScoreService.findKaoheModelScoreByMid(mid,stuId);
             model.addAttribute("kaoHeModelScore",kaoHeModelScore);
-
         }
+//        Boolean isNeedKaohe = expModelService.findExpModelByID(mid).isNeedKaohe();
+//        model.addAttribute("isNeedKaohe",isNeedKaohe);
+//        if (isNeedKaohe){
+//            KaoHeModelScore kaoHeModelScore = kaoHeModelScoreService.findKaoheModelScoreByMid(mid,stuId);
+//            model.addAttribute("kaoHeModelScore",kaoHeModelScore);
+//
+//        }
 
 //        return "redirect:/WriteReport/"+mid+"/Timu";
         model.addAttribute("msg","提交报告成功！！！");

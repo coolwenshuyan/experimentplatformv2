@@ -4,9 +4,11 @@ import com.coolwen.experimentplatformv2.kit.ShiroKit;
 import com.coolwen.experimentplatformv2.model.CollegeReport;
 import com.coolwen.experimentplatformv2.model.DTO.CollegeReportStuExpDto;
 import com.coolwen.experimentplatformv2.model.KaoHeModelScore;
+import com.coolwen.experimentplatformv2.model.KaoheModel;
 import com.coolwen.experimentplatformv2.model.Student;
 import com.coolwen.experimentplatformv2.service.CollegeReportService;
 import com.coolwen.experimentplatformv2.service.KaoHeModelScoreService;
+import com.coolwen.experimentplatformv2.service.KaoheModelService;
 import com.coolwen.experimentplatformv2.service.ScoreUpdateService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * @author 朱治汶
@@ -37,6 +40,9 @@ public class CollegeReportController {
 
     @Autowired
     ScoreUpdateService scoreUpdateService;
+
+    @Autowired
+    KaoheModelService kaoheModelService;
 
     /**
      * 进入填写实验目的页面
@@ -230,6 +236,18 @@ public class CollegeReportController {
 
     @PostMapping("/summary/{mid}")
     public String summary1(@PathVariable int mid, HttpSession session, CollegeReport collegeReport, Model model) {
+        int arrangeId=0;
+        //对通过SESSION来获取安排ID进行判断
+        try {
+            arrangeId = (int) session.getAttribute("arrageId_sctudemo");
+            if(ShiroKit.isEmpty(arrangeId)||arrangeId<=0)
+            {
+                return "redirect:/choose/course/list";
+            }
+        }catch (Exception e)
+        {
+            return "redirect:/choose/course/list";
+        }
         //获取学生的登录信息
 //        Student student = (Student) SecurityUtils.getSubject().getPrincipal();
         Student student = (Student) session.getAttribute("student");
@@ -238,13 +256,15 @@ public class CollegeReportController {
         collegeReport1.setCrExpSummary(collegeReport.getCrExpSummary());
         collegeReportService.addCollegeReport(collegeReport1);
 
-        //如果是考核模块，改变学生填写报告状态为true
-        try {
-            KaoHeModelScore khs = kaoHeModelScoreService.findKaoheModelScoreByMid(mid, student.getId());
+        //如果是考核模块，改变学生填写报告教师评分状态为true
+        List<KaoheModel> kaoheModels1 = kaoheModelService.findKaoHeModelByArrangeidAndMid(arrangeId,mid);
+        if(kaoheModels1.size()>0) {
+            KaoHeModelScore khs = kaoHeModelScoreService.findKaoheModelScoreByMid(kaoheModels1.get(0).getId(), student.getId());
             khs.setmReportstate(true);
             kaoHeModelScoreService.update(khs);
-        } catch (Exception e) {
         }
+
+
 //        //查询到报告信息
 //        CollegeReportStuExpDto collegeReportStuExpDto = collegeReportService.findByStuidMid(student.getId(),mid);
 //        model.addAttribute("collegeReport",collegeReportStuExpDto);
@@ -303,14 +323,16 @@ public class CollegeReportController {
         collegeReport1.setCrClassName(collegeReport.getCrClassName());
         collegeReport1.setCrScore(collegeReport.getCrScore());
         collegeReport1.setCrTcState(true);
+
+        collegeReportService.addCollegeReport(collegeReport1);
+
         //如果是考核模块，改变学生填写报告教师评分状态为true
-        try {
-            KaoHeModelScore khs = kaoHeModelScoreService.findKaoheModelScoreByMid(mid, stuid);
+        List<KaoheModel> kaoheModels1 = kaoheModelService.findKaoHeModelByArrangeidAndMid(arrangeId,mid);
+        if(kaoheModels1.size()>0) {
+            KaoHeModelScore khs = kaoHeModelScoreService.findKaoheModelScoreByMid(kaoheModels1.get(0).getId(), stuid);
             khs.setmReportteacherstate(true);
             kaoHeModelScoreService.update(khs);
-        } catch (Exception e) {
         }
-        collegeReportService.addCollegeReport(collegeReport1);
         //更新成绩
         scoreUpdateService.singleStudentScoreUpdate2(stuid,arrangeId);
         return "redirect:/collegereport/mark/" + mid + "/" + stuid;

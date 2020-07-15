@@ -153,13 +153,18 @@ public class KaoShiController {
         Student student = (Student) session.getAttribute("student");
         int stuId = student.getId();
 
+        List<KaoheModel> kaoheModels1 = null;
+
         //判断是否需要进行后续更新成绩
         boolean expModelNeedKaohe = false;
-        if (mid == -1) {
+        if (mid <0) {
             expModelNeedKaohe = true;
         } else {
             //检查次模块是不是考核模块
-            expModelNeedKaohe = expModelService.findExpModelByID(mid).isNeedKaohe();
+            kaoheModels1 = kaoheModelService.findKaoHeModelByArrangeidAndMid(arrangeId,mid);
+            if(kaoheModels1.size()>0) {
+                expModelNeedKaohe = true;
+            }
         }
 
         //检查此学生有没有考核资格
@@ -242,7 +247,7 @@ public class KaoShiController {
         if (studentOne.size() > 0 & expModelNeedKaohe) {
             //更新学生测试状态
             if (mid > 0) {
-                KaoHeModelScore khs = kaoHeModelScoreService.findKaoheModelScoreByMid(mid, stuId);
+                KaoHeModelScore khs = kaoHeModelScoreService.findKaoheModelScoreByMid(kaoheModels1.get(0).getId(), stuId);
                 khs.setmTeststate(true);
                 kaoHeModelScoreService.update(khs);
             }
@@ -251,47 +256,6 @@ public class KaoShiController {
         }
 
 
-//        if(mid == -1){
-//            logger.debug("这是一次期末考试");
-//            KaoheModel kh = kaoheModelService.findKaoheModelByMid(mid);
-//            List<TotalScoreCurrent> altsc = totalScoreCurrentService.findeAllBystuid(stuId);
-//            if (altsc.size()==0){
-//                logger.debug("出现错误!!总成绩表中没有此学生信息");
-//            }
-//            TotalScoreCurrent atsc = altsc.get(0);
-//
-//            //将考试的值存入总分表
-//            atsc.setTotalScore(fs);
-//            atsc.setTotalScore(atsc.getmTotalScore() * kh.getKaohe_baifenbi() + atsc.getTestScore() * kh.getTest_baifenbi());
-//            totalScoreCurrentService.update(atsc);
-//        }else {
-//
-//            //通过模块id查询考核模块
-//            KaoheModel kh = kaoheModelService.findKaoheModelByMid(mid);
-//            //通过模块id和学生id查询考核模块分数表
-//            KaoHeModelScore khs = kaoHeModelScoreService.findKaoheModelScoreByMid(mid, stuId);
-//            logger.debug("dddddddddddd" + khs + "," + khs.getId());
-//            //将分数存入
-//            khs.setmTestScore(fs);
-//
-//            //更新考核模块分数
-//            float ms = (khs.getmReportScore() * kh.getM_report_baifenbi() + fs * kh.getM_test_baifenbi()) * khs.getmScale();
-//            khs.setmScore(ms);
-//            khs.setmTeststate(true);
-//            kaoHeModelScoreService.update(khs);
-//
-//            //获取原来总分
-//            TotalScoreCurrent tsc = totalScoreCurrentService.findTotalScoreCurrentByStuID(stuId);
-//
-//            //更新总分
-//            tsc.setmTotalScore(tsc.getmTotalScore() + ms);
-//            tsc.setTotalScore(tsc.getmTotalScore() * kh.getKaohe_baifenbi() + tsc.getTestScore() * kh.getTest_baifenbi());
-//            totalScoreCurrentService.update(tsc);
-//
-//        }
-
-        //返回此次得分,这里不需要了
-        //model.addAttribute("fs",fs);
         //回到成绩查看页面
         return "redirect:/kaoshi/" + mid + "/ViewTheScore";
     }

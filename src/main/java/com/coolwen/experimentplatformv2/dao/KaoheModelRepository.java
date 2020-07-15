@@ -95,4 +95,7 @@ public interface KaoheModelRepository extends BaseRepository<KaoheModel, Integer
     @Transactional(readOnly = false)
     @Query("delete from KaoheModel k where k.arrange_id = ?1")
     void deleteByArrangeId(int id);
+
+    @Query("select khm from KaoheModel khm where khm.arrange_id = ?1 and khm.m_id=?2")
+    List<KaoheModel> findKaoHeModelByArrangeidAndMid(int arrangeId, Integer mid);
 }

@@ -67,8 +67,9 @@ public class StudentController {
 
     //查询学生列表
     @GetMapping("/list")
-    public String studentList(Model model, @RequestParam(value = "pageNum", defaultValue = "0") int pageNum) {
-        Page<StudentVo> list = studentservice.findStudentsByStuCheckstate(pageNum);
+    public String studentList(Model model, @RequestParam(value = "pageNum", defaultValue = "0") int pageNum, @RequestParam(required = true, defaultValue = "") String stu_xuehao) {
+//        Page<StudentVo> list = studentservice.findStudentsByStuCheckstate(pageNum);
+        Page<StudentVo> list = studentservice.findStudentsByStuCheckstate(pageNum, stu_xuehao);
         model.addAttribute("studentList", list);
         return "student/student_list";
     }
@@ -200,12 +201,31 @@ public class StudentController {
         return "Metal";
     }
 
-    //返回待审核学生列表
+    //学生账号信息审核列表
     @GetMapping("/toBeReviewd")
-    public String toBeReviewed(@RequestParam(value = "pageNum", defaultValue = "0", required = true) int pageNum, Model model) {
-        model.addAttribute("waitStudent", studentservice.findToBeReviewedStudent(pageNum));
+    public String toBeReviewed(@RequestParam(value = "pageNum", defaultValue = "0", required = true) int pageNum, Model model, @RequestParam(required = true, defaultValue = "") String stu_xuehao) {
+        logger.debug("学生学号：" + stu_xuehao);
+        Page<Student> studentList = studentservice.findToBeReviewedStudent(pageNum, stu_xuehao);
+//        Page<Student> studentList = studentservice.findToBeReviewedStudent(pageNum);
+        model.addAttribute("stu_xuehao", stu_xuehao);
+        model.addAttribute("waitStudent", studentList);
+        logger.debug("待审核学生信息为" + studentList.getContent());
         return "student/student_examine";
     }
+
+//    //搜索审核学生列表
+//    @GetMapping("/viewReviewd")
+//    public String viewReviewd(@RequestParam("stu_xuehao") String stu_xuehao, Model model) {
+//        logger.debug("进入接口viewReviewd");
+//        logger.debug("学生学号：" + stu_xuehao);
+//        Page<Student> studentList = studentservice.findToBeReviewedStudent(pageNum);
+//        model.addAttribute("waitStudent", studentservice.findToBeReviewedStudent(pageNum));
+//        logger.debug("待审核学生信息为" + studentList.getContent());
+//        Student student = studentservice.findStudentByStuXuehao(stu_xuehao);
+//        logger.debug("学生信息：" + student);
+//        model.addAttribute("student", student);
+//        return "student/student_examine_view";
+//    }
 
     //通过审核操作
     @GetMapping("/passReviewd/{id}")
@@ -213,7 +233,6 @@ public class StudentController {
         Student student = studentservice.findStudentById(id);
         logger.debug("" + student);
         student.setStuCheckstate(true);
-        //todo 只修改
         studentservice.updateStudent(student);
         return "redirect:/studentManage/toBeReviewd";
     }
@@ -381,13 +400,6 @@ public class StudentController {
         return "redirect:/studentManage/toBeReviewd";
     }
 
-    //搜索审核学生列表
-    @GetMapping("/viewReviewd")
-    public String viewReviewd(@RequestParam("stu_xuehao") String stu_xuehao, Model model) {
-        Student student = studentservice.findStudentByStuXuehao(stu_xuehao);
-        model.addAttribute("student", student);
-        return "student/student_examine_view";
-    }
 
     //返回班级列表
     @GetMapping("/classManage")
@@ -654,8 +666,7 @@ public class StudentController {
                 }
             }
         }
-
-        studentservice.saveStudent(student);
+        studentservice.updateStudent(student);
         return "redirect:/studentManage/addStudent/" + classId;
     }
 

@@ -81,6 +81,10 @@ public interface StudentRepository extends BaseRepository<Student, Integer>, Jpa
     @Query("select new com.coolwen.experimentplatformv2.model.DTO.StudentVo(s.id,s.stuUname,s.stuPassword,s.stuName,s.stuXuehao,s.stuMobile,s.stuCheckstate,s.stuIsinschool,c.className) from Student s left join ClassModel c on s.classId = c.classId where s.stuCheckstate = true")
     Page<StudentVo> findStudentsByStuCheckstate(Pageable pageable);
 
+    @Query("select new com.coolwen.experimentplatformv2.model.DTO.StudentVo(s.id,s.stuUname,s.stuPassword,s.stuName,s.stuXuehao,s.stuMobile,s.stuCheckstate,s.stuIsinschool,c.className) from Student s left join ClassModel c on s.classId = c.classId where s.stuCheckstate = true and (s.stuXuehao like %?1% or s.stuName like %?1%)")
+    Page<StudentVo> findStudentsByStuCheckstate(Pageable pageable,String stuXueHao);
+
+
     @Query("select new com.coolwen.experimentplatformv2.model.DTO.StudentVo(s.id,s.stuUname,s.stuPassword,s.stuName,s.stuXuehao,s.stuMobile,s.stuCheckstate,s.stuIsinschool,c.className) from Student s left join ClassModel c on s.classId = c.classId where s.stuCheckstate = true and s.stuXuehao = ?1")
     StudentVo findStudentsByStuXuehao(String xuehao);
 

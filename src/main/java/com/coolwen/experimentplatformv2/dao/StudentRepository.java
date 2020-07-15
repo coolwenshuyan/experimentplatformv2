@@ -211,4 +211,6 @@ public interface StudentRepository extends BaseRepository<Student, Integer>, Jpa
             "where st.id=khms.stuId and khms.tKaohemodleId=khm.id and khm.m_id = expm.m_id and khm.arrange_id=?1")
     public List<StudentTestScoreDTO> listStudentMTestAnswerDTOByArrangeId(int arrangeId);
 
+    @Query(value ="select count(*) from t_student s where s.stu_isinschool=false",nativeQuery=true)
+    int xiaowainum();
 }

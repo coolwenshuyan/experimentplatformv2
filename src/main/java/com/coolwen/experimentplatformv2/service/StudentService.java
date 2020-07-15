@@ -22,6 +22,8 @@ public interface StudentService {
 
     Page<StudentVo> findStudentsByStuCheckstate(int pageNum);
 
+    Page<StudentVo> findStudentsByStuCheckstate(int pageNum,String xuehao);
+
     StudentVo findStudentsByStuXuehao(String xuehao);
 
     void deleteStudentById(int id);

@@ -42,11 +42,11 @@
             <div class="layui-row layui-col-space15">
                 <div class="layui-col-md12">
                     <div class="layui-card">
-                            <form class="layui-form layui-col-space5" th:action="@{/studentManage/viewStudent}" method="get">
+                            <form class="layui-form layui-col-space5" th:action="@{/studentManage/list}" method="get" th:value="${stu_xuehao}">
                                 <div class="layui-inline layui-show-xs-block">
                                 </div>
                                 <div class="layui-inline layui-show-xs-block">
-                                    <input type="text" name="stu_xuehao"  placeholder="请输入学号" autocomplete="off" required="required" class="layui-input">
+                                    <input type="text" name="stu_xuehao"  placeholder="请输入学号或者姓名" autocomplete="off"  class="layui-input">
                                 </div>
                                 <div class="layui-inline layui-show-xs-block">
                                     <input class="layui-btn" type="submit" lay-submit="" lay-filter="sreach" value="搜索"/>

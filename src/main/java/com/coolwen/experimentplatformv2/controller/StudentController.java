@@ -67,8 +67,9 @@ public class StudentController {
 
     //查询学生列表
     @GetMapping("/list")
-    public String studentList(Model model, @RequestParam(value = "pageNum", defaultValue = "0") int pageNum) {
-        Page<StudentVo> list = studentservice.findStudentsByStuCheckstate(pageNum);
+    public String studentList(Model model, @RequestParam(value = "pageNum", defaultValue = "0") int pageNum, @RequestParam(required = true, defaultValue = "") String stu_xuehao) {
+//        Page<StudentVo> list = studentservice.findStudentsByStuCheckstate(pageNum);
+        Page<StudentVo> list = studentservice.findStudentsByStuCheckstate(pageNum, stu_xuehao);
         model.addAttribute("studentList", list);
         return "student/student_list";
     }
@@ -232,7 +233,6 @@ public class StudentController {
         Student student = studentservice.findStudentById(id);
         logger.debug("" + student);
         student.setStuCheckstate(true);
-        //todo 只修改
         studentservice.updateStudent(student);
         return "redirect:/studentManage/toBeReviewd";
     }
@@ -666,8 +666,6 @@ public class StudentController {
                 }
             }
         }
-
-        //todo 学生加入班级有问题
         studentservice.updateStudent(student);
         return "redirect:/studentManage/addStudent/" + classId;
     }

@@ -84,6 +84,13 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public Page<StudentVo> findStudentsByStuCheckstate(int pageNum, String xuehao) {
+        Pageable pager = PageRequest.of(pageNum, size);
+        Page<StudentVo> studentPage = studentRepository.findStudentsByStuCheckstate(pager, xuehao);
+        return studentPage;
+    }
+
+    @Override
     public StudentVo findStudentsByStuXuehao(String xuehao) {
         return studentRepository.findStudentsByStuXuehao(xuehao);
     }

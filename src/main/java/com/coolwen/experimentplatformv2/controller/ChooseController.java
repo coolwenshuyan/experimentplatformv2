@@ -64,7 +64,8 @@ public class ChooseController {
             return "redirect:/choose/course/nochoose";
         }
         //获取所有安排表的id
-        List<Integer> arrageClassIds = arrangeClassList.stream().map(ArrangeClass -> ArrangeClass.getId()).collect(Collectors.toList());
+        List<Integer> arrageClassIds = arrangeClassList.stream().map(ArrangeClass -> ArrangeClass.getCourseId()).collect(Collectors.toList());
+        logger.debug("过滤的ID："+arrageClassIds);
         //通过安排表查询该班级的所有课程
         List<CourseInfo> courseInfoList = courseInfoService.findByArrangeClassIds(arrageClassIds);
         logger.debug("所有的考核课程信息:" + courseInfoList);

@@ -88,18 +88,48 @@ public class KaoShiController {
     public String toExamPage(@PathVariable("mid") Integer mid,
                              Model model, HttpSession session) {
 
+        int arrangeId=0;
+        //对通过SESSION来获取安排ID进行判断
+        try {
+            arrangeId = (int) session.getAttribute("arrageId_sctudemo");
+            if(ShiroKit.isEmpty(arrangeId)||arrangeId<=0)
+            {
+                return "redirect:/choose/course/list";
+            }
+        }catch (Exception e)
+        {
+            return "redirect:/choose/course/list";
+        }
 
         //获得学生id
         Student student = (Student) session.getAttribute("student");
         int stuId = student.getId();
+        if(mid<0)
+        {
+            mid = arrangeId*-1;
+        }
 
-        //获取此学生此模块已经提交的答案
-        List<ModuleTestAnswerStu> moduleTestAnswerStus = moduleTestAnswerStuService.findStudentAnswbyStuidAndMid(stuId, mid);
+        if(mid>0) {
+            //如果是考核模块，改变学生填写报告教师评分状态为true
+            List<KaoheModel> kaoheModels1 = kaoheModelService.findKaoHeModelByArrangeidAndMid(arrangeId, mid);
+            if (kaoheModels1.size() > 0) {
+                KaoHeModelScore khs = kaoHeModelScoreService.findKaoheModelScoreByMid(kaoheModels1.get(0).getId(), student.getId());
+                if(khs.ismTeststate())
+                {
+                    logger.debug("此学生已经做过此模块");
+                    return "redirect:/kaoshi/" + mid + "/ViewTheScore";
+                }
+            }
+        }
+        else {
+            //获取此学生此模块已经提交的答案
+            List<ModuleTestAnswerStu> moduleTestAnswerStus = moduleTestAnswerStuService.findStudentAnswbyStuidAndMid(stuId, mid);
 
-        //统计此学生此题的答题记录条数,如果>0 表示此学生以前做过此模块的题
-        if (moduleTestAnswerStus.size() > 0) {
-            logger.debug("此学生已经做过此模块");
-            return "redirect:/kaoshi/" + mid + "/ViewTheScore";
+            //统计此学生此题的答题记录条数,如果>0 表示此学生以前做过此模块的题
+            if (moduleTestAnswerStus.size() > 0) {
+                logger.debug("此学生已经做过此模块");
+                return "redirect:/kaoshi/" + mid + "/ViewTheScore";
+            }
         }
         //获得此模块的所有单选题
         List<QuestListAnswerDto> questionsList = moduleTestQuestService.listQuestAnswerDto("单选", mid);
@@ -170,77 +200,125 @@ public class KaoShiController {
         //检查此学生有没有考核资格
         List<Student> studentOne = studentService.findStudentIsCurrentkaoheByStuid(stuId);
 
-        //获得学生提交的试卷
-        Enumeration em = request.getParameterNames();
+        List<ModuleTestQuest> questionsList = moduleTestQuestService.find(mid);
 
-        //检查此学生有没有考核资格
-        //获得所有需要考核的学生
-        //这里没用就删除了
-//        List<Student> studentList = studentService.findStudentByNotClassId();
-//
-//        boolean stuNeedkaohe = studentList.contains(student);
-
-        //创建学生的分数
-        //这个不需要了
-        //float fs = 0;
-
-        //遍历所有request
-        while (em.hasMoreElements()) {
+        //获得学生填写答案并存储
+        for (ModuleTestQuest i:questionsList){
             //得到题目编号
-            String name = (String) em.nextElement();
-            logger.debug("name<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + name);
-
+            int quest_id_1 = i.getQuestId();
             //通过题目获得学生的所有答案
-            String[] value = request.getParameterValues(name);
-
+            String[] value = null;
+            try {
+                value = request.getParameterValues(String.valueOf(quest_id_1));
+            }
+            catch (Exception e)
+            {
+                //value = new String[0];
+            }
             //得到数据库此模块中此学生答案表
-            List<ModuleTestAnswerStu> pd = moduleTestAnswerStuService.findAllModuleTestAnswerStuByStuidAndQuestId(stuId, Integer.parseInt(name));
-
+            List<ModuleTestAnswerStu> pd = moduleTestAnswerStuService.findAllModuleTestAnswerStuByStuidAndQuestId(stuId, quest_id_1);
             //初始化一个学生答案
             ModuleTestAnswerStu moduleTestAnswerStu = new ModuleTestAnswerStu();
-
             //如果数据库此模块学生答案表已经存在,获得这个东西的id,并且将之前初始化的id设置为此id
-            if (pd.size() > 0) {
-                Integer zgdxdid = pd.get(0).getId();
-                moduleTestAnswerStu.setId(zgdxdid);
+            if (pd.size()>0){
+                moduleTestAnswerStu.setId(pd.get(0).getId());
             }
-
             //将之前初始化的学生id和问题id设置为对应的值
             moduleTestAnswerStu.setStu_id(stuId);
-            moduleTestAnswerStu.setQuest_id(Integer.parseInt(name));
-
+            moduleTestAnswerStu.setQuest_id(quest_id_1);
             //初始化一个答案
             String daAn = "";
-            //通过遍历得到学生答案,并且保存
-            for (String c : value) {
-                logger.debug("学生答案cccccccccccccccccccccc" + c);
-                ModuleTestAnswer moduleTestAnswer = moduleTestAnswerService.findByAnswerId(Integer.parseInt(c));
-                daAn += moduleTestAnswer.getAnswerOrder() + ",";
+            if(value!=null) {
+                //通过遍历得到学生答案,并且保存
+                for (String c : value) {
+                    ModuleTestAnswer moduleTestAnswer = moduleTestAnswerService.findByAnswerId(Integer.parseInt(c));
+                    daAn += moduleTestAnswer.getAnswerOrder() + ",";
+                }
             }
-
-            if (daAn.length() > 0) {
-                daAn = daAn.substring(0, daAn.length() - 1);
+            if (daAn.length()>0){
+                daAn = daAn.substring(0, daAn.length()-1);
             }
-            logger.debug("答案" + daAn);
-
             moduleTestAnswerStu.setStu_quest_answer(daAn);
-
-            //得到正确答案
-            ModuleTestQuest moduleTestQuest = moduleTestQuestService.findQuestByQuestId(Integer.parseInt(name));
-            String rightDaAn = moduleTestQuest.getQuestAnswer();
-
+            String rightDaAn = i.getQuestAnswer();
             //判断学生答案是否正确,并且保存
-            if (daAn.equals(rightDaAn)) {
-                Integer fs1 = (int) moduleTestQuest.getQuestScore();
-                moduleTestAnswerStu.setScore(fs1);
-                //这里不需要了
-                //fs+=fs1;
+            if (daAn.equals(rightDaAn)){
+                moduleTestAnswerStu.setScore((int)i.getQuestScore());
             }
-
             moduleTestAnswerStu.setAnswer_datetime(new Date());
-
             moduleTestAnswerStuService.add(moduleTestAnswerStu);
         }
+
+//        //获得学生提交的试卷
+//        Enumeration em = request.getParameterNames();
+//
+//        //检查此学生有没有考核资格
+//        //获得所有需要考核的学生
+//        //这里没用就删除了
+////        List<Student> studentList = studentService.findStudentByNotClassId();
+////
+////        boolean stuNeedkaohe = studentList.contains(student);
+//
+//        //创建学生的分数
+//        //这个不需要了
+//        //float fs = 0;
+//
+//        //遍历所有request
+//        while (em.hasMoreElements()) {
+//            //得到题目编号
+//            String name = (String) em.nextElement();
+//            logger.debug("name<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + name);
+//
+//            //通过题目获得学生的所有答案
+//            String[] value = request.getParameterValues(name);
+//
+//            //得到数据库此模块中此学生答案表
+//            List<ModuleTestAnswerStu> pd = moduleTestAnswerStuService.findAllModuleTestAnswerStuByStuidAndQuestId(stuId, Integer.parseInt(name));
+//
+//            //初始化一个学生答案
+//            ModuleTestAnswerStu moduleTestAnswerStu = new ModuleTestAnswerStu();
+//
+//            //如果数据库此模块学生答案表已经存在,获得这个东西的id,并且将之前初始化的id设置为此id
+//            if (pd.size() > 0) {
+//                Integer zgdxdid = pd.get(0).getId();
+//                moduleTestAnswerStu.setId(zgdxdid);
+//            }
+//
+//            //将之前初始化的学生id和问题id设置为对应的值
+//            moduleTestAnswerStu.setStu_id(stuId);
+//            moduleTestAnswerStu.setQuest_id(Integer.parseInt(name));
+//
+//            //初始化一个答案
+//            String daAn = "";
+//            //通过遍历得到学生答案,并且保存
+//            for (String c : value) {
+//                logger.debug("学生答案cccccccccccccccccccccc" + c);
+//                ModuleTestAnswer moduleTestAnswer = moduleTestAnswerService.findByAnswerId(Integer.parseInt(c));
+//                daAn += moduleTestAnswer.getAnswerOrder() + ",";
+//            }
+//
+//            if (daAn.length() > 0) {
+//                daAn = daAn.substring(0, daAn.length() - 1);
+//            }
+//            logger.debug("答案" + daAn);
+//
+//            moduleTestAnswerStu.setStu_quest_answer(daAn);
+//
+//            //得到正确答案
+//            ModuleTestQuest moduleTestQuest = moduleTestQuestService.findQuestByQuestId(Integer.parseInt(name));
+//            String rightDaAn = moduleTestQuest.getQuestAnswer();
+//
+//            //判断学生答案是否正确,并且保存
+//            if (daAn.equals(rightDaAn)) {
+//                Integer fs1 = (int) moduleTestQuest.getQuestScore();
+//                moduleTestAnswerStu.setScore(fs1);
+//                //这里不需要了
+//                //fs+=fs1;
+//            }
+//
+//            moduleTestAnswerStu.setAnswer_datetime(new Date());
+//
+//            moduleTestAnswerStuService.add(moduleTestAnswerStu);
+//        }
 
 
 //        更新此学生成绩,此操作现在整合下面这一大段，这里又修改了

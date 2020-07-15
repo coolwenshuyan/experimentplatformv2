@@ -7,10 +7,7 @@
 
 package com.coolwen.experimentplatformv2.controller;
 
-import com.coolwen.experimentplatformv2.dao.ExpModelRepository;
-import com.coolwen.experimentplatformv2.dao.NewsInfoRepository;
-import com.coolwen.experimentplatformv2.dao.StudentRepository;
-import com.coolwen.experimentplatformv2.dao.TeacherRepository;
+import com.coolwen.experimentplatformv2.dao.*;
 import com.coolwen.experimentplatformv2.model.*;
 import com.coolwen.experimentplatformv2.model.DTO.CourseInfoDto;
 import com.coolwen.experimentplatformv2.service.ClassService;
@@ -54,6 +51,8 @@ public class NewsInfoController {
     @Autowired
     ExpModelRepository expModelRepository;
     @Autowired
+    KaoheModelRepository kaoheModelRepository;
+    @Autowired
     NewsInfoService newsInfoService;
     @Autowired
     SetInfoService setInfoService;
@@ -61,10 +60,8 @@ public class NewsInfoController {
     StudentRepository studentRepository;
     @Autowired
     TeacherRepository teacherRepository;
-
     @Autowired
     private ClassService classService;
-
     @Autowired
     private CourseInfoService courseInfoService;
 
@@ -118,23 +115,47 @@ public class NewsInfoController {
         }
         model.addAttribute("expModels", expModels);
 
+        //课程展示
+        List<CourseInfo> courseInfos = courseInfoService.findAll();
+        model.addAttribute("courseInfos",courseInfos);
+
         //平台统计
         //查询实验模块总数
         int modenum = (int) expModelRepository.count();
-        model.addAttribute("modenum", modenum);
-        logger.debug(String.valueOf(modenum));
+        //查询考核模块数量
+        int kaohenum = (int) kaoheModelRepository.count();
+        model.addAttribute("modenum",modenum);
+        model.addAttribute("kaohenum",kaohenum);
+        System.out.println(modenum);
         //查询平台总用户数
         int studentnum = (int) studentRepository.count();
         int teachernum = (int) teacherRepository.count();
-        model.addAttribute("usernum", studentnum + teachernum);
+        //校外人数
+        int xiaowainum = (int) studentRepository.xiaowainum();
+        model.addAttribute("xiaowainum",xiaowainum);
+        model.addAttribute("usernum",studentnum+teachernum);
         //查询参与考核人数
         int studentmodel = newsInfoService.findAllmodelpeople();
-        model.addAttribute("studentmodel", studentmodel);
-        logger.debug(String.valueOf(studentmodel));
+        model.addAttribute("studentmodel",studentmodel);
+        System.out.println(studentmodel);
         //查询通过考核人数
         int passpeople = newsInfoService.findAllPass();
-        model.addAttribute("passpeople", passpeople);
-        logger.debug(String.valueOf(passpeople));
+        model.addAttribute("passpeople",passpeople);
+        System.out.println(passpeople);
+
+        //实验成绩统计
+        //往期参与考核的全部学生
+        int allpasspeople = newsInfoService.findAllpasspeople();
+        //往期参与考核的优秀学生（85分以上）
+        int excellent = newsInfoService.findExcellentpeople();
+        //往期参与考核的中等学生（60分-85分）
+        int qualified = newsInfoService.findQualifiedpeople();
+        //往期参与考核的学生（60分以下）
+        int unqualified = newsInfoService.findUnqualifiedpeople();
+        model.addAttribute("allpasspeople",allpasspeople);
+        model.addAttribute("excellentstu",excellent);
+        model.addAttribute("qualifiedstu",qualified);
+        model.addAttribute("unqualifiedstu",unqualified);
 
         //访问量
         // 获取访问量信息

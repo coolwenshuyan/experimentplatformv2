@@ -36,6 +36,8 @@ public interface StudentService {
 
     Page<Student> findToBeReviewedStudent(int pageNum);
 
+    Page<Student> findToBeReviewedStudent(int pageNum,String stuXueHao);
+
     void deleteStudent(int id);
 
     Student findStudentByStuXuehao(String xuehao);

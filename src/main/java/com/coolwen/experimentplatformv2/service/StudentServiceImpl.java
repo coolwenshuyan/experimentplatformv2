@@ -73,7 +73,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Student updateStudent(Student student) {
-        student.setStuPassword(ShiroKit.md5(student.getStuPassword(), student.getStuXuehao()));
+//        student.setStuPassword(ShiroKit.md5(student.getStuPassword(), student.getStuXuehao()));
         return studentRepository.save(student);
     }
 
@@ -125,7 +125,18 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Page<Student> findToBeReviewedStudent(int pageNum) {
         Pageable pageable = PageRequest.of(pageNum, 10);
+
         return studentRepository.findToBeReviewedStudent(pageable);
+    }
+
+    @Override
+    public Page<Student> findToBeReviewedStudent(int pageNum, String stuXueHao) {
+        Pageable pager = PageRequest.of(pageNum, size);
+        Page<Student> studentPage = studentRepository.findAll(new SimpleSpecificationBuilder<Student>(
+                "stuXuehao", ":", stuXueHao)
+                .addOr("stuName", ":", stuXueHao)
+                .generateSpecification(), pager);
+        return studentPage;
     }
 
     @Override

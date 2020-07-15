@@ -43,6 +43,7 @@ public class ChooseController {
     @GetMapping("list")
     public String choosecourse(Model model) {
         //获取登陆学生的信息
+        logger.debug("登陆信息:laile" );
         Student student = (Student) SecurityUtils.getSubject().getSession().getAttribute("student");
         logger.debug("登陆信息:" + student);
         ClassModel classModel = classService.findClassById(student.getClassId());

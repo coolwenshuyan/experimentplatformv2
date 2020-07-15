@@ -4,6 +4,7 @@ package com.coolwen.experimentplatformv2.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.coolwen.experimentplatformv2.config.ShiroConfig;
 import com.coolwen.experimentplatformv2.dao.KaoHeModelScoreRepository;
+import com.coolwen.experimentplatformv2.kit.ShiroKit;
 import com.coolwen.experimentplatformv2.model.*;
 import com.coolwen.experimentplatformv2.model.DTO.KaoHeModelStuDTO;
 import com.coolwen.experimentplatformv2.model.DTO.KaoheModuleProgressDTO;
@@ -437,8 +438,24 @@ public class ExpModelController {
     //实验大厅所有模块信息
     @GetMapping("/alltestModel")
     public String alltest(Model model, @RequestParam(value = "pageNum", required = true, defaultValue = "0") int pageNum, HttpSession session) throws ParseException {
+        int arrangeId=0;
+        //对通过SESSION来获取安排ID进行判断
+        try {
+            arrangeId = (int) session.getAttribute("arrageId_sctudemo");
+            if(ShiroKit.isEmpty(arrangeId)||arrangeId<=0)
+            {
+                return "redirect:/choose/course/list";
+            }
+        }catch (Exception e)
+        {
+            return "redirect:/choose/course/list";
+        }
+
+        ArrangeClass arrangeClass = arrangeClassService.findById(arrangeId);
+        Page<ExpModel> a = expModelService.findOneCourseModelList2(arrangeClass.getCourseId(), pageNum,6);
+
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        model.addAttribute("list", expModelService.finExpAll(pageNum));
+        model.addAttribute("list", a);
         session.setAttribute("modulePageNum", pageNum);
         session.setAttribute("isAllModule", true);
 //        Student student = (Student) SecurityUtils.getSubject().getPrincipal();
@@ -477,7 +494,22 @@ public class ExpModelController {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 //        Student student = (Student) SecurityUtils.getSubject().getPrincipal();
         Student student = (Student) session.getAttribute("student");
-        Page<KaoHeModelStuDTO> kaohe = kaoheModelService.findKaoheModelStuDto(student.getId(), pageNum);
+        int arrangeId=0;
+        //对通过SESSION来获取安排ID进行判断
+        try {
+            arrangeId = (int) session.getAttribute("arrageId_sctudemo");
+            if(ShiroKit.isEmpty(arrangeId)||arrangeId<=0)
+            {
+                return "redirect:/choose/course/list";
+            }
+        }catch (Exception e)
+        {
+            return "redirect:/choose/course/list";
+        }
+
+
+//        Page<KaoHeModelStuDTO> kaohe = kaoheModelService.findKaoheModelStuDto(student.getId(), pageNum);
+        Page<KaoHeModelStuDTO> kaohe = kaoheModelService.findKaoheModelStuDto(student.getId(), pageNum,arrangeId);
         model.addAttribute("k", kaohe);
         session.setAttribute("modulePageNum", pageNum);
         session.setAttribute("isAllModule", false);

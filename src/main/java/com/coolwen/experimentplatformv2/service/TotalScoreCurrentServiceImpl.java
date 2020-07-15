@@ -49,8 +49,8 @@ public class TotalScoreCurrentServiceImpl implements TotalScoreCurrentService {
     }
 
     @Override
-    public List<ModuleGradesDto> ModuleGrade(int id) {
-        return totalScoreCurrentRepository.ModuleGrade(id);
+    public List<ModuleGradesDto> ModuleGrade(int id,int arrangeID) {
+        return totalScoreCurrentRepository.ModuleGrade(id,arrangeID);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.coolwen.experimentplatformv2.controller;
 
+import com.coolwen.experimentplatformv2.kit.ShiroKit;
 import com.coolwen.experimentplatformv2.model.CollegeReport;
 import com.coolwen.experimentplatformv2.model.DTO.CollegeReportStuExpDto;
 import com.coolwen.experimentplatformv2.model.KaoHeModelScore;
@@ -283,14 +284,26 @@ public class CollegeReportController {
     }
 
     @PostMapping("/mark/{mid}/{stuid}")
-    public String mark(@PathVariable("mid") int mid, @PathVariable("stuid") int stuid, CollegeReport collegeReport) {
+    public String mark(@PathVariable("mid") int mid, @PathVariable("stuid") int stuid, CollegeReport collegeReport,HttpSession session) {
+        int arrangeId=0;
+        //对通过SESSION来获取安排ID进行判断
+        try {
+            arrangeId = (int) session.getAttribute("arrageId_sctudemo");
+            if(ShiroKit.isEmpty(arrangeId)||arrangeId<=0)
+            {
+                return "redirect:/choose/course/list";
+            }
+        }catch (Exception e)
+        {
+            return "redirect:/choose/course/list";
+        }
         CollegeReport collegeReport1 = collegeReportService.findStuidAndMid(stuid, mid);
         collegeReport1.setCrTcComment(collegeReport.getCrTcComment());
         logger.debug(collegeReport.getCrTcComment());
         collegeReport1.setCrClassName(collegeReport.getCrClassName());
         collegeReport1.setCrScore(collegeReport.getCrScore());
         collegeReport1.setCrTcState(true);
-        //如果是考核模块，改变学生填写报告状态为true
+        //如果是考核模块，改变学生填写报告教师评分状态为true
         try {
             KaoHeModelScore khs = kaoHeModelScoreService.findKaoheModelScoreByMid(mid, stuid);
             khs.setmReportteacherstate(true);
@@ -299,7 +312,7 @@ public class CollegeReportController {
         }
         collegeReportService.addCollegeReport(collegeReport1);
         //更新成绩
-        scoreUpdateService.singleStudentScoreUpdate(stuid);
+        scoreUpdateService.singleStudentScoreUpdate2(stuid,arrangeId);
         return "redirect:/collegereport/mark/" + mid + "/" + stuid;
     }
 

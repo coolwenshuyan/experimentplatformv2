@@ -117,4 +117,10 @@ public class ExpModelServiceImpl implements ExpModelService {
     public void deleteAll(List<ExpModel> expModels) {
         expModelRepository.deleteAll(expModels);
     }
+
+    @Override
+    public Page<ExpModel> findOneCourseModelList2(int courseId, int pageNum, int size) {
+        Pageable pageable = PageRequest.of(pageNum,size);
+        return expModelRepository.findOneCourseModelList(courseId,pageable);
+    }
 }

@@ -22,7 +22,7 @@ public interface TotalScoreCurrentService {
 
     public List<TotalScoreCurrent> findeAllBystuid(int id);
 
-    List<ModuleGradesDto> ModuleGrade(int id);
+    List<ModuleGradesDto> ModuleGrade(int id,int arrangeID);
 
     TotalScoreCurrent findTotalScoreCurrentByStuID(int stuId);
 

@@ -6,6 +6,7 @@
  */
 
 package com.coolwen.experimentplatformv2.controller;
+import com.coolwen.experimentplatformv2.kit.ShiroKit;
 import com.coolwen.experimentplatformv2.model.DTO.ModuleGradesDto;
 import com.coolwen.experimentplatformv2.model.Student;
 import com.coolwen.experimentplatformv2.model.TotalScoreCurrent;
@@ -53,6 +54,18 @@ public class ExpGradeController {
     public String totalscore(Model model, HttpSession session){
         //获取学生的登录信息
 //        Student student = (Student) SecurityUtils.getSubject().getPrincipal();
+        int arrangeId=0;
+        //对通过SESSION来获取安排ID进行判断
+        try {
+            arrangeId = (int) session.getAttribute("arrageId_sctudemo");
+            if(ShiroKit.isEmpty(arrangeId)||arrangeId<=0)
+            {
+                return "redirect:/choose/course/list";
+            }
+        }catch (Exception e)
+        {
+            return "redirect:/choose/course/list";
+        }
         Student student = (Student) session.getAttribute("student");
         int stuId = student.getId();
 
@@ -62,10 +75,11 @@ public class ExpGradeController {
             logger.debug(">>>>>>>>>>>>"+studentOne.size());
             if(studentOne.size()>0) {
                 //查询该学生的考核实验模块成绩
-                List<ModuleGradesDto> moduleGrades = totalScoreCurrentService.ModuleGrade(student.getId());
+                List<ModuleGradesDto> moduleGrades = totalScoreCurrentService.ModuleGrade(student.getId(),arrangeId);
                 model.addAttribute("ModuleGrades", moduleGrades);
                 //查询该学生的考核模块和理论成绩的总评成绩
-                List<TotalScoreCurrent> totalScoreCurrents = totalScoreCurrentService.findeAllBystuid(student.getId());
+//                List<TotalScoreCurrent> totalScoreCurrents = totalScoreCurrentService.findeAllBystuid(student.getId());
+                TotalScoreCurrent totalScoreCurrents = totalScoreCurrentService.findTotalScoreCurrentByStuId2(student.getId(),arrangeId);
                 model.addAttribute("totalScoreCurrents", totalScoreCurrents);
             }
             else

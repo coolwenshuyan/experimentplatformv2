@@ -6,6 +6,7 @@
  */
 package com.coolwen.experimentplatformv2.controller;
 
+import com.coolwen.experimentplatformv2.kit.ShiroKit;
 import com.coolwen.experimentplatformv2.model.*;
 import com.coolwen.experimentplatformv2.model.DTO.QuestListAnswerAndStuScoreDto;
 import com.coolwen.experimentplatformv2.model.DTO.QuestListAnswerDto;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
@@ -135,6 +137,19 @@ public class KaoShiController {
                            @PathVariable("mid") Integer mid,
                            Model model, HttpSession session, HttpServletRequest request) {
 
+        int arrangeId=0;
+        //对通过SESSION来获取安排ID进行判断
+        try {
+            arrangeId = (int) session.getAttribute("arrageId_sctudemo");
+            if(ShiroKit.isEmpty(arrangeId)||arrangeId<=0)
+            {
+                return "redirect:/choose/course/list";
+            }
+        }catch (Exception e)
+        {
+            return "redirect:/choose/course/list";
+        }
+
         Student student = (Student) session.getAttribute("student");
         int stuId = student.getId();
 
@@ -216,6 +231,9 @@ public class KaoShiController {
                 //这里不需要了
                 //fs+=fs1;
             }
+
+            moduleTestAnswerStu.setAnswer_datetime(new Date());
+
             moduleTestAnswerStuService.add(moduleTestAnswerStu);
         }
 
@@ -228,7 +246,8 @@ public class KaoShiController {
                 khs.setmTeststate(true);
                 kaoHeModelScoreService.update(khs);
             }
-            scoreUpdateService.singleStudentScoreUpdate(stuId);
+
+            scoreUpdateService.singleStudentScoreUpdate2(stuId,arrangeId);
         }
 
 

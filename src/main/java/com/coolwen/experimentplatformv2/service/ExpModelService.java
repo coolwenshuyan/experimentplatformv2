@@ -44,4 +44,6 @@ public interface ExpModelService {
     List<ExpModel> findByCourseId(int id);
 
     void deleteAll(List<ExpModel> expModels);
+
+    Page<ExpModel> findOneCourseModelList2(int courseId, int pageNum, int size);
 }

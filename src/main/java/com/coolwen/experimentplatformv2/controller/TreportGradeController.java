@@ -131,13 +131,13 @@ public class TreportGradeController {
             reportAnswerService.updateOne(c);
 
         }
-        //重新计算成绩
-        scoreUpdateService.singleStudentScoreUpdate2(stuId,arrangeId);
+
 
         KaoHeModelScore khs = kaoHeModelScoreService.findKaoheModelScoreByMid(mid, stuId);
         khs.setmReportteacherstate(true);
         kaoHeModelScoreService.update(khs);
-
+        //重新计算成绩
+        scoreUpdateService.singleStudentScoreUpdate2(stuId,arrangeId);
 //        model.addAttribute("zjy",score);
 //        logger.debug(">>>>>>>>>>>>>>>>>>"+score);
 //        Enumeration em = request.getParameterNames();

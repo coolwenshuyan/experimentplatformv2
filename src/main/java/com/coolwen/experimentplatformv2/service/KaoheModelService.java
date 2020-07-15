@@ -33,7 +33,7 @@ public interface KaoheModelService {
 
     Integer findKaoheNum();
 
-    Page<KaoHeModelStuDTO> findKaoheModelStuDto(int stu_id, int pageNum);
+    Page<KaoHeModelStuDTO> findKaoheModelStuDto(int stu_id, int pageNum,int arrangeID);
 
     KaoHeModelStuDTO findKaoHeModelStuDTOByStuId(int stu_id, int mid);
 

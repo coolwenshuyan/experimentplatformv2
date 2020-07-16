@@ -101,6 +101,8 @@ public class QuestionController {
 
         User user = (User) session.getAttribute("admin");
         logger.debug("user:>>" + user);
+        model.addAttribute("courseId", courseId);
+
 //        分页查询，每页最多五条数据
         Pageable pageable = PageRequest.of(pageNum, 10);
         Page<QuestionStudentDto> page = questionService.findAllByCourseId(pageable, courseId);

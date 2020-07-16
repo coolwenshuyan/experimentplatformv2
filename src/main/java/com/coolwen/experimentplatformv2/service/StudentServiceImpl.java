@@ -140,8 +140,10 @@ public class StudentServiceImpl implements StudentService {
     public Page<Student> findToBeReviewedStudent(int pageNum, String stuXueHao) {
         Pageable pager = PageRequest.of(pageNum, size);
         Page<Student> studentPage = studentRepository.findAll(new SimpleSpecificationBuilder<Student>(
-                "stuXuehao", ":", stuXueHao)
-                .addOr("stuName", ":", stuXueHao)
+                "stuCheckstate", "=", false)
+//
+                .add("stuXuehao", ":", stuXueHao)
+//                .addOr("stuName", ":", stuXueHao)
                 .generateSpecification(), pager);
         return studentPage;
     }

@@ -1,8 +1,8 @@
 package com.coolwen.experimentplatformv2.controller;
 
-import com.coolwen.experimentplatformv2.controller.HomepagesettingController.LearningeffectController;
 import com.coolwen.experimentplatformv2.dao.*;
 import com.coolwen.experimentplatformv2.exception.UserException;
+import com.coolwen.experimentplatformv2.kit.ShiroKit;
 import com.coolwen.experimentplatformv2.model.*;
 import com.coolwen.experimentplatformv2.model.DTO.QuestionStudentDto;
 import com.coolwen.experimentplatformv2.service.CourseInfoService;
@@ -23,14 +23,13 @@ import java.util.Date;
 import java.util.List;
 
 /**
- *
- *  @author yellow
+ * @author yellow
  */
 @Controller
 @RequestMapping(value = "question")
 public class QuestionController {
 
-//    注入
+    //    注入
     @Autowired
     private QuestionService questionService;
     @Autowired
@@ -42,11 +41,11 @@ public class QuestionController {
 
     protected static final Logger logger = LoggerFactory.getLogger(QuestionController.class);
 
-//    //用户提问点击进入提交页
-//    @GetMapping(value = "/add")
-//    public String QuestionAdd() {
-//        return "question_reply/add";
-//    }
+    //用户提问点击进入提交页
+    @GetMapping(value = "/add")
+    public String QuestionAdd() {
+        return "question_reply/add";
+    }
 
     //学生完成添加提交问题操作
     @PostMapping(value = "/add")
@@ -56,32 +55,32 @@ public class QuestionController {
         Student student = (Student) session.getAttribute("student");
 
         //暂时做了修改
-        if (student == null){
+        if (student == null) {
             throw new UserException("请先登录后再来提问!");
         }
 
 //        插入数据到数据库
         question.setSid(student.getId());
         question.setIsreply(false);
-        question.setDic_datetime(new Date());
+        question.setQuestionDatetime(new Date());
         questionService.add(question);
         return "redirect:/question/list1";//list
     }
 
     //老师端看到question列表，查出来
-    @GetMapping(value = "/list")
-    public String QuestionList(Model model,HttpSession session,
+    @GetMapping(value = "/teacherlist")
+    public String QuestionList(Model model, HttpSession session,
                                @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum) {
 
         User user = (User) session.getAttribute("admin");
-        logger.debug("user:>>"+user);
+        logger.debug("user:>>" + user);
 //        分页查询，每页最多五条数据
         Pageable pageable = PageRequest.of(pageNum, 10);
         Page<QuestionStudentDto> page = questionService.findAndUname(pageable);
         model.addAttribute("questionPageInfo", page);
 
-        List<CourseInfo> courseInfoList =  courseInfoService.getclass_by_arrangeteacher(user.getId());
-        model.addAttribute("courseInfoList",courseInfoList);
+        List<CourseInfo> courseInfoList = courseInfoService.getclass_by_arrangeteacher(user.getId());
+        model.addAttribute("courseInfoList", courseInfoList);
         return "shouye/dayiManage";
     }
 
@@ -92,26 +91,97 @@ public class QuestionController {
                                @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum) {
 
         User user = (User) session.getAttribute("admin");
-        logger.debug("user:>>"+user);
+        logger.debug("user:>>" + user);
 //        分页查询，每页最多五条数据
         Pageable pageable = PageRequest.of(pageNum, 10);
-        Page<QuestionStudentDto> page = questionService.findAllByCourseId(pageable,courseId);
+        Page<QuestionStudentDto> page = questionService.findAllByCourseId(pageable, courseId);
         model.addAttribute("questionPageInfo", page);
 
-        List<CourseInfo> courseInfoList =  courseInfoService.getclass_by_arrangeteacher(user.getId());
-        model.addAttribute("courseInfoList",courseInfoList);
+        List<CourseInfo> courseInfoList = courseInfoService.getclass_by_arrangeteacher(user.getId());
+        model.addAttribute("courseInfoList", courseInfoList);
         return "shouye/dayiManage";
     }
 
     //学生用户端看到question列表，查出来
-    @GetMapping(value = "/list1")
-    public String QuestionList1(Model model, @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum) {
+    @GetMapping(value = "/list")
+    public String QuestionList1(Model model, @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum,
+                                @RequestParam(defaultValue = "0", required = true, value = "courseId") Integer courseId,
+                                @RequestParam(defaultValue = "0", required = true, value = "isreply") Integer isreply,
+                                @RequestParam(defaultValue = "0", required = true, value = "day") Integer day, HttpSession session
+    ) {
+        Question question = new Question();
+        logger.debug("课程ID:" + courseId);
+        logger.debug("day:" + day);
+        logger.debug("isreply:" + isreply);
+        boolean isr = true;
+//        if (day != 0) {
+//            session.setAttribute("question_day", day);
+//            day = (Integer) session.getAttribute("question_day");
+//            String strDate1 = "2020-00-00";
+////        }
+//        if (session.getAttribute("question_isreply") != null && isreply != 0) {
+//            isreply = (Integer) session.getAttribute("question_isreply");
+//            isreply = (Integer) session.getAttribute("question_isreply");
+//        }
+//        if (session.getAttribute("question_courseId") != null && courseId != 0) {
+//            session.setAttribute("question_courseId", courseId);
+//            courseId = (Integer) session.getAttribute("question_courseId");
+//        }
+        if (isreply != 0) {
+            courseId = (Integer) session.getAttribute("question_courseId");
+            logger.debug("isreply的课程ID:" + courseId);
+            if (ShiroKit.isEmpty(courseId)) {
+                courseId = courseInfoService.findAll().get(1).getId();
+//                courseId = 0;
+            }
+            session.setAttribute("question_isreply", isreply);
+//            isreply = (Integer) session.getAttribute("question_isreply");
+            if (isreply == 1) {
+                isr = true;
+            } else {
+                isr = false;
+            }
+//            question.setIsreply(isr);
+        }
+        if (courseId != 0) {
+            isreply = (Integer) session.getAttribute("question_isreply");
+            session.setAttribute("question_courseId", courseId);
+//            question.setCourse_id(courseId);
+        }
+        question.setIsreply(isr);
+//        question.setIsreply(isr);
+        question.setCourse_id(courseId);
+        model.addAttribute("day", day);
+        model.addAttribute("courseId", courseId);
+        model.addAttribute("isreply", isreply);
 //        分页查询，每页最多五条数据
         Pageable pageable = PageRequest.of(pageNum, 5);
-        Page<QuestionStudentDto> page = questionService.findAndUname(pageable);
+//        Page<QuestionStudentDto> page = questionService.findAllByCourseId(pageable, 1);
+        List<CourseInfo> courseInfoList = courseInfoService.findAll();
+        model.addAttribute("courseInfoList", courseInfoList);
+
+        logger.debug("查询信息:" + question);
+        Page<QuestionStudentDto> page = questionService.findAllByCourseId(pageNum, question);
+//        page.getContent()
+        logger.debug("问题信息:" + page.getContent());
         model.addAttribute("questionPageInfo", page);
         return "home_page/question";
     }
+//    //学生用户端看到question列表，查出来
+//    @GetMapping(value = "/list1")
+//    public String QuestionListCourse(Model model, @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum,
+//                                @RequestParam(defaultValue = "0", required = true, value = "courseId") Integer courseId,
+//                                @RequestParam(defaultValue = "0", required = true, value = "isreply") Integer isreply) {
+////        分页查询，每页最多五条数据
+//        Pageable pageable = PageRequest.of(pageNum, 5);
+//        Page<QuestionStudentDto> page = questionService.findAllByCourseId(pageable, 1);
+//        List<CourseInfo> courseInfoList = courseInfoService.findAll();
+//        model.addAttribute("courseInfoList", courseInfoList);
+////        Page<QuestionStudentDto> page = questionService.findByCourse_idAndDic_datetimeAndIsreply(pageNum, 1, new Date(), isreply);
+//        logger.debug("问题信息:" + page.getContent());
+//        model.addAttribute("questionPageInfo", page);
+//        return "home_page/question";
+//    }
 
 //    //进入修改界面
 //    @GetMapping(value = "/{id}/update")

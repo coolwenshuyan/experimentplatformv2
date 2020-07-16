@@ -65,11 +65,12 @@ public class StudentController {
 
     protected static final Logger logger = LoggerFactory.getLogger(StudentController.class);
 
-    //查询学生列表
+    //查询通过学生列表
     @GetMapping("/list")
     public String studentList(Model model, @RequestParam(value = "pageNum", defaultValue = "0") int pageNum, @RequestParam(required = true, defaultValue = "") String stu_xuehao) {
 //        Page<StudentVo> list = studentservice.findStudentsByStuCheckstate(pageNum);
         Page<StudentVo> list = studentservice.findStudentsByStuCheckstate(pageNum, stu_xuehao);
+        logger.debug("通过审核学生：" + list.getContent());
         model.addAttribute("studentList", list);
         return "student/student_list";
     }
@@ -209,7 +210,7 @@ public class StudentController {
 //        Page<Student> studentList = studentservice.findToBeReviewedStudent(pageNum);
         model.addAttribute("stu_xuehao", stu_xuehao);
         model.addAttribute("waitStudent", studentList);
-        logger.debug("待审核学生信息为" + studentList.getContent());
+        logger.debug("没有通过审核学生：" + studentList.getContent());
         return "student/student_examine";
     }
 

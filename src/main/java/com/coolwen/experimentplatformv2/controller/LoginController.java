@@ -155,10 +155,11 @@ public class LoginController {
         try {
 //            subject.login(token);
             if (loginType.equals("student")) {
-                logger.debug("学生登陆信息");
+
 //                Student student = (Student) subject.getPrincipal();
                 //TODO 没有对学生验证
                 Student student = studentService.findByUname(username);
+                logger.debug("学生登陆信息");
                 if (ShiroKit.isEmpty(student)) {
                     model.addObject("msg", "此账号暂未通过审核!");
                     logger.debug("学生登陆信息");

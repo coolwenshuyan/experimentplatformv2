@@ -1,14 +1,19 @@
 package com.coolwen.experimentplatformv2;
 
 
+import com.coolwen.experimentplatformv2.controller.ChooseController;
 import com.coolwen.experimentplatformv2.model.*;
 import com.coolwen.experimentplatformv2.service.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 
 @RunWith(SpringRunner.class)
@@ -28,6 +33,16 @@ public class StudentServiceImplTest {
 
     @Autowired
     private CourseInfoService courseInfoService;
+
+
+    @Autowired
+    private SetInfoService setInfoService;
+
+    @Autowired
+    private QuestionService questionService;
+
+
+    protected static final Logger logger = LoggerFactory.getLogger(StudentServiceImplTest.class);
 
     @Test
     public void addStudent() {
@@ -135,5 +150,73 @@ public class StudentServiceImplTest {
             String n3 = name3[ran.nextInt(name3.length)];
             return n1 + n2 + n3;
         }
+    }
+
+    @Test
+    public void addSetInfor() {
+        SetInfo setInfo = new SetInfo();
+        setInfo.setId(1);
+        setInfo.setSet_aboutus("aboutus");
+        setInfo.setSet_platintro("platintro");
+        setInfo.setSet_platstep("step");
+        setInfo.setSet_rotateimg("1、2");
+        setInfoService.add(setInfo);
+    }
+
+    @Test
+    public void addQuestion() {
+        Question question = new Question();
+        for (int i = 1; i < 100; i++) {
+            question = new Question();
+            int coureId = (int) (Math.random() * 4 + 1);
+            question.setContent("aboutus");
+            question.setCourse_id(coureId);
+            question.setContent(getName());
+            Date date = randomDate("2019-01-01", "2020-07-15");
+            ;
+
+            question.setQuestionDatetime(date);
+            if (i % 2 == 0)
+                question.setIsreply(true);
+            else
+                question.setIsreply(false);
+            question.setSid(i % 10);
+            questionService.add(question);
+        }
+
+    }
+
+
+    private static Date randomDate(String beginDate, String endDate) {
+        try {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            Date start = format.parse(beginDate);
+            Date end = format.parse(endDate);
+
+            if (start.getTime() >= end.getTime()) {
+                return null;
+            }
+            long date = random(start.getTime(), end.getTime());
+            return new Date(date);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private static long random(long begin, long end) {
+        long rtn = begin + (long) (Math.random() * (end - begin));
+        if (rtn == begin || rtn == end) {
+            return random(begin, end);
+        }
+        return rtn;
+    }
+
+    @Test
+    public void findQuestion() {
+        Question question = new Question();
+        question.setIsreply(true);
+        question.setCourse_id(1);
+        logger.debug("问题信息:" + questionService.findAllByCourseId(0, question).getContent());
     }
 }

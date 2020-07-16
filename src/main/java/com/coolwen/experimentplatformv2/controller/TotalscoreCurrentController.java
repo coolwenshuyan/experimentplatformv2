@@ -343,7 +343,6 @@ public class TotalscoreCurrentController {
             e.printStackTrace();
         }
 
-
         //获得当前课程班级下所有考核模块的列表
 //        List<KaoheModel> toGetBaiFenBi = kaoheModelService.findAll();
         List<KaoheModel> toGetBaiFenBi = kaoheModelService.findKaoheModelByArrangeId2(arrangeId);

@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import java.util.List;
+
 public interface EffectRepository extends BaseRepository<Effect,Integer>, JpaSpecificationExecutor<Effect> {
 
     @Query(value="select * from t_effect where id = ?",nativeQuery=true)
@@ -15,4 +17,7 @@ public interface EffectRepository extends BaseRepository<Effect,Integer>, JpaSpe
 
     @Query("select e from Effect e,CourseInfo c where e.course_id = c.id and c.teacherId = ?1")
     Page<Effect> findAllByUid(int id, Pageable pageable);
+
+    @Query("select e from Effect e where e.course_id = ?1")
+    List<Effect> findByCourseId(int id);
 }

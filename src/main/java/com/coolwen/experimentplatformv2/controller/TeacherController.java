@@ -60,11 +60,37 @@ public class TeacherController {
     /**
      * 前端师资队伍页面
      */
+//    @GetMapping(value = "/frontList")
+//    public String TeacherFrontList(Model model, @RequestParam(defaultValue = "0", required=true,value = "pageNum")  Integer pageNum){
+//        Pageable pageable = PageRequest.of(pageNum,100);
+//        Page<Teacher> page = teacherRepository.findAll(pageable);
+//        model.addAttribute("teacherPageInfo",page);
+//        return "home_page/teachers";
+//    }
     @GetMapping(value = "/frontList")
-    public String TeacherFrontList(Model model, @RequestParam(defaultValue = "0", required=true,value = "pageNum")  Integer pageNum){
-        Pageable pageable = PageRequest.of(pageNum,100);
-        Page<Teacher> page = teacherRepository.findAll(pageable);
-        model.addAttribute("teacherPageInfo",page);
+    public String teacherFrontList(Model model){
+        List<CourseInfo> courseInfos = courseInfoService.findAll();
+        model.addAttribute("courseInfos",courseInfos);
+        int id = courseInfos.get(0).getId();
+
+        List<Teacher> teachers = teacherService.findByCourseId(id);
+        model.addAttribute("teachers",teachers);
+
+        CourseInfo course = courseInfoService.findById(id);
+        model.addAttribute("course",course);
+        return "home_page/teachers";
+    }
+
+    @GetMapping(value = "/frontList/{id}")
+    public String teacherFrontList1(Model model,@PathVariable int id){
+        List<CourseInfo> courseInfos = courseInfoService.findAll();
+        model.addAttribute("courseInfos",courseInfos);
+
+        List<Teacher> teachers = teacherService.findByCourseId(id);
+        model.addAttribute("teachers",teachers);
+
+        CourseInfo course = courseInfoService.findById(id);
+        model.addAttribute("course",course);
         return "home_page/teachers";
     }
 

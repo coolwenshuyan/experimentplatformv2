@@ -294,29 +294,31 @@ public class CollegeReportController {
         return "shiyan_baogao/bg_student";
     }
 
-    @GetMapping("/mark/{mid}/{stuid}")
-    public String mark(@PathVariable("mid") int mid, @PathVariable("stuid") int stuid, Model model) {
+    @GetMapping("/mark/{mid}/{stuid}/{arrangeId}")
+    public String mark(@PathVariable("mid") int mid, @PathVariable("stuid") int stuid,@PathVariable("arrangeId") int arrangeId, Model model) {
         //查询到报告信息
         CollegeReportStuExpDto collegeReportStuExpDto = collegeReportService.findByStuidMid(stuid, mid);
         model.addAttribute("collegeReport", collegeReportStuExpDto);
         model.addAttribute("stuid", stuid);
+        model.addAttribute("arrangeId", arrangeId);
         return "shiyan_baogao/bg_teacher";
     }
 
-    @PostMapping("/mark/{mid}/{stuid}")
-    public String mark(@PathVariable("mid") int mid, @PathVariable("stuid") int stuid, CollegeReport collegeReport,HttpSession session) {
-        int arrangeId=0;
-        //对通过SESSION来获取安排ID进行判断
-        try {
-            arrangeId = (int) session.getAttribute("arrageId_sctudemo");
-            if(ShiroKit.isEmpty(arrangeId)||arrangeId<=0)
-            {
-                return "redirect:/choose/course/list";
-            }
-        }catch (Exception e)
-        {
-            return "redirect:/choose/course/list";
-        }
+    @PostMapping("/mark/{mid}/{stuid}/{arrangeId}")
+    public String mark(@PathVariable("mid") int mid, @PathVariable("stuid") int stuid,@PathVariable("arrangeId") int arrangeId, CollegeReport collegeReport,HttpSession session) {
+
+        //        int arrangeId=0;
+//        //对通过SESSION来获取安排ID进行判断
+//        try {
+//            arrangeId = (int) session.getAttribute("arrageId_sctudemo");
+//            if(ShiroKit.isEmpty(arrangeId)||arrangeId<=0)
+//            {
+//                return "redirect:/choose/course/list";
+//            }
+//        }catch (Exception e)
+//        {
+//            return "redirect:/choose/course/list";
+//        }
         CollegeReport collegeReport1 = collegeReportService.findStuidAndMid(stuid, mid);
         collegeReport1.setCrTcComment(collegeReport.getCrTcComment());
         logger.debug(collegeReport.getCrTcComment());
@@ -335,7 +337,7 @@ public class CollegeReportController {
         }
         //更新成绩
         scoreUpdateService.singleStudentScoreUpdate2(stuid,arrangeId);
-        return "redirect:/collegereport/mark/" + mid + "/" + stuid;
+        return "redirect:/collegereport/mark/" + mid + "/" + stuid+"/" + arrangeId;
     }
 
 }

@@ -167,7 +167,7 @@ public interface StudentRepository extends BaseRepository<Student, Integer>, Jpa
     @Query("select new com.coolwen.experimentplatformv2.model.DTO.StudentReportScoreDTO " +
             "(st.id, st.stuName, st.classId, expm.m_name, khms.mReportScore, khms.mReportstate,khm.m_id,expm.report_type) " +
             "from Student st ,KaoHeModelScore khms ,ExpModel expm ,KaoheModel khm " +
-            "where st.id=khms.stuId and khms.tKaohemodleId=khm.id and khm.m_id = expm.m_id  and khm.arrange_id=?1")
+            "where st.id=khms.stuId and khms.tKaohemodleId=khm.id and khm.m_id = expm.m_id  and khm.arrange_id=?1 order by st.id,khm.m_id asc ")
     public List<StudentReportScoreDTO> listStudentMReportDTOByArrangeClassId(int arrangeClassId);
 
 

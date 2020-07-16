@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -326,7 +327,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Page<Student> findStudentPageAndXuehaoAndClass(int page, int classId, String select_orderId) {
-        Pageable pager = PageRequest.of(page, size);
+        Pageable pager = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC,"id"));
         Page<Student> studentsPage = studentRepository.findAll(new SimpleSpecificationBuilder<Student>(
                 "stuXuehao", ":", select_orderId).add("classId", "=", classId)
                 .generateSpecification(), pager);

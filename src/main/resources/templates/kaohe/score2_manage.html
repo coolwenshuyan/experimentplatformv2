@@ -168,7 +168,7 @@
 
     </table>
     <div class="table-wrapper" th:if="${Choose} ">
-        <table id="consumption-data" class="layui-table data top2" lay-size="lg" style="    text-align: center;">
+        <table id="consumption-data" class="layui-table data top2" lay-size="lg" style="text-align: center;">
             <!--				<colgroup>-->
             <!--					<col width="150">-->
             <!--					<col width="200">-->
@@ -184,7 +184,7 @@
                     <th>模块名</th>
                     <th>报告成绩</th>
                     <th>状态</th>
-                    <th>操作</th>
+                    <th width="46px">操作</th>
                 </div>
 
 
@@ -201,20 +201,20 @@
                         <td th:if="${stat.index >= 0}"><p th:text="${stuInfo.getmName()}">12345678</p></td>
                         <td th:if="${stat.index >= 0}"><p th:text="${stuInfo.getmScore()}">12345678</p></td>
                         <td th:if="${stat.index >= 0}"><p th:text="${stuInfo.isDone()}?'完成':'未完成'">12345678</p></td>
-                        <td th:if="${stat.index >= 0}">
-                            <a th:if="${stuInfo.isDone()}">
+                        <td th:if="${stat.index >= 0}" width="46px">
+                            <div th:if="${stuInfo.isDone()}">
                                 <a th:href="|/TreportGrade/${one.getId()}/${stuInfo.getMid()}/${selected}/giveMark|"
                                    th:if="not ${stuInfo.isReportType()}">
                                     <button class="layui-btn" lay-submit="" lay-filter="demo1">自定义版评分</button>
                                 </a>
-                                <a th:href="|/collegereport/mark/${stuInfo.getMid()}/${one.getId()/${selected}}|"
+                                <a th:href="|/collegereport/mark/${stuInfo.getMid()}/${one.getId()}/${selected}|"
                                    th:if="${stuInfo.isReportType()}">
                                     <button class="layui-btn" lay-submit="" lay-filter="demo1">学院版评分</button>
                                 </a>
-                            </a>
-                            <a th:if="not ${stuInfo.isDone()}">
+                            </div>
+                            <div th:if="not ${stuInfo.isDone()}">
                                 <button  class="layui-btn" lay-submit="" lay-filter="demo1">学生未完成</button>
-                            </a>
+                            </div>
                         </td>
 
                     </div>

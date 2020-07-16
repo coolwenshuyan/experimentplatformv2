@@ -130,7 +130,7 @@
     </style>
 </head>
 <body>
-<form th:action="@{|/collegereport/mark/${collegeReport.getMid()}/${stuid}|}" method="post">
+<form th:action="@{|/collegereport/mark/${collegeReport.getMid()}/${stuid}/${arrangeId}|}" method="post">
 <div class="layui-container">
     <div class="layui-row">
         <div class="layui-col-xs12 t_img">
@@ -226,8 +226,8 @@
 
 
 </div>
-<div  onclick="mycheck()">
-    <button type="submit" class="layui-btn next">完成</button>
+<div >
+    <button type="submit" id="submit" class="layui-btn next" >完成</button>
 </div>
 </form>
 
@@ -239,17 +239,18 @@
 <script>
     var editor1 = new UE.ui.Editor({ initialFrameWidth:"100%",initialFrameHeight:300 });   //设置富文本编辑器的高度
     editor1.render("editor1");
-
-    function mycheck(){
+    var submitBtn = document.getElementById("submit");
+    submitBtn.onclick = function (event) {
         var baogao = document.getElementById('baogao').value;
         var score = document.getElementById('score').value;	//获取input框内的值
         // alter(score);
         if(baogao == null || baogao == ""){
             alert("请填写实验报告课程名称");
+            return false;
         }else{
             if(score == null || score == ""){
                 alert("请填写得分");	//如果值为空，提示用户填写
-                return;
+                return false;
             }else{
                 if(score<0 || score>100 ){
                     alert("请输入0-100的分数");
@@ -257,11 +258,12 @@
                     return false;
                 }else{
                     //这可写信息都正确后  应该跳转的页面
-                    return false;
+                    return true;
                 }
 
             }
         }
+        return true;
 
 
     }

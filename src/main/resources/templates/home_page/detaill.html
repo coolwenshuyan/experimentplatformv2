@@ -36,12 +36,12 @@
 					</div>
 				</div>
 			</div>
-			<div class="add-one" th:if="${session.username} != null">
+			<div class="add-one" th:if="${session.student} != null">
 				<h2>我要回答</h2>
 				<div class="forEditor" id="forEditor"></div>
 				<div class="submit-btn">回 复</div>
 			</div>
-			<div class="add-tip" th:if="${session.username} == null">登录后才可以回答问题哦，快去登录吧！</div>
+			<div class="add-tip" th:if="${session.student} == null">登录后才可以回答问题哦，快去登录吧！</div>
 		</section>
 		<footer>
 			<p>copyright © 2020 旅游大数据虚拟仿真实验教学平台</p>

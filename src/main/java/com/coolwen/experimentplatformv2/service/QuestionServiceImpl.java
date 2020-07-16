@@ -3,7 +3,6 @@ package com.coolwen.experimentplatformv2.service;
 import com.coolwen.experimentplatformv2.dao.QuestionRepository;
 import com.coolwen.experimentplatformv2.model.DTO.QuestionStudentDto;
 import com.coolwen.experimentplatformv2.model.Question;
-import com.coolwen.experimentplatformv2.model.Student;
 import com.coolwen.experimentplatformv2.specification.SimplePageBuilder;
 import com.coolwen.experimentplatformv2.specification.SimpleSortBuilder;
 import com.coolwen.experimentplatformv2.specification.SimpleSpecificationBuilder;
@@ -12,16 +11,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-import javax.xml.crypto.Data;
-import java.util.Date;
 import java.util.List;
-import java.util.function.Predicate;
 
 /**
  * @author yellow
@@ -110,10 +102,10 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public Page<QuestionStudentDto> findAllByCourseId(int pageNum, Question question) {
         Pageable pager = PageRequest.of(pageNum, size);
-        if (question.getCourse_id() == 0) {
+        if (question.getCourseId() == 0) {
             return this.findAndUname(pager);
         } else {
-            return questionRepository.findByCourse_idAndIsreply(question.getCourse_id(), question.getIsreply(), pager);
+            return questionRepository.findByCourse_idAndIsreply(question.getCourseId(), question.getIsreply(), pager);
         }
     }
 

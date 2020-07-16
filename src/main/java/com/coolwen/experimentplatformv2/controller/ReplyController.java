@@ -1,10 +1,15 @@
 package com.coolwen.experimentplatformv2.controller;
 
 import com.coolwen.experimentplatformv2.dao.ReplyRepository;
-import com.coolwen.experimentplatformv2.model.*;
+import com.coolwen.experimentplatformv2.model.Admin;
+import com.coolwen.experimentplatformv2.model.Question;
+import com.coolwen.experimentplatformv2.model.Reply;
+import com.coolwen.experimentplatformv2.model.Student;
 import com.coolwen.experimentplatformv2.service.QuestionService;
 import com.coolwen.experimentplatformv2.service.ReplyService;
 import org.apache.shiro.SecurityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,22 +19,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
 import java.util.Date;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 /**
- *
- *  @author yellow
+ * @author yellow
  */
 @Controller
 @RequestMapping(value = "reply")
 public class ReplyController {
     protected static final Logger logger = LoggerFactory.getLogger(ReplyController.class);
-//    注入
+    //    注入
     @Autowired
     private ReplyService replyService;
 
-    @Autowired
-    private ReplyRepository replyRepository;
 
     @Autowired
     private QuestionService questionService;
@@ -52,19 +53,18 @@ public class ReplyController {
         Admin admin = null;
         try {
             admin = (Admin) SecurityUtils.getSubject().getPrincipal();
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
 
         }
-        if(admin == null) {
+        if (admin == null) {
 
             admin = new Admin();
             admin.setUname("管理教师");
         }
 
 //        插入回复
-        reply.setReply_pname(admin.getUname());//获得并存入回复名字
-        reply.setDic_datetime(new Date());
+        reply.setReplyPname(admin.getUname());//获得并存入回复名字
+        reply.setDicDatetime(new Date());
         replyService.add(reply);
         Question question = questionService.findById(id);
 //        表示已回复
@@ -86,14 +86,14 @@ public class ReplyController {
         Student student = (Student) session.getAttribute("student");
 
 //        插入回复
-        reply.setReply_pname(student.getStuUname());//获得并存入回复名字
-        reply.setDic_datetime(new Date());
+        reply.setReplyPname(student.getStuName());//获得并存入回复名字
+        reply.setDicDatetime(new Date());
         replyService.add(reply);
         Question question = questionService.findById(id);
 //      表示老师未回复
         question.setIsreply(false);
         questionService.add(question);
-        return "redirect:/question/"  + "detaill/"+ id;//list
+        return "redirect:/question/" + "detaill/" + id;//list
     }
 
 

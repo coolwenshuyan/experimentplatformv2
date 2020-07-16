@@ -70,7 +70,7 @@ public class QuestionController {
             question.setSid(student.getId());
             question.setIsreply(false);
             question.setQuestionDatetime(new Date());
-            question.setCourse_id(courseId);
+            question.setCourseId(courseId);
             questionService.add(question);
             return "redirect:/question/list";//list
         }
@@ -120,6 +120,7 @@ public class QuestionController {
                                 @RequestParam(defaultValue = "0", required = true, value = "isreply") Integer isreply,
                                 @RequestParam(defaultValue = "0", required = true, value = "day") Integer day, HttpSession session
     ) {
+        logger.debug("接口信息: + /question/list");
         Question question = new Question();
         logger.debug("课程ID:" + courseId);
         logger.debug("day:" + day);
@@ -143,7 +144,7 @@ public class QuestionController {
             session.setAttribute("question_courseId", courseId);
         }
         question.setIsreply(isr);
-        question.setCourse_id(courseId);
+        question.setCourseId(courseId);
         model.addAttribute("day", day);
         model.addAttribute("courseId", courseId);
         model.addAttribute("isreply", isreply);
@@ -233,19 +234,19 @@ public class QuestionController {
 
     //学生进入查看页
     @GetMapping(value = "/detaill/{id}")
-    public String seesee1(@PathVariable int id, Model model) {
+    public String seesee1(@PathVariable int id, Model model, @RequestParam(required = true, defaultValue = "0") Integer pageNum) {
 //        查到该问题
         Question question = questionService.findById(id);
         logger.debug("问题信息:" + question);
         model.addAttribute("question", question);
 //        查到所有回复
-        List<Reply> replies = replyService.findByreplycontent(id);
-        logger.debug("回答列表信息:" + replies);
+        Page<Reply> replies = replyService.findPageByQuesionId(pageNum, question.getId());
+        logger.debug("回答列表信息:" + replies.getContent());
         model.addAttribute("replies", replies);
 //        查出学生的名字
         int a = question.getSid();
-        String studentName = studentRepository.findStudentname(a);
-        model.addAttribute("studentName", studentName);
+        Student student = studentRepository.findAllById(a);
+        model.addAttribute("student", student);
         return "home_page/detaill";
     }
 

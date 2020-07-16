@@ -17,15 +17,15 @@ public class Reply {
     @TableGenerator(name = "reply_id",initialValue = 0,allocationSize = 1,table = "seq_table")
     public int id;
     private int qid;            //问题id
-    private String reply_pname; //回复用户名
+    private String replyPname; //回复用户名
     private String content;     //回复内容
-    private Date dic_datetime;  //记录时间
+    private Date dicDatetime;  //记录时间
 
-    public Reply(int qid, String reply_pname, String content, Date dic_datetime) {
+    public Reply(int qid, String replyPname, String content, Date dicDatetime) {
         this.qid = qid;
-        this.reply_pname = reply_pname;
+        this.replyPname = replyPname;
         this.content = content;
-        this.dic_datetime = dic_datetime;
+        this.dicDatetime = dicDatetime;
     }
 
     public Reply() { }
@@ -46,12 +46,12 @@ public class Reply {
         this.qid = qid;
     }
 
-    public String getReply_pname() {
-        return reply_pname;
+    public String getReplyPname() {
+        return replyPname;
     }
 
-    public void setReply_pname(String reply_pname) {
-        this.reply_pname = reply_pname;
+    public void setReplyPname(String replyPname) {
+        this.replyPname = replyPname;
     }
 
     public String getContent() {
@@ -62,12 +62,12 @@ public class Reply {
         this.content = content;
     }
 
-    public Date getDic_datetime() {
-        return dic_datetime;
+    public Date getDicDatetime() {
+        return dicDatetime;
     }
 
-    public void setDic_datetime(Date dic_datetime) {
-        this.dic_datetime = dic_datetime;
+    public void setDicDatetime(Date dicDatetime) {
+        this.dicDatetime = dicDatetime;
     }
 
     @Override
@@ -75,9 +75,9 @@ public class Reply {
         return "Reply{" +
                 "id=" + id +
                 ", qid=" + qid +
-                ", reply_pname='" + reply_pname + '\'' +
+                ", reply_pname='" + replyPname + '\'' +
                 ", content='" + content + '\'' +
-                ", dic_datetime=" + dic_datetime +
+                ", dic_datetime=" + dicDatetime +
                 '}';
     }
 }

@@ -49,7 +49,7 @@
 				<div class="question" th:each="question:${questionPageInfo.content}">
 					<div class="que-info cl">
 						<i>?</i>
-						<h3 th:text="|提问者：${question.stu_uname}|">提问者：某某某</h3>
+						<h3 th:text="|提问者：${question.stuName}|">提问者：某某某</h3>
 						<p th:text="${question.questionDatetime}">2020-02-02 12:12</p>
 					</div>
 					<div class="que-con" th:utext="${question.content}"></div>

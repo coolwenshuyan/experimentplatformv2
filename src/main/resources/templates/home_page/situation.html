@@ -11,33 +11,7 @@
 		<link rel="stylesheet" href="../../static/new/css/situation.css" />
 	</head>
 	<body>
-		<div class="topbar">
-			<div class="main cl">
-				<p>旅游大数据虚拟仿真实验教学平台</p>
-				<div class="user-info" th:if="${session.username} == null">
-					<a href="http://tysf.sctu.edu.cn:8071/sso//login?service=http://172.17.55.112:8889/shiro-cas">登陆</a>
-					<a href="/register">注册</a>
-				</div>
-				<div class="user-info" th:if="${session.username} != null">
-					<span th:text="|欢迎你，${session.username} |"></span>
-					<!--<a th:href="@{/logout}">退出登录</a>-->
-				</div>
-			</div>
-		</div>
-		<div class="navs cl">
-			<div class="logo">
-				<img src="../../static/new/images/sctu.png" />
-				<p>旅游大数据虚拟仿真实验教学平台</p>
-			</div>
-			<ul class="nav">
-				<li><a href="/newsinfo/newslist">首页</a></li>
-				<li><a href="/newsinfo/shiyan">实验大厅</a></li>
-				<li class="active"><a href="/setinfo/situation">平台概况</a></li>
-				<li><a href="/teachers/frontList">师资队伍</a></li>
-				<li><a href="/question/list">咨询答疑</a></li>
-				<li><a href="/learning/learningList">学习效果</a></li>
-			</ul>
-		</div>
+		<div th:include="home_page/header :: common_header"></div>
 		<section class="main-area">
 			<div class="aside-area">
 				<div class="aside-nav">

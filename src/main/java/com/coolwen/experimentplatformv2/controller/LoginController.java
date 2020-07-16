@@ -12,6 +12,7 @@ import com.coolwen.experimentplatformv2.utils.Message;
 import com.coolwen.experimentplatformv2.utils.VerifyCode.IVerifyCodeGen;
 import com.coolwen.experimentplatformv2.utils.VerifyCode.SimpleCharVerifyCodeGenImpl;
 import com.coolwen.experimentplatformv2.utils.VerifyCode.VerifyCode;
+import javafx.scene.control.Skin;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.session.Session;
@@ -139,6 +140,9 @@ public class LoginController {
         ModelAndView model = new ModelAndView();
         Subject subject = SecurityUtils.getSubject();
         Session session = subject.getSession();
+        if (ShiroKit.isEmpty(session.getAttribute("VerifyCode"))) {
+            model.setViewName("redirect:/learning/kuangjia");
+        }
         String code = ((String) session.getAttribute("VerifyCode")).toLowerCase();//转换成小写;
         loginCode = loginCode.toLowerCase();
         logger.debug("loginCode:" + loginCode);
@@ -159,7 +163,7 @@ public class LoginController {
 //                Student student = (Student) subject.getPrincipal();
                 //TODO 没有对学生验证
                 Student student = studentService.findByUname(username);
-                logger.debug("学生登陆信息");
+                logger.debug("学生登陆信息" + student);
                 if (ShiroKit.isEmpty(student)) {
                     model.addObject("msg", "此账号暂未通过审核!");
                     logger.debug("学生登陆信息");

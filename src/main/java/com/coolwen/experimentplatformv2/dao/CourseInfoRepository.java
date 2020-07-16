@@ -27,4 +27,7 @@ public interface CourseInfoRepository extends BaseRepository<CourseInfo, Integer
             "from CourseInfo ci,ArrangeClass ac where ci.id=ac.courseId and ci.id=?1 and ac.classId = ?2")
     CourseInfoDto findByCourseInfoIdAndClassId(int courseInfoId, int classId);
 
+    public CourseInfo findCourseInfoById(int id);
+
+
 }

@@ -8,6 +8,7 @@ import com.coolwen.experimentplatformv2.model.DTO.QuestionStudentDto;
 import com.coolwen.experimentplatformv2.service.CourseInfoService;
 import com.coolwen.experimentplatformv2.service.QuestionService;
 import com.coolwen.experimentplatformv2.service.ReplyService;
+import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,33 +54,41 @@ public class QuestionController {
 //        从seesion拿到student的内容
 //        Student student = (Student) SecurityUtils.getSubject().getPrincipal();
         Student student = (Student) session.getAttribute("student");
-
+        logger.debug("提问学生信息" + student);
         //暂时做了修改
-        if (student == null) {
+        if (ShiroKit.isEmpty(student)) {
             throw new UserException("请先登录后再来提问!");
         }
-
-//        插入数据到数据库
-        question.setSid(student.getId());
-        question.setIsreply(false);
-        question.setQuestionDatetime(new Date());
-        questionService.add(question);
-        return "redirect:/question/list1";//list
+        if (ShiroKit.isEmpty(session.getAttribute("question_courseId"))) {
+            throw new UserException("请先选择课程!");
+        } else {
+            int courseId = (int) session.getAttribute("question_courseId");
+            if (courseId == 0) {
+                throw new UserException("请先选择课程!");
+            }
+            //        插入数据到数据库
+            question.setSid(student.getId());
+            question.setIsreply(false);
+            question.setQuestionDatetime(new Date());
+            question.setCourse_id(courseId);
+            questionService.add(question);
+            return "redirect:/question/list";//list
+        }
     }
 
     //老师端看到question列表，查出来
     @GetMapping(value = "/teacherlist")
     public String QuestionList(Model model, HttpSession session,
                                @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum) {
-
-        User user = (User) session.getAttribute("admin");
-        logger.debug("user:>>" + user);
+        User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
+        logger.debug("登陆老师信息:" + user);
 //        分页查询，每页最多五条数据
         Pageable pageable = PageRequest.of(pageNum, 10);
         Page<QuestionStudentDto> page = questionService.findAndUname(pageable);
         model.addAttribute("questionPageInfo", page);
 
-        List<CourseInfo> courseInfoList = courseInfoService.getclass_by_arrangeteacher(user.getId());
+//        List<CourseInfo> courseInfoList = courseInfoService.getclass_by_arrangeteacher(user.getId());
+        List<CourseInfo> courseInfoList = courseInfoService.getclass_by_arrangeteacher(1);
         model.addAttribute("courseInfoList", courseInfoList);
         return "shouye/dayiManage";
     }
@@ -114,52 +123,33 @@ public class QuestionController {
         logger.debug("day:" + day);
         logger.debug("isreply:" + isreply);
         boolean isr = true;
-//        if (day != 0) {
-//            session.setAttribute("question_day", day);
-//            day = (Integer) session.getAttribute("question_day");
-//            String strDate1 = "2020-00-00";
-////        }
-//        if (session.getAttribute("question_isreply") != null && isreply != 0) {
-//            isreply = (Integer) session.getAttribute("question_isreply");
-//            isreply = (Integer) session.getAttribute("question_isreply");
-//        }
-//        if (session.getAttribute("question_courseId") != null && courseId != 0) {
-//            session.setAttribute("question_courseId", courseId);
-//            courseId = (Integer) session.getAttribute("question_courseId");
-//        }
         if (isreply != 0) {
             courseId = (Integer) session.getAttribute("question_courseId");
             logger.debug("isreply的课程ID:" + courseId);
             if (ShiroKit.isEmpty(courseId)) {
                 courseId = courseInfoService.findAll().get(1).getId();
-//                courseId = 0;
             }
             session.setAttribute("question_isreply", isreply);
-//            isreply = (Integer) session.getAttribute("question_isreply");
             if (isreply == 1) {
                 isr = true;
             } else {
                 isr = false;
             }
-//            question.setIsreply(isr);
         }
         if (courseId != 0) {
             isreply = (Integer) session.getAttribute("question_isreply");
             session.setAttribute("question_courseId", courseId);
-//            question.setCourse_id(courseId);
         }
         question.setIsreply(isr);
-//        question.setIsreply(isr);
         question.setCourse_id(courseId);
         model.addAttribute("day", day);
         model.addAttribute("courseId", courseId);
         model.addAttribute("isreply", isreply);
-//        分页查询，每页最多五条数据
-        Pageable pageable = PageRequest.of(pageNum, 5);
-//        Page<QuestionStudentDto> page = questionService.findAllByCourseId(pageable, 1);
         List<CourseInfo> courseInfoList = courseInfoService.findAll();
         model.addAttribute("courseInfoList", courseInfoList);
-
+        CourseInfo courseInfo = courseInfoService.findById(courseId);
+        logger.debug("课程信息:" + courseInfo);
+        model.addAttribute("courseInfo", courseInfo);
         logger.debug("查询信息:" + question);
         Page<QuestionStudentDto> page = questionService.findAllByCourseId(pageNum, question);
 //        page.getContent()
@@ -244,9 +234,11 @@ public class QuestionController {
     public String seesee1(@PathVariable int id, Model model) {
 //        查到该问题
         Question question = questionService.findById(id);
+        logger.debug("问题信息:" + question);
         model.addAttribute("question", question);
 //        查到所有回复
         List<Reply> replies = replyService.findByreplycontent(id);
+        logger.debug("回答列表信息:" + replies);
         model.addAttribute("replies", replies);
 //        查出学生的名字
         int a = question.getSid();

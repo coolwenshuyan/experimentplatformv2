@@ -64,7 +64,7 @@ public class QuestionServiceImpl implements QuestionService {
     //查所有问题
     @Override
     public List<Question> getAll() {
-        return null;
+        return questionRepository.findAll();
     }
 
     //  通过seesion的用户名查DTO

@@ -307,18 +307,7 @@ public class CollegeReportController {
     @PostMapping("/mark/{mid}/{stuid}/{arrangeId}")
     public String mark(@PathVariable("mid") int mid, @PathVariable("stuid") int stuid,@PathVariable("arrangeId") int arrangeId, CollegeReport collegeReport,HttpSession session) {
 
-        //        int arrangeId=0;
-//        //对通过SESSION来获取安排ID进行判断
-//        try {
-//            arrangeId = (int) session.getAttribute("arrageId_sctudemo");
-//            if(ShiroKit.isEmpty(arrangeId)||arrangeId<=0)
-//            {
-//                return "redirect:/choose/course/list";
-//            }
-//        }catch (Exception e)
-//        {
-//            return "redirect:/choose/course/list";
-//        }
+
         CollegeReport collegeReport1 = collegeReportService.findStuidAndMid(stuid, mid);
         collegeReport1.setCrTcComment(collegeReport.getCrTcComment());
         logger.debug(collegeReport.getCrTcComment());

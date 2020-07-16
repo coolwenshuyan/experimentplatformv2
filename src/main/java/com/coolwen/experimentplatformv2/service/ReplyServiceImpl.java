@@ -2,40 +2,49 @@ package com.coolwen.experimentplatformv2.service;
 
 import com.coolwen.experimentplatformv2.dao.ReplyRepository;
 import com.coolwen.experimentplatformv2.model.Reply;
+import com.coolwen.experimentplatformv2.specification.SimplePageBuilder;
+import com.coolwen.experimentplatformv2.specification.SimpleSortBuilder;
+import com.coolwen.experimentplatformv2.specification.SimpleSpecificationBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 
 /**
- *
- *  @author yellow
+ * @author yellow
  */
-@org.springframework.stereotype.Service
+@Service
 public class ReplyServiceImpl implements ReplyService {
 
-//    注入
+    //    注入
     @Autowired
     private ReplyRepository replyRepository;
 
-    @Autowired
-    @PersistenceContext
-    private EntityManager entityManager;
+//    @Autowired
+//    @PersistenceContext
+//    private EntityManager entityManager;
 
-//    添加回复
+
+    @Value("${SimplePageBuilder.pageSize}")
+    int size;
+
+    //    添加回复
     @Override
     public void add(Reply reply) {
         replyRepository.save(reply);
     }
 
-//    删除回复
+    //    删除回复
     @Override
     public void delete(int id) {
         replyRepository.deleteById(id);
     }
 
-//    通过qid删回复
+    //    通过qid删回复
     @Override
     public void deleteByQid(int id) {
 ////        List<Integer> ids = replyRepository.findByQid(id);
@@ -56,6 +65,15 @@ public class ReplyServiceImpl implements ReplyService {
     @Override
     public List<Reply> findByreplycontent(int qid) {
         return replyRepository.findByreplycontent(qid);
+    }
+
+    @Override
+    public Page<Reply> findPageByQuesionId(int pageNum, int questionId) {
+        Pageable pager = PageRequest.of(pageNum, size);
+        Page<Reply> replyPage = replyRepository.findAll(new SimpleSpecificationBuilder<Reply>(
+                "qid", "=", questionId)
+                .generateSpecification(), SimplePageBuilder.generate(pageNum, SimpleSortBuilder.generateSort("dicDatetime_d")));
+        return replyPage;
     }
 
     //通过id查回复

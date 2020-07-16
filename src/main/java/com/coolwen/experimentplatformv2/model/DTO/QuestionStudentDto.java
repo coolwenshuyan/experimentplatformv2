@@ -14,21 +14,14 @@ public class QuestionStudentDto {
     private int sid;  //学生id
     private String content;  //问题
     private Date questionDatetime;  //时间
-    private String stu_uname;   //学生姓名
+    private String stu_uname;   //学生账号
     private Boolean isreply;    //是否回复
     private String courseName; //课程名字
     private int courseInfoId; //课程di
 
-    public QuestionStudentDto(int id, int sid, String content, Date questionDatetime, String stu_uname, Boolean isreply) {
-        this.id = id;
-        this.sid = sid;
-        this.content = content;
-        this.questionDatetime = questionDatetime;
-        this.stu_uname = stu_uname;
-        this.isreply = isreply;
-    }
+    private String stuName;   //学生昵称
 
-    public QuestionStudentDto(int id, int sid, String content, Date questionDatetime, String stu_uname, Boolean isreply, String courseName, int questionId) {
+    public QuestionStudentDto(int id, int sid, String content, Date questionDatetime, String stu_uname, Boolean isreply, String courseName, int courseInfoId, String stuName) {
         this.id = id;
         this.sid = sid;
         this.content = content;
@@ -36,20 +29,8 @@ public class QuestionStudentDto {
         this.stu_uname = stu_uname;
         this.isreply = isreply;
         this.courseName = courseName;
-        this.courseInfoId = questionId;
-    }
-
-    public QuestionStudentDto(int id, int sid, String content, Date questionDatetime, String stu_uname, Boolean isreply, String courseName) {
-        this.id = id;
-        this.sid = sid;
-        this.content = content;
-        this.questionDatetime = questionDatetime;
-        this.stu_uname = stu_uname;
-        this.isreply = isreply;
-        this.courseName = courseName;
-    }
-
-    public QuestionStudentDto() {
+        this.courseInfoId = courseInfoId;
+        this.stuName = stuName;
     }
 
     public int getId() {
@@ -108,17 +89,34 @@ public class QuestionStudentDto {
         this.courseName = courseName;
     }
 
+    public int getCourseInfoId() {
+        return courseInfoId;
+    }
+
+    public void setCourseInfoId(int courseInfoId) {
+        this.courseInfoId = courseInfoId;
+    }
+
+    public String getStuName() {
+        return stuName;
+    }
+
+    public void setStuName(String stuName) {
+        this.stuName = stuName;
+    }
+
     @Override
     public String toString() {
         return "QuestionStudentDto{" +
                 "id=" + id +
                 ", sid=" + sid +
                 ", content='" + content + '\'' +
-                ", dic_datetime=" + questionDatetime +
+                ", questionDatetime=" + questionDatetime +
                 ", stu_uname='" + stu_uname + '\'' +
                 ", isreply=" + isreply +
                 ", courseName='" + courseName + '\'' +
-                ", questionId=" + courseInfoId +
+                ", courseInfoId=" + courseInfoId +
+                ", stuName='" + stuName + '\'' +
                 '}';
     }
 }

@@ -18,7 +18,7 @@ public class Student {
     //密码
     @Column(name = "stu_password")
     private String stuPassword;
-    //学生姓名
+    //学生姓名昵称
     @Column(name = "stu_name")
     private String stuName;
     //学号

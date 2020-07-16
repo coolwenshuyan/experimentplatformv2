@@ -1,110 +1,94 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8"/>
-    <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1"/>
-    <meta name="renderer" content="webkit"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>咨询答疑 - 旅游大数据虚拟仿真实验教学平台</title>
-    <link rel="stylesheet" href="../../static/new/css/reset.css"/>
-    <link rel="stylesheet" href="../../static/new/css/common.css"/>
-    <link rel="stylesheet" href="../../static/new/css/question.css"/>
-</head>
-<body>
-<div th:include="home_page/header :: common_header"></div>
-<section class="main-area">
-    <div class="bar">
-        <div class="current">咨询答疑</div>
-        <div class="crumb">当前位置：<a href="/newsinfo/newslist">首页</a> > 咨询答疑</div>
-    </div>
-    <div class="questions-filters">
-        <!--        <div class="filter-row">-->
-        <!--            <div class="filter-name">时 间：</div>-->
-        <!--            <div class="filter-items">-->
-        <!--                <div class="filter-item active">全部</div>-->
-        <!--                <div class="filter-item"><a-->
-        <!--                        th:href="@{/question/list(day=1)}"><span>近三天</span></a>-->
-        <!--                </div>-->
-        <!--                <div class="filter-item"><a-->
-        <!--                        th:href="@{/question/list(day=2)}"><span>近一周</span></a></div>-->
-        <!--                <div class="filter-item"><a-->
-        <!--                        th:href="@{/question/list(day=3)}"><span>近一月</span></a></div>-->
-        <!--                <div class="filter-item"><a-->
-        <!--                        th:href="@{/question/list(day=4)}"><span>近半年</span></a></div>-->
-        <!--                <div class="filter-item"><a-->
-        <!--                        th:href="@{/question/list(day=5)}"><span>半年前</span></a></div>-->
-        <!--                <input type="hidden" th:value="${day}">-->
-        <!--            </div>-->
-    </div>
-    <div class="filter-row">
-        <div class="filter-name">课 程：</div>
-        <div class="filter-items">
-            <div class="filter-item active">全部</div>
-            <b th:each="courinfor:${courseInfoList}">
-                <!--                    <div class="filter-item"><a th:href="@{|/question/list1(courseId=${courinfor.id})|}">><span-->
-                <div class="filter-item"><a th:href="@{/question/list(courseId=${courinfor.getId()})}"><span
-                        th:text="${courinfor.courseName}">某课程</span></a></div>
-            </b><input type="text" th:value="${courseId}">
-        </div>
-    </div>
-    <div class="filter-row">
-        <div class="filter-name">状 态：</div>
-        <div class="filter-items">
-            <div class="filter-item active">全部</div>
-            <div class="filter-item"><a
-                    th:href="@{/question/list(isreply=1)}">已回答</span></a></div>
-            <div class="filter-item"><a
-                    th:href="@{/question/list(isreply=2)}">未回答</span></a></div>
-            <input type="text" th:value="${isreply}">
-        </div>
-    </div>
-    </div>
-    <div class="questions">
-        <h2>提问列表</h2>
-        <div class="question" th:each="question:${questionPageInfo.content}">
-            <div class="que-info cl">
-                <i>?</i>
-                <h3 th:text="|提问者：${question.stu_uname}|">提问者：某某某</h3>
-                <p th:text="${question.questionDatetime}">2020-02-02 12:12</p>
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1" />
+		<meta name="renderer" content="webkit" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>咨询答疑 - 旅游大数据虚拟仿真实验教学平台</title>
+		<link rel="stylesheet" href="../../static/new/css/reset.css" />
+		<link rel="stylesheet" href="../../static/new/css/common.css" />
+		<link rel="stylesheet" href="../../static/new/css/question.css" />
+	</head>
+	<body>
+		<div th:include="home_page/header :: common_header"></div>
+		<section class="main-area">
+			<div class="bar">
+				<div class="current">咨询答疑</div>
+				<div class="crumb">当前位置：<a href="/newsinfo/newslist">首页</a> > 咨询答疑</div>
+			</div>
+			<div class="questions-filters">
+				<div class="filter-row">
+					<div class="filter-name">课 程：</div>
+					<div class="filter-items">
+						<div class="filter-item" th:classappend="${courseId == 0}?'active'">
+							<a th:href="@{/question/list(courseId=0)}">全部</a>
+						</div>
+						<div class="filter-item" th:each="courinfor:${courseInfoList}" th:classappend="${courinfor.id == courseId}?'active'">
+							<a th:href="@{/question/list(courseId=${courinfor.getId()})}" th:text="${courinfor.courseName}"></a>
+						</div>
+					</div>
+				</div>
+				<div class="filter-row">
+					<div class="filter-name">状 态：</div>
+					<div class="filter-items">
+						<div class="filter-item" th:classappend="${isreply == 0}?'active'">
+							<a th:href="@{/question/list(isreply=0)}">全部</a>
+						</div>
+						<div class="filter-item" th:classappend="${isreply == 1}?'active'">
+							<a th:href="@{/question/list(isreply=1)}">已回答</a>
+						</div>
+						<div class="filter-item" th:classappend="${isreply == 2}?'active'">
+							<a th:href="@{/question/list(isreply=2)}">未回答</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="questions">
+				<h2>提问列表</h2>
+				<div class="question" th:each="question:${questionPageInfo.content}">
+					<div class="que-info cl">
+						<i>?</i>
+						<h3 th:text="|提问者：${question.stuName}|">提问者：某某某</h3>
+						<p th:text="${question.questionDatetime}">2020-02-02 12:12</p>
+					</div>
+					<div class="que-con" th:utext="${question.content}"></div>
+					<a th:if="${question.isreply}" th:href="@{|detaill/${question.id}|}" class="to-detail">查看回答</a>
+				</div>
+				<div class="que-pager">
+					<p>第 <span th:text="${questionPageInfo.number}+1">1</span> 页, 共 <span th:text="${questionPageInfo.totalPages}">1</span> 页 <span th:text="${questionPageInfo.totalElements}">1</span> 条</p>
+					<div class="cl" th:if="${questionPageInfo.number gt 0}">
+						<a th:href="@{/question/list}">首页</a>
+						<a th:href="@{/question/list(pageNum=${questionPageInfo.hasPrevious()}?${questionPageInfo.number}-1:0)}">上一页</a>
+						<a th:href="@{/question/list(pageNum=${questionPageInfo.hasNext()}?${questionPageInfo.number}+1:${questionPageInfo.number})}">下一页</a>
+						<a th:href="@{/question/list(pageNum=${questionPageInfo.totalPages}-1)}">尾页</a>
+					</div>
+				</div>
             </div>
-            <div class="que-con" th:utext="${question.content}"></div>
-            <a th:if="${question.isreply}" th:href="@{|detaill/${question.id}|}" class="to-detail">查看回答</a>
-        </div>
-        <div class="que-pager">
-            <p>第 <span th:text="${questionPageInfo.number}+1">1</span> 页, 共 <span
-                    th:text="${questionPageInfo.totalPages}">1</span> 页 <span
-                    th:text="${questionPageInfo.totalElements}">1</span> 条</p>
-            <div class="cl" th:if="${questionPageInfo.number gt 0}">
-                <a th:href="@{/question/list}">首页</a>
-                <a th:href="@{/question/list(pageNum=${questionPageInfo.hasPrevious()}?${questionPageInfo.number}-1:0)}">上一页</a>
-                <a th:href="@{/question/list(pageNum=${questionPageInfo.hasNext()}?${questionPageInfo.number}+1:${questionPageInfo.number})}">下一页</a>
-                <a th:href="@{/question/list(pageNum=${questionPageInfo.totalPages}-1)}">尾页</a>
-            </div>
-        </div>
-    </div>
-    <div class="add-one" th:if="${session.student != null }">
-        <div th:if="${session.question_courseId ==null and session.question_courseId==0}">请选择课程提问</div>
-        <h2 th:if="${courseInfo !=null }" th:text="|我要对《${courseInfo.courseName}》课程提问|">我要提问</h2>
-        <div th:if="${courseInfo !=null}" class="forEditor"
-             id="forEditor"></div>
-        <div class="submit-btn" th:if="${courseInfo !=null}">提 问</div>
-    </div>
-    <div class="add-tip" th:if="${session.student} == null">登录后选择课程才可以提问，快去登录吧！</div>
-</section>
-<footer>
-    <p>copyright © 2020 旅游大数据虚拟仿真实验教学平台</p>
-</footer>
-<script src="//cdn.staticfile.org/jquery/1.8.0/jquery.min.js"></script>
-<script src="//cdn.staticfile.org/wangEditor/3.1.1/wangEditor.min.js"></script>
-<script src="//cdn.staticfile.org/layer/3.1.1/layer.min.js"></script>
-<script src="../../static/new/js/editor.config.js"></script>
-<script>
-    $('.submit-btn').click(function () {
-        var _data = editor.txt.html()
-        $.post('/question/add', {content: _data}, function (data, textStatus, jqXHR) {
-            window.location.reload()
-        })
-    })
-</script>
-</body>
+            <form action="/question/add" id="question-form" method="POST" style="display: none;">
+				<input type="text" name="content" class="question-input">
+			</form>
+			<div class="add-one" th:if="${session.student != null }">
+				<div th:if="${session.question_courseId ==null and session.question_courseId==0}">请选择课程提问</div>
+				<h2 th:if="${courseInfo !=null }" th:text="|我要对《${courseInfo.courseName}》课程提问|">我要提问</h2>
+				<div th:if="${courseInfo !=null}" class="forEditor" id="forEditor"></div>
+				<div class="submit-btn" th:if="${courseInfo !=null}">提 问</div>
+			</div>
+			<div class="add-tip" th:if="${session.student} == null">登录后选择课程才可以提问，快去登录吧！</div>
+		</section>
+		<footer>
+			<p>copyright © 2020 旅游大数据虚拟仿真实验教学平台</p>
+		</footer>
+		<script src="//cdn.staticfile.org/jquery/1.8.0/jquery.min.js"></script>
+		<script src="//cdn.staticfile.org/wangEditor/3.1.1/wangEditor.min.js"></script>
+		<script src="//cdn.staticfile.org/layer/3.1.1/layer.min.js"></script>
+		<script src="../../static/new/js/editor.config.js"></script>
+		<script>
+			$('.submit-btn').click(function () {
+				var _data = editor.txt.html()
+				$('.question-input').val(_data);
+				$('#question-form').submit();
+			})
+		</script>
+	</body>
 </html>

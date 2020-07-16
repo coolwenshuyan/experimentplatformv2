@@ -29,7 +29,10 @@ public interface QuestionRepository extends BaseRepository<Question, Integer>, J
     public Question findById(int id);
 
     //    通过登录的seesion的用户名查出id等DTO里内容
-    @Query(value = "select  new com.coolwen.experimentplatformv2.model.DTO.QuestionStudentDto(q.id,q.sid,q.content,q.questionDatetime,s.stuUname,q.isreply,c.courseName) from Question q,Student s,CourseInfo c where q.sid=s.id and q.course_id=c.id order by q.isreply,q.questionDatetime desc ")
+    @Query(value = "select  new com.coolwen.experimentplatformv2.model.DTO.QuestionStudentDto" +
+            "(q.id,q.sid,q.content,q.questionDatetime,s.stuUname,q.isreply,c.courseName,c.id,s.stuName) " +
+            "from Question q,Student s,CourseInfo c " +
+            "where q.sid=s.id and q.courseId=c.id order by q.isreply,q.questionDatetime desc ")
     public Page<QuestionStudentDto> findAndUname(Pageable pageable);
 
     //    查出提问学生姓名
@@ -42,14 +45,25 @@ public interface QuestionRepository extends BaseRepository<Question, Integer>, J
     @Query(value = "update t_question set isreply = ? where id = ?", nativeQuery = true)
     void setIsreply(boolean b);
 
-    @Query(value = "select  new com.coolwen.experimentplatformv2.model.DTO.QuestionStudentDto(q.id,q.sid,q.content,q.questionDatetime,s.stuUname,q.isreply,c.courseName) from Question q,Student s,CourseInfo c where q.sid=s.id and q.course_id=c.id and q.course_id=?1 order by q.isreply,q.questionDatetime desc ")
+    @Query(value = "select  new com.coolwen.experimentplatformv2.model.DTO.QuestionStudentDto" +
+            "(q.id,q.sid,q.content,q.questionDatetime,s.stuUname,q.isreply,c.courseName,c.id,s.stuName) " +
+            "from Question q,Student s,CourseInfo c " +
+            "where q.sid=s.id and q.courseId=c.id and q.courseId=?1 order by q.isreply,q.questionDatetime desc ")
     Page<QuestionStudentDto> findAllByCourseId(int courseId, Pageable pageable);
 
-    @Query(value = "select  new com.coolwen.experimentplatformv2.model.DTO.QuestionStudentDto(q.id,q.sid,q.content,q.questionDatetime,s.stuUname,q.isreply,c.courseName) " +
+    @Query(value = "select  new com.coolwen.experimentplatformv2.model.DTO.QuestionStudentDto" +
+            "(q.id,q.sid,q.content,q.questionDatetime,s.stuUname,q.isreply,c.courseName,c.id,s.stuName) " +
             "from Question q,Student s,CourseInfo c " +
-            "where q.sid=s.id and q.course_id=c.id and q.course_id=?1 and q.isreply=?2 " +
+            "where q.sid=s.id and q.courseId=c.id and q.courseId=?1 and q.isreply=?2 " +
             "order by q.isreply,q.questionDatetime desc ")
     public Page<QuestionStudentDto> findByCourse_idAndIsreply(int courseId, boolean isreply, Pageable pageable);
 
 //    Page<Question> findAll(SimpleSpecificationBuilder<Question> questionSimpleSpecificationBuilder, Pageable pageable);
+
+    @Query(value = "select  new com.coolwen.experimentplatformv2.model.DTO.QuestionStudentDto" +
+            "(q.id,q.sid,q.content,q.questionDatetime,s.stuUname,q.isreply,c.courseName,c.id,s.stuName) " +
+            "from Question q,Student s,CourseInfo c, User u ,ArrangeClass a " +
+            "where q.sid=s.id and q.courseId=c.id and q.courseId=?1 and u.id=?2 and u.id=a.teacherId and a.courseId=q.courseId " +
+            "order by q.isreply,q.questionDatetime desc ")
+    public Page<QuestionStudentDto> findByCourseIdAndTeacherId(int courseId, int teacherId, Pageable pageable);
 }

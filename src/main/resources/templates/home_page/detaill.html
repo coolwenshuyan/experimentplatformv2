@@ -21,18 +21,28 @@
         <div class="question">
             <div class="que-info cl">
                 <i>?</i>
-                <h3 th:text="|提问者：${studentName}|"></h3>
+                <h3 th:text="|提问者：${student.stuName}|"></h3>
                 <p th:text="${question.questionDatetime}"></p>
             </div>
             <div class="que-con" th:utext="${question.content}"></div>
         </div>
         <div class="replies">
-            <div class="reply" th:each="reply:${replies}">
+            <div class="reply" th:each="reply:${replies.getContent()}">
                 <div class="reply-info">
-                    <p th:text="|回复人：${reply.reply_pname}|"></p>
-                    <p th:text="|回复于：${reply.dic_datetime}|"></p>
+                    <p th:text="|回复人：${reply.replyPname}|"></p>
+                    <p th:text="|回复于：${reply.dicDatetime}|"></p>
                 </div>
                 <div class="reply-content" th:utext="${reply.content}"></div>
+            </div>
+        </div>
+        <div class="layui-card-body ">
+            <div class="page">
+                <div>
+                    <a class="prev"
+                       th:href="@{'/question/detaill/'+${question.id}(pageNum=${replies.hasPrevious()}?${replies.number}-1:0)}">&lt;&lt;</a>
+                    <a class="next"
+                       th:href="@{'/question/detaill/'+${question.id}(pageNum=${replies.hasNext()}?${replies.number}+1:${replies.number})}">&gt;&gt;</a>
+                </div>
             </div>
         </div>
     </div>

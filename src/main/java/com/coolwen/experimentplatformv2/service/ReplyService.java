@@ -1,12 +1,12 @@
 package com.coolwen.experimentplatformv2.service;
 
 import com.coolwen.experimentplatformv2.model.Reply;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 /**
- *
- *  @author yellow
+ * @author yellow
  */
 public interface ReplyService {
 
@@ -16,13 +16,15 @@ public interface ReplyService {
     //删除
     void delete(int id);
 
-//  通过qid删除
+    //  通过qid删除
     void deleteByQid(int id);
 
     //通过qid查
     public List<Reply> findByreplycontent(int qid);
 
-//    通过id查回复
+    public Page<Reply> findPageByQuesionId(int pageNum, int quesionId);
+
+    //    通过id查回复
     public Reply findById(int id);
 
     //查所有

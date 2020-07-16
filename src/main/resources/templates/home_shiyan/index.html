@@ -15,6 +15,8 @@
                 <div class="experiment" th:each="model:${k}">
                     <div class="exp-cover"><img th:src="${model.m_imageurl}" /></div>
                     <div class="exp-title" th:text="${model.m_name}"></div>
+                    <div><span th:text="${#dates.format(model.getKaohe_starttime(),'yyyy-MM-dd HH:mm:ss')}"></span></div>
+                    <div><span th:text="${#dates.format(model.getKaohe_endtime(),'yyyy-MM-dd HH:mm:ss')}"></span></div>
                     <div class="exp-infos">
                         <div class="exp-info">测试：<span th:text="${model.m_teststate == false }?'未完成':'已完成'"></span></div>
                         <div class="exp-info">权重：<span th:text="${model.m_scale}"></span></div>

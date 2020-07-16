@@ -4,6 +4,7 @@ import com.coolwen.experimentplatformv2.dao.basedao.BaseRepository;
 import com.coolwen.experimentplatformv2.model.ClassModel;
 import com.coolwen.experimentplatformv2.model.CourseInfo;
 import com.coolwen.experimentplatformv2.model.DTO.CourseInfoDto;
+import com.coolwen.experimentplatformv2.model.DTO.CourseInfoDto2;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
@@ -27,4 +28,8 @@ public interface CourseInfoRepository extends BaseRepository<CourseInfo, Integer
             "from CourseInfo ci,ArrangeClass ac where ci.id=ac.courseId and ci.id=?1 and ac.classId = ?2")
     CourseInfoDto findByCourseInfoIdAndClassId(int courseInfoId, int classId);
 
+    @Query("select new com.coolwen.experimentplatformv2.model.DTO.CourseInfoDto2 " +
+            "(ci.id, ci.courseName, ci.courseCode, ci.teacherId, ci.courseImgurl, ci.courseIntruduce, ac.id, ac.classId, ac.teacherId, ac.arrangeStart, ac.arrangeEnd, ac.skAddress) " +
+            "from CourseInfo ci,ArrangeClass ac where ci.id=ac.courseId and ac.classId = ?1")
+    List<CourseInfoDto2> findByArrangeCourseInfoDto2byClassId(int classId);
 }

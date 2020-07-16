@@ -55,11 +55,14 @@
 			<div class="select-section">
 				<div class="lessions-slide">
 					<div class="slide" th:each="courseInfo:${courseInfoList}">
+						<div>开始时间：<span th:text="${#dates.format(courseInfo.arrangeStart,'yyyy-MM-dd HH:mm:ss')}"></span></div>
+						<div>结束时间：<span th:text="${#dates.format(courseInfo.arrangeEnd,'yyyy-MM-dd HH:mm:ss')}"></span></div>
+						<div>上课地点：<span th:text="${courseInfo.skAddress}"></span></div>
 						<div class="lession-item">
 							<img src="../../static/new/images/c1.jpg" th:src="@{'/upload/'+${courseInfo.courseImgurl}}" />
 							<p th:text="${courseInfo.courseName}">某某课程名称</p>
 						</div>
-						<div class="select-btn"><a th:href="@{|/newsinfo/shiyan/${courseInfo.id}|}">进入课程</a>></div>
+						<div class="select-btn"><a th:href="@{|/newsinfo/shiyan/${courseInfo.courseInfoId}|}">进入课程</a>></div>
 					</div>
 				</div>
 			</div>

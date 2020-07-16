@@ -4,6 +4,7 @@ package com.coolwen.experimentplatformv2.service;
 import com.coolwen.experimentplatformv2.model.ClassModel;
 import com.coolwen.experimentplatformv2.model.CourseInfo;
 import com.coolwen.experimentplatformv2.model.DTO.CourseInfoDto;
+import com.coolwen.experimentplatformv2.model.DTO.CourseInfoDto2;
 
 import java.util.List;
 
@@ -33,4 +34,5 @@ public interface CourseInfoService {
 
     CourseInfoDto findByCourseInfoIdAndClassId(int courseInfoId, int classId);
 
+    List<CourseInfoDto2> findByArrangeCourseInfoDto2byClassId(int classId);
 }

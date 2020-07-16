@@ -2,6 +2,7 @@ package com.coolwen.experimentplatformv2.controller;
 
 import com.coolwen.experimentplatformv2.kit.ShiroKit;
 import com.coolwen.experimentplatformv2.model.*;
+import com.coolwen.experimentplatformv2.model.DTO.CourseInfoDto2;
 import com.coolwen.experimentplatformv2.service.ArrangeClassService;
 import com.coolwen.experimentplatformv2.service.ClassService;
 import com.coolwen.experimentplatformv2.service.CourseInfoService;
@@ -55,21 +56,32 @@ public class ChooseController {
             return "redirect:/choose/course/nochoose";
         }
         logger.debug("班级信息:" + classModel);
-        //通过班级查询该班级所有的安排表
-        List<ArrangeClass> arrangeClassList = arrangeClassService.findByClassId(classModel.getClassId());
-        logger.debug("安排表信息:" + arrangeClassList);
-        if (arrangeClassList.size() == 0) {
+//        //通过班级查询该班级所有的安排表
+//        List<ArrangeClass> arrangeClassList = arrangeClassService.findByClassId(classModel.getClassId());
+//        logger.debug("安排表信息:" + arrangeClassList);
+//        if (arrangeClassList.size() == 0) {
+//            emsg = "你所在的班级还没有进行排课，等待老师排课！";
+//            SecurityUtils.getSubject().getSession().setAttribute("emsg", emsg);
+//            return "redirect:/choose/course/nochoose";
+//        }
+//        //获取所有安排表的id
+//        List<Integer> arrageClassIds = arrangeClassList.stream().map(ArrangeClass -> ArrangeClass.getCourseId()).collect(Collectors.toList());
+//        logger.debug("过滤的ID："+arrageClassIds);
+//        //通过安排表查询该班级的所有课程
+//        List<CourseInfo> courseInfoList = courseInfoService.findByArrangeClassIds(arrageClassIds);
+//        logger.debug("所有的考核课程信息:" + courseInfoList);
+//        model.addAttribute("courseInfoList", courseInfoList);
+
+         List<CourseInfoDto2> courseInfoList = courseInfoService.findByArrangeCourseInfoDto2byClassId(classModel.getClassId());
+        if (courseInfoList.size() == 0) {
             emsg = "你所在的班级还没有进行排课，等待老师排课！";
             SecurityUtils.getSubject().getSession().setAttribute("emsg", emsg);
             return "redirect:/choose/course/nochoose";
         }
-        //获取所有安排表的id
-        List<Integer> arrageClassIds = arrangeClassList.stream().map(ArrangeClass -> ArrangeClass.getCourseId()).collect(Collectors.toList());
-        logger.debug("过滤的ID："+arrageClassIds);
-        //通过安排表查询该班级的所有课程
-        List<CourseInfo> courseInfoList = courseInfoService.findByArrangeClassIds(arrageClassIds);
         logger.debug("所有的考核课程信息:" + courseInfoList);
         model.addAttribute("courseInfoList", courseInfoList);
+
+
         return "/kuangjia/select";
     }
 

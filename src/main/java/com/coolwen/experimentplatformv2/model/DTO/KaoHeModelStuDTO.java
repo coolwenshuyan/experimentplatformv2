@@ -1,5 +1,7 @@
 package com.coolwen.experimentplatformv2.model.DTO;
 
+import java.util.Date;
+
 public class KaoHeModelStuDTO {
 
     private int m_id;//模块id
@@ -15,8 +17,10 @@ public class KaoHeModelStuDTO {
     private String m_imageurl;//模块图片
     private String inurl;
     private boolean report_type;
+    private Date kaohe_starttime;
+    private Date kaohe_endtime;
 
-    public KaoHeModelStuDTO(int m_id, int stu_id, Boolean m_teststate, Boolean m_reportstate, float m_scale, float m_score, String m_name, String m_imageurl,String inurl,boolean report_type) {
+    public KaoHeModelStuDTO(int m_id, int stu_id, Boolean m_teststate, Boolean m_reportstate, float m_scale, float m_score, String m_name, String m_imageurl, String inurl, boolean report_type, Date kaohe_starttime, Date kaohe_endtime) {
         this.m_id = m_id;
         this.stu_id = stu_id;
         this.m_teststate = m_teststate;
@@ -27,22 +31,8 @@ public class KaoHeModelStuDTO {
         this.m_imageurl = m_imageurl;
         this.inurl = inurl;
         this.report_type = report_type;
-    }
-
-    public boolean isReport_type() {
-        return report_type;
-    }
-
-    public void setReport_type(boolean report_type) {
-        this.report_type = report_type;
-    }
-
-    public String getInurl() {
-        return inurl;
-    }
-
-    public void setInurl(String inurl) {
-        this.inurl = inurl;
+        this.kaohe_starttime = kaohe_starttime;
+        this.kaohe_endtime = kaohe_endtime;
     }
 
     public int getM_id() {
@@ -107,5 +97,37 @@ public class KaoHeModelStuDTO {
 
     public void setM_imageurl(String m_imageurl) {
         this.m_imageurl = m_imageurl;
+    }
+
+    public String getInurl() {
+        return inurl;
+    }
+
+    public void setInurl(String inurl) {
+        this.inurl = inurl;
+    }
+
+    public boolean isReport_type() {
+        return report_type;
+    }
+
+    public void setReport_type(boolean report_type) {
+        this.report_type = report_type;
+    }
+
+    public Date getKaohe_starttime() {
+        return kaohe_starttime;
+    }
+
+    public void setKaohe_starttime(Date kaohe_starttime) {
+        this.kaohe_starttime = kaohe_starttime;
+    }
+
+    public Date getKaohe_endtime() {
+        return kaohe_endtime;
+    }
+
+    public void setKaohe_endtime(Date kaohe_endtime) {
+        this.kaohe_endtime = kaohe_endtime;
     }
 }

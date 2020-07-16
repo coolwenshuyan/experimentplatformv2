@@ -5,23 +5,13 @@
 		<meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1" />
 		<meta name="renderer" content="webkit" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>登陆 - 四川旅游学院虚拟仿真实验教学管理平台</title>
+		<title>登陆 - 旅游大数据虚拟仿真实验教学平台</title>
 		<link rel="stylesheet" href="../../static/new/css/reset.css" />
+		<link rel="stylesheet" href="../../static/new/css/common.css" />
 		<link rel="stylesheet" href="../../static/new/css/login.css" />
 	</head>
 	<body>
-		<div class="topbar">
-			<div class="main cl">
-				<div class="welcome">四川旅游学院虚拟仿真实验教学管理平台</div>
-				<div class="datestr"></div>
-			</div>
-		</div>
-		<header>
-			<div class="main cl">
-				<img class="header-logo" src="../../static/new/images/sctu.png" />
-				<p class="header-title">虚拟仿真实验教学管理平台</p>
-			</div>
-		</header>
+		<div th:include="home_page/header :: common_header"></div>
 		<section>
 			<div class="main cl">
 				<form class="login-form-area" method="post" th:action="@{/login}">
@@ -46,9 +36,7 @@
 			</div>
 		</section>
 		<footer>
-			<div class="main">
-				<p>copyright © 2020 四川旅游学院虚拟仿真实验教学平台</p>
-			</div>
+			<p>copyright © 2020 旅游大数据虚拟仿真实验教学平台</p>
 		</footer>
 		<script src="//cdn.staticfile.org/jquery/3.5.1/jquery.min.js"></script>
 		<script>

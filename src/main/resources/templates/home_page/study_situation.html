@@ -21,23 +21,10 @@
 			<div class="lessions-area">
 				<div class="lessions-list">
 					<div class="lessions-slide">
-						<div class="slide">
-							<div class="lession-item active">课程名称1</div>
-						</div>
-						<div class="slide">
-							<div class="lession-item">课程名称2</div>
-						</div>
-						<div class="slide">
-							<div class="lession-item">课程名称3</div>
-						</div>
-						<div class="slide">
-							<div class="lession-item">课程名称4</div>
-						</div>
-						<div class="slide">
-							<div class="lession-item">课程名称5</div>
-						</div>
-						<div class="slide">
-							<div class="lession-item">课程名称6</div>
+						<div class="slide" th:each="courseInfo:${courseInfos}">
+							<a th:href="@{|/learning/learningList/${courseInfo.getId()}|}" >
+								<div class="lession-item" th:classappend="${courseInfo.getId() == courseId} ? 'active'" th:text="${courseInfo.getCourseName()}">课程名称1</div>
+							</a>
 						</div>
 					</div>
 				</div>
@@ -51,31 +38,57 @@
 					<h3>效果展示</h3>
 					<div class="reports">
 						<div class="reports-slide">
-							<div class="slide" th:each="effect:${learningPageInfo.content}">
+							<div class="slide" th:each="effect:${effects}">
 								<div class="report-item">
-									<a th:href="@{|effectDetails/${effect.id}|}">
+									<a th:href="@{|/learning/effectDetails/${effect.id}|}">
 										<img src="../../static/new/images/1.jpg" th:src="@{'/upload/'+${effect.effect_imgurl}}" />
 										<p>效果展示名称1</p>
 									</a>
 								</div>
 							</div>
-							<div class="slide" th:each="effect:${learningPageInfo.content}">
-								<div class="report-item">
-									<a th:href="@{|effectDetails/${effect.id}|}">
-										<img src="../../static/new/images/1.jpg" th:src="@{'/upload/'+${effect.effect_imgurl}}" />
-										<p>效果展示名称2</p>
-									</a>
-								</div>
-							</div>
-							<div class="slide" th:each="effect:${learningPageInfo.content}">
-								<div class="report-item">
-									<a th:href="@{|effectDetails/${effect.id}|}">
-										<img src="../../static/new/images/1.jpg" th:src="@{'/upload/'+${effect.effect_imgurl}}" />
-										<p>效果展示名称3</p>
-									</a>
-								</div>
-							</div>
+<!--							<div class="slide" th:each="effect:${learningPageInfo.content}">-->
+<!--								<div class="report-item">-->
+<!--									<a th:href="@{|effectDetails/${effect.id}|}">-->
+<!--										<img src="../../static/new/images/1.jpg" th:src="@{'/upload/'+${effect.effect_imgurl}}" />-->
+<!--										<p>效果展示名称1</p>-->
+<!--									</a>-->
+<!--								</div>-->
+<!--							</div>-->
+<!--							<div class="slide" th:each="effect:${learningPageInfo.content}">-->
+<!--								<div class="report-item">-->
+<!--									<a th:href="@{|effectDetails/${effect.id}|}">-->
+<!--										<img src="../../static/new/images/1.jpg" th:src="@{'/upload/'+${effect.effect_imgurl}}" />-->
+<!--										<p>效果展示名称2</p>-->
+<!--									</a>-->
+<!--								</div>-->
+<!--							</div>-->
+<!--							<div class="slide" th:each="effect:${learningPageInfo.content}">-->
+<!--								<div class="report-item">-->
+<!--									<a th:href="@{|effectDetails/${effect.id}|}">-->
+<!--										<img src="../../static/new/images/1.jpg" th:src="@{'/upload/'+${effect.effect_imgurl}}" />-->
+<!--										<p>效果展示名称3</p>-->
+<!--									</a>-->
+<!--								</div>-->
+<!--							</div>-->
 						</div>
+<!--						<div class="slide">-->
+<!--							<div class="lession-item active">课程名称1</div>-->
+<!--						</div>-->
+<!--						<div class="slide">-->
+<!--							<div class="lession-item">课程名称2</div>-->
+<!--						</div>-->
+<!--						<div class="slide">-->
+<!--							<div class="lession-item">课程名称3</div>-->
+<!--						</div>-->
+<!--						<div class="slide">-->
+<!--							<div class="lession-item">课程名称4</div>-->
+<!--						</div>-->
+<!--						<div class="slide">-->
+<!--							<div class="lession-item">课程名称5</div>-->
+<!--						</div>-->
+<!--						<div class="slide">-->
+<!--							<div class="lession-item">课程名称6</div>-->
+<!--						</div>-->
 					</div>
 				</div>
 			</div>
@@ -90,11 +103,11 @@
 			$(function () {
 				$('.lessions-slide').bxSlider({ pager: false, minSlides: 6, maxSlides: 6, moveSlides: 1, slideWidth: 285, slideMargin: 16 })
 				$('.reports-slide').bxSlider({ pager: false, minSlides: 3, maxSlides: 3, moveSlides: 1, slideWidth: 210, slideMargin: 20 })
-				$('.lession-item').click(function (e) {
-					e.preventDefault()
-					$('.lession-item').removeClass('active')
-					$(this).addClass('active')
-				})
+				// $('.lession-item').click(function (e) {
+				// 	e.preventDefault()
+				// 	$('.lession-item').removeClass('active')
+				// 	$(this).addClass('active')
+				// })
 				var myChart1 = echarts.init($('#chart')[0])
 				myChart1.setOption(getOption(1))
 			})
@@ -116,11 +129,17 @@
 								formatter: '{b}:\n{c}个\n{d}%'
 							},
 							data: [
-								{ value: 174, name: '高分' },
-								{ value: 280, name: '中等' },
-								{ value: 125, name: '低分' },
+								{ value: parseInt('[[${excellentstu}]]'), name: '高分' },
+								{ value: parseInt('[[${qualifiedstu}]]'), name: '中等' },
+								{ value: parseInt('[[${unqualifiedstu}]]'), name: '低分' },
 								{
-									name: '成绩总数\n' + 579 + '份',
+									name: '成绩总数\n' + '[[${allpasspeople}]]' + '份',
+							// data: [
+							// 	{ value: 174, name: '高分' },
+							// 	{ value: 280, name: '中等' },
+							// 	{ value: 125, name: '低分' },
+							// 	{
+							// 		name: '成绩总数\n' + 579 + '份',
 									value: 0,
 									label: {
 										formatter: '{b}',

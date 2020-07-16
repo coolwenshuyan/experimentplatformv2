@@ -22,35 +22,47 @@
 			<div class="lessions-area">
 				<div class="lessions-list">
 					<div class="lessions-slide">
-						<div class="slide">
-							<div class="lession-item active">课程名称1</div>
+						<div class="slide" th:each="courseInfo:${courseInfos}">
+							<a th:href="@{|/teachers/frontList/${courseInfo.getId()}|}" >
+								<div class="lession-item" th:classappend="${courseInfo.getId() == course.getId()} ? 'active'" th:text="${courseInfo.getCourseName()}">课程名称1</div>
+							</a>
 						</div>
-						<div class="slide">
-							<div class="lession-item">课程名称2</div>
-						</div>
-						<div class="slide">
-							<div class="lession-item">课程名称3</div>
-						</div>
-						<div class="slide">
-							<div class="lession-item">课程名称4</div>
-						</div>
-						<div class="slide">
-							<div class="lession-item">课程名称5</div>
-						</div>
-						<div class="slide">
-							<div class="lession-item">课程名称6</div>
-						</div>
+						<!--						<div class="slide">-->
+						<!--							<div class="lession-item active">课程名称1</div>-->
+						<!--						</div>-->
+						<!--						<div class="slide">-->
+						<!--							<div class="lession-item">课程名称2</div>-->
+						<!--						</div>-->
+						<!--						<div class="slide">-->
+						<!--							<div class="lession-item">课程名称3</div>-->
+						<!--						</div>-->
+						<!--						<div class="slide">-->
+						<!--							<div class="lession-item">课程名称4</div>-->
+						<!--						</div>-->
+						<!--						<div class="slide">-->
+						<!--							<div class="lession-item">课程名称5</div>-->
+						<!--						</div>-->
+						<!--						<div class="slide">-->
+						<!--							<div class="lession-item">课程名称6</div>-->
+						<!--						</div>-->
 					</div>
 				</div>
 			</div>
-			<div class="show-bar">《<span>课程名称6</span>》的师资队伍</div>
+			<div class="show-bar">《<span th:text="${course.getCourseName()}">课程名称6</span>》的师资队伍</div>
 			<div class="teachers cl">
-				<div class="teacher" th:each="teacher:${teacherPageInfo.content}">
+				<div class="teacher" th:each="teacher:${teachers}">
 					<div><img th:src="@{'/upload/'+${teacher.image_url}}" th:alt="${teacher.person_name}" /></div>
 					<h3 th:text="${teacher.person_name}"></h3>
 					<p th:text="${teacher.intro}"></p>
 				</div>
 			</div>
+			<!--			<div class="teachers cl">-->
+			<!--				<div class="teacher" th:each="teacher:${teacherPageInfo.content}">-->
+			<!--					<div><img th:src="@{'/upload/'+${teacher.image_url}}" th:alt="${teacher.person_name}" /></div>-->
+			<!--					<h3 th:text="${teacher.person_name}"></h3>-->
+			<!--					<p th:text="${teacher.intro}"></p>-->
+			<!--				</div>-->
+			<!--			</div>-->
 		</section>
 		<footer>
 			<p>copyright © 2020 旅游大数据虚拟仿真实验教学平台</p>
@@ -60,11 +72,11 @@
 		<script>
 			$(function () {
 				$('.lessions-slide').bxSlider({ pager: false, minSlides: 6, maxSlides: 6, moveSlides: 1, slideWidth: 285, slideMargin: 16 })
-				$('.lession-item').click(function (e) {
-					e.preventDefault()
-					$('.lession-item').removeClass('active')
-					$(this).addClass('active')
-				})
+				// $('.lession-item').click(function (e) {
+				// 	e.preventDefault()
+				// 	$('.lession-item').removeClass('active')
+				// 	$(this).addClass('active')
+				// })
 			})
 		</script>
 	</body>

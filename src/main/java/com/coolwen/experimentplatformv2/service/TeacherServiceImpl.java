@@ -12,6 +12,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TeacherServiceImpl implements TeacherService {
     @Autowired
@@ -57,5 +59,10 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public Page<Teacher> findAllByUid(int uid,Pageable pageable) {
         return teacherRepository.findAllByUid(uid,pageable);
+    }
+
+    @Override
+    public List<Teacher> findByCourseId(int id) {
+        return teacherRepository.findByCourse_id(id);
     }
 }

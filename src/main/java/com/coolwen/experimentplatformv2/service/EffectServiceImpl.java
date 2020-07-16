@@ -11,6 +11,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class EffectServiceImpl implements EffectService {
 
@@ -49,5 +51,10 @@ public class EffectServiceImpl implements EffectService {
                 "course_id", "=", courseId)
                 .generateSpecification(), pager);
         return effectPage;
+    }
+
+    @Override
+    public List<Effect> findByCourseId(int id) {
+        return effectRepository.findByCourseId(id);
     }
 }

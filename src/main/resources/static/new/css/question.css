@@ -3,10 +3,10 @@
 .current{font-size:20px;text-indent:20px;font-weight:normal;}
 .crumb{font-size:14px;margin-right:20px;}
 .crumb a:hover{color:#215130;text-decoration:underline;}
-.questions-filters{border:1px solid #999999;margin-bottom:20px;padding:20px 10px 10px 10px;box-sizing:border-box;width:100%;font-size:14px;line-height:2;}
-.filter-row{width:100%;padding-left:60px;position:relative;margin-bottom:8px;}
-.filter-name{position:absolute;left:10px;width:80px;}
-.filter-items{width:calc(100% - 60px);}
+.questions-filters{border:1px solid #999999;margin-bottom:20px;padding:20px 10px 10px 10px;box-sizing:border-box;width:100%;font-size:16px;line-height:2;}
+.filter-row{width:100%;padding-left:70px;position:relative;margin-bottom:8px;}
+.filter-name{position:absolute;left:0;width:70px;text-indent:10px;}
+.filter-items{width:100%;}
 .filter-item{display:inline-block;padding:0 8px;cursor:pointer;}
 .filter-item.active{color:#215130;font-weight:bold;}
 .filter-item:hover{color:#215130;}

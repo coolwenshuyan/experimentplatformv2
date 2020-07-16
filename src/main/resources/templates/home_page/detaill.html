@@ -1,62 +1,62 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<meta charset="UTF-8" />
-		<meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1" />
-		<meta name="renderer" content="webkit" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>提问详情 - 旅游大数据虚拟仿真实验教学平台</title>
-		<link rel="stylesheet" href="../../static/new/css/reset.css" />
-		<link rel="stylesheet" href="../../static/new/css/common.css" />
-		<link rel="stylesheet" href="../../static/new/css/detail.css" />
-	</head>
-	<body>
-		<div th:include="home_page/header :: common_header"></div>
-		<section class="main-area">
-			<div class="bar">
-				<a href="/question/list1" class="back-btn">返回列表</a>
-				<div class="crumb">当前位置：<a href="/newsinfo/newslist">首页</a> > <a href="/question/list1">咨询答疑</a> > 提问详情</div>
-			</div>
-			<div class="questions">
-				<div class="question">
-					<div class="que-info cl">
-						<i>?</i>
-						<h3 th:text="|提问者：${studentName}|"></h3>
-						<p th:text="${question.questionDatetime}"></p>
-					</div>
-					<div class="que-con" th:utext="${question.content}"></div>
-				</div>
-				<div class="replies">
-					<div class="reply" th:each="reply:${replies}">
-						<div class="reply-info">
-							<p th:text="|回复人：${reply.reply_pname}|"></p>
-							<p th:text="|回复于：${reply.dic_datetime}|"></p>
-						</div>
-						<div class="reply-content" th:utext="${reply.content}"></div>
-					</div>
-				</div>
-			</div>
-			<div class="add-one" th:if="${session.username} != null">
-				<h2>我要回答</h2>
-				<div class="forEditor" id="forEditor"></div>
-				<div class="submit-btn">回 复</div>
-			</div>
-			<div class="add-tip" th:if="${session.username} == null">登录后才可以回答问题哦，快去登录吧！</div>
-		</section>
-		<footer>
-			<p>copyright © 2020 旅游大数据虚拟仿真实验教学平台</p>
-		</footer>
-		<script src="//cdn.staticfile.org/jquery/1.8.0/jquery.min.js"></script>
-		<script src="//cdn.staticfile.org/wangEditor/3.1.1/wangEditor.min.js"></script>
-		<script src="//cdn.staticfile.org/layer/3.1.1/layer.min.js"></script>
-		<script src="../../static/new/js/editor.config.js"></script>
-		<script>
-			$('.submit-btn').click(function () {
-				var _data = editor.txt.html()
-				$.post('/reply/add2/[[${question.id}]]', { content: _data }, function (data, textStatus, jqXHR) {
-					window.location.reload()
-				})
-			})
-		</script>
-	</body>
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1"/>
+    <meta name="renderer" content="webkit"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>提问详情 - 旅游大数据虚拟仿真实验教学平台</title>
+    <link rel="stylesheet" href="../../static/new/css/reset.css"/>
+    <link rel="stylesheet" href="../../static/new/css/common.css"/>
+    <link rel="stylesheet" href="../../static/new/css/detail.css"/>
+</head>
+<body>
+<div th:include="home_page/header :: common_header"></div>
+<section class="main-area">
+    <div class="bar">
+        <a href="/question/list" class="back-btn">返回列表</a>
+        <div class="crumb">当前位置：<a href="/newsinfo/newslist">首页</a> > <a href="/question/list1">咨询答疑</a> > 提问详情</div>
+    </div>
+    <div class="questions">
+        <div class="question">
+            <div class="que-info cl">
+                <i>?</i>
+                <h3 th:text="|提问者：${studentName}|"></h3>
+                <p th:text="${question.questionDatetime}"></p>
+            </div>
+            <div class="que-con" th:utext="${question.content}"></div>
+        </div>
+        <div class="replies">
+            <div class="reply" th:each="reply:${replies}">
+                <div class="reply-info">
+                    <p th:text="|回复人：${reply.reply_pname}|"></p>
+                    <p th:text="|回复于：${reply.dic_datetime}|"></p>
+                </div>
+                <div class="reply-content" th:utext="${reply.content}"></div>
+            </div>
+        </div>
+    </div>
+    <div class="add-one" th:if="${session.student} != null">
+        <h2>我要回答</h2>
+        <div class="forEditor" id="forEditor"></div>
+        <div class="submit-btn">回 复</div>
+    </div>
+    <div class="add-tip" th:if="${session.student} == null">登录后才可以回答问题哦，快去登录吧！</div>
+</section>
+<footer>
+    <p>copyright © 2020 旅游大数据虚拟仿真实验教学平台</p>
+</footer>
+<script src="//cdn.staticfile.org/jquery/1.8.0/jquery.min.js"></script>
+<script src="//cdn.staticfile.org/wangEditor/3.1.1/wangEditor.min.js"></script>
+<script src="//cdn.staticfile.org/layer/3.1.1/layer.min.js"></script>
+<script src="../../static/new/js/editor.config.js"></script>
+<script>
+    $('.submit-btn').click(function () {
+        var _data = editor.txt.html()
+        $.post('/reply/add2/[[${question.id}]]', {content: _data}, function (data, textStatus, jqXHR) {
+            window.location.reload()
+        })
+    })
+</script>
+</body>
 </html>

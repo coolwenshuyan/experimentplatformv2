@@ -28,7 +28,7 @@ public class CourseInfoServiceImpl implements CourseInfoService {
 
     @Override
     public CourseInfo findById(int id) {
-        return courseInfoRepository.findById(id).get();
+        return courseInfoRepository.findCourseInfoById(id);
     }
 
     @Override

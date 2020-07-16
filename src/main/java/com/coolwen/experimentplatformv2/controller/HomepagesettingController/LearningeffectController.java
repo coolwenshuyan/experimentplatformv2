@@ -76,12 +76,50 @@ public class LearningeffectController {
      * @param pageNum 分页页数
      * @return 进入到前端前端学习效果页面
      */
+//    @GetMapping(value = "/learningList")
+//    public String learningList(Model model, @RequestParam(defaultValue = "0", required=true,value = "pageNum")  Integer pageNum){
+//        //查询全部优秀实验报告数据
+//        Pageable pageable = PageRequest.of(pageNum,500);
+//        Page<Effect> page = effectRepository.findAll(pageable);
+//        model.addAttribute("learningPageInfo",page);
+//        //往期参与考核的全部学生
+//        int allpasspeople = newsInfoService.findAllpasspeople();
+//        //往期参与考核的优秀学生（85分以上）
+//        int excellent = newsInfoService.findExcellentpeople();
+//        //往期参与考核的优秀学生（60分-85分）
+//        int qualified = newsInfoService.findQualifiedpeople();
+//        //往期参与考核的优秀学生（60分以下）
+//        int unqualified = newsInfoService.findUnqualifiedpeople();
+//
+//        if (allpasspeople == 0){
+//            allpasspeople = 1;
+//        }
+//        // 创建一个数值格式化对象
+//        NumberFormat numberFormat = NumberFormat.getInstance();
+//        // 设置精确到小数点后2位
+//        numberFormat.setMaximumFractionDigits(2);
+//        String excellentstu = numberFormat.format((float) excellent / (float) allpasspeople * 100) +"%";
+//        String qualifiedstu = numberFormat.format((float) qualified / (float) allpasspeople * 100) +"%";
+//        String unqualifiedstu = numberFormat.format((float) unqualified / (float) allpasspeople * 100) +"%";
+//
+//        model.addAttribute("excellentstu",excellentstu);
+//        model.addAttribute("qualifiedstu",qualifiedstu);
+//        model.addAttribute("unqualifiedstu",unqualifiedstu);
+//        return "home_page/study_situation";
+//    }
+
     @GetMapping(value = "/learningList")
-    public String learningList(Model model, @RequestParam(defaultValue = "0", required=true,value = "pageNum")  Integer pageNum){
-        //查询全部优秀实验报告数据
-        Pageable pageable = PageRequest.of(pageNum,500);
-        Page<Effect> page = effectRepository.findAll(pageable);
-        model.addAttribute("learningPageInfo",page);
+    public String learningList(Model model){
+
+        List<CourseInfo> courseInfos = courseInfoService.findAll();
+        model.addAttribute("courseInfos",courseInfos);
+        int id = courseInfos.get(0).getId();
+
+        List<Effect> effects = effectService.findByCourseId(id);
+        model.addAttribute("effects",effects);
+
+        model.addAttribute("courseId",id);
+
         //往期参与考核的全部学生
         int allpasspeople = newsInfoService.findAllpasspeople();
         //往期参与考核的优秀学生（85分以上）
@@ -90,21 +128,36 @@ public class LearningeffectController {
         int qualified = newsInfoService.findQualifiedpeople();
         //往期参与考核的优秀学生（60分以下）
         int unqualified = newsInfoService.findUnqualifiedpeople();
+        model.addAttribute("allpasspeople",allpasspeople);
+        model.addAttribute("excellentstu",excellent);
+        model.addAttribute("qualifiedstu",qualified);
+        model.addAttribute("unqualifiedstu",unqualified);
+        return "home_page/study_situation";
+    }
 
-        if (allpasspeople == 0){
-            allpasspeople = 1;
-        }
-        // 创建一个数值格式化对象
-        NumberFormat numberFormat = NumberFormat.getInstance();
-        // 设置精确到小数点后2位
-        numberFormat.setMaximumFractionDigits(2);
-        String excellentstu = numberFormat.format((float) excellent / (float) allpasspeople * 100) +"%";
-        String qualifiedstu = numberFormat.format((float) qualified / (float) allpasspeople * 100) +"%";
-        String unqualifiedstu = numberFormat.format((float) unqualified / (float) allpasspeople * 100) +"%";
+    @GetMapping(value = "/learningList/{id}")
+    public String learningList1(Model model,@PathVariable int id){
 
-        model.addAttribute("excellentstu",excellentstu);
-        model.addAttribute("qualifiedstu",qualifiedstu);
-        model.addAttribute("unqualifiedstu",unqualifiedstu);
+        List<CourseInfo> courseInfos = courseInfoService.findAll();
+        model.addAttribute("courseInfos",courseInfos);
+
+        List<Effect> effects = effectService.findByCourseId(id);
+        model.addAttribute("effects",effects);
+
+        model.addAttribute("courseId",id);
+
+        //往期参与考核的全部学生
+        int allpasspeople = newsInfoService.findAllpasspeople();
+        //往期参与考核的优秀学生（85分以上）
+        int excellent = newsInfoService.findExcellentpeople();
+        //往期参与考核的优秀学生（60分-85分）
+        int qualified = newsInfoService.findQualifiedpeople();
+        //往期参与考核的优秀学生（60分以下）
+        int unqualified = newsInfoService.findUnqualifiedpeople();
+        model.addAttribute("allpasspeople",allpasspeople);
+        model.addAttribute("excellentstu",excellent);
+        model.addAttribute("qualifiedstu",qualified);
+        model.addAttribute("unqualifiedstu",unqualified);
         return "home_page/study_situation";
     }
 

@@ -14,7 +14,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -41,6 +43,11 @@ public class StudentServiceImplTest {
     @Autowired
     private QuestionService questionService;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private ReplyService replyService;
 
     protected static final Logger logger = LoggerFactory.getLogger(StudentServiceImplTest.class);
 
@@ -58,6 +65,20 @@ public class StudentServiceImplTest {
             studentService.saveStudent(student);
         }
 
+    }
+
+    @Test
+    public void addUser() {
+        User user = new User();
+        for (int i = 10; i <= 50; i++) {
+            user = new User();
+            user.setNickname(getName());
+            user.setUsername("t" + i);
+            user.setPassword("123");
+            user.setStatus(false);
+            user.setGonghao("00009" + i);
+            userService.add(user);
+        }
     }
 
     @Test
@@ -218,5 +239,25 @@ public class StudentServiceImplTest {
         question.setIsreply(true);
         question.setCourse_id(1);
         logger.debug("问题信息:" + questionService.findAllByCourseId(0, question).getContent());
+    }
+
+    @Test
+    public void addRelpy() {
+        Reply reply = new Reply();
+        List<Question> questionList = questionService.getAll();
+        List<User> userList = userService.list();
+        logger.debug("问题信息:" + questionList);
+        for (int i = 1; i < 10000; i++) {
+            reply = new Reply();
+            Date date = randomDate("2019-01-01", "2020-07-15");
+            reply.setDic_datetime(date);
+            int questionId = ran.nextInt(questionList.size());
+            reply.setQid(questionId);
+            int teacherId = ran.nextInt(userList.size());
+            reply.setReply_pname(userList.get(teacherId).getUsername());
+            reply.setContent("仿真平台打法好,我爱仿真平台！");
+            logger.debug("回答信息:" + reply);
+            replyService.add(reply);
+        }
     }
 }

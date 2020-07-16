@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="../../static/new/css/question.css"/>
 </head>
 <body>
-		<div th:include="home_page/header :: common_header"></div>
+<div th:include="home_page/header :: common_header"></div>
 <section class="main-area">
     <div class="bar">
         <div class="current">咨询答疑</div>
@@ -82,12 +82,14 @@
             </div>
         </div>
     </div>
-    <div class="add-one" th:if="${session.stuName} != null">
-        <h2>我要提问</h2>
-        <div class="forEditor" id="forEditor"></div>
-        <div class="submit-btn">提 问</div>
+    <div class="add-one" th:if="${session.student != null }">
+        <div th:if="${session.question_courseId ==null and session.question_courseId==0}">请选择课程提问</div>
+        <h2 th:if="${courseInfo !=null }" th:text="|我要对《${courseInfo.courseName}》课程提问|">我要提问</h2>
+        <div th:if="${courseInfo !=null}" class="forEditor"
+             id="forEditor"></div>
+        <div class="submit-btn" th:if="${courseInfo !=null}">提 问</div>
     </div>
-    <div class="add-tip" th:if="${session.stuName} == null">登录后才可以提问，快去登录吧！</div>
+    <div class="add-tip" th:if="${session.student} == null">登录后选择课程才可以提问，快去登录吧！</div>
 </section>
 <footer>
     <p>copyright © 2020 旅游大数据虚拟仿真实验教学平台</p>

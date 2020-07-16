@@ -9,6 +9,7 @@ import java.util.Date;
 public class CourseInfoDto2 {
     private int courseInfoId;
 
+
     private String courseName;
 
     private String courseCode;

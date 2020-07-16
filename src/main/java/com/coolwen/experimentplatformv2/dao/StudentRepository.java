@@ -174,22 +174,21 @@ public interface StudentRepository extends BaseRepository<Student, Integer>, Jpa
     //只处理当期班级的学生成绩
     @Query("select new com.coolwen.experimentplatformv2.model.DTO.StudentLastTestScoreDTO " +
             "(st.stuXuehao, st.stuName, clas.className,tsc.totalScore) " +
-            "from Student st left join TotalScoreCurrent tsc on st.id = tsc.stuId " +
-            "left join ClassModel clas on clas.classId = st.classId left join ArrangeClass ac on clas.classId=ac.classId where clas.classIscurrent = false and ac.id=?1")
+            "from Student st,ClassModel clas,TotalScoreCurrent tsc where st.classId=clas.classId  and st.id = tsc.stuId and clas.classIscurrent = false and tsc.arrageId=?1")
     public Page<StudentLastTestScoreDTO> listStudentLastTestScoreDTOByArranId(Pageable page, int arrangeClassId);
 
 
     @Query("select new com.coolwen.experimentplatformv2.model.DTO.StuTotalScoreCurrentDTO " +
             "(st.stuXuehao,st.stuName,cla.className,tsc.mTotalScore,tsc.testScore,tsc.totalScore) " +
-            "from ArrangeClass ac  left join ClassModel cla on ac.classId=cla.classId left join   Student st on cla.classId=st.classId left join TotalScoreCurrent tsc on st.id = tsc.stuId " +
-            "where cla.classIscurrent = false and  ac.id=?1 group by st.id")
+            "from TotalScoreCurrent tsc,ClassModel cla, Student st where cla.classId=st.classId and st.id = tsc.stuId " +
+            "and cla.classIscurrent = false and  tsc.arrageId=?1")
     Page<StuTotalScoreCurrentDTO> listStuTotalScoreCurrentDTOByArrageId(Pageable page, int arrangeId);
 
     @Query("select new com.coolwen.experimentplatformv2.model.DTO.StuTotalScoreCurrentDTO " +
             "(st.stuXuehao,st.stuName,cla.className,tsc.mTotalScore,tsc.testScore,tsc.totalScore) " +
-            "from Student st left join TotalScoreCurrent tsc on st.id = tsc.stuId " +
-            "left join ClassModel cla on st.classId=cla.classId left join ArrangeClass ac on cla.classId=ac.classId where cla.classIscurrent = false and ac.id=?1 and st.stuXuehao like ?2 group by st.id")
-    Page<StuTotalScoreCurrentDTO> listStuTotalScoreCurrentDTOByArrageId(int arrangeId, String s, Pageable page);
+            "from TotalScoreCurrent tsc,ClassModel cla, Student st where cla.classId=st.classId and st.id = tsc.stuId " +
+            "and cla.classIscurrent = false and  tsc.arrageId=?1 and st.stuXuehao like ?2 ")
+    Page<StuTotalScoreCurrentDTO> listStuTotalScoreCurrentDTOByArrageId( Pageable page,int arrangeId, String s);
     //    @Query("select new com.coolwen.experimentplatformv2.model.DTO.StudentTestScoreDTO " +
 //            "(st.id, st.stuName, st.classId, expm.m_name, khms.mTestScore, khms.mTeststate,khm.m_id) " +
 //            "from Student st ,KaoHeModelScore khms ,ExpModel expm ,KaoheModel khm ,ArrangeClass ac " +

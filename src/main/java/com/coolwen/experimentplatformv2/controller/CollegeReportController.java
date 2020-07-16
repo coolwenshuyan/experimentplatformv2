@@ -327,7 +327,7 @@ public class CollegeReportController {
         }
         //更新成绩
         scoreUpdateService.singleStudentScoreUpdate2(stuid,arrangeId);
-        return "redirect:/collegereport/mark/" + mid + "/" + stuid+"/" + arrangeId;
+        return "redirect:/reportScoreManage/report/" + arrangeId;
     }
 
 }

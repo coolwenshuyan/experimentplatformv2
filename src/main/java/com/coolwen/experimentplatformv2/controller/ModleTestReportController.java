@@ -170,7 +170,7 @@ public class ModleTestReportController {
         ArrangeClass arrangeClass = arrangeClassService.findById(arrangeId);
         logger.debug("安排信息为:" + arrangeClass);
         int classId = arrangeClass.getClassId();
-        int courseId = arrangeClass.getCourseId();
+//        int courseId = arrangeClass.getCourseId();
         model.addAttribute("selectOrderId", select_orderId);
         ClassModel classModel = classService.findById(classId);
         //查询当期班级

@@ -349,7 +349,7 @@ public class StudentServiceImpl implements StudentService {
             listStuTotalScoreCurrentDTOPage = studentRepository.listStuTotalScoreCurrentDTOByArrageId(pager, arrageId);
         } else {
             selectOrderId = "%" + selectOrderId + "%";
-            listStuTotalScoreCurrentDTOPage = studentRepository.listStuTotalScoreCurrentDTOByArrageId(arrageId, selectOrderId, pager);
+            listStuTotalScoreCurrentDTOPage = studentRepository.listStuTotalScoreCurrentDTOByArrageId(pager,arrageId, selectOrderId);
         }
         return listStuTotalScoreCurrentDTOPage;
     }

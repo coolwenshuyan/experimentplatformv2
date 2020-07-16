@@ -324,12 +324,11 @@ public class TotalscoreCurrentController {
         //本安排的实验模块
         ArrangeClass arrangeClass = arrangeClassService.findById(arrangeId);
         logger.debug("安排信息为:" + arrangeClass);
-        model.addAttribute("arrageId", arrangeClass.getId());
+//        model.addAttribute("arrageId", arrangeClass.getId());
         int classId = arrangeClass.getClassId();
-        int courseId = arrangeClass.getCourseId();
+//        int courseId = arrangeClass.getCourseId();
         model.addAttribute("selectOrderId", select_orderId);
         ClassModel classModel = clazzService.findById(classId);
-        model.addAttribute("selectOrderId", select_orderId);
         //查询当期班级
 //        List<ClassModel> classList = classService.findCurrentClass();
         model.addAttribute("classList", classModel);

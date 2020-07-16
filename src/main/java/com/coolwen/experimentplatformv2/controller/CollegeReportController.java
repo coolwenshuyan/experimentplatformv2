@@ -308,6 +308,7 @@ public class CollegeReportController {
     public String mark(@PathVariable("mid") int mid, @PathVariable("stuid") int stuid,@PathVariable("arrangeId") int arrangeId, CollegeReport collegeReport,HttpSession session) {
 
 
+
         CollegeReport collegeReport1 = collegeReportService.findStuidAndMid(stuid, mid);
         collegeReport1.setCrTcComment(collegeReport.getCrTcComment());
         logger.debug(collegeReport.getCrTcComment());

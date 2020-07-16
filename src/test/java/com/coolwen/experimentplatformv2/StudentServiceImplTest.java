@@ -1,7 +1,6 @@
 package com.coolwen.experimentplatformv2;
 
 
-import com.coolwen.experimentplatformv2.controller.ChooseController;
 import com.coolwen.experimentplatformv2.model.*;
 import com.coolwen.experimentplatformv2.service.*;
 import org.junit.Test;
@@ -16,7 +15,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -191,7 +189,7 @@ public class StudentServiceImplTest {
             question = new Question();
             int coureId = (int) (Math.random() * 4 + 1);
             question.setContent("aboutus");
-            question.setCourse_id(coureId);
+            question.setCourseId(coureId);
             question.setContent(getName());
             Date date = randomDate("2019-01-01", "2020-07-15");
             ;
@@ -237,7 +235,7 @@ public class StudentServiceImplTest {
     public void findQuestion() {
         Question question = new Question();
         question.setIsreply(true);
-        question.setCourse_id(1);
+        question.setCourseId(1);
         logger.debug("问题信息:" + questionService.findAllByCourseId(0, question).getContent());
     }
 
@@ -250,12 +248,16 @@ public class StudentServiceImplTest {
         for (int i = 1; i < 10000; i++) {
             reply = new Reply();
             Date date = randomDate("2019-01-01", "2020-07-15");
-            reply.setDic_datetime(date);
-            int questionId = ran.nextInt(questionList.size());
+            reply.setDicDatetime(date);
+            int indexId = (int) (Math.random() * questionList.size() + 1);
+            int questionId = questionList.get(indexId-1).getId();
             reply.setQid(questionId);
             int teacherId = ran.nextInt(userList.size());
-            reply.setReply_pname(userList.get(teacherId).getUsername());
-            reply.setContent("仿真平台打法好,我爱仿真平台！");
+            reply.setReplyPname(userList.get(teacherId).getUsername());
+            Question question = questionService.findById(questionId);
+            logger.debug("回答信息:" + question);
+            CourseInfo courseInfo = courseInfoService.findById(question.getCourseId());
+            reply.setContent(courseInfo.getCourseName() + "仿真平台大法好,我爱仿真平台！");
             logger.debug("回答信息:" + reply);
             replyService.add(reply);
         }

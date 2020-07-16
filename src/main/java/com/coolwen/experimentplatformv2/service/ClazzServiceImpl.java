@@ -14,9 +14,10 @@ import java.util.List;
 public class ClazzServiceImpl implements ClazzService {
     @Autowired
     ClazzRepository clazzRepository;
+
     @Override
     public Page<ClassModel> findClassList(int pageNum) {
-        Pageable pageable = PageRequest.of(pageNum,10);
+        Pageable pageable = PageRequest.of(pageNum, 10);
         return clazzRepository.findAll(pageable);
     }
 
@@ -68,12 +69,17 @@ public class ClazzServiceImpl implements ClazzService {
 
     @Override
     public Integer findStuMTestByClassId(int classId, int mid) {
-        return clazzRepository.findStuMTestByClassId(classId,mid);
+        return clazzRepository.findStuMTestByClassId(classId, mid);
     }
 
     @Override
     public Integer findStuMReportStateByClassId(int classid, int mid) {
         return clazzRepository.findStuMReportStateByClassId(classid, mid);
+    }
+
+    @Override
+    public List<ClassModel> findClassByClassIdsIn(List<Integer> integers) {
+        return clazzRepository.findAllById(integers);
     }
 
 

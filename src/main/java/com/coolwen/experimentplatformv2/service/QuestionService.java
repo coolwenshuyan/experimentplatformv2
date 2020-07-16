@@ -45,4 +45,7 @@ public interface QuestionService {
 
     Page<QuestionStudentDto> findAllByCourseId(int pageNum, Question question);
 
+
+    public Page<QuestionStudentDto> findByCourseIdAndTeacherId(int courseId, int teacherId, int pageNum);
+
 }

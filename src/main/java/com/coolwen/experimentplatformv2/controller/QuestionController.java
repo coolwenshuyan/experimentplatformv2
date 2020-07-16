@@ -4,10 +4,9 @@ import com.coolwen.experimentplatformv2.dao.*;
 import com.coolwen.experimentplatformv2.exception.UserException;
 import com.coolwen.experimentplatformv2.kit.ShiroKit;
 import com.coolwen.experimentplatformv2.model.*;
+import com.coolwen.experimentplatformv2.model.DTO.ArrangeClassDto;
 import com.coolwen.experimentplatformv2.model.DTO.QuestionStudentDto;
-import com.coolwen.experimentplatformv2.service.CourseInfoService;
-import com.coolwen.experimentplatformv2.service.QuestionService;
-import com.coolwen.experimentplatformv2.service.ReplyService;
+import com.coolwen.experimentplatformv2.service.*;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author yellow
@@ -39,6 +39,15 @@ public class QuestionController {
     StudentRepository studentRepository;
     @Autowired
     CourseInfoService courseInfoService;
+
+    @Autowired
+    private ArrangeClassService arrangeClassService;//课程安排表
+
+    @Autowired
+    private ClazzService classService;
+
+    @Autowired
+    private StudentService studentService;
 
     protected static final Logger logger = LoggerFactory.getLogger(QuestionController.class);
 
@@ -76,20 +85,46 @@ public class QuestionController {
         }
     }
 
+//    //老师端看到question列表，查出来
+//    @GetMapping(value = "/teacherlist")
+//    public String loadAllModel(Model model,
+//                               @RequestParam(required = true, defaultValue = "") String select_orderId,
+//                               @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum) {
+//
+//        User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
+//        logger.debug("登陆用户信息:" + user);
+//        boolean choose = false;
+//        model.addAttribute("Choose", choose);
+//        List<CourseInfo> courseInfoList = courseInfoService.getclass_by_arrangeteacher(1);
+//        model.addAttribute("courseInfoList", courseInfoList);
+//        return "shouye/dayiManage";
+//    }
+
     //老师端看到question列表，查出来
-    @GetMapping(value = "/teacherlist")
+    @GetMapping(value = "/teacherlist/{courseinfoId}")
     public String QuestionList(Model model, HttpSession session,
-                               @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum) {
+                               @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum, @PathVariable int courseinfoId) {
         User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
         logger.debug("登陆老师信息:" + user);
-//        分页查询，每页最多五条数据
-        Pageable pageable = PageRequest.of(pageNum, 10);
-        Page<QuestionStudentDto> page = questionService.findAndUname(pageable);
-        model.addAttribute("questionPageInfo", page);
-
-//        List<CourseInfo> courseInfoList = courseInfoService.getclass_by_arrangeteacher(user.getId());
+        model.addAttribute("selected", courseinfoId);
         List<CourseInfo> courseInfoList = courseInfoService.getclass_by_arrangeteacher(1);
+        logger.debug("该老师负责的课程信息:" + courseInfoList);
         model.addAttribute("courseInfoList", courseInfoList);
+        if (courseinfoId == -1) {
+            Pageable pageable = PageRequest.of(pageNum, 10);
+            //查询该老师的课程信息
+            //TODO 加入老师信息筛选
+            Page<QuestionStudentDto> page = questionService.findAndUname(pageable);
+            model.addAttribute("questionPageInfo", page);
+            return "shouye/dayiManage";
+        } else {
+            List<ArrangeClassDto> arrangeClassDtos = arrangeClassService.findByTeacherIdAndCourseId(1, courseinfoId);
+            //获取所有班级的ID
+            List<Integer> integerList = arrangeClassDtos.stream().map(ArrangeClassDto -> ArrangeClassDto.getcIlassId()).collect(Collectors.toList());
+            logger.debug("该老师负责的班级信息有:" + arrangeClassDtos);
+            Page<QuestionStudentDto> page = questionService.findByCourseIdAndTeacherId(courseinfoId, 1, pageNum);
+            model.addAttribute("questionPageInfo", page);
+        }
         return "shouye/dayiManage";
     }
 

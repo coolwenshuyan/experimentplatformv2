@@ -109,5 +109,11 @@ public class QuestionServiceImpl implements QuestionService {
         }
     }
 
+    @Override
+    public Page<QuestionStudentDto> findByCourseIdAndTeacherId(int courseId, int teacherId, int pageNum) {
+        Pageable pager = PageRequest.of(pageNum, size);
+        return questionRepository.findByCourseIdAndTeacherId(courseId, teacherId, pager);
+    }
+
 
 }

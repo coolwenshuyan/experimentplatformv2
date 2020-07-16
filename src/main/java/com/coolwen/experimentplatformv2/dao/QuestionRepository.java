@@ -59,4 +59,11 @@ public interface QuestionRepository extends BaseRepository<Question, Integer>, J
     public Page<QuestionStudentDto> findByCourse_idAndIsreply(int courseId, boolean isreply, Pageable pageable);
 
 //    Page<Question> findAll(SimpleSpecificationBuilder<Question> questionSimpleSpecificationBuilder, Pageable pageable);
+
+    @Query(value = "select  new com.coolwen.experimentplatformv2.model.DTO.QuestionStudentDto" +
+            "(q.id,q.sid,q.content,q.questionDatetime,s.stuUname,q.isreply,c.courseName,c.id,s.stuName) " +
+            "from Question q,Student s,CourseInfo c, User u ,ArrangeClass a " +
+            "where q.sid=s.id and q.courseId=c.id and q.courseId=?1 and u.id=?2 and u.id=a.teacherId and a.courseId=q.courseId " +
+            "order by q.isreply,q.questionDatetime desc ")
+    public Page<QuestionStudentDto> findByCourseIdAndTeacherId(int courseId, int teacherId, Pageable pageable);
 }

@@ -1,0 +1,152 @@
+/**
+ * 文件名：SetInfoController.java
+ * 修改人：xxxx
+ * 修改时间：
+ * 修改内容：新增
+ */
+package com.coolwen.experimentplatformv2.controller;
+
+import com.coolwen.experimentplatformv2.dao.TeacherRepository;
+import com.coolwen.experimentplatformv2.model.SetInfo;
+import com.coolwen.experimentplatformv2.model.Teacher;
+import com.coolwen.experimentplatformv2.service.SetInfoService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+/**
+ * @Description 实验大厅帮助中心信息展示，后台管理系统平台概况和关于我们
+ * @Author 朱治汶
+ * @Version 1.0
+ * @Date 2020/5/29 19:47
+ */
+@Controller
+@RequestMapping(value = "/setinfoback")
+public class SetInfoBackController {
+
+    protected static final Logger logger = LoggerFactory.getLogger(SetInfoBackController.class);
+    @Autowired
+    SetInfoService setInfoService;
+
+    //后台管理系统 首页-->关于我们
+    @GetMapping(value = "/addus")
+    public String addus(Model model) {
+        SetInfo setInfo = setInfoService.findById(1);
+        //如果数据库没有数据，创建基础信息，如果有数据，存入model回显给前端
+        if (setInfo == null) {
+            SetInfo setInfo1 = new SetInfo();
+            setInfo1.setId(1);
+            setInfo1.setSet_aboutus("无数据");
+            setInfo1.setSet_platintro("无数据");
+            setInfo1.setSet_platstep("无数据");
+            setInfo1.setSet_rotateimg("1,2,3,4,5,6");
+            logger.debug(setInfo.toString());
+            setInfoService.add(setInfo1);
+            model.addAttribute("setInfo", setInfo1);
+            return "shouye/aboutUs";
+        }
+        model.addAttribute("setInfo", setInfo);
+        return "shouye/aboutUs";
+    }
+
+    //完成关于我们的添加操作
+    @PostMapping(value = "/addus")
+    public String addus(SetInfo setInfo, Model model) {
+        setInfo.setId(1);
+        SetInfo setInfo1 = setInfoService.findById(1);
+        setInfo.setSet_platintro(setInfo1.getSet_platintro());
+        setInfo.setSet_platstep(setInfo1.getSet_platstep());
+        setInfo.setSet_rotateimg(setInfo1.getSet_rotateimg());
+        setInfoService.add(setInfo);
+        model.addAttribute("msg", "更新成功");
+        return "shouye/aboutUs";
+    }
+
+    //进入平台概况设置页面
+    @GetMapping(value = "/addplat")
+    public String add(Model model) {
+        SetInfo setInfo = setInfoService.findById(1);
+        //如果数据库没有数据，创建基础信息，如果有数据，存入model回显给前端
+        if (setInfo == null) {
+            SetInfo setInfo1 = new SetInfo();
+            setInfo1.setId(1);
+            setInfo1.setSet_aboutus("无数据");
+            setInfo1.setSet_platintro("无数据");
+            setInfo1.setSet_platstep("无数据");
+            setInfo1.setSet_rotateimg("1,2,3,4,5,6");
+            setInfoService.add(setInfo1);
+            model.addAttribute("setInfo", setInfo1);
+            return "shouye/aboutPlatform";
+        }
+        model.addAttribute("setInfo", setInfo);
+        return "shouye/aboutPlatform";
+    }
+
+    //完成设置添加
+    @PostMapping(value = "/addplat")
+    public String add(SetInfo setInfo, Model model) {
+        setInfo.setId(1);
+        SetInfo setInfo1 = setInfoService.findById(1);
+        setInfo.setSet_aboutus(setInfo1.getSet_aboutus());
+        setInfo.setSet_rotateimg(setInfo1.getSet_rotateimg());
+        setInfoService.add(setInfo);
+        model.addAttribute("msg", "更新成功");
+        return "shouye/aboutPlatform";
+    }
+
+
+    //进入设置轮播页面
+    @GetMapping(value = "/lunbo")
+    public String addlunbo(Model model) {
+        SetInfo setInfo = setInfoService.findById(1);
+        //如果数据库没有数据，创建基础信息
+        if (setInfo == null) {
+            SetInfo setInfo1 = new SetInfo();
+            setInfo1.setId(1);
+            setInfo1.setSet_aboutus("无数据");
+            setInfo1.setSet_platintro("无数据");
+            setInfo1.setSet_platstep("无数据");
+            setInfo1.setSet_rotateimg("1,2,3,4,5,6");
+            setInfoService.add(setInfo1);
+            model.addAttribute("setInfo", setInfo1);
+            return "shouye/lunbo";
+        }
+        //此字段为数据拼接（例：1,2,3,4），将数据拆分后存入model返回给前端
+        String ids = setInfo.getSet_rotateimg();
+        String[] sid = ids.split(",");
+        model.addAttribute("setInfo", setInfo);
+        model.addAttribute("id1", sid[0]);
+        model.addAttribute("id2", sid[1]);
+        model.addAttribute("id3", sid[2]);
+        model.addAttribute("id4", sid[3]);
+        model.addAttribute("id5", sid[4]);
+        model.addAttribute("id6", sid[5]);
+        return "shouye/lunbo";
+    }
+
+    //完成轮播id存储操作
+    @PostMapping(value = "/lunbo")
+    public String addlunbo(String id1, String id2, String id3, String id4, String id5, String id6, Model model) {
+        SetInfo setInfo = new SetInfo();
+        setInfo.setId(1);
+        SetInfo setInfo1 = setInfoService.findById(1);
+        setInfo.setSet_platintro(setInfo1.getSet_platintro());
+        setInfo.setSet_platstep(setInfo1.getSet_platstep());
+        setInfo.setSet_aboutus(setInfo1.getSet_aboutus());
+        //拼接id存储到数据库中
+        setInfo.setSet_rotateimg(id1 + "," + id2 + "," + id3 + "," + id4 + "," + id5 + "," + id6);
+        setInfoService.add(setInfo);
+        model.addAttribute("msg", "更新成功");
+        return "shouye/lunbo";
+    }
+
+}

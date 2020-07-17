@@ -20,6 +20,7 @@ public interface UserService {
     public void delete(int id);
 
 
+    public User findByGonghao(String gongHao);
 
     public User update(User user, List<Integer> rids);
 

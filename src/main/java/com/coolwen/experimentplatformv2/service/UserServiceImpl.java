@@ -68,6 +68,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findByGonghao(String gongHao) {
+        return userRepository.findByGonghao(gongHao);
+    }
+
+    @Override
     @Transactional
     public User update(User user, List<Integer> rids) {
         logger.debug("user:" + user.toString());

@@ -62,15 +62,18 @@ public class MyShiroCaseUrlRealm extends CasRealm {
         String comsys_name = (String) map.get("comsys_name");
         logger.debug("授权角色信息:" + comsys_role);
         logger.debug("授权账号:" + principals.getPrimaryPrincipal() + "授权用户名:" + comsys_name);
+        String xuehao = (String) SecurityUtils.getSubject().getSession().getAttribute("account");
         int uid = 0;
         if (comsys_role.contains("ROLE_STUDENT")) {
-            Student student = (Student) SecurityUtils.getSubject().getSession().getAttribute("student");
+            Student student = studentService.findStudentByXueHao(xuehao);
+            SecurityUtils.getSubject().getSession().setAttribute("student", student);
             logger.debug("授权学生信息:" + student);
             uid = student.getId();
             logger.debug("授权用户:" + uid + "," + student.getStuName());
         } else if (comsys_role.contains("ROLE_TEACHER")) {
             String gonghao = (String) map.get("comsys_teaching_number");
             logger.debug("授权老师工号信息:" + "," + gonghao);
+            userService.findByUsername(xuehao);
             User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
             //把老师工号存入系统
             user.setGonghao(gonghao);
@@ -99,29 +102,26 @@ public class MyShiroCaseUrlRealm extends CasRealm {
         logger.debug("StudentCaseRealm登陆验证开始");
 // 调用父类中的认证方法，CasRealm已经为我们实现了单点认证。
         AuthenticationInfo authc = super.doGetAuthenticationInfo(token);
-
         // 获取登录的账号，cas认证成功后，会将账号存起来
         String xuehao = (String) authc.getPrincipals().getPrimaryPrincipal();
         logger.debug("登陆账号:" + xuehao);
         // 将用户信息存入session中,方便程序获取,此处可以将根据登录账号查询出的用户信息放到session中
         SecurityUtils.getSubject().getSession().setAttribute("account", xuehao);
-//        Map<Object, Object> map = CasUtils.getUserInfo(SecurityUtils.getSubject().getSession());
-//        logger.debug("登陆map信息:" + map);
-////        String comsys_role = (String) map.get("comsys_role");
-        if (xuehao.length() == 10) {
-            Student student = studentService.findStudentByXueHao(xuehao);
-            logger.debug("登陆学生信息:" + student);
-            //成功则放入session
-            SecurityUtils.getSubject().getSession().setAttribute("student", student);
-        }
-        if (xuehao.length() == 18) {
-            //查询本地老师信息
-            User user = userService.findByUsername(xuehao);
-//            Admin admin = adminService.findByUname(xuehao);
-            logger.debug("登陆老师信息:" + user);
-            //成功则放入session
-            SecurityUtils.getSubject().getSession().setAttribute("teacher", user);
-        }
+//        if (xuehao.length() == 10) {
+//            logger.debug("登陆账号:" + xuehao);
+//            Student student = studentService.findStudentByXueHao(xuehao);
+//            logger.debug("登陆学生信息:" + student);
+//            //成功则放入session
+//            SecurityUtils.getSubject().getSession().setAttribute("student", student);
+//        }
+//        if (xuehao.length() == 18) {
+//            //查询本地老师信息
+//            User user = userService.findByUsername(xuehao);
+////            Admin admin = adminService.findByUname(xuehao);
+//            logger.debug("登陆老师信息:" + user);
+//            //成功则放入session
+//            SecurityUtils.getSubject().getSession().setAttribute("teacher", user);
+//        }
         return authc;
 
     }

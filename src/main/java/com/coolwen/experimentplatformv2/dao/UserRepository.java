@@ -31,4 +31,7 @@ public interface UserRepository extends BaseRepository<User, Integer>, JpaSpecif
 
     @Query("select r from UserRole ur,Role r,User u where u.id=ur.userId and r.id=ur.roleId and u.id=?1")
     public List<Role> listUserRole(int uid);
+
+
+    public User findByGonghao(String gongHao);
 }

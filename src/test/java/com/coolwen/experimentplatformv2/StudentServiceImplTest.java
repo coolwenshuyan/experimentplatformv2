@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -50,22 +51,6 @@ public class StudentServiceImplTest {
     protected static final Logger logger = LoggerFactory.getLogger(StudentServiceImplTest.class);
 
     @Test
-    public void addStudent() {
-        Student student;
-        for (int i = 10; i <= 50; i++) {
-            student = new Student();
-            student.setClassId(0);
-            student.setStuMobile("136000000" + i);
-            student.setStuName(getName());
-            student.setStuUname("stu" + i);
-            student.setStuPassword("123");
-            student.setStuXuehao("11111111" + i);
-            studentService.saveStudent(student);
-        }
-
-    }
-
-    @Test
     public void addUser() {
         User user = new User();
         for (int i = 10; i <= 50; i++) {
@@ -77,18 +62,6 @@ public class StudentServiceImplTest {
             user.setGonghao("00009" + i);
             userService.add(user);
         }
-    }
-
-    @Test
-    public void addDocker() {
-        Docker docker;
-        for (int i = 1; i <= 100; i++) {
-            docker = new Docker();
-            docker.setDc_url("www.sctu" + i + ".edu.cn");
-            docker.setDc_state(false);
-            dockerService.addDocker(docker);
-        }
-
     }
 
     @Test
@@ -104,6 +77,92 @@ public class StudentServiceImplTest {
             clazzService.saveClazz(classModel);
         }
 
+    }
+
+    @Test
+    public void addStudentCheckedAndClassed() {
+        Student student;
+        List<ClassModel> classModelList = clazzService.findCurrentClass();
+        for (int i = 1000; i < 1100; i++) {
+            student = new Student();
+            int indexId = (int) (Math.random() * classModelList.size() + 1);
+            int classId = classModelList.get(indexId - 1).getClassId();
+            student.setClassId(classId);
+            student.setStuCheckstate(true);
+            student.setStuMobile("136000" + i);
+            student.setStuName(getName());
+            student.setStuUname("stu" + i);
+            student.setStuPassword("123");
+            student.setStuXuehao("111111" + i);
+            studentService.saveStudent(student);
+        }
+
+    }
+
+    @Test
+    public void addDockerUsed() {
+        Docker docker;
+        List<Student> studentList = studentService.findByClassModelIdAndIsChecked(true, 0);
+        logger.debug("学生信息:" + studentList);
+        for (int i = 1; i <100; i++) {
+            docker = new Docker();
+            docker.setDc_url("www.sctu" + i + ".edu.cn");
+            docker.setDc_state(false);
+            int indexId = ran.nextInt((studentList.size()));
+            int studentId = studentList.get(indexId).getId();
+            docker.setStu_id(studentId);
+            docker.setDc_state(true);
+            Date dateStart = randomDate("2019-01-01", "2019-7-15");
+            Date dateEnd = randomDate("2020-01-01", "2020-12-30");
+            docker.setDc_start_datetime(dateStart);
+            docker.setDc_end_datetime(dateEnd);
+            studentList.removeIf(Student -> Student.getId() == studentId);
+            logger.debug("学生信息:" + studentList);
+            logger.debug("docker信息:" + docker);
+            dockerService.addDocker(docker);
+        }
+    }
+
+    @Test
+    public void addDockerNoUsed() {
+        Docker docker;
+        for (int i = 100; i <= 200; i++) {
+            docker = new Docker();
+            docker.setDc_url("www.sctu" + i + ".edu.cn");
+            docker.setDc_state(false);
+            dockerService.addDocker(docker);
+        }
+    }
+
+    @Test
+    public void addStudentNoCheckedNoClass() {
+        Student student;
+        for (int i = 1100; i < 1200; i++) {
+            student = new Student();
+            student.setClassId(0);
+            student.setStuMobile("136000" + i);
+            student.setStuName(getName());
+            student.setStuUname("stu" + i);
+            student.setStuPassword("123");
+            student.setStuXuehao("111111" + i);
+            studentService.saveStudent(student);
+        }
+    }
+
+    @Test
+    public void addStudentCheckedNoClassed() {
+        Student student;
+        for (int i = 1200; i < 1200; i++) {
+            student = new Student();
+            student.setClassId(0);
+            student.setStuCheckstate(true);
+            student.setStuMobile("136000" + i);
+            student.setStuName(getName());
+            student.setStuUname("stu" + i);
+            student.setStuPassword("123");
+            student.setStuXuehao("111111" + i);
+            studentService.saveStudent(student);
+        }
     }
 
     @Test
@@ -239,18 +298,20 @@ public class StudentServiceImplTest {
         logger.debug("问题信息:" + questionService.findAllByCourseId(0, question).getContent());
     }
 
+
+
     @Test
     public void addRelpy() {
         Reply reply = new Reply();
         List<Question> questionList = questionService.getAll();
         List<User> userList = userService.list();
         logger.debug("问题信息:" + questionList);
-        for (int i = 1; i < 10000; i++) {
+        for (int i = 1; i < 100; i++) {
             reply = new Reply();
             Date date = randomDate("2019-01-01", "2020-07-15");
             reply.setDicDatetime(date);
             int indexId = (int) (Math.random() * questionList.size() + 1);
-            int questionId = questionList.get(indexId-1).getId();
+            int questionId = questionList.get(indexId - 1).getId();
             reply.setQid(questionId);
             int teacherId = ran.nextInt(userList.size());
             reply.setReplyPname(userList.get(teacherId).getUsername());

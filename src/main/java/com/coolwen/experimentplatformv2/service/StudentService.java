@@ -22,7 +22,7 @@ public interface StudentService {
 
     Page<StudentVo> findStudentsByStuCheckstate(int pageNum);
 
-    Page<StudentVo> findStudentsByStuCheckstate(int pageNum,String xuehao);
+    Page<StudentVo> findStudentsByStuCheckstate(int pageNum, String xuehao);
 
     StudentVo findStudentsByStuXuehao(String xuehao);
 
@@ -38,7 +38,7 @@ public interface StudentService {
 
     Page<Student> findToBeReviewedStudent(int pageNum);
 
-    Page<Student> findToBeReviewedStudent(int pageNum,String stuXueHao);
+    Page<Student> findToBeReviewedStudent(int pageNum, String stuXueHao);
 
     void deleteStudent(int id);
 
@@ -57,6 +57,8 @@ public interface StudentService {
     Page<StuTotalScoreCurrentDTO> listStuTotalScorePassDTO(int pageNum);
 
     List<Student> findAll();
+
+    List<Student> findByClassModelIdAndIsChecked(boolean isChecked, int classId);
 
 //    List<Student> findAllBy
 

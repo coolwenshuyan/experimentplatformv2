@@ -14,9 +14,15 @@ import java.util.List;
 public class DockerServiceImpl implements DockerService {
     @Autowired
     DockerRepository dockerRepository;
+
     @Override
     public List<Docker> findDockersByTenData() {
-        return dockerRepository.findDockersByTenData( PageRequest.of(0,6));
+        return dockerRepository.findDockersByTenData(PageRequest.of(0, 6));
+    }
+
+    @Override
+    public List<Docker> findAll() {
+        return dockerRepository.findAll();
     }
 
     @Override
@@ -36,7 +42,7 @@ public class DockerServiceImpl implements DockerService {
 
     @Override
     public Page<Docker> findAll(int pageNum) {
-        Pageable pageable = PageRequest.of(pageNum,10);
+        Pageable pageable = PageRequest.of(pageNum, 10);
         return dockerRepository.findAll(pageable);
     }
 

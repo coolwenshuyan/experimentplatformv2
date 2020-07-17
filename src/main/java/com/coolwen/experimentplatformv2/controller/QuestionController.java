@@ -11,6 +11,7 @@ import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -48,6 +49,9 @@ public class QuestionController {
 
     @Autowired
     private StudentService studentService;
+
+    @Value("${SimplePageBuilder.pageSize}")
+    int size;
 
     protected static final Logger logger = LoggerFactory.getLogger(QuestionController.class);
 
@@ -111,7 +115,8 @@ public class QuestionController {
         logger.debug("该老师负责的课程信息:" + courseInfoList);
         model.addAttribute("courseInfoList", courseInfoList);
         if (courseinfoId == -1) {
-            Pageable pageable = PageRequest.of(pageNum, 10);
+            logger.debug("courseinfoId信息:" + courseinfoId);
+            Pageable pageable = PageRequest.of(pageNum, size);
             //查询该老师的课程信息
             //TODO 加入老师信息筛选
             Page<QuestionStudentDto> page = questionService.findAndUname(pageable);
@@ -123,6 +128,7 @@ public class QuestionController {
             List<Integer> integerList = arrangeClassDtos.stream().map(ArrangeClassDto -> ArrangeClassDto.getcIlassId()).collect(Collectors.toList());
             logger.debug("该老师负责的班级信息有:" + arrangeClassDtos);
             Page<QuestionStudentDto> page = questionService.findByCourseIdAndTeacherId(courseinfoId, 1, pageNum);
+            logger.debug("该老师负责的班级信息有:" + page.getContent());
             model.addAttribute("questionPageInfo", page);
         }
         return "shouye/dayiManage";

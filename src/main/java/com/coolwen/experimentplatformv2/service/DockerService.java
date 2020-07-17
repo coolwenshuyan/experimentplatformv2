@@ -9,9 +9,12 @@ public interface DockerService {
 
     List<Docker> findDockersByTenData();
 
+    List<Docker> findAll();
+
     Docker findDockerByDc_url(String url);
 
     void addDocker(Docker docker);
+
     Docker findDockerByStu_id(int stuid);
 
     Page<Docker> findAll(int pageNum);

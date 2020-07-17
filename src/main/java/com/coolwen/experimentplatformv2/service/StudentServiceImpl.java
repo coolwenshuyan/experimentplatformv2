@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -233,6 +234,14 @@ public class StudentServiceImpl implements StudentService {
         return studentRepository.findAll();
     }
 
+    @Override
+    public List<Student> findByClassModelIdAndIsChecked(boolean isChecked, int classId) {
+        return studentRepository.findAll(
+                new SimpleSpecificationBuilder("classId", "!=", classId)
+                        .add("stuCheckstate", "=", isChecked)
+                        .generateSpecification());
+    }
+
 //    @Override
 //    public Page<Student> findStudentPageAndXuehaoAndClass(int page, String select_orderId, int classId) {
 //        Pageable pager = PageRequest.of(page, size);
@@ -327,7 +336,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Page<Student> findStudentPageAndXuehaoAndClass(int page, int classId, String select_orderId) {
-        Pageable pager = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC,"id"));
+        Pageable pager = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "id"));
         Page<Student> studentsPage = studentRepository.findAll(new SimpleSpecificationBuilder<Student>(
                 "stuXuehao", ":", select_orderId).add("classId", "=", classId)
                 .generateSpecification(), pager);
@@ -349,7 +358,7 @@ public class StudentServiceImpl implements StudentService {
             listStuTotalScoreCurrentDTOPage = studentRepository.listStuTotalScoreCurrentDTOByArrageId(pager, arrageId);
         } else {
             selectOrderId = "%" + selectOrderId + "%";
-            listStuTotalScoreCurrentDTOPage = studentRepository.listStuTotalScoreCurrentDTOByArrageId(pager,arrageId, selectOrderId);
+            listStuTotalScoreCurrentDTOPage = studentRepository.listStuTotalScoreCurrentDTOByArrageId(pager, arrageId, selectOrderId);
         }
         return listStuTotalScoreCurrentDTOPage;
     }

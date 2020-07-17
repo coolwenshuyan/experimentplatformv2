@@ -1,118 +1,93 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <title>答疑室提问管理</title>
-    <link rel="stylesheet" href="../../static/new/css/reset.css"/>
-    <link rel="stylesheet" href="//cdn.staticfile.org/layui/2.5.6/css/layui.min.css"/>
-    <style>
-        body {
-            padding: 20px;
-            background: #f7f7f7;
-        }
-
-        .layui-fluid {
-            padding: 20px;
-            background: #fff;
-        }
-
-        .layui-form-label {
-            width: auto;
-            padding-left: 0;
-        }
-
-        #pager {
-            text-align: center;
-        }
-    </style>
-</head>
-
-<body>
-<div class="layui-fluid">
-    <form class="layui-form">
-        <div class="layui-form-item">
-            <label class="layui-form-label">所属课程</label>
-            <div class="layui-input-inline">
-                <select name="interest" lay-filter="id"
-                        onchange="window.open(this.options[this.selectedIndex].value,target='_self')">
-                    <option th:value="|/question/teacherlist/-1|">全部</option>
-<!--                    <option th:each="courseInfo:${courseInfoList}" th:selected="${courseInfo.id == courseId}"-->
-<!--                            th:value="|/question/${courseInfo.getId()}/list|"-->
-<!--                            th:text="${courseInfo.getCourseName()}"></option>-->
-                    <b th:each="courseInfo:${courseInfoList}">
-                        <option th:value="|/question/teacherlist/${courseInfo.id}|"
-                                th:text="${courseInfo.courseName}"
-                                th:if="${courseInfo.id ne selected}">Java
-                        </option>
-                        <option th:value="|/question/teacherlist/${courseInfo.id}|"
-                                th:text="${courseInfo.courseName}"
-                                selected="selected" th:if="${courseInfo.id eq selected}">Python
-                        </option>
-                    </b>
-                </select>
-            </div>
-        </div>
-    </form>
-    <table class="layui-table">
-        <colgroup>
-            <col/>
-            <col/>
-            <col/>
-        </colgroup>
-        <thead>
-        <tr>
-            <th style="width: 9%;">学生姓名</th>
-<!--            <th style="width: 9%;">学生ID</th>-->
-            <th style="width: 10%;">学生账号</th>
-            <th style="width: 18%;">问题内容</th>
-            <th style="width: 10%;">课程名称</th>
-            <th style="width: 12%;">是否回复</th>
-            <th style="width: 16%;">记录时间</th>
-            <th>操作</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="question:${questionPageInfo.getContent()}">
-            <td th:text="${question.stuName}"></td>
-<!--            <td th:text="${question.sid}"></td>-->
-            <td th:text="${question.stu_uname}"></td>
-            <td th:utext="${question.content}"></td>
-            <td th:text="${question.courseName}"></td>
-            <td th:text="${question.isreply}?'是':'否'"></td>
-            <td th:text="${question.questionDatetime}"></td>
-            <td>
-                <a type="button" class="layui-btn layui-btn-sm" th:href="@{|/question/${question.id}/dayiMore|}">查看</a>
-                <a type="button" class="layui-btn layui-btn-sm layui-bg-red"
-                   th:href="@{|/question/${question.id}/delete|}">删除</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <div id="pager"></div>
-</div>
-<script src="//cdn.staticfile.org/jquery/1.8.0/jquery.min.js"></script>
-<script src="//cdn.staticfile.org/layui/2.5.6/layui.all.min.js"></script>
-<script th:inline="javascript">
-    $(function () {
-        var form = layui.form,
-            laypage = layui.laypage
-        laypage.render({
-            elem: 'pager',
-            layout: ['count', 'prev', 'page', 'next'],
-            curr: parseInt('[[${questionPageInfo.number}]]') + 1,
-            count: parseInt('[[${questionPageInfo.totalElements}]]'),
-            jump: function (obj, first) {
-                if (!first) {
-                    window.location.href = window.location.origin + window.location.pathname + '?pageNum=' + (obj.curr - 1)
-                }
-            }
-        })
-        form.on('select(id)', function (data) {
-            window.location.href = data.value
-        })
-    })
-</script>
-</body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<title>答疑室提问管理</title>
+		<link rel="stylesheet" href="../../static/new/css/reset.css" />
+		<link rel="stylesheet" href="//cdn.staticfile.org/layui/2.5.6/css/layui.min.css" />
+		<style>
+			body {
+				padding: 20px;
+				background: #f7f7f7;
+			}
+			.layui-fluid {
+				padding: 20px;
+				background: #fff;
+			}
+			.layui-form-label {
+				width: auto;
+				padding-left: 0;
+			}
+			#pager {
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="layui-fluid">
+			<form class="layui-form">
+				<div class="layui-form-item">
+					<label class="layui-form-label">所属课程</label>
+					<div class="layui-input-inline">
+						<select name="interest" lay-filter="id">
+							<option value="/question/teacherlist/-1">全部</option>
+							<option th:each="courseInfo:${courseInfoList}" th:selected="${courseInfo.id == selected}" th:value="|/question/teacherlist/${courseInfo.id}|" th:text="${courseInfo.courseName}"></option>
+						</select>
+					</div>
+				</div>
+			</form>
+			<table class="layui-table">
+				<thead>
+					<tr>
+						<th>学生姓名</th>
+						<th>学生账号</th>
+						<th>问题内容</th>
+						<th>课程名称</th>
+						<th>是否回复</th>
+						<th>记录时间</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="question:${questionPageInfo.getContent()}">
+						<td th:text="${question.stuName}"></td>
+						<td th:text="${question.stu_uname}"></td>
+						<td th:utext="${question.content}"></td>
+						<td th:text="${question.courseName}"></td>
+						<td th:text="${question.isreply}?'是':'否'"></td>
+						<td th:text="${question.questionDatetime}"></td>
+						<td>
+							<a type="button" class="layui-btn layui-btn-sm" th:href="@{|/question/${question.id}/dayiMore|}">查看</a>
+							<a type="button" class="layui-btn layui-btn-sm layui-bg-red" th:href="@{|/question/${question.id}/delete|}">删除</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<div id="pager"></div>
+		</div>
+		<script src="//cdn.staticfile.org/jquery/1.8.0/jquery.min.js"></script>
+		<script src="//cdn.staticfile.org/layui/2.5.6/layui.all.min.js"></script>
+		<script th:inline="javascript">
+			$(function () {
+				var form = layui.form,
+					laypage = layui.laypage
+				laypage.render({
+					elem: 'pager',
+					layout: ['count', 'prev', 'page', 'next'],
+					curr: parseInt('[[${questionPageInfo.number}]]') + 1,
+					count: parseInt('[[${questionPageInfo.totalElements}]]'),
+					jump: function (obj, first) {
+						if (!first) {
+							window.location.href = window.location.origin + window.location.pathname + '?pageNum=' + (obj.curr - 1)
+						}
+					}
+				})
+				form.on('select(id)', function (data) {
+					window.location.href = data.value
+				})
+			})
+		</script>
+	</body>
 </html>

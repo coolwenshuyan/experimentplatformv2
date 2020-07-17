@@ -1,129 +1,91 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8"/>
-    <link rel="stylesheet" href="../../static/css/font.css">
-    <link rel="stylesheet" href="../../static/css/xadmin.css">
-    <link rel="stylesheet" href="../../static/css/layui.css">
-    <script type="text/javascript" th:src="@{/js/jquery-2.1.1.min.js}"></script>
-    <script type="text/javascript" src="../../static/js/layui.js" charset="utf-8"></script>
-    <script type="text/javascript" src="../../static/js/xadmin.js"></script>
-    <script type="text/javascript">
-        $(function () {
-            var hasRoles = new Array();
-            console.log(hasRoles);
-            $(".hasRole").each(function () {
-                hasRoles.push($(this).val());
-            });
-            $(".rids").each(function () {
-                if ($.inArray($(this).val(), hasRoles) >= 0) {
-                    $(this).attr("checked", "checked");
-                }
-            });
-        });
-    </script>
-    <title>更新用户</title>
-</head>
-<body>
-<div class="x-nav" style="margin-bottom: 30px">
-          <span class="layui-breadcrumb" style="visibility: visible">
-            <a th:href="@{|/admin/user/list|}">用户列表</a>
-            <span lay-separator>/</span>
-            <a>
-              <cite>用户更新</cite></a>
-          </span>
-</div>
-<div class="layui-fluid">
-    <div th:include="user/inc :: head"></div>
-
-    <div class="layui-row">
-        <form class="layui-form" role="form" th:method="post" th:object="${user}">
-            <div class="layui-form-item">
-                <label class="layui-form-label">
-                    <span class="x-red">*</span>教师账号:</label>
-                <div class="layui-input-inline">
-                    <input type="text" required="" lay-verify="nickname" th:field="${user.username}" autocomplete="off" class="layui-input"></div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">
-                    <span class="x-red">*</span>教师姓名:</label>
-                <div class="layui-input-inline">
-                    <input type="text" required="" lay-verify="nickname" th:field="${user.nickname}" autocomplete="off" class="layui-input"></div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">
-                    <span class="x-red">*</span>教师工号:</label>
-                <div class="layui-input-inline">
-                    <input type="text" required="" lay-verify="nickname" th:field="${user.gonghao}" autocomplete="off" class="layui-input"></div>
-            </div>
-
-            <div class="layui-form-item">
-                <label  class="layui-form-label">
-                    <span class="x-red">*</span>修改用户密码:</label>
-                <div class="layui-input-inline">
-                    <input type="password" required=""  th:field="${user.password}" autocomplete="off" class="layui-input"></div>
-            </div>
-
-            <div class="layui-form-item">
-                <span class="layui-form-label" >状态</span>
-                <div class="layui-input-inline" style="width: 190px;height: 38px">
-                    <select name="interest" lay-filter="aihao" path="status" th:field="${user.status}"
-                            class="layui-select" style="width: 190px;height: 38px;display: inherit;">
-                        <option value=""> -- 请选择 --</option>
-                        <option th:selected="${user.status==false}" value="0" >启用</option>
-                        <option th:selected="${user.status== true}" value="1" >停用</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="layui-form-item">
-                <span class="layui-form-label">角色</span>
-                <div class="layui-input-inline" >
-                    <span th:each="hr:${hasRole}">
-                        <input type="hidden" class="hasRole" name="hasRole" th:value="${hr}"/>
-                    </span>
-                    <span th:each="role:${roles}" style="font-size: 15px">
-                        <input type="checkbox" class="rids layui-form-checkbox" name="rids" th:text="${role.name } "
-                               th:value="${role.id }" style="width: 15px;display: inherit;"/>
-                    </span>
-                </div>
-            </div>
-
-            <div class="layui-btn-container" style="margin-left: 130px">
-                <input type="submit" class="layui-btn" value="更新">
-                <a class="layui-btn layui-btn-primary" th:href="@{|/admin/user/list|}">返回</a>
-            </div>
-        </form>
-    </div>
-</div>
-
-
-<script src="../../static/js/layui.all.js" type="text/javascript" charset="utf-8"></script>
-<script>layui.use(['form', 'layer','jquery','form'],
-    function() {
-        $ = layui.jquery;
-        var form = layui.form,
-            layer = layui.layer;
-
-        //自定义验证规则
-        form.verify({
-            nikename: function(value) {
-                if (value.length < 1) {
-                    return '请重新填写';
-                }
-            },
-            pass: function(value) {
-                if (value.length < 1) {
-                    return '请重新填写';
-                }
-            },
-            repass: function(value) {
-                if (value.length < 1) {
-                    return '请重新填写';
-                }
-            }
-        });
-
-    });</script>
-</body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<title>更新</title>
+		<link rel="stylesheet" href="../../static/new/css/reset.css" />
+		<link rel="stylesheet" href="//cdn.staticfile.org/layui/2.5.6/css/layui.min.css" />
+		<style>
+			.layui-form {
+				padding: 20px;
+			}
+			.layui-form-label {
+				text-align: left;
+			}
+		</style>
+	</head>
+	<body>
+		<form class="layui-form" method="POST" th:object="${user}">
+			<div class="layui-form-item">
+				<label class="layui-form-label">教师账号</label>
+				<div class="layui-input-block">
+					<input type="text" th:field="${user.username}" lay-verify="required" autocomplete="off" placeholder="请输入教师账号" class="layui-input" />
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">教师姓名</label>
+				<div class="layui-input-block">
+					<input type="text" th:field="${user.nickname}" lay-verify="required" autocomplete="off" placeholder="请输入教师姓名" class="layui-input" />
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">教师工号</label>
+				<div class="layui-input-block">
+					<input type="text" th:field="${user.gonghao}" lay-verify="required" autocomplete="off" placeholder="请输入教师工号" class="layui-input" />
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">密码</label>
+				<div class="layui-input-block">
+					<input type="password" th:field="${user.password}" lay-verify="required" autocomplete="off" class="layui-input" />
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">状态</label>
+					<div class="layui-input-inline">
+						<select th:field="${user.status}" lay-verify="required">
+							<option value="0">启用</option>
+							<option value="1">停用</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="layui-form-item" pane="">
+				<label class="layui-form-label">角色</label>
+				<input type="hidden" th:each="hr:${hasRole}" class="hasRole" name="hasRole" th:value="${hr}" />
+				<div class="layui-input-block">
+					<input type="checkbox" class="rids" lay-skin="primary" name="rids" th:each="role:${roles}" th:title="${role.name}" th:value="${role.id}" />
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-input-block">
+					<button type="submit" class="layui-btn" lay-submit="">更新</button>
+					<button type="button" class="layui-btn layui-btn-primary" id="closeIframe">返回</button>
+				</div>
+			</div>
+		</form>
+		<script src="//cdn.staticfile.org/jquery/1.8.0/jquery.min.js"></script>
+		<script src="//cdn.staticfile.org/layui/2.5.6/layui.all.min.js"></script>
+		<script>
+			$(function () {
+				var hasRoles = []
+				$('.hasRole').each(function () {
+					hasRoles.push($(this).val())
+				})
+				$('.rids').each(function () {
+					if ($.inArray($(this).val(), hasRoles) >= 0) {
+						$(this).attr('checked', 'checked')
+					}
+				})
+				layui.form.render('checkbox')
+				var index = parent.layer.getFrameIndex(window.name)
+				$('#closeIframe').click(function () {
+					parent.layer.close(index)
+				})
+			})
+		</script>
+	</body>
 </html>

@@ -1,92 +1,85 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
->
-<head th:with="title='后台管理'">
-    <meta charset="UTF-8"/>
-    <title>Title</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport"
-          content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
-    <link rel="stylesheet" href="../../static/css/font.css">
-    <link rel="stylesheet" href="../../static/css/xadmin.css">
-    <link rel="stylesheet" href="../../static/css/layui.css" th:href="@{../../static/css/layui.css}">
-    <script type="text/javascript" src="../../static/js/layui.js" charset="utf-8"></script>
-    <script type="text/javascript" src="../../static/js/xadmin.js"></script>
-</head>
-<body>
-<div th:include="user/inc :: head"></div>
-
-
-<div class="x-nav" style="margin-bottom: 30px">
-          <span class="layui-breadcrumb" style="visibility: visible">
-            <a th:href="@{|/admin/user/list|}">用户管理</a>
-            <span lay-separator>/</span>
-            <a>
-              <cite>用户列表</cite></a>
-          </span>
-</div>
-<div class="layui-fluid">
-    <div class="layui-row layui-col-space15">
-        <div class="layui-col-md12">
-            <div class="layui-card">
-                <a href="/admin/user/add" class="layui-btn layui-bg-green" style="margin: 1rem 1rem auto">添加用户</a>
-                <div class="layui-card-body layui-table-body layui-table-main">
-                    <table class="layui-table layui-form" id="demo" lay-filter="demo">
-                        <thead>
-                        <tr>
-
-                            <!--                            <th width="3%">用户标识</th>-->
-                            <th width="14%">用户名称</th>
-                            <th width="14%">用户昵称</th>
-                            <th width="14%">用户工号</th>
-                            <!--                            <th>用户状态</th>-->
-                            <!--                            <th>用户操作</th>-->
-                            <th>操作</th>
-
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="user,stat:${users}">
-<!--                            <td><span th:text="${user.id}">1800998873</span></td>-->
-                            <td><span th:text="${user.username }"><a th:href="${user.id }"
-                                                                     class="list_link">张三</a></span></td>
-                            <td><span th:text="${user.nickname }"></span></td>
-                            <td><span th:text="${user.getGonghao() }"></span></td>
-                            <!--                            <td >-->
-                            <!--                                <span>-->
-                            <!--                                    <span th:if="${user.status} eq false">启用</span>-->
-                            <!--                                    <span th:if="${user.status} eq true">停用</span>-->
-                            <!--                                </span>-->
-                            <!--                            </td>-->
-                            <!--                            <td >-->
-                            <!--                                <span>-->
-                            <!--                                    <a th:if="${user.status eq true}" th:href="@{|updateStatus/${user.id }|}"-->
-                            <!--                                       class="layui-btn layui-bg-red">启用</a>-->
-                            <!--                                    <a th:if="${user.status eq false}" th:href="@{|updateStatus/${user.id }|}"-->
-                            <!--                                       class="layui-btn layui-bg-red">停用</a>-->
-                            <!--                                    </th:if>-->
-                            <!--                                </span>-->
-                            <!--                            </td>-->
-                            <td><span>
-                                <a th:href="@{|update/${user.id }|}" class="layui-btn layui-bg-green">更新</a>
-                                <a th:href="@{|listRes/${user.id }|}" class="layui-btn layui-bg-green">查询管理资源</a>
-                                </span>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="layui-card-body ">
-                    <div class="page">
-                        <!--<div>-->
-                        <!--<a class="prev" th:href="@{/studentManage/list(pageNum=${studentList.hasPrevious()}?${studentList.number}-1:0)}">&lt;&lt;</a>-->
-                        <!--<a class="next" th:href="@{/studentManage/list(pageNum=${studentList.hasNext()}?${studentList.number}+1:${studentList.number})}">&gt;&gt;</a>-->
-                        <!--</div>-->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-</body>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<title>教师账号管理</title>
+		<link rel="stylesheet" href="../../static/new/css/reset.css" />
+		<link rel="stylesheet" href="//cdn.staticfile.org/layui/2.5.6/css/layui.min.css" />
+		<style>
+			body {
+				padding: 20px;
+				background: #f7f7f7;
+			}
+			.layui-fluid {
+				padding: 20px;
+				background: #fff;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="layui-fluid">
+			<div>
+				<button type="button" class="layui-btn" id="addUser">添加用户</button>
+			</div>
+			<table class="layui-table">
+				<thead>
+					<tr>
+						<th>用户名称</th>
+						<th>用户昵称</th>
+						<th>用户工号</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="user:${users}">
+						<td th:text="${user.username}"></td>
+						<td th:text="${user.nickname}"></td>
+						<td th:text="${user.gonghao}"></td>
+						<td>
+                            <a th:data-id="${user.id}" class="layui-btn user-update">更新</a>
+                            <a th:data-id="${user.id}" class="layui-btn user-view">查询管理资源</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<script src="//cdn.staticfile.org/jquery/1.8.0/jquery.min.js"></script>
+		<script src="//cdn.staticfile.org/layui/2.5.6/layui.all.min.js"></script>
+		<script th:inline="javascript">
+			$(function () {
+				var layer = layui.layer
+				$('#addUser').click(function (e) {
+					e.preventDefault()
+					layer.open({
+						type: 2,
+						title: '添加用户',
+						area: ['500px', '500px'],
+						content: '/admin/user/add'
+					})
+				})
+				$('.user-update').click(function (e) {
+					e.preventDefault()
+					var _id = $(this).data('id')
+					layer.open({
+						type: 2,
+						title: '更新用户',
+						area: ['500px', '500px'],
+						content: '/admin/user/update/' + _id
+					})
+				})
+				$('.user-view').click(function (e) {
+					e.preventDefault()
+					var _id = $(this).data('id')
+					layer.open({
+						type: 2,
+						title: '查询资源管理',
+						area: ['60%', '500px'],
+						content: '/admin/user/listRes/' + _id
+					})
+				})
+			})
+		</script>
+	</body>
 </html>

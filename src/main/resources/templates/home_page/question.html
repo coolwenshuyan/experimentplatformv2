@@ -64,9 +64,9 @@
 						<a th:href="@{/question/list(pageNum=${questionPageInfo.totalPages}-1)}">尾页</a>
 					</div>
 				</div>
-            </div>
-            <form action="/question/add" id="question-form" method="POST" style="display: none;">
-				<input type="text" name="content" class="question-input">
+			</div>
+			<form action="/question/add" id="question-form" method="POST" style="display: none;">
+				<input type="text" name="content" class="question-input" />
 			</form>
 			<div class="add-one" th:if="${session.student != null }">
 				<div th:if="${session.question_courseId ==null and session.question_courseId==0}">请选择课程提问</div>
@@ -84,10 +84,13 @@
 		<script src="//cdn.staticfile.org/layer/3.1.1/layer.min.js"></script>
 		<script src="../../static/new/js/editor.config.js"></script>
 		<script>
-			$('.submit-btn').click(function () {
-				var _data = editor.txt.html()
-				$('.question-input').val(_data);
-				$('#question-form').submit();
+			$(function () {
+				var editor = initEditor('#forEditor')
+				$('.submit-btn').click(function () {
+					var _data = editor.txt.html()
+					$('.question-input').val(_data)
+					$('#question-form').submit()
+				})
 			})
 		</script>
 	</body>

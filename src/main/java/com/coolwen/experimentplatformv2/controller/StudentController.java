@@ -721,6 +721,7 @@ public class StudentController {
     @GetMapping("/dockerList")
     public String dockerList(@RequestParam(value = "pageNum", required = true, defaultValue = "0") int pageNum, Model model) {
         model.addAttribute("dockerList", dockerService.findAll(pageNum));
+        model.addAttribute("dockerStuList",studentservice.findAllByStuid(pageNum));
         return "student/docker_list";
     }
 

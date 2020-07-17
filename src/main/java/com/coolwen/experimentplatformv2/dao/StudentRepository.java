@@ -212,4 +212,8 @@ public interface StudentRepository extends BaseRepository<Student, Integer>, Jpa
 
     @Query(value ="select count(*) from t_student s where s.stu_isinschool=false",nativeQuery=true)
     int xiaowainum();
+
+
+    @Query("select s from Student s left join Docker d on s.id = d.stu_id")
+    Page<Student> findAllByStuid(Pageable pageable);
 }

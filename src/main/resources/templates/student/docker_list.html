@@ -64,8 +64,8 @@
                     <table class="layui-table layui-form">
                         <thead>
                         <tr>
-                            <th width="3%">ID</th>
-                            <th width="3%">学生ID</th>
+                            <th width="3%">学号</th>
+                            <th width="3%">学生姓名</th>
                             <th>Docker地址</th>
                             <th>使用开始时间</th>
                             <th>使用结束时间</th>
@@ -74,8 +74,11 @@
                         </thead>
                         <tbody>
                         <tr th:each="d:${dockerList}">
-                            <td th:text="${d.id}"></td>
-                            <td th:text="${d.stu_id}==0?'未分配学生':${d.stu_id}"></td>
+                            <div th:each="s:${dockerStuList}">
+                                <td th:text="${s.stuXuehao}"></td>
+                                <td th:text="${s.stuName}"></td>
+                            </div>
+                            <!--<td th:text="${s.stuName}==0?'未分配学生':${d.stu_id}"></td>-->
                             <td th:text="${d.dc_url}"></td>
                             <td th:text="${d.dc_start_datetime}"></td>
                             <td th:text="${d.dc_end_datetime}"></td>

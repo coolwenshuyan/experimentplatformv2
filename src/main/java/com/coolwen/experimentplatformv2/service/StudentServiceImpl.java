@@ -375,4 +375,9 @@ public class StudentServiceImpl implements StudentService {
         return studentRepository.listStudentMTestAnswerDTOByArrangeId(arrangeId);
     }
 
+    @Override
+    public Page<Student> findAllByStuid(int pageNum) {
+        Pageable pageable = PageRequest.of(pageNum, 10);
+        return studentRepository.findAllByStuid(pageable);
+    }
 }

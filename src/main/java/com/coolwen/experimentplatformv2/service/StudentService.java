@@ -95,4 +95,6 @@ public interface StudentService {
     Page<Student> pageStudentByArrangeId(Integer pageNum, int arrangeId);
 
     List<StudentTestScoreDTO> listStudentMTestAnswerDTOByArrangeId(int arrangeId);
+
+    Page<Student> findAllByStuid(int pageNum);
 }

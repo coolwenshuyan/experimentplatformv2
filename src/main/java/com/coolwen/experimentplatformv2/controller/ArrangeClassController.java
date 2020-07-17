@@ -8,12 +8,14 @@ import com.coolwen.experimentplatformv2.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -55,13 +57,15 @@ public class ArrangeClassController {
     @Autowired
     ReportAnswerService reportAnswerService;
 
+    @Value("${SimplePageBuilder.pageSize}")
+    int size;
 
     @GetMapping(value = "/list")
-    public String courseInfoList(Model model, @RequestParam(defaultValue = "0", required=true,value = "pageNum")  Integer pageNum){
+    public String courseInfoList(Model model, @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum) {
         //查询课程安排表所有数据
-        Pageable pageable = PageRequest.of(pageNum,10);
+        Pageable pageable = PageRequest.of(pageNum, size);
         Page<ArrangeClassDto> page = arrangeClassService.findByAll(pageable);
-        model.addAttribute("ArrangeClassDto",page);
+        model.addAttribute("ArrangeClassDto", page);
 
 
 //        List<CourseInfo> courseInfoList1 = courseInfoService.getclass_by_arrangeteacher(4);
@@ -77,64 +81,64 @@ public class ArrangeClassController {
 //        }
 
         List<CourseInfo> courseInfoList = courseInfoService.list();
-        model.addAttribute("courseInfoList",courseInfoList);
+        model.addAttribute("courseInfoList", courseInfoList);
 
         List<User> userList = userService.list();
-        model.addAttribute("userList",userList);
+        model.addAttribute("userList", userList);
 
         List<ClassModel> classList = classService.findCurrentClass();
-        model.addAttribute("classList",classList);
+        model.addAttribute("classList", classList);
         return "jichu/timePlan_management";
     }
 
     @PostMapping(value = "/mhlist")
-    public String courseInfoList1(Model model, String courseName,String teacherName,String className,
-                                  @RequestParam(defaultValue = "0", required=true,value = "pageNum")  Integer pageNum){
+    public String courseInfoList1(Model model, String courseName, String teacherName, String className,
+                                  @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum) {
         //查询课程安排表所有数据
 //        Pageable pageable = PageRequest.of(pageNum,10);
-        Page<ArrangeClassDto> page = arrangeClassService.findBycidAndtidAndclaidLike(pageNum,courseName,teacherName,className);
-        model.addAttribute("ArrangeClassDto",page);
+        Page<ArrangeClassDto> page = arrangeClassService.findBycidAndtidAndclaidLike(pageNum, courseName, teacherName, className);
+        model.addAttribute("ArrangeClassDto", page);
 
         List<CourseInfo> courseInfoList = courseInfoService.list();
-        model.addAttribute("courseInfoList",courseInfoList);
+        model.addAttribute("courseInfoList", courseInfoList);
 
         List<User> userList = userService.list();
-        model.addAttribute("userList",userList);
+        model.addAttribute("userList", userList);
 
         List<ClassModel> classList = classService.findCurrentClass();
-        model.addAttribute("classList",classList);
+        model.addAttribute("classList", classList);
         return "jichu/timePlan_management";
     }
 
 
     @GetMapping(value = "/add")
-    public String courseInfoAdd(Model model){
+    public String courseInfoAdd(Model model) {
         List<CourseInfo> courseInfoList = courseInfoService.list();
-        model.addAttribute("courseInfoList",courseInfoList);
+        model.addAttribute("courseInfoList", courseInfoList);
 
         List<User> userList = userService.list();
-        model.addAttribute("userList",userList);
+        model.addAttribute("userList", userList);
 
         List<ClassModel> classList = classService.findCurrentClass();
-        model.addAttribute("classList",classList);
+        model.addAttribute("classList", classList);
         return "jichu/timePlan_new";
     }
 
 
     @PostMapping(value = "/add")
-    public String add(int courseId,int teacherId,int classId,String arrangeStart,String arrangeEnd,String skAddress,Model model){
+    public String add(int courseId, int teacherId, int classId, String arrangeStart, String arrangeEnd, String skAddress, Model model) {
 
-        ArrangeClass a = arrangeClassService.findByCourseIdAndClassId(courseId,classId);
-        if (a != null){
+        ArrangeClass a = arrangeClassService.findByCourseIdAndClassId(courseId, classId);
+        if (a != null) {
             List<CourseInfo> courseInfoList = courseInfoService.list();
-            model.addAttribute("courseInfoList",courseInfoList);
+            model.addAttribute("courseInfoList", courseInfoList);
 
             List<User> userList = userService.list();
-            model.addAttribute("userList",userList);
+            model.addAttribute("userList", userList);
 
             List<ClassModel> classList = classService.findCurrentClass();
-            model.addAttribute("classList",classList);
-            model.addAttribute("msg","添加课程安排失败，所选课程和班级，已有安排教师!!!");
+            model.addAttribute("classList", classList);
+            model.addAttribute("msg", "添加课程安排失败，所选课程和班级，已有安排教师!!!");
             return "jichu/timePlan_new";
         }
 
@@ -142,10 +146,10 @@ public class ArrangeClassController {
         Date starsDate = null;
         Date endDate = null;
         try {
-            if(arrangeStart != ""){
+            if (arrangeStart != "") {
                 starsDate = simpleDateFormat.parse(arrangeStart);
             }
-            if(arrangeEnd != ""){
+            if (arrangeEnd != "") {
                 endDate = simpleDateFormat.parse(arrangeEnd);
             }
         } catch (ParseException e) {
@@ -162,29 +166,29 @@ public class ArrangeClassController {
 
         //将信息储存到数据库
         arrangeClassService.add(arrangeClass);
-        logger.debug("arrangeClass:"+arrangeClass);
-        ArrangeClass arrangeClass1 = arrangeClassService.findByCourseIdAndClassId(courseId,classId);
+        logger.debug("arrangeClass:" + arrangeClass);
+        ArrangeClass arrangeClass1 = arrangeClassService.findByCourseIdAndClassId(courseId, classId);
         //生成当期总评成绩表
         List<Student> students = studentService.findStudentByClassId(classId);
-        logger.debug("students:"+students);
-        for (Student student:students){
-            arrangeClassService.currentResults(student.getId(),arrangeClass1.getId());
+        logger.debug("students:" + students);
+        for (Student student : students) {
+            arrangeClassService.currentResults(student.getId(), arrangeClass1.getId());
         }
         return "redirect:/arrangeclass/list";
     }
 
 
     @GetMapping(value = "/{id}/update")
-    public String update(@PathVariable int id, Model model){
+    public String update(@PathVariable int id, Model model) {
         //查询到id所对应的整条数据
         ArrangeClass arrangeClass = arrangeClassService.findById(id);
-        model.addAttribute("arrangeClass",arrangeClass);
+        model.addAttribute("arrangeClass", arrangeClass);
         CourseInfo courseInfo = courseInfoService.findById(arrangeClass.getCourseId());
-        model.addAttribute("courseInfo",courseInfo);
+        model.addAttribute("courseInfo", courseInfo);
         ClassModel classModel = classService.findById(arrangeClass.getClassId());
-        model.addAttribute("classModel",classModel);
+        model.addAttribute("classModel", classModel);
         List<User> userList = userService.list();
-        model.addAttribute("userList",userList);
+        model.addAttribute("userList", userList);
 
 //        List<CourseInfo> courseInfoList = courseInfoService.list();
 //        model.addAttribute("courseInfoList",courseInfoList);
@@ -194,17 +198,17 @@ public class ArrangeClassController {
     }
 
     @PostMapping(value = "/{id}/update")
-    public String update(@PathVariable int id,int teacherId,String arrangeStart,String arrangeEnd,String skAddress,Model model){
+    public String update(@PathVariable int id, int teacherId, String arrangeStart, String arrangeEnd, String skAddress, Model model) {
         //查询到id所对应的整条数据
         ArrangeClass arrangeClass = arrangeClassService.findById(id);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date starsDate = null;
         Date endDate = null;
         try {
-            if(arrangeStart != ""){
+            if (arrangeStart != "") {
                 starsDate = simpleDateFormat.parse(arrangeStart);
             }
-            if(arrangeEnd != ""){
+            if (arrangeEnd != "") {
                 endDate = simpleDateFormat.parse(arrangeEnd);
             }
         } catch (ParseException e) {
@@ -274,15 +278,15 @@ public class ArrangeClassController {
 
 
     @GetMapping(value = "/{id}/delete")
-    public String delete(@PathVariable int id){
+    public String delete(@PathVariable int id) {
 
         List<KaoheModel> kaoheModels = kaoheModelService.findKaoheModelByArrangeId2(id);
         List<Student> students = arrangeClassService.findStudentByarrangeID(id);
 
-        for (Student student:students){
+        for (Student student : students) {
             int studentid = student.getId();
 
-            for (KaoheModel k : kaoheModels){
+            for (KaoheModel k : kaoheModels) {
                 int mid = k.getM_id();
 //                int studentid = student.getId();
                 //删除考核模块测试答案
@@ -293,10 +297,10 @@ public class ArrangeClassController {
                 reportAnswerService.deleteByStuIdModelId(mid, studentid);
 
             }
-            List<KaoHeModelScore> kaoHeModelScores = kaoHeModelScoreRepository.findKaoheModuleScoreByStuIdAndArrangeId(studentid,id);
+            List<KaoHeModelScore> kaoHeModelScores = kaoHeModelScoreRepository.findKaoheModuleScoreByStuIdAndArrangeId(studentid, id);
             kaoHeModelScoreRepository.deleteAll(kaoHeModelScores);
             //删除学生对应课程当期总评成绩
-            totalScoreCurrentService.deleteTotalScoreCurrentByStuIdAndArrangeId(studentid,id);
+            totalScoreCurrentService.deleteTotalScoreCurrentByStuIdAndArrangeId(studentid, id);
         }
         kaoheModelService.deleteByArrangeId(id);
         arrangeClassService.delete(id);
@@ -317,7 +321,6 @@ public class ArrangeClassController {
 //        }
 //        //执行删除操作
 //        arrangeClassService.delete(id);
-
 
 
         return "redirect:/arrangeclass/list";

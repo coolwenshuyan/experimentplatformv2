@@ -74,26 +74,26 @@ public class ReplyController {
     }
 
     //学生回复并操作
-    @PostMapping(value = "/add2/{id}")
-    public String add1(@PathVariable int id, Reply reply, HttpSession session) {
-
+    @PostMapping(value = "/add2/{questionid}")
+    public String add1(@PathVariable int questionid, Reply reply, HttpSession session) {
 //        回复的问题地存为qid
-        reply.setQid(id);
-        logger.debug("插入的回复保存为：" + id);
-
-//        seesion获得学生信息
+//        Reply reply = new Reply();
+        reply.setQid(questionid);
+        logger.debug("回复问题ID：" + questionid);
 //        Student student = (Student) SecurityUtils.getSubject().getPrincipal();
-        Student student = (Student) session.getAttribute("student");
+        Student student = (Student) SecurityUtils.getSubject().getSession().getAttribute("student");
+//        Student student = (Student) session.getAttribute("student");
 
 //        插入回复
         reply.setReplyPname(student.getStuName());//获得并存入回复名字
         reply.setDicDatetime(new Date());
+        logger.debug("回复问题内容：" + reply);
         replyService.add(reply);
-        Question question = questionService.findById(id);
+        Question question = questionService.findById(questionid);
 //      表示老师未回复
         question.setIsreply(false);
         questionService.add(question);
-        return "redirect:/question/" + "detaill/" + id;//list
+        return "redirect:/question/detaill/" + questionid;//list
     }
 
 

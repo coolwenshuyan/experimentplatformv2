@@ -104,7 +104,7 @@ public class StudentServiceImplTest {
         Docker docker;
         List<Student> studentList = studentService.findByClassModelIdAndIsChecked(true, 0);
         logger.debug("学生信息:" + studentList);
-        for (int i = 1; i <100; i++) {
+        for (int i = 1; i < 100; i++) {
             docker = new Docker();
             docker.setDc_url("www.sctu" + i + ".edu.cn");
             docker.setDc_state(false);
@@ -152,7 +152,7 @@ public class StudentServiceImplTest {
     @Test
     public void addStudentCheckedNoClassed() {
         Student student;
-        for (int i = 1200; i < 1200; i++) {
+        for (int i = 1200; i < 1300; i++) {
             student = new Student();
             student.setClassId(0);
             student.setStuCheckstate(true);
@@ -299,7 +299,6 @@ public class StudentServiceImplTest {
     }
 
 
-
     @Test
     public void addRelpy() {
         Reply reply = new Reply();
@@ -322,5 +321,26 @@ public class StudentServiceImplTest {
             logger.debug("回答信息:" + reply);
             replyService.add(reply);
         }
+    }
+
+    @Test
+    public void addQuestionStuId1() {
+        Question question = new Question();
+        for (int i = 1; i < 100; i++) {
+            question = new Question();
+            int coureId = (int) (Math.random() * 4 + 1);
+            question.setContent("aboutus");
+            question.setCourseId(coureId);
+            question.setContent(getName());
+            question.setSid(1);
+            Date date = randomDate("2019-01-01", "2020-07-15");
+            question.setQuestionDatetime(date);
+            if (i % 2 == 0)
+                question.setIsreply(true);
+            else
+                question.setIsreply(false);
+            questionService.add(question);
+        }
+
     }
 }

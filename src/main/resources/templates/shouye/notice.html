@@ -54,7 +54,7 @@
 <div class="layui-container">
 
 <div  style="margin-top: 50px;">
-    <a href="/newsinfo/add">
+    <a href="/newsinfoback/add">
         <button type="button" class="layui-btn">
             <i class="layui-icon">&#xe608;</i> 添加
         </button>
@@ -108,10 +108,10 @@
             <p>当前 <span th:text="${newsPageInfo.number}+1"></span> 页,
                 总 <span th:text="${newsPageInfo.totalPages}"></span> 页,
                 共 <span th:text="${newsPageInfo.totalElements}"></span> 条记录</p>
-            <a th:href="@{/newsinfo/list}">首页</a>
-            <a th:href="@{/newsinfo/list(pageNum=${newsPageInfo.hasPrevious()}?${newsPageInfo.number}-1:0)}">上一页</a>
-            <a th:href="@{/newsinfo/list(pageNum=${newsPageInfo.hasNext()}?${newsPageInfo.number}+1:${newsPageInfo.number})}">下一页</a>
-            <a th:href="@{/newsinfo/list(pageNum=${newsPageInfo.totalPages}-1)}">尾页</a>
+            <a th:href="@{/newsinfoback/list}">首页</a>
+            <a th:href="@{/newsinfoback/list(pageNum=${newsPageInfo.hasPrevious()}?${newsPageInfo.number}-1:0)}">上一页</a>
+            <a th:href="@{/newsinfoback/list(pageNum=${newsPageInfo.hasNext()}?${newsPageInfo.number}+1:${newsPageInfo.number})}">下一页</a>
+            <a th:href="@{/newsinfoback/list(pageNum=${newsPageInfo.totalPages}-1)}">尾页</a>
         </div>
     </div>
 

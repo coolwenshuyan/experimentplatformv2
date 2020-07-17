@@ -109,17 +109,18 @@ public class QuestionController {
     public String QuestionList(Model model, HttpSession session,
                                @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum, @PathVariable int courseinfoId) {
         User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
+//        user.setId(1);
         logger.debug("登陆老师信息:" + user);
         model.addAttribute("selected", courseinfoId);
-        List<CourseInfo> courseInfoList = courseInfoService.getclass_by_arrangeteacher(1);
+        session.setAttribute("teacherChooseCourseId", courseinfoId);
+        List<CourseInfo> courseInfoList = courseInfoService.getclass_by_arrangeteacher(user.getId());
         logger.debug("该老师负责的课程信息:" + courseInfoList);
         model.addAttribute("courseInfoList", courseInfoList);
         if (courseinfoId == -1) {
             logger.debug("courseinfoId信息:" + courseinfoId);
             Pageable pageable = PageRequest.of(pageNum, size);
             //查询该老师的课程信息
-            //TODO 加入老师信息筛选
-            Page<QuestionStudentDto> page = questionService.findAndUname(pageable);
+            Page<QuestionStudentDto> page = questionService.findByTeacherId(user.getId(), pageNum);
             model.addAttribute("questionPageInfo", page);
             return "shouye/dayiManage";
         } else {
@@ -240,22 +241,21 @@ public class QuestionController {
 //        return "redirect:/questionORreply/{id}/seesee";
 //    }
 
-    //删除问题及所有回复
+    //老师删除问题及所有回复
     @GetMapping(value = "/{id}/delete")
-    public String delete(@PathVariable int id) {
+    public String delete(@PathVariable int id, HttpSession session) {
 //        通过id删除所有该问题的回复
         replyService.deleteByQid(id);
+        int courseinfoId = -1;
+        if (!ShiroKit.isEmpty(session.getAttribute("teacherChooseCourseId"))) {
+            courseinfoId = (int) session.getAttribute("teacherChooseCourseId");
+        }
+        ;
 //        通过id删除该问题
         questionService.delete(id);
-        return "redirect:/question/list";
+        logger.debug("coureinfoId信息:" + courseinfoId);
+        return "redirect:/question/teacherlist/" + courseinfoId ;
     }
-
-//    //后台管理进入答疑室
-//    @GetMapping(value = "index")
-//    public String index() {
-//        return "question_reply/index";
-//    }
-
 
     //老师进入查看页
     @GetMapping(value = "/{id}/dayiMore")
@@ -273,7 +273,7 @@ public class QuestionController {
         return "shouye/dayiMore";
     }
 
-    //学生进入查看页
+    //学生进入问题查看页
     @GetMapping(value = "/detaill/{id}")
     public String seesee1(@PathVariable int id, Model model, @RequestParam(required = true, defaultValue = "0") Integer pageNum) {
 //        查到该问题

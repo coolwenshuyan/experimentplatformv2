@@ -44,11 +44,11 @@
                     <b th:each="courseInfo:${courseInfoList}">
                         <option th:value="|/question/teacherlist/${courseInfo.id}|"
                                 th:text="${courseInfo.courseName}"
-                                th:if="${courseInfo.id ne selected}">18信管01
+                                th:if="${courseInfo.id ne selected}">Java
                         </option>
                         <option th:value="|/question/teacherlist/${courseInfo.id}|"
                                 th:text="${courseInfo.courseName}"
-                                selected="selected" th:if="${courseInfo.id eq selected}">18信管01
+                                selected="selected" th:if="${courseInfo.id eq selected}">Python
                         </option>
                     </b>
                 </select>
@@ -63,9 +63,9 @@
         </colgroup>
         <thead>
         <tr>
-            <th style="width: 9%;">序号</th>
-            <th style="width: 9%;">学生ID</th>
-            <th style="width: 10%;">姓名</th>
+            <th style="width: 9%;">学生姓名</th>
+<!--            <th style="width: 9%;">学生ID</th>-->
+            <th style="width: 10%;">学生账号</th>
             <th style="width: 18%;">问题内容</th>
             <th style="width: 10%;">课程名称</th>
             <th style="width: 12%;">是否回复</th>
@@ -75,8 +75,8 @@
         </thead>
         <tbody>
         <tr th:each="question:${questionPageInfo.getContent()}">
-            <td th:text="${question.id}"></td>
-            <td th:text="${question.sid}"></td>
+            <td th:text="${question.stuName}"></td>
+<!--            <td th:text="${question.sid}"></td>-->
             <td th:text="${question.stu_uname}"></td>
             <td th:utext="${question.content}"></td>
             <td th:text="${question.courseName}"></td>

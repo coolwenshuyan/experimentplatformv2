@@ -32,7 +32,7 @@ import java.util.List;
 @RequestMapping(value = "/collegereportmark")
 public class CollegeReportMarkController {
 
-    protected static final Logger logger = LoggerFactory.getLogger(CollegeReportController.class);
+    protected static final Logger logger = LoggerFactory.getLogger(CollegeReportMarkController.class);
     @Autowired
     CollegeReportService collegeReportService;
 

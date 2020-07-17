@@ -17,6 +17,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.filter.DelegatingFilterProxy;
 
 import javax.servlet.Filter;
@@ -30,9 +33,9 @@ import java.util.Map;
  * */
 
 
-//@Configuration
-//@EnableTransactionManagement
-//@PropertySource(value = "classpath:application.properties")
+@Configuration
+@EnableTransactionManagement
+@PropertySource(value = "classpath:application.properties")
 public class ShiroCasConfiguration {
     private static final String casFilterUrlPattern = "/shiro-cas";
     @Value("${shiro.cas}")
@@ -137,18 +140,21 @@ public class ShiroCasConfiguration {
         filterChainDefinitionMap.put("/login", "anon");
         filterChainDefinitionMap.put("/405", "anon");
         filterChainDefinitionMap.put("/logout", "anon");
-        filterChainDefinitionMap.put("/learning/learningList", "anon");
+
+        filterChainDefinitionMap.put("/newsinfo/newslist", "anon");//首页
+        filterChainDefinitionMap.put("/setinfo/situation", "anon");//平台概况
+        filterChainDefinitionMap.put("/teachers/frontList", "anon");//师资队伍
+        filterChainDefinitionMap.put("/question/list", "anon");//咨询答疑
+        filterChainDefinitionMap.put("/learning/learningList", "anon");//学习效果
         filterChainDefinitionMap.put("/learning/effectDetails/**", "anon");
-        filterChainDefinitionMap.put("/setinfo/situation", "anon");
         filterChainDefinitionMap.put("/setinfo/jiesao", "anon");
         filterChainDefinitionMap.put("/setinfo/aboutus", "anon");
-        filterChainDefinitionMap.put("/newsinfo/newslist", "anon");
         filterChainDefinitionMap.put("/newsinfo/more", "anon");
         filterChainDefinitionMap.put("/newsinfo/noticeDetails/**", "anon");
         filterChainDefinitionMap.put("/teachers/frontList", "anon");
 //        filterChainDefinitionMap.put("/teachers/frontList", "authc");
 
-
+        filterChainDefinitionMap.put("/choose/course/list", "authc");//实验大厅
         filterChainDefinitionMap.put("/index", "authc");
         filterChainDefinitionMap.put("/kuangjia/shiyan", "authc");
         //        filterChainDefinitionMap.put("/question/add", "authc,perms[student]");

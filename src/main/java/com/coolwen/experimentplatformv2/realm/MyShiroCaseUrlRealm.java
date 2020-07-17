@@ -1,11 +1,13 @@
 package com.coolwen.experimentplatformv2.realm;
 
+import com.coolwen.experimentplatformv2.kit.ShiroKit;
 import com.coolwen.experimentplatformv2.model.*;
 import com.coolwen.experimentplatformv2.service.AdminService;
 import com.coolwen.experimentplatformv2.service.ClassService;
 import com.coolwen.experimentplatformv2.service.StudentService;
 import com.coolwen.experimentplatformv2.service.UserService;
 import com.coolwen.experimentplatformv2.utils.CasUtils;
+import com.coolwen.experimentplatformv2.utils.SpringBeanFactoryUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -46,10 +48,6 @@ public class MyShiroCaseUrlRealm extends CasRealm {
 
     @Autowired
 //    @Lazy//解决shiro和事务管理不生效问题
-            AdminService adminService;
-
-    @Autowired
-//    @Lazy//解决shiro和事务管理不生效问题
     private UserService userService;
 
 
@@ -73,7 +71,7 @@ public class MyShiroCaseUrlRealm extends CasRealm {
         } else if (comsys_role.contains("ROLE_TEACHER")) {
             String gonghao = (String) map.get("comsys_teaching_number");
             logger.debug("授权老师工号信息:" + "," + gonghao);
-            userService.findByUsername(xuehao);
+//            userService.findByUsername(xuehao);
             User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
             //把老师工号存入系统
             user.setGonghao(gonghao);
@@ -107,21 +105,29 @@ public class MyShiroCaseUrlRealm extends CasRealm {
         logger.debug("登陆账号:" + xuehao);
         // 将用户信息存入session中,方便程序获取,此处可以将根据登录账号查询出的用户信息放到session中
         SecurityUtils.getSubject().getSession().setAttribute("account", xuehao);
-//        if (xuehao.length() == 10) {
-//            logger.debug("登陆账号:" + xuehao);
-//            Student student = studentService.findStudentByXueHao(xuehao);
-//            logger.debug("登陆学生信息:" + student);
-//            //成功则放入session
-//            SecurityUtils.getSubject().getSession().setAttribute("student", student);
-//        }
-//        if (xuehao.length() == 18) {
-//            //查询本地老师信息
-//            User user = userService.findByUsername(xuehao);
-////            Admin admin = adminService.findByUname(xuehao);
-//            logger.debug("登陆老师信息:" + user);
-//            //成功则放入session
-//            SecurityUtils.getSubject().getSession().setAttribute("teacher", user);
-//        }
+        if (xuehao.length() == 10) {
+            logger.debug("登陆账号:" + xuehao);
+            logger.info("studentService信息:" + studentService);
+            if (ShiroKit.isEmpty(studentService)) {
+                studentService = SpringBeanFactoryUtils.getBean(StudentService.class);
+            }
+            Student student = studentService.findStudentByXueHao(xuehao);
+            logger.info("登陆学生信息:" + student);
+            //成功则放入session
+            SecurityUtils.getSubject().getSession().setAttribute("student", student);
+        }
+        if (xuehao.length() == 18) {
+            //查询本地老师信息
+
+            if (ShiroKit.isEmpty(userService)) {
+                userService = SpringBeanFactoryUtils.getBean(UserService.class);
+            }
+            User user = userService.findByUsername(xuehao);
+//            Admin admin = adminService.findByUname(xuehao);
+            logger.info("登陆老师信息:" + user);
+            //成功则放入session
+            SecurityUtils.getSubject().getSession().setAttribute("teacher", user);
+        }
         return authc;
 
     }

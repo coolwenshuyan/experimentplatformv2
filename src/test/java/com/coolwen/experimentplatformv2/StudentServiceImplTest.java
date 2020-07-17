@@ -297,7 +297,11 @@ public class StudentServiceImplTest {
         question.setCourseId(1);
         logger.debug("问题信息:" + questionService.findAllByCourseId(0, question).getContent());
     }
+    @Test
+    public void findStudent() {
 
+        logger.debug("学生信息:" + userService.findByGonghao("0000935"));
+    }
 
     @Test
     public void addRelpy() {

@@ -207,7 +207,7 @@
                                    th:if="not ${stuInfo.isReportType()}">
                                     <button class="layui-btn" lay-submit="" lay-filter="demo1">自定义版评分</button>
                                 </a>
-                                <a th:href="|/collegereport/mark/${stuInfo.getMid()}/${one.getId()}/${selected}|"
+                                <a th:href="|/collegereportmark/${stuInfo.getMid()}/${one.getId()}/${selected}|"
                                    th:if="${stuInfo.isReportType()}">
                                     <button class="layui-btn" lay-submit="" lay-filter="demo1">学院版评分</button>
                                 </a>

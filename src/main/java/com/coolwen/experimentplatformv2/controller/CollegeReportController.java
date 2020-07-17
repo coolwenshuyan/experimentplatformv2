@@ -294,40 +294,4 @@ public class CollegeReportController {
         return "shiyan_baogao/bg_student";
     }
 
-    @GetMapping("/mark/{mid}/{stuid}/{arrangeId}")
-    public String mark(@PathVariable("mid") int mid, @PathVariable("stuid") int stuid,@PathVariable("arrangeId") int arrangeId, Model model) {
-        //查询到报告信息
-        CollegeReportStuExpDto collegeReportStuExpDto = collegeReportService.findByStuidMid(stuid, mid);
-        model.addAttribute("collegeReport", collegeReportStuExpDto);
-        model.addAttribute("stuid", stuid);
-        model.addAttribute("arrangeId", arrangeId);
-        return "shiyan_baogao/bg_teacher";
-    }
-
-    @PostMapping("/mark/{mid}/{stuid}/{arrangeId}")
-    public String mark(@PathVariable("mid") int mid, @PathVariable("stuid") int stuid,@PathVariable("arrangeId") int arrangeId, CollegeReport collegeReport,HttpSession session) {
-
-
-
-        CollegeReport collegeReport1 = collegeReportService.findStuidAndMid(stuid, mid);
-        collegeReport1.setCrTcComment(collegeReport.getCrTcComment());
-        logger.debug(collegeReport.getCrTcComment());
-        collegeReport1.setCrClassName(collegeReport.getCrClassName());
-        collegeReport1.setCrScore(collegeReport.getCrScore());
-        collegeReport1.setCrTcState(true);
-
-        collegeReportService.addCollegeReport(collegeReport1);
-
-        //如果是考核模块，改变学生填写报告教师评分状态为true
-        List<KaoheModel> kaoheModels1 = kaoheModelService.findKaoHeModelByArrangeidAndMid(arrangeId,mid);
-        if(kaoheModels1.size()>0) {
-            KaoHeModelScore khs = kaoHeModelScoreService.findKaoheModelScoreByMid(kaoheModels1.get(0).getId(), stuid);
-            khs.setmReportteacherstate(true);
-            kaoHeModelScoreService.update(khs);
-        }
-        //更新成绩
-        scoreUpdateService.singleStudentScoreUpdate2(stuid,arrangeId);
-        return "redirect:/reportScoreManage/report/" + arrangeId;
-    }
-
 }

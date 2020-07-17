@@ -23,7 +23,7 @@
 				<div class="lessions-list">
 					<div class="lessions-slide">
 						<div class="slide" th:each="courseInfo:${courseInfos}">
-							<a th:href="@{|/teachers/frontList/${courseInfo.getId()}|}" >
+							<a th:href="@{|/teachersfront/frontList/${courseInfo.getId()}|}" >
 								<div class="lession-item" th:classappend="${courseInfo.getId() == course.getId()} ? 'active'" th:text="${courseInfo.getCourseName()}">课程名称1</div>
 							</a>
 						</div>

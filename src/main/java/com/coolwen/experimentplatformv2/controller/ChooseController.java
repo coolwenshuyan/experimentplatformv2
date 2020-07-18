@@ -92,6 +92,6 @@ public class ChooseController {
         String emsg = (String) SecurityUtils.getSubject().getSession().getAttribute("emsg");
         logger.debug("emg信息:" + emsg);
         model.addAttribute("emsg", emsg);
-        return "kuangjia/hello";
+        return "kuangjia/nocoursechoose";
     }
 }

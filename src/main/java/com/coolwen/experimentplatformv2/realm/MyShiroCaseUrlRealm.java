@@ -102,30 +102,30 @@ public class MyShiroCaseUrlRealm extends CasRealm {
         logger.debug("登陆账号:" + xuehao);
         // 将用户信息存入session中,方便程序获取,此处可以将根据登录账号查询出的用户信息放到session中
         SecurityUtils.getSubject().getSession().setAttribute("account", xuehao);
-        if (xuehao.length() == 10) {
-            logger.debug("登陆账号:" + xuehao);
-
-            if (ShiroKit.isEmpty(studentService)) {
-                logger.debug("studentService信息:" + studentService);
-                studentService = SpringBeanFactoryUtils.getBean(StudentService.class);
-            }
-            Student student = studentService.findStudentByXueHao(xuehao);
-            logger.info("登陆学生信息:" + student);
-            //成功则放入session
-            SecurityUtils.getSubject().getSession().setAttribute("student", student);
-        }
-        if (xuehao.length() == 18) {
-            //查询本地老师信息
-
-            if (ShiroKit.isEmpty(userService)) {
-                logger.debug("userService信息:" + userService);
-                userService = SpringBeanFactoryUtils.getBean(UserService.class);
-            }
-            User user = userService.findByUsername(xuehao);
-            logger.info("登陆老师信息:" + user);
-            //成功则放入session
-            SecurityUtils.getSubject().getSession().setAttribute("teacher", user);
-        }
+//        if (xuehao.length() == 10) {
+//            logger.debug("登陆账号:" + xuehao);
+//
+//            if (ShiroKit.isEmpty(studentService)) {
+//                logger.debug("studentService信息:" + studentService);
+//                studentService = SpringBeanFactoryUtils.getBean(StudentService.class);
+//            }
+//            Student student = studentService.findStudentByXueHao(xuehao);
+//            logger.info("登陆学生信息:" + student);
+//            //成功则放入session
+//            SecurityUtils.getSubject().getSession().setAttribute("student", student);
+//        }
+//        if (xuehao.length() == 18) {
+//            //查询本地老师信息
+//
+//            if (ShiroKit.isEmpty(userService)) {
+//                logger.debug("userService信息:" + userService);
+//                userService = SpringBeanFactoryUtils.getBean(UserService.class);
+//            }
+//            User user = userService.findByUsername(xuehao);
+//            logger.info("登陆老师信息:" + user);
+//            //成功则放入session
+//            SecurityUtils.getSubject().getSession().setAttribute("teacher", user);
+//        }
         return authc;
     }
 

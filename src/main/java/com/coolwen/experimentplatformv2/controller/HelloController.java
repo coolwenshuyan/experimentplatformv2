@@ -46,7 +46,7 @@ public class HelloController {
      */
     @RequestMapping("/")
 //    @RequiresRoles("Admin")
-    public String hello(HttpSession session, SessionStatus sessionStatus) {
+    public String hello(HttpSession session, SessionStatus sessionStatus) throws UnsupportedEncodingException {
         logger.debug("通过信息门户进入系统的");
         //拿到登陆账号，学生是学号，老师是身份证号码
         String account = (String) SecurityUtils.getSubject().getSession().getAttribute("account");
@@ -97,7 +97,7 @@ public class HelloController {
                 return "redirect:/choose/course/nochoose";
             }
             user.setUsername(account);
-            user.setNickname(comsys_name);
+            user.setNickname(URLDecoder.decode(comsys_name, "UTF-8"));
             logger.debug("老师信息:" + user);
             userService.update(user);
             SecurityUtils.getSubject().getSession().setAttribute("teacher", user);

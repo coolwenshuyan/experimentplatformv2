@@ -342,7 +342,7 @@ public class LoginController {
     public String loginOut(HttpSession session, SessionStatus sessionStatus) {
         session.invalidate();
         sessionStatus.setComplete();
-        return "/login/login";
+        return"redirect:http://tysf.sctu.edu.cn:8071/app/index.action";
     }
 }
 

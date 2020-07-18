@@ -9,6 +9,11 @@
             </div>
             <div class="user-info" th:if="${session.student} != null">
                 <span th:text="|欢迎你，${session.student.stuName} |"></span>
+                <a href="/logout">退出</a>
+            </div>
+            <div class="user-info" th:if="${session.teacher} != null">
+                <span th:text="|欢迎你，${session.teacher.nickname} |"></span>
+                <a href="/logout">退出</a>
             </div>
         </div>
     </div>
@@ -23,8 +28,9 @@
             <li><a href="/teachersfront/frontList">师资队伍</a></li>
             <li><a href="/question/list">咨询答疑</a></li>
             <li><a href="/learningfront/learningList">学习效果</a></li>
-            <li th:if="${session.teacher} == null}"><a href="/choose/course/list">实验大厅</a></li>
-            <li th:if="${session.teacher} != null}"><a href="/learning/kuangjia">平台管理</a></li>
+<!--            "${session.student} == null"-->
+            <li th:if="${session.student} != null"><a href="/choose/course/list">实验大厅</a></li>
+            <li th:if="${session.teacher} != null"><a href="/learning/kuangjia">平台管理</a></li>
         </ul>
     </div>
 </div>

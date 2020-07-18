@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro" xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="UTF-8" />
 		<meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1" />
@@ -22,18 +22,26 @@
 			</div>
 			<div class="layui-side layui-bg-black">
 				<div class="layui-side-scroll">
-					<ul class="layui-nav layui-nav-tree" lay-shrink="all">
+					<shiro:authenticated>
+					<ul  class="layui-nav layui-nav-tree" lay-shrink="all">
+						<shiro:hasAnyRoles name="admin,courseleader" >
 						<li class="layui-nav-item">
 							<a href="javascript:;"><i class="layui-icon layui-icon-home"></i>首页设置</a>
+							<shiro:hasRole name="admin">
 							<dl class="layui-nav-child">
 								<dd><a class="to-url" data-url="/setinfoback/addplat" href="javascript:;">平台介绍</a></dd>
-								<dd><a class="to-url" data-url="/teachers/list" href="javascript:;">师资队伍</a></dd>
-								<dd><a class="to-url" data-url="/learning/list" href="javascript:;">学习效果</a></dd>
 								<dd><a class="to-url" data-url="/setinfoback/lunbo" href="javascript:;">轮播导航</a></dd>
 								<dd><a class="to-url" data-url="/newsinfoback/list" href="javascript:;">平台公告</a></dd>
 								<dd><a class="to-url" data-url="/setinfoback/addus" href="javascript:;">关于我们</a></dd>
 							</dl>
+							</shiro:hasRole>
+							<dl class="layui-nav-child">
+								<dd><a class="to-url" data-url="/teachers/list" href="javascript:;">师资队伍</a></dd>
+								<dd><a class="to-url" data-url="/learning/list" href="javascript:;">学习效果</a></dd>
+							</dl>
 						</li>
+						</shiro:hasAnyRoles>
+						<shiro:hasAnyRoles name="admin,teacher">
 						<li class="layui-nav-item">
 							<a href="javascript:;"><i class="layui-icon layui-icon-app"></i>实验模块设置</a>
 							<dl class="layui-nav-child">
@@ -52,6 +60,8 @@
 								<dd><a class="to-url" data-url="/totalscore/list" href="javascript:;">学生总评成绩管理</a></dd>
 							</dl>
 						</li>
+						</shiro:hasAnyRoles>
+						<shiro:hasRole name="admin">
 						<li class="layui-nav-item">
 							<a href="javascript:;"><i class="layui-icon layui-icon-user"></i>基础设置</a>
 							<dl class="layui-nav-child">
@@ -78,13 +88,20 @@
 						<li class="layui-nav-item">
 							<a class="to-url" data-url="/admin/user/list"><i class="layui-icon layui-icon-username"></i>教师账号管理</a>
 						</li>
+						</shiro:hasRole>
+						<shiro:hasAnyRoles name="admin,teacher">
 						<li class="layui-nav-item">
 							<a class="to-url" data-url="/question/teacherlist/-1"><i class="layui-icon layui-icon-help"></i>学生答疑管理</a>
 						</li>
+						</shiro:hasAnyRoles>
+						<shiro:hasRole name="admin">
 						<li class="layui-nav-item">
 							<a class="to-url" data-url="monitor"><i class="layui-icon layui-icon-console"></i>平台服务监控</a>
 						</li>
+						</shiro:hasRole>
+
 					</ul>
+					</shiro:authenticated>
 				</div>
 			</div>
 			<div class="layui-body">

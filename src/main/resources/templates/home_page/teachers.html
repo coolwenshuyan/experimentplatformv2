@@ -19,7 +19,7 @@
 				<div class="current">师资队伍</div>
 				<div class="crumb">当前位置：<a href="/newsinfo/newslist">首页</a> > 师资队伍</div>
 			</div>
-			<div class="lessions-area">
+			<div th:if="${visble}" class="lessions-area">
 				<div class="lessions-list">
 					<div class="lessions-slide">
 						<div class="slide" th:each="courseInfo:${courseInfos}">
@@ -48,8 +48,8 @@
 					</div>
 				</div>
 			</div>
-			<div class="show-bar">《<span th:text="${course.getCourseName()}">课程名称6</span>》的师资队伍</div>
-			<div class="teachers cl">
+			<div th:if="${visble}" class="show-bar">《<span th:text="${course.getCourseName()}">课程名称6</span>》的师资队伍</div>
+			<div th:if="${visble}" class="teachers cl">
 				<div class="teacher" th:each="teacher:${teachers}">
 					<div><img th:src="@{'/upload/'+${teacher.image_url}}" th:alt="${teacher.person_name}" /></div>
 					<h3 th:text="${teacher.person_name}"></h3>

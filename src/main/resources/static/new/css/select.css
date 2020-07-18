@@ -4,33 +4,174 @@
  * @Last Modified by: Charlie
  * @Last Modified time: 2020-07-15 16:08:14
  */
-a,a:hover { color:inherit; }
-.layui-layout-admin .layui-header { background:#215130; height:80px; }
-.top-logo { position:absolute; left:10px; color:#fff; }
-.top-logo img { display:block; float:left; height:60px; margin:10px 10px 0 0; }
-.top-logo p { font-size:32px; float:left; font-family:logofont; background:#215130; height:80px; line-height:80px; }
-.top-logo span { display:block; float:left; border-left:1px solid #fff; font-size:24px; padding:0 0 0 10px; height:36px; line-height:36px; margin:22px 0 22px 10px; }
-.top-link { position:absolute; line-height:1; color:#fff; font-size:16px; top:50%; right:20px; transform:translateY(-50%); }
-.top-link:hover { text-decoration:underline; }
-.layui-layout-admin .layui-side { top:80px; width:240px; }
-.layui-layout-admin .layui-body { top:80px; left:240px; bottom:0; }
-.layui-side-scroll { width:260px; }
-.layui-nav-tree { width:240px; }
-.layui-nav-tree .layui-nav-item a { height:50px; line-height:50px; }
-.layui-nav-tree .layui-nav-item a i { margin-right:10px; font-size:18px; }
-.layui-nav-tree .layui-nav-child a { text-indent:26px; }
-.select-cover { position:fixed; left:0; top:0; right:0; bottom:0; background:rgba(255,255,255,0.8); z-index:999; }
-.select-title { font-size:28px; text-align:center; line-height:50px; margin-bottom:30px; font-weight:bold; color:#215130; margin:150px 0 50px 0; }
-.select-section { width:1200px; margin:0 auto; }
-.bx-wrapper { margin:0; padding:0; border:0; box-shadow:none; }
-.bx-wrapper .bx-prev { left:-50px; }
-.bx-wrapper .bx-next { right:-50px; }
-.lession-item { position:relative; width:285px; height:385px; border:1px solid #ccc; box-sizing:border-box; }
-.lession-item img { display:block; width:100%; height:100%; }
-.lession-item p { height:36px; line-height:36px; background:rgba(0,0,0,0.7); position:absolute; bottom:0; left:0; width:100%; color:#fff; text-align:center; }
-.select-btn { margin:20px auto 0; width:120px; height:40px; text-align:center; background:#215130; line-height:40px; color:#fff; border-radius:3px; cursor:pointer; }
-.select-btn:hover { opacity:0.7; }
-.not-slide { display:flex; justify-content:space-between; }
-.not-slide .slide { width:285px; margin:0 auto; }
-.select-error{position: absolute;left: 50%;top: 40%;transform: translate(-50%,-50%);text-align:center;}
-.select-error p{line-height:3;font-size:18px;}
+a,
+a:hover {
+    color: inherit;
+}
+.layui-layout-admin .layui-header {
+    background: #215130;
+    height: 80px;
+}
+.top-logo {
+    position: absolute;
+    left: 10px;
+    color: #fff;
+}
+.top-logo img {
+    display: block;
+    float: left;
+    height: 60px;
+    margin: 10px 10px 0 0;
+}
+.top-logo p {
+    font-size: 32px;
+    float: left;
+    font-family: logofont;
+    background: #215130;
+    height: 80px;
+    line-height: 80px;
+}
+.top-logo span {
+    display: block;
+    float: left;
+    border-left: 1px solid #fff;
+    font-size: 24px;
+    padding: 0 0 0 10px;
+    height: 36px;
+    line-height: 36px;
+    margin: 22px 0 22px 10px;
+}
+.top-link {
+    position: absolute;
+    line-height: 1;
+    color: #fff;
+    font-size: 16px;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+}
+.top-link:hover {
+    text-decoration: underline;
+}
+.layui-layout-admin .layui-side {
+    top: 80px;
+    width: 240px;
+}
+.layui-layout-admin .layui-body {
+    top: 80px;
+    left: 240px;
+    bottom: 0;
+}
+.layui-side-scroll {
+    width: 260px;
+}
+.layui-nav-tree {
+    width: 240px;
+}
+.layui-nav-tree .layui-nav-item a {
+    height: 50px;
+    line-height: 50px;
+}
+.layui-nav-tree .layui-nav-item a i {
+    margin-right: 10px;
+    font-size: 18px;
+}
+.layui-nav-tree .layui-nav-child a {
+    text-indent: 26px;
+}
+.select-cover {
+    position: fixed;
+    left: 0;
+    top: 80px;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 999;
+}
+.select-area {
+    background: #fff;
+    margin: 50px auto 0;
+    max-width: 1366px;
+    box-sizing: border-box;
+    padding: 50px 0;
+}
+.select-title {
+    font-size: 28px;
+    text-align: center;
+    line-height: 50px;
+    font-weight: bold;
+    color: #009688;
+}
+.select-section {
+    width: 1200px;
+    margin: 0 auto;
+}
+.bx-wrapper {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-shadow: none;
+    background: transparent;
+}
+.bx-wrapper .bx-prev {
+    left: -50px;
+}
+.bx-wrapper .bx-next {
+    right: -50px;
+}
+.lession-item {
+    position: relative;
+    width: 285px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+.lession-title {
+    height: 36px;
+    line-height: 36px;
+    width: 100%;
+    text-align: center;
+    background: #fff;
+    color: #333;
+}
+.lession-cover {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.lession-infos {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: #fff;
+    opacity: 0.8;
+    color: #000;
+    width: 100%;
+    font-size: 14px;
+    line-height: 24px;
+    text-indent: 30px;
+}
+.select-btn {
+    text-align: center;
+    margin-top: 20px;
+}
+.not-slide {
+    display: flex;
+    justify-content: space-between;
+}
+.not-slide .slide {
+    width: 285px;
+    margin: 0 auto;
+}
+.select-error {
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    padding: 50px 100px;
+    background: #fff;
+}
+.select-error p {
+    line-height: 3;
+    font-size: 18px;
+}

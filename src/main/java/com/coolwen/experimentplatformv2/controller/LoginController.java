@@ -236,11 +236,12 @@ public class LoginController {
                                  @RequestParam("stu_isinschool") boolean stu_isinschool,
 //                                 @RequestParam("class_id") String class_id,
                                  @RequestParam("tel") String tel,
-                                 @RequestParam("name") String name) {
+                                 @RequestParam("nickname") String nickname) {
         ModelAndView model = new ModelAndView();
 //        try {
         if (pass.equals(password)) {
-            Student student1 = studentService.findByUname(username);
+//            Student student1 = studentService.findByUname(username);
+            Student student1 = studentService.findByStuXuehao(stu_xuehao);
             if (student1 != null) {
                 model.addObject("msg1", "用户名已存在");
                 model.setViewName("register");
@@ -251,7 +252,7 @@ public class LoginController {
             Pattern p1 = Pattern.compile("^$|^\\d{10}$");
             Matcher m1 = p1.matcher(stu_xuehao);
             if (!m.matches()) {
-                model.addObject("telmsg", "请输入11位数字");
+                model.addObject("telmsg", "请输入11位数字正确的电话号码");
                 model.setViewName("register");
                 return model;
             }
@@ -265,7 +266,7 @@ public class LoginController {
 //                    if (class_id != "") {
 //                        student.setClassId(Integer.valueOf(class_id));
 //                    }
-                student.setStuUname(username);
+                student.setStuUname(stu_xuehao);
                 student.setStuPassword(password);
                 if (stu_isinschool && stu_xuehao.equals("")) {
 //                        throw new UserException("在校学生须填写学号!");
@@ -283,7 +284,7 @@ public class LoginController {
                     }
                     student.setStuXuehao(stu_xuehao);
                 }
-                student.setStuName(name);
+                student.setStuName(nickname);
                 Student stu = studentService.findByStuMobile(tel);
                 if (stu != null) {
 //                        throw new UserException("手机号已被使用!");

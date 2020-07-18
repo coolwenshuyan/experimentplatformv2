@@ -48,11 +48,13 @@ public class ChooseController {
         Student student = (Student) SecurityUtils.getSubject().getSession().getAttribute("student");
         logger.debug("登陆信息:" + student);
         ClassModel classModel = classService.findClassById(student.getClassId());
+        logger.debug("班级信息:" + classModel);
         //学生还没有分班级
         String emsg = null;
         if (ShiroKit.isEmpty(classModel)) {
             emsg = "你还没有加入任何班级，等待老师分配班级！";
             SecurityUtils.getSubject().getSession().setAttribute("emsg", emsg);
+            model.addAttribute("emsg", emsg);
             return "redirect:/choose/course/nochoose";
         }
         logger.debug("班级信息:" + classModel);
@@ -88,7 +90,8 @@ public class ChooseController {
     @GetMapping("nochoose")
     public String choosecourseno(Model model) {
         String emsg = (String) SecurityUtils.getSubject().getSession().getAttribute("emsg");
+        logger.debug("emg信息:" + emsg);
         model.addAttribute("emsg", emsg);
-        return "/kuangjia/nocoursechoose";
+        return "/405";
     }
 }

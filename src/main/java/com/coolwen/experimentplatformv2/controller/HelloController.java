@@ -54,6 +54,7 @@ public class HelloController {
         logger.debug("角色信息:" + comsys_role);
         //用户姓名
         String comsys_name = (String) map.get("comsys_name");
+        logger.debug("登陆姓名信息:" + comsys_role);
         if (comsys_role.contains("ROLE_STUDENT")) {
 
             Student student = studentService.findStudentByXueHao(account);
@@ -72,6 +73,7 @@ public class HelloController {
             //获取老师的工号
             String teacherGongHao = (String) map.get("comsys_teaching_number");
             User user = userService.findByGonghao(teacherGongHao);
+            logger.debug("查询老师信息:" + user);
             //老师账号为空，老师还没有在本系统中，需要超级管理员去添加
             if (ShiroKit.isEmpty(user)) {
                 session.invalidate();

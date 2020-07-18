@@ -96,7 +96,7 @@ public class HelloController {
                 SecurityUtils.getSubject().getSession().setAttribute("emsg", emsg);
                 return "redirect:/choose/course/nochoose";
             }
-            user.setUsername(account);
+            user.setUsername(URLDecoder.decode(account, "UTF-8"));
             user.setNickname(URLDecoder.decode(comsys_name, "UTF-8"));
             logger.debug("老师信息:" + user);
             userService.update(user);

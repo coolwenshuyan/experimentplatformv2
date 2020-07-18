@@ -2,7 +2,7 @@
     <div class="topbar">
         <div class="main cl">
             <p>旅游大数据虚拟仿真实验教学平台</p>
-            <div class="user-info" th:if="${session.student} == null">
+            <div class="user-info" th:if="${session.student == null and session.teacher==null}">
                 <a href="/login">登陆</a>
                 <!-- <a href="http://tysf.sctu.edu.cn:8071/sso//login?service=http://172.17.55.112:8889/shiro-cas">登陆</a> -->
                 <a href="/register">注册</a>
@@ -28,7 +28,7 @@
             <li><a href="/teachersfront/frontList">师资队伍</a></li>
             <li><a href="/question/list">咨询答疑</a></li>
             <li><a href="/learningfront/learningList">学习效果</a></li>
-<!--            "${session.student} == null"-->
+            <!--            "${session.student} == null"-->
             <li th:if="${session.student} != null"><a href="/choose/course/list">实验大厅</a></li>
             <li th:if="${session.teacher} != null"><a href="/learning/kuangjia">平台管理</a></li>
         </ul>

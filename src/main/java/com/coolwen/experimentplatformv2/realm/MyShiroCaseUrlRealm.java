@@ -132,16 +132,18 @@ public class MyShiroCaseUrlRealm extends CasRealm {
     //清除认证
     @Override
     public void clearCachedAuthenticationInfo(PrincipalCollection principals) {
+        logger.debug("授权缓存清除:");
 //        User u = (User) principals.getPrimaryPrincipal();
-//        SimplePrincipalCollection sp = new SimplePrincipalCollection(u.getUsername(), getName());
+        String xuehao = (String) SecurityUtils.getSubject().getSession().getAttribute("account");
+        SimplePrincipalCollection sp = new SimplePrincipalCollection(xuehao, getName());
         Cache c = this.getAuthenticationCache();
         Set<Object> keys = c.keys();
         for (Object o : keys) {
             logger.debug("授权缓存:", o);
             logger.debug("授权缓存:", c.get(o));
         }
-//        super.clearCachedAuthenticationInfo(sp);
-        //   super.clearCachedAuthenticationInfo(principals);
+        super.clearCachedAuthenticationInfo(sp);
+        super.clearCachedAuthenticationInfo(principals);
     }
 
 

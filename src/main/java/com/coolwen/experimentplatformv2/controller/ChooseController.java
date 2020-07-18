@@ -44,7 +44,7 @@ public class ChooseController {
     @GetMapping("list")
     public String choosecourse(Model model) {
         //获取登陆学生的信息
-        logger.debug("登陆信息:laile" );
+        logger.debug("登陆信息:laile");
         Student student = (Student) SecurityUtils.getSubject().getSession().getAttribute("student");
         logger.debug("登陆信息:" + student);
         ClassModel classModel = classService.findClassById(student.getClassId());
@@ -72,7 +72,7 @@ public class ChooseController {
 //        logger.debug("所有的考核课程信息:" + courseInfoList);
 //        model.addAttribute("courseInfoList", courseInfoList);
 
-         List<CourseInfoDto2> courseInfoList = courseInfoService.findByArrangeCourseInfoDto2byClassId(classModel.getClassId());
+        List<CourseInfoDto2> courseInfoList = courseInfoService.findByArrangeCourseInfoDto2byClassId(classModel.getClassId());
         if (courseInfoList.size() == 0) {
             emsg = "你所在的班级还没有进行排课，等待老师排课！";
             SecurityUtils.getSubject().getSession().setAttribute("emsg", emsg);

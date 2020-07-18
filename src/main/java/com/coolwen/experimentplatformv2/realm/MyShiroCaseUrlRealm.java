@@ -73,11 +73,12 @@ public class MyShiroCaseUrlRealm extends CasRealm {
             logger.debug("授权老师工号信息:" + "," + gonghao);
 //            userService.findByUsername(xuehao);
             User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
+            logger.debug("授权老师Session信息:" + "," + user);
             //把老师工号存入系统
             user.setGonghao(gonghao);
-            userService.add(user);
+            userService.update(user);
             uid = user.getId();
-            logger.debug("授权老师信息:" + uid + "," + user.getUsername());
+            logger.debug("授权老师信息:" + user);
             SecurityUtils.getSubject().getSession().setAttribute("teacher", user);
         }
         List<String> roles = userService.listRoleSnByUser(uid);
@@ -107,8 +108,9 @@ public class MyShiroCaseUrlRealm extends CasRealm {
         SecurityUtils.getSubject().getSession().setAttribute("account", xuehao);
         if (xuehao.length() == 10) {
             logger.debug("登陆账号:" + xuehao);
-            logger.info("studentService信息:" + studentService);
+
             if (ShiroKit.isEmpty(studentService)) {
+                logger.debug("studentService信息:" + studentService);
                 studentService = SpringBeanFactoryUtils.getBean(StudentService.class);
             }
             Student student = studentService.findStudentByXueHao(xuehao);
@@ -120,15 +122,14 @@ public class MyShiroCaseUrlRealm extends CasRealm {
             //查询本地老师信息
 
             if (ShiroKit.isEmpty(userService)) {
+                logger.debug("userService信息:" + userService);
                 userService = SpringBeanFactoryUtils.getBean(UserService.class);
             }
             User user = userService.findByUsername(xuehao);
-//            Admin admin = adminService.findByUname(xuehao);
             logger.info("登陆老师信息:" + user);
             //成功则放入session
             SecurityUtils.getSubject().getSession().setAttribute("teacher", user);
         }
         return authc;
-
     }
 }

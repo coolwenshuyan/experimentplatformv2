@@ -33,9 +33,9 @@ import java.util.Map;
  * */
 
 
-@Configuration
-@EnableTransactionManagement
-@PropertySource(value = "classpath:application.properties")
+//@Configuration
+//@EnableTransactionManagement
+//@PropertySource(value = "classpath:application.properties")
 public class ShiroCasConfiguration {
     private static final String casFilterUrlPattern = "/shiro-cas";
     @Value("${shiro.cas}")

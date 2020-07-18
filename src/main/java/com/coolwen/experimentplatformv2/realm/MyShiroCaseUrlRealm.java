@@ -132,29 +132,31 @@ public class MyShiroCaseUrlRealm extends CasRealm {
     //清除认证
     @Override
     public void clearCachedAuthenticationInfo(PrincipalCollection principals) {
-//        User u = (User) principals.getPrimaryPrincipal();
-//        SimplePrincipalCollection sp = new SimplePrincipalCollection(u.getUsername(), getName());
-        Cache c = this.getAuthenticationCache();
-        Set<Object> keys = c.keys();
-        for (Object o : keys) {
-            logger.debug("授权缓存:", o);
-            logger.debug("授权缓存:", c.get(o));
-        }
+        logger.debug("授权缓存清除:");
+////        User u = (User) principals.getPrimaryPrincipal();
+//        String xuehao = (String) SecurityUtils.getSubject().getSession().getAttribute("account");
+//        SimplePrincipalCollection sp = new SimplePrincipalCollection(xuehao, getName());
+//        Cache c = this.getAuthenticationCache();
+//        Set<Object> keys = c.keys();
+//        for (Object o : keys) {
+//            logger.debug("授权缓存:", o);
+//            logger.debug("授权缓存:", c.get(o));
+//        }
 //        super.clearCachedAuthenticationInfo(sp);
-        //   super.clearCachedAuthenticationInfo(principals);
+        super.clearCachedAuthenticationInfo(principals);
     }
 
 
     //清除权限
     @Override
     public void clearCachedAuthorizationInfo(PrincipalCollection principals) {
-
-        Cache c = this.getAuthorizationCache();
-        Set<Object> keys = c.keys();
-        for (Object o : keys) {
-            logger.debug("认证缓存: {0}.", o);
-            logger.debug("认证缓存: {0}.", c.get(o));
-        }
+//
+//        Cache c = this.getAuthorizationCache();
+//        Set<Object> keys = c.keys();
+//        for (Object o : keys) {
+//            logger.debug("认证缓存: {0}.", o);
+//            logger.debug("认证缓存: {0}.", c.get(o));
+//        }
 //        User user = ((User) principals.getPrimaryPrincipal());
 //        SimplePrincipalCollection spc = new SimplePrincipalCollection(user.getUsername(), getName());
         super.clearCachedAuthorizationInfo(principals);

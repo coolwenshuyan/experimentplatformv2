@@ -136,35 +136,41 @@ public class ShiroCasConfiguration {
 
         filterChainDefinitionMap.put(casFilterUrlPattern, "casFilter");
         filterChainDefinitionMap.put("/static/**", "anon");
+        filterChainDefinitionMap.put("/cs/**", "anon");
+        filterChainDefinitionMap.put("/js/**", "anon");
+        filterChainDefinitionMap.put("/layui/**", "anon");
+        filterChainDefinitionMap.put("/admin/static/**", "anon");
+        filterChainDefinitionMap.put("/lib/**", "anon");
         filterChainDefinitionMap.put("/verifyCode", "anon");
         filterChainDefinitionMap.put("/login", "anon");
         filterChainDefinitionMap.put("/405", "anon");
-        filterChainDefinitionMap.put("/logout", "anon");
+        filterChainDefinitionMap.put("/register", "anon");
+        filterChainDefinitionMap.put("/upload/**", "anon");
 
-        filterChainDefinitionMap.put("/newsinfo/newslist", "anon");//首页
-        filterChainDefinitionMap.put("/setinfo/situation", "anon");//平台概况
-        filterChainDefinitionMap.put("/teachers/frontList", "anon");//师资队伍
-        filterChainDefinitionMap.put("/question/list", "anon");//咨询答疑
-        filterChainDefinitionMap.put("/learning/learningList", "anon");//学习效果
-        filterChainDefinitionMap.put("/learning/effectDetails/**", "anon");
-        filterChainDefinitionMap.put("/setinfo/jiesao", "anon");
-        filterChainDefinitionMap.put("/setinfo/aboutus", "anon");
-        filterChainDefinitionMap.put("/newsinfo/more", "anon");
-        filterChainDefinitionMap.put("/newsinfo/noticeDetails/**", "anon");
-        filterChainDefinitionMap.put("/teachers/frontList", "anon");
-//        filterChainDefinitionMap.put("/teachers/frontList", "authc");
+        filterChainDefinitionMap.put("/teachersfront/**", "anon");
+        filterChainDefinitionMap.put("/newsinfo/**", "anon");
+        filterChainDefinitionMap.put("/setinfo/**", "anon");
+        filterChainDefinitionMap.put("/learningfront/**", "anon");
 
-        filterChainDefinitionMap.put("/choose/course/list", "authc");//实验大厅
-        filterChainDefinitionMap.put("/index", "authc");
-        filterChainDefinitionMap.put("/kuangjia/shiyan", "authc");
-        //        filterChainDefinitionMap.put("/question/add", "authc,perms[student]");
-//        filterChainDefinitionMap.put("/newsinfo/shiyan", "authc");
 
-        //需要登录访问的资源
-        filterChainDefinitionMap.put("/newsinfo/shiyan", "authc");
+        filterChainDefinitionMap.put("/admin/**", "authc,resourceCheckFilter");
+        filterChainDefinitionMap.put("/arrangeclass/**", "authc,resourceCheckFilter");
+        filterChainDefinitionMap.put("/courseinfo/**", "authc,resourceCheckFilter");
+        filterChainDefinitionMap.put("/collegereportmark/**", "authc,resourceCheckFilter");
+        filterChainDefinitionMap.put("/kaohemodel/**", "authc,resourceCheckFilter");
+        filterChainDefinitionMap.put("/shiyan/**", "authc,resourceCheckFilter");
+        filterChainDefinitionMap.put("/lastTestScoreManage/**", "authc,resourceCheckFilter");
+        filterChainDefinitionMap.put("/learning/**", "authc,resourceCheckFilter");
+        filterChainDefinitionMap.put("/reportScoreManage/**", "authc,resourceCheckFilter");
+        filterChainDefinitionMap.put("/testScoreManage/**", "authc,resourceCheckFilter");
+        filterChainDefinitionMap.put("/newsinfoback/**", "authc,resourceCheckFilter");
+        filterChainDefinitionMap.put("/setinfoback/**", "authc,resourceCheckFilter");
+        filterChainDefinitionMap.put("/studentManage/**", "authc,resourceCheckFilter");
+        filterChainDefinitionMap.put("/teachers/**", "authc,resourceCheckFilter");
+        filterChainDefinitionMap.put("/totalscore/**", "authc,resourceCheckFilter");
+        filterChainDefinitionMap.put("/passTotalscore/**", "authc,resourceCheckFilter");
+        filterChainDefinitionMap.put("/TreportGrade/**", "authc,resourceCheckFilter");
 
-        //需要资源检查才能访问
-        filterChainDefinitionMap.put("/learning/kuangjia", "authc,resourceCheckFilter");
         filterChainDefinitionMap.put("/**", "authc");//需要登录访问的资源 , 一般将/**放在最下边
         //未授权页面
         shiroFilterFactoryBean.setUnauthorizedUrl("/405");

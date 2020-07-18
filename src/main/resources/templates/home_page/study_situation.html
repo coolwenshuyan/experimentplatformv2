@@ -18,7 +18,7 @@
 				<div class="current">学习效果</div>
 				<div class="crumb">当前位置：<a href="/newsinfo/newslist">首页</a> > 学习效果</div>
 			</div>
-			<div class="lessions-area">
+			<div th:if="${visble}" class="lessions-area">
 				<div class="lessions-list">
 					<div class="lessions-slide">
 						<div class="slide" th:each="courseInfo:${courseInfos}">
@@ -29,7 +29,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="effect-show">
+			<div th:if="${visble}" class="effect-show">
 				<div class="effect-left">
 					<h3>效果分析</h3>
 					<div id="chart" class="chart"></div>

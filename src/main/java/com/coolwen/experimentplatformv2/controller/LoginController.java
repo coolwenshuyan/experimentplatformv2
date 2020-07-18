@@ -314,12 +314,12 @@ public class LoginController {
         return model;
     }
 
-    @GetMapping("/logout")
-    public String Logout() {
-        SecurityUtils.getSubject().logout();
-        logger.debug("fsdfasdasdgasdg");
-        return "redirect:/login";
-    }
+//    @GetMapping("/logout")
+//    public String Logout() {
+//        SecurityUtils.getSubject().logout();
+//        logger.debug("fsdfasdasdgasdg");
+//        return "redirect:/login";
+//    }
 
 
     @PostMapping(value = {"/change"})//修改个人信息
@@ -338,11 +338,12 @@ public class LoginController {
         return model;
     }
 
-    @RequestMapping(value = "/logout")
+    @GetMapping(value = "/logout")
     public String loginOut(HttpSession session, SessionStatus sessionStatus) {
-        session.invalidate();
-        sessionStatus.setComplete();
-        return"redirect:http://tysf.sctu.edu.cn:8071/app/index.action";
+        SecurityUtils.getSubject().logout();
+//        session.invalidate();
+//        sessionStatus.setComplete();
+        return "redirect:http://tysf.sctu.edu.cn:8071/app/index.action";
     }
 }
 

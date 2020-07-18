@@ -129,6 +129,7 @@ public class ShiroConfig {
 //        filterChainDefinitionMap.put("/index", "authc");
 //        filterChainDefinitionMap.put("/logout", "anon");
 //        //需要资源检查才能访问
+
         filterChainDefinitionMap.put("/**", "authc");//需要登录访问的资源 , 一般将/**放在最下边
         logger.debug("filterChainDefinition Mapmessage: {}", filterChainDefinitionMap);
         logger.debug("Shiro拦截器工厂类注入成功");

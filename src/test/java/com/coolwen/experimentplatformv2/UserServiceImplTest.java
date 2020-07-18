@@ -55,22 +55,118 @@ public class UserServiceImplTest {
         res.setPermission("admin:*");
         resourceService.add(res);
 
+//        res = new Resource();
+//        res.setName("课程设置");
+//        res.setUrl("/courseinfo/list");
+//        res.setPermission("courseinfo:*");
+//        resourceService.add(res);
+//
+//        res = new Resource();
+//        res.setName("课程安排");
+//        res.setUrl("/arrangeclass/list");
+//        res.setPermission("arrangeclass:*");
+//        resourceService.add(res);
+//
+//        res = new Resource();
+//        res.setName("考核模块设置");
+//        res.setUrl("/kaohemodel/checkModule");
+//        res.setPermission("kaohemodel:*");
+//        resourceService.add(res);
+
+        res = new Resource();
+        res.setName("后台首页");
+        res.setUrl("/learning/kuangjia");
+        res.setPermission("learning:*");
+        resourceService.add(res);
+
+        res = new Resource();
+        res.setName("平台公告");
+        res.setUrl("/newsinfoback/**");
+        res.setPermission("newsinfoback:*");
+        resourceService.add(res);
+
+        res = new Resource();
+        res.setName("简介轮播");
+        res.setUrl("/setinfoback/**");
+        res.setPermission("setinfoback:*");
+        resourceService.add(res);
+
         res = new Resource();
         res.setName("课程设置");
-        res.setUrl("/courseinfo/list");
+        res.setUrl("/courseinfo/**");
         res.setPermission("courseinfo:*");
         resourceService.add(res);
 
         res = new Resource();
         res.setName("课程安排");
-        res.setUrl("/arrangeclass/list");
+        res.setUrl("/arrangeclass/**");
         res.setPermission("arrangeclass:*");
         resourceService.add(res);
 
         res = new Resource();
-        res.setName("考核模块设置");
-        res.setUrl("/kaohemodel/checkModule");
+        res.setName("学习效果");
+        res.setUrl("/learning/**");
+        res.setPermission("learning:*");
+        resourceService.add(res);
+
+        res = new Resource();
+        res.setName("师资队伍后台");
+        res.setUrl("/teachers/**");
+        res.setPermission("teachers:*");
+        resourceService.add(res);
+
+        res = new Resource();
+        res.setName("学院版教师评分");
+        res.setUrl("/collegereportmark/**");
+        res.setPermission("collegereportmark:*");
+        resourceService.add(res);
+
+        res = new Resource();
+        res.setName("考核模块");
+        res.setUrl("/kaohemodel/**");
         res.setPermission("kaohemodel:*");
+        resourceService.add(res);
+
+        res = new Resource();
+        res.setName("实验模块");
+        res.setUrl("/shiyan/**");
+        res.setPermission("shiyan:*");
+        resourceService.add(res);
+
+        res = new Resource();
+        res.setName("期末理论测试成绩管理");
+        res.setUrl("/lastTestScoreManage/**");
+        res.setPermission("lastTestScoreManage:*");
+        resourceService.add(res);
+
+        res = new Resource();
+        res.setName("学生模块报告成绩管理");
+        res.setUrl("/reportScoreManage/**");
+        res.setPermission("reportScoreManage:*");
+        resourceService.add(res);
+
+        res = new Resource();
+        res.setName("学生模块测试成绩管理");
+        res.setUrl("/testScoreManage/**");
+        res.setPermission("testScoreManage:*");
+        resourceService.add(res);
+
+        res = new Resource();
+        res.setName("总成绩管理（当期）");
+        res.setUrl("/totalscore/**");
+        res.setPermission("totalscore:*");
+        resourceService.add(res);
+
+        res = new Resource();
+        res.setName("总成绩管理（往期）");
+        res.setUrl("/passTotalscore/**");
+        res.setPermission("passTotalscore:*");
+        resourceService.add(res);
+
+        res = new Resource();
+        res.setName("自定义报告评分");
+        res.setUrl("/TreportGrade/**");
+        res.setPermission("TreportGrade:*");
         resourceService.add(res);
     }
 
@@ -94,6 +190,19 @@ public class UserServiceImplTest {
     @Test
     public void testAddRoleRes() {
         roleService.addRoleResource(1, 1);
+        roleService.addRoleResource(2, 2);
+        roleService.addRoleResource(2, 7);
+        roleService.addRoleResource(2, 8);
+        roleService.addRoleResource(3, 2);
+        roleService.addRoleResource(3, 9);
+        roleService.addRoleResource(3, 10);
+        roleService.addRoleResource(3, 11);
+        roleService.addRoleResource(3, 12);
+        roleService.addRoleResource(3, 13);
+        roleService.addRoleResource(3, 14);
+        roleService.addRoleResource(3, 15);
+        roleService.addRoleResource(3, 16);
+        roleService.addRoleResource(3, 17);
     }
 
     @Test

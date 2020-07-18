@@ -85,6 +85,9 @@ public class TeacherFrontController {
 
     @GetMapping(value = "/frontList/{id}")
     public String teacherFrontList1(Model model,@PathVariable int id){
+        boolean visble = true;
+        model.addAttribute("visble",visble);
+
         List<CourseInfo> courseInfos = courseInfoService.findAll();
         model.addAttribute("courseInfos",courseInfos);
 

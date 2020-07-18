@@ -83,6 +83,13 @@ public class LearningeffectfrontController {
 
         List<CourseInfo> courseInfos = courseInfoService.findAll();
         model.addAttribute("courseInfos",courseInfos);
+        boolean visble = true;
+        if (courseInfos.size() == 0){
+            visble = false;
+            model.addAttribute("visble",visble);
+            return "home_page/teachers";
+        }
+        model.addAttribute("visble",visble);
         int id = courseInfos.get(0).getId();
 
         List<Effect> effects = effectService.findByCourseId(id);
@@ -107,6 +114,8 @@ public class LearningeffectfrontController {
 
     @GetMapping(value = "/learningList/{id}")
     public String learningList1(Model model,@PathVariable int id){
+        boolean visble = true;
+        model.addAttribute("visble",visble);
 
         List<CourseInfo> courseInfos = courseInfoService.findAll();
         model.addAttribute("courseInfos",courseInfos);

@@ -14,18 +14,17 @@ import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cas.CasRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.jasig.cas.client.util.AbstractCasFilter;
 import org.jasig.cas.client.validation.Assertion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @ProjectName: experimentplatform
@@ -128,5 +127,36 @@ public class MyShiroCaseUrlRealm extends CasRealm {
             SecurityUtils.getSubject().getSession().setAttribute("teacher", user);
         }
         return authc;
+    }
+
+    //清除认证
+    @Override
+    public void clearCachedAuthenticationInfo(PrincipalCollection principals) {
+//        User u = (User) principals.getPrimaryPrincipal();
+//        SimplePrincipalCollection sp = new SimplePrincipalCollection(u.getUsername(), getName());
+        Cache c = this.getAuthenticationCache();
+        Set<Object> keys = c.keys();
+        for (Object o : keys) {
+            logger.debug("授权缓存:", o);
+            logger.debug("授权缓存:", c.get(o));
+        }
+//        super.clearCachedAuthenticationInfo(sp);
+        //   super.clearCachedAuthenticationInfo(principals);
+    }
+
+
+    //清除权限
+    @Override
+    public void clearCachedAuthorizationInfo(PrincipalCollection principals) {
+
+        Cache c = this.getAuthorizationCache();
+        Set<Object> keys = c.keys();
+        for (Object o : keys) {
+            logger.debug("认证缓存: {0}.", o);
+            logger.debug("认证缓存: {0}.", c.get(o));
+        }
+//        User user = ((User) principals.getPrimaryPrincipal());
+//        SimplePrincipalCollection spc = new SimplePrincipalCollection(user.getUsername(), getName());
+        super.clearCachedAuthorizationInfo(principals);
     }
 }

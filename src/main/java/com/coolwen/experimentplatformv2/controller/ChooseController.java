@@ -84,7 +84,7 @@ public class ChooseController {
         model.addAttribute("courseInfoList", courseInfoList);
 
 
-        return "/kuangjia/select";
+        return "kuangjia/select";
     }
 
     @GetMapping("nochoose")
@@ -92,6 +92,6 @@ public class ChooseController {
         String emsg = (String) SecurityUtils.getSubject().getSession().getAttribute("emsg");
         logger.debug("emg信息:" + emsg);
         model.addAttribute("emsg", emsg);
-        return "/405";
+        return "kuangjia/hello";
     }
 }

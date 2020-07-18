@@ -62,8 +62,9 @@ public class HelloController {
             Student student = studentService.findStudentByXueHao(account);
             //学生账号为空，学生还没有在本系统注册，需要让学生去注册
             if (ShiroKit.isEmpty(student)) {
-                session.invalidate();
-                sessionStatus.setComplete();
+                session.removeAttribute("student");
+                String emsg = "请先注册再来登陆系统！";
+                SecurityUtils.getSubject().getSession().setAttribute("emsg", emsg);
                 return "redirect:/choose/course/nochoose";
             }
             try {
@@ -88,8 +89,11 @@ public class HelloController {
             logger.debug("查询老师信息:" + user);
             //老师账号为空，老师还没有在本系统中，需要超级管理员去添加
             if (ShiroKit.isEmpty(user)) {
-                session.invalidate();
-                sessionStatus.setComplete();
+                session.removeAttribute("teacher");
+//                session.invalidate();
+//                sessionStatus.setComplete();
+                String emsg = "请联系管理员加入系统！";
+                SecurityUtils.getSubject().getSession().setAttribute("emsg", emsg);
                 return "redirect:/choose/course/nochoose";
             }
             user.setUsername(account);

@@ -16,6 +16,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.support.SessionStatus;
 
 import javax.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.Map;
 
 /**
@@ -64,7 +66,11 @@ public class HelloController {
                 sessionStatus.setComplete();
                 return "redirect:/choose/course/nochoose";
             }
-            student.setStuName(comsys_name);
+            try {
+                student.setStuName(URLDecoder.decode(comsys_name, "UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
             studentService.updateStudent(student);
             logger.debug("学生信息:" + student);
             SecurityUtils.getSubject().getSession().setAttribute("student", student);
@@ -72,6 +78,12 @@ public class HelloController {
         } else if (comsys_role.contains("ROLE_TEACHER")) {
             //获取老师的工号
             String teacherGongHao = (String) map.get("comsys_teaching_number");
+            try {
+                teacherGongHao = URLDecoder.decode(teacherGongHao, "UTF-8");
+                logger.debug("查询老师工号:" + teacherGongHao);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
             User user = userService.findByGonghao(teacherGongHao);
             logger.debug("查询老师信息:" + user);
             //老师账号为空，老师还没有在本系统中，需要超级管理员去添加

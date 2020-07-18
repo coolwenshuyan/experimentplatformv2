@@ -61,13 +61,12 @@ public class MyShiroCaseUrlRealm extends CasRealm {
         logger.debug("授权角色信息:" + comsys_role);
         logger.debug("授权账号:" + principals.getPrimaryPrincipal() + "授权用户名:" + comsys_name);
         String xuehao = (String) SecurityUtils.getSubject().getSession().getAttribute("account");
-        int uid = 0;
+//        int uid = 0;
+        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         if (comsys_role.contains("ROLE_STUDENT")) {
             Student student = studentService.findStudentByXueHao(xuehao);
             SecurityUtils.getSubject().getSession().setAttribute("student", student);
             logger.debug("授权学生信息:" + student);
-            uid = student.getId();
-            logger.debug("授权用户:" + uid + "," + student.getStuName());
         } else if (comsys_role.contains("ROLE_TEACHER")) {
             String gonghao = (String) map.get("comsys_teaching_number");
             logger.debug("授权老师工号信息:" + "," + gonghao);
@@ -77,21 +76,19 @@ public class MyShiroCaseUrlRealm extends CasRealm {
             //把老师工号存入系统
             user.setGonghao(gonghao);
             userService.update(user);
-            uid = user.getId();
             logger.debug("授权老师信息:" + user);
             SecurityUtils.getSubject().getSession().setAttribute("teacher", user);
+            List<String> roles = userService.listRoleSnByUser(user.getId());
+            logger.debug("授权角色:" + roles);
+            List<Resource> reses = userService.listAllResource(user.getId());
+            List<String> permissions = new ArrayList<String>();
+            logger.debug("授权资源:" + reses);
+            for (Resource r : reses) {
+                permissions.add(r.getUrl());
+            }
+            info.setRoles(new HashSet<String>(roles));
+            info.setStringPermissions(new HashSet<String>(permissions));
         }
-        List<String> roles = userService.listRoleSnByUser(uid);
-        logger.debug("授权角色:" + roles);
-        List<Resource> reses = userService.listAllResource(uid);
-        List<String> permissions = new ArrayList<String>();
-        logger.debug("授权资源:" + reses);
-        for (Resource r : reses) {
-            permissions.add(r.getUrl());
-        }
-        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        info.setRoles(new HashSet<String>(roles));
-        info.setStringPermissions(new HashSet<String>(permissions));
         return info;
     }
 

@@ -72,30 +72,26 @@
                 laypage.render({
                     elem: 'pager',
                     layout: ['count', 'prev', 'page', 'next'],
-                    curr: parseInt('[[${questionPageInfo.number}]]') + 1,
-                    count: parseInt('[[${questionPageInfo.totalElements}]]'),
+                    curr: parseInt('[[${users.number}]]') + 1,
+                    count: parseInt('[[${users.totalElements}]]'),
                     jump: function (obj, first) {
                         if (!first) {
-                            window.location.href = window.location.origin + window.location.pathname + '?pageNum=' + (obj.curr - 1)
+                            var _str = window.location.origin + window.location.pathname + '?pageNum=' + (obj.curr - 1)
+                            var _username = getUrlParam('username')
+                            if (_username) {
+                                _str += '&username=' + _username
+                            }
+                            window.location.href = _str
                         }
                     }
                 })
-                // $('#addUser').click(function (e) {
-                //     e.preventDefault()
-                //     layer.open({
-                //         type: 2,
-                //         title: '添加用户',
-                //         area: ['500px', '500px'],
-                //         content: '/admin/user/add'
-                //     })
-                // })
                 $('#addUser').click(function (e) {
                     e.preventDefault()
                     layer.open({
                         type: 2,
                         title: '添加用户',
                         area: ['450px', '360px'],
-                        content: '/templates/user/add.html'
+                        content: '/admin/user/add'
                     })
                 })
                 $('.user-update').click(function (e) {
@@ -119,6 +115,12 @@
                     })
                 })
             })
+            function getUrlParam(name) {
+                var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)')
+                var r = window.location.search.substr(1).match(reg)
+                if (r != null) return unescape(r[2])
+                return null
+            }
         </script>
     </body>
 </html>

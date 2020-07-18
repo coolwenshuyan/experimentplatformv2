@@ -50,9 +50,9 @@
 </div>
 <div class="select-cover">
 	<div class="select-error">
-		<p th:value="${emsg}">仿真平台系统</p>
-		<p th:if="${ #lists.isEmpty(emsg)}">学生请确认已经在本系统注册</p>
-		<p th:if="${#lists.isEmpty(emsg)}">老师请联系系统管理员</p>
+		<p th:text="${emsg}">仿真平台系统</p>
+<!--		<p th:if="${ emsg }==null">学生请确认已经在本系统注册</p>-->
+<!--		<p th:if="${#lists.isEmpty(emsg)}">老师请联系系统管理员</p>-->
 		<a href="/newsinfo/newslist" class="layui-btn">返回首页</a>
 	</div>
 </div>

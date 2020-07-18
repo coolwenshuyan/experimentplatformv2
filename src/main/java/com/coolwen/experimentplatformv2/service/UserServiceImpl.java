@@ -7,12 +7,17 @@ import com.coolwen.experimentplatformv2.model.Resource;
 import com.coolwen.experimentplatformv2.model.Role;
 import com.coolwen.experimentplatformv2.model.User;
 import com.coolwen.experimentplatformv2.model.UserRole;
+import com.coolwen.experimentplatformv2.specification.SimpleSpecificationBuilder;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +38,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRoleRepository userRoleRepository;
+
+    @Value("${SimplePageBuilder.pageSize}")
+    int size;
 
     @Override
     public User add(User user) {
@@ -85,7 +93,9 @@ public class UserServiceImpl implements UserService {
         }
         logger.debug("修改密码前:" + user);
 //        给密码加密
-        user.setPassword(ShiroKit.md5(user.getPassword(), user.getUsername()));
+        if (!ShiroKit.isEmpty(user.getPassword())) {
+            user.setPassword(ShiroKit.md5(user.getPassword(), user.getUsername()));
+        }
         logger.debug("修改密码后:" + user.toString());
         userRepository.save(user);
         //这里制造个异常，测是事务管理是否生效
@@ -146,5 +156,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Role> listUserRole(int uid) {
         return userRepository.listUserRole(uid);
+    }
+
+    @Override
+    public Page<User> findUserPageAndCon(int pageNumber, String con) {
+        Pageable pager = PageRequest.of(pageNumber, size);
+        Page<User> userPage = userRepository.findAll(new SimpleSpecificationBuilder<User>(
+                "gonghao", ":", con)
+                .addOr("nickname", ":", con)
+                .generateSpecification(), pager);
+        return userPage;
+
     }
 }

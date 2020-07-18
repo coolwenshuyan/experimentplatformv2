@@ -1,85 +1,96 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-		<title>教师账号管理</title>
-		<link rel="stylesheet" href="../../static/new/css/reset.css" />
-		<link rel="stylesheet" href="//cdn.staticfile.org/layui/2.5.6/css/layui.min.css" />
-		<style>
-			body {
-				padding: 20px;
-				background: #f7f7f7;
-			}
-			.layui-fluid {
-				padding: 20px;
-				background: #fff;
-			}
-		</style>
-	</head>
-	<body>
-		<div class="layui-fluid">
-			<div>
-				<button type="button" class="layui-btn" id="addUser">添加用户</button>
-			</div>
-			<table class="layui-table">
-				<thead>
-					<tr>
-						<th>用户名称</th>
-						<th>用户昵称</th>
-						<th>用户工号</th>
-						<th>操作</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="user:${users}">
-						<td th:text="${user.username}"></td>
-						<td th:text="${user.nickname}"></td>
-						<td th:text="${user.gonghao}"></td>
-						<td>
-                            <a th:data-id="${user.id}" class="layui-btn user-update">更新</a>
-                            <a th:data-id="${user.id}" class="layui-btn user-view">查询管理资源</a>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		<script src="//cdn.staticfile.org/jquery/1.8.0/jquery.min.js"></script>
-		<script src="//cdn.staticfile.org/layui/2.5.6/layui.all.min.js"></script>
-		<script th:inline="javascript">
-			$(function () {
-				var layer = layui.layer
-				$('#addUser').click(function (e) {
-					e.preventDefault()
-					layer.open({
-						type: 2,
-						title: '添加用户',
-						area: ['500px', '500px'],
-						content: '/admin/user/add'
-					})
-				})
-				$('.user-update').click(function (e) {
-					e.preventDefault()
-					var _id = $(this).data('id')
-					layer.open({
-						type: 2,
-						title: '更新用户',
-						area: ['500px', '500px'],
-						content: '/admin/user/update/' + _id
-					})
-				})
-				$('.user-view').click(function (e) {
-					e.preventDefault()
-					var _id = $(this).data('id')
-					layer.open({
-						type: 2,
-						title: '查询资源管理',
-						area: ['60%', '500px'],
-						content: '/admin/user/listRes/' + _id
-					})
-				})
-			})
-		</script>
-	</body>
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <title>教师账号管理</title>
+    <link rel="stylesheet" href="../../static/new/css/reset.css"/>
+    <link rel="stylesheet" href="//cdn.staticfile.org/layui/2.5.6/css/layui.min.css"/>
+    <style>
+        body {
+            padding: 20px;
+            background: #f7f7f7;
+        }
+
+        .layui-fluid {
+            padding: 20px;
+            background: #fff;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-fluid">
+    <div>
+        <button type="button" class="layui-btn" id="addUser">添加用户</button>
+        <form class="layui-form layui-col-space5" th:action="@{/admin/user/list}" method="get" th:value="${username}">
+            <div class="layui-inline layui-show-xs-block">
+            </div>
+            <div class="layui-inline layui-show-xs-block">
+                <input type="text" name="username" placeholder="请输入老师姓名或者工号" autocomplete="off" class="layui-input" th:value="${username}">
+            </div>
+            <div class="layui-inline layui-show-xs-block">
+                <input class="layui-btn" type="submit" lay-submit="" lay-filter="sreach" value="搜索"/>
+            </div>
+        </form>
+    </div>
+    <table class="layui-table">
+        <thead>
+        <tr>
+<!--            <th>序号</th>-->
+            <th>用户昵称</th>
+            <th>用户工号</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user:${users}">
+<!--            <td th:text="${user.username}"></td>-->
+            <td th:text="${user.nickname}"></td>
+            <td th:text="${user.gonghao}"></td>
+            <td>
+<!--                <a th:data-id="${user.id}" class="layui-btn user-update">更新</a>-->
+                <a th:data-id="${user.id}" class="layui-btn user-view">查询管理资源</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script src="//cdn.staticfile.org/jquery/1.8.0/jquery.min.js"></script>
+<script src="//cdn.staticfile.org/layui/2.5.6/layui.all.min.js"></script>
+<script th:inline="javascript">
+    $(function () {
+        var layer = layui.layer
+        $('#addUser').click(function (e) {
+            e.preventDefault()
+            layer.open({
+                type: 2,
+                title: '添加用户',
+                area: ['500px', '500px'],
+                content: '/admin/user/add'
+            })
+        })
+        $('.user-update').click(function (e) {
+            e.preventDefault()
+            var _id = $(this).data('id')
+            layer.open({
+                type: 2,
+                title: '更新用户',
+                area: ['500px', '500px'],
+                content: '/admin/user/update/' + _id
+            })
+        })
+        $('.user-view').click(function (e) {
+            e.preventDefault()
+            var _id = $(this).data('id')
+            layer.open({
+                type: 2,
+                title: '查询资源管理',
+                area: ['60%', '500px'],
+                content: '/admin/user/listRes/' + _id
+            })
+        })
+    })
+</script>
+</body>
 </html>

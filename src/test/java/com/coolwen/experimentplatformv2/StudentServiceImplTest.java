@@ -50,16 +50,32 @@ public class StudentServiceImplTest {
 
     protected static final Logger logger = LoggerFactory.getLogger(StudentServiceImplTest.class);
 
+    //该测试用例是把全校老师信息存入系统
     @Test
     public void addUser() {
         User user = new User();
-        for (int i = 10; i <= 50; i++) {
+        for (int i = 1; i < 935; i++) {
             user = new User();
             user.setNickname(getName());
             user.setUsername("t" + i);
             user.setPassword("123");
             user.setStatus(false);
-            user.setGonghao("00009" + i);
+            user.setGonghao("0000" + String.format("%03d", i));
+            userService.add(user);
+        }
+    }
+
+    //该测试用例是把全校老师信息存入系统
+    @Test
+    public void addUser2() {
+        User user = new User();
+        for (int i = 936; i < 2500; i++) {
+            user = new User();
+            user.setNickname(getName());
+            user.setUsername("t" + i);
+            user.setPassword("123");
+            user.setStatus(false);
+            user.setGonghao("000" + String.format("%04d", i));
             userService.add(user);
         }
     }
@@ -297,6 +313,7 @@ public class StudentServiceImplTest {
         question.setCourseId(1);
         logger.debug("问题信息:" + questionService.findAllByCourseId(0, question).getContent());
     }
+
     @Test
     public void findStudent() {
 
@@ -346,5 +363,13 @@ public class StudentServiceImplTest {
             questionService.add(question);
         }
 
+    }
+
+    @Test
+    public void testNumber() {
+        for (int i = 1; i < 10000; i++) {
+            String seqNum = String.format("%05d", i);
+            System.out.println(seqNum);
+        }
     }
 }

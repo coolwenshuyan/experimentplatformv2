@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -34,10 +35,11 @@ public class UserController {
     private RoleService roleService;
 
     @RequestMapping("list")
-    public String list(Model model) {
+    public String list(Model model, @RequestParam(value = "pageNum", required = true, defaultValue = "0") int pageNum, @RequestParam(required = true, defaultValue = "") String username) {
         User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
+        model.addAttribute("username", username);
         logger.debug("登陆信息:" + user);
-        model.addAttribute("users", userService.list());
+        model.addAttribute("users", userService.findUserPageAndCon(pageNum, username));
         return "user/list";
     }
 
@@ -57,6 +59,8 @@ public class UserController {
             rids.add(Integer.parseInt(rid));
         }
         logger.debug("添加用户信息的角色" + rids);
+        user.setPassword("123");
+        user.setStatus(false);
         userService.add(user, rids);
         return "redirect:/admin/user/list";
     }

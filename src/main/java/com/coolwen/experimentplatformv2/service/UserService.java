@@ -3,6 +3,7 @@ package com.coolwen.experimentplatformv2.service;
 import com.coolwen.experimentplatformv2.model.Resource;
 import com.coolwen.experimentplatformv2.model.Role;
 import com.coolwen.experimentplatformv2.model.User;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -41,4 +42,6 @@ public interface UserService {
     public List<String> listRoleSnByUser(int uid);
 
     public List<Role> listUserRole(int uid);
+
+    public Page<User> findUserPageAndCon(int pageNumber, String con);
 }

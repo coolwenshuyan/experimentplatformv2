@@ -92,8 +92,8 @@ public class ExpModelController {
     ) {
         try {
             int courseId = (int) session.getAttribute("ExpModelcourseId");
-            return "redirect:/expmodel/expModelListByCourseId/"+courseId;
-        }catch (Exception e) {
+            return "redirect:/expmodel/expModelListByCourseId/" + courseId;
+        } catch (Exception e) {
         }
         logger.debug("expModelList>>>>>>>>>>>>");
         User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
@@ -438,21 +438,19 @@ public class ExpModelController {
     //实验大厅所有模块信息
     @GetMapping("/alltestModel")
     public String alltest(Model model, @RequestParam(value = "pageNum", required = true, defaultValue = "0") int pageNum, HttpSession session) throws ParseException {
-        int arrangeId=0;
+        int arrangeId = 0;
         //对通过SESSION来获取安排ID进行判断
         try {
             arrangeId = (int) session.getAttribute("arrageId_sctudemo");
-            if(ShiroKit.isEmpty(arrangeId)||arrangeId<=0)
-            {
+            if (ShiroKit.isEmpty(arrangeId) || arrangeId <= 0) {
                 return "redirect:/choose/course/list";
             }
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
             return "redirect:/choose/course/list";
         }
 
         ArrangeClass arrangeClass = arrangeClassService.findById(arrangeId);
-        Page<ExpModel> a = expModelService.findOneCourseModelList2(arrangeClass.getCourseId(), pageNum,6);
+        Page<ExpModel> a = expModelService.findOneCourseModelList2(arrangeClass.getCourseId(), pageNum, 6);
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         model.addAttribute("list", a);
@@ -494,22 +492,20 @@ public class ExpModelController {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 //        Student student = (Student) SecurityUtils.getSubject().getPrincipal();
         Student student = (Student) session.getAttribute("student");
-        int arrangeId=0;
+        int arrangeId = 0;
         //对通过SESSION来获取安排ID进行判断
         try {
             arrangeId = (int) session.getAttribute("arrageId_sctudemo");
-            if(ShiroKit.isEmpty(arrangeId)||arrangeId<=0)
-            {
+            if (ShiroKit.isEmpty(arrangeId) || arrangeId <= 0) {
                 return "redirect:/choose/course/list";
             }
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
             return "redirect:/choose/course/list";
         }
 
 
 //        Page<KaoHeModelStuDTO> kaohe = kaoheModelService.findKaoheModelStuDto(student.getId(), pageNum);
-        Page<KaoHeModelStuDTO> kaohe = kaoheModelService.findKaoheModelStuDto(student.getId(), pageNum,arrangeId);
+        Page<KaoHeModelStuDTO> kaohe = kaoheModelService.findKaoheModelStuDto(student.getId(), pageNum, arrangeId);
         model.addAttribute("k", kaohe);
         session.setAttribute("modulePageNum", pageNum);
         session.setAttribute("isAllModule", false);
@@ -728,21 +724,36 @@ public class ExpModelController {
         return "kuangjia/shiyan";
     }
 
+
+    /**
+     * 通过课程ID查询进度
+     *
+     * @param courseId
+     * @return
+     */
     @GetMapping("/findClassByCourse/{id}")
     @ResponseBody
     public String findClassByCourse(@PathVariable("id") int courseId) {
+        logger.debug("接口信息: + /expmodel/findClassByCourse/" + courseId);
         User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
         List<ClassModel> classModels = courseInfoService.getclass_by_arrangecourseid(user.getId(), courseId);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("data", classModels);
+        logger.debug("查询进度信息: " + jsonObject);
         return String.valueOf(jsonObject);
     }
 
 
-    //考核模块进度查询详情
+    /**
+     * @param id
+     * @param pageNum
+     * @param model
+     * @return
+     */
     @GetMapping("/kaoheProgressQuery/{id}")
     public String kaoheProgressQuery(@PathVariable("id") int id, @RequestParam(value = "pageNum", defaultValue = "0", required = true) int pageNum, Model model) {
         model.addAttribute("mid", id);
+        logger.debug("接口信息: + /expmodel/kaoheProgressQuery/" + id);
         int course_id = (int) SecurityUtils.getSubject().getSession().getAttribute("proGressCourse_id");
         int class_id = (int) SecurityUtils.getSubject().getSession().getAttribute("class_id");
         Page<KaoheModuleProgressDTO> progressDTO = expModelService.findExpModels(course_id, class_id, id, pageNum);
@@ -762,10 +773,13 @@ public class ExpModelController {
                                 @RequestParam(value = "pageNum", defaultValue = "0") int pageNum,
                                 Model model
     ) {
-
+        logger.debug("接口信息: + /expmodel/kaoheProgress");
         User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
+        logger.debug("登陆老师信息:" + user);
         List<CourseInfo> courseInfoList = courseInfoService.getclass_by_arrangeteacher(user.getId());
+        logger.debug("课程信息:" + courseInfoList);
         model.addAttribute("courseList", courseInfoList);
+        logger.debug("查询课程ID信息:" + courseId + "查询班级ID信息:" + classId);
         if (courseId == 0 && classId == 0) {
             return "kaohe/progress";
         } else if (courseId == 0 && classId != 0) {
@@ -782,6 +796,7 @@ public class ExpModelController {
         List<KaoheProgressMainDTO> list = new ArrayList<>();
         KaoheProgressMainDTO kaoheProgressMainDTO = null;
         Page<ExpModel> page = expModelService.findKaoheProgressMainByCourseId(courseId, pageNum);
+        logger.debug("page进度信息:" + page.getContent());
         int totalNum = clazzService.findStudentNumByClassId(classId);
         for (ExpModel e : page) {
             mTestFalseNum = kaoHeModelScoreService.findmTestFalseByClassIdAndMid(classId, e.getM_id());
@@ -790,6 +805,7 @@ public class ExpModelController {
             list.add(kaoheProgressMainDTO);
         }
         model.addAttribute("list", list);
+        logger.debug("进度信息:" + user);
         return "kaohe/progress";
     }
 

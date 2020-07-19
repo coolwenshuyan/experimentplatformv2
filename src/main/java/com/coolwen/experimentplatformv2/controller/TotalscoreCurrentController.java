@@ -1,5 +1,6 @@
 package com.coolwen.experimentplatformv2.controller;
 
+import com.coolwen.experimentplatformv2.dao.KaoHeModelScoreRepository;
 import com.coolwen.experimentplatformv2.model.*;
 import com.coolwen.experimentplatformv2.model.DTO.ArrangeInfoDTO;
 import com.coolwen.experimentplatformv2.model.DTO.StuTotalScoreCurrentDTO;
@@ -67,6 +68,14 @@ public class TotalscoreCurrentController {
 
     @Autowired
     public UserService userService;
+
+    @Autowired
+    public KaoHeModelScoreRepository kaoHeModelScoreRepository;
+
+    @Autowired
+    public CollegeReportService collegeReportService;
+
+
 //    @GetMapping("/test")
 //    public String hello() {
 //        return "AllModel";
@@ -115,6 +124,7 @@ public class TotalscoreCurrentController {
         model.addAttribute("arrangeInfoDTOs", arrangeInfoDTOs);
         model.addAttribute("arrageId", -1);
         boolean choose = false;
+        model.addAttribute("Choose",choose);
 //        //从数据库得到所有的总成绩
 //        Page<StuTotalScoreCurrentDTO> totalScore = null;
 //        try {
@@ -155,6 +165,9 @@ public class TotalscoreCurrentController {
 
         List<ClassModel> classList = clazzService.findCurrentClass();
         model.addAttribute("classList", classList);
+
+        boolean choose = false;
+        model.addAttribute("Choose",choose);
 
         //初始化 最后权重
         float kaoheBaifenbi = 0;
@@ -265,7 +278,7 @@ public class TotalscoreCurrentController {
             //进行成绩固化操作
             totalScorePass = new TotalScorePass();
             totalScorePass.setStuId(student.getId());
-            totalScorePass.setKaoheName(String.valueOf(kaoheModelList.size()));
+            totalScorePass.setKaoheNum(kaoheModelList.size());
             totalScorePass.setKaoheName(kaoheModuleName);
             totalScorePass.setKaoheMtestscore(kaohe_mtestscore);
             totalScorePass.setKaoheMreportscore(kaohe_mreportscore);
@@ -280,17 +293,41 @@ public class TotalscoreCurrentController {
             totalScorePass.setFinalDatetime(new Date());
 
             totalScorePass.setCourseName(courseInfo.getCourseName());
+            totalScorePass.setCourseId(courseInfo.getId());
             totalScorePass.setTeacherName(user.getNickname());
             totalScorePass.setTeacherGongHao(user.getGonghao());
             totalScorePass.setClassName(classModel.getClassName());
-            totalScorePassService.save(totalScorePass);
+            totalScorePass.setClassId(classModel.getClassId());
             logger.debug("固化信息为:" + totalScorePass);
+            totalScorePassService.save(totalScorePass);
+
             //删除学生模块回答，报告回答，考核成绩表，以及当期总评成绩表
+            for (KaoheModel k : kaoheModelList) {
+                int temp_mid = k.getM_id();
+//                int studentid = student.getId();
+                //删除考核模块测试答案
+                moduleTestAnswerStuService.deleteByStuIdModelId(temp_mid, student.getId());
+                //删除学院版报告
+                collegeReportService.deleteByStuIdModelId(temp_mid, student.getId());
+                //删除自定义版答题报告
+                reportAnswerService.deleteByStuIdModelId(temp_mid, student.getId());
+
+            }
+            List<KaoHeModelScore> kaoHeModelScores = kaoHeModelScoreRepository.findKaoheModuleScoreByStuIdAndArrangeId(student.getId(), arrageId);
+            kaoHeModelScoreRepository.deleteAll(kaoHeModelScores);
+            //删除学生对应课程当期总评成绩
+            totalScoreCurrentService.deleteTotalScoreCurrentByStuIdAndArrangeId(student.getId(), arrageId);
+
 //            moduleTestAnswerStuService.deleteModuleTestAnswerStuByStuId(student.getId());
 //            reportAnswerService.deleteReportAnswerByStuId(student.getId());
 //            kaoHeModelScoreService.deleteKaoheModuleScoreByStuId(student.getId());
 //            totalScoreCurrentService.deleteTotalScoreCurrentByStuId(student.getId());
         }
+
+        //删除所有考核模块
+        kaoheModelService.deleteByArrangeId(arrageId);
+        //删除按排表
+        arrangeClassService.delete(arrageId);
 //        }
 
 

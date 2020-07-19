@@ -3,6 +3,7 @@ package com.coolwen.experimentplatformv2.dao;
 import com.coolwen.experimentplatformv2.dao.basedao.BaseRepository;
 import com.coolwen.experimentplatformv2.model.ClassModel;
 import com.coolwen.experimentplatformv2.model.CourseInfo;
+import com.coolwen.experimentplatformv2.model.DTO.CourseClassInfo;
 import com.coolwen.experimentplatformv2.model.DTO.CourseInfoDto;
 import com.coolwen.experimentplatformv2.model.DTO.CourseInfoDto2;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -35,4 +36,8 @@ public interface CourseInfoRepository extends BaseRepository<CourseInfo, Integer
 
     @Query("select c from CourseInfo c where c.id = ?1")
     CourseInfo findCourseInfoById(int id);
+
+
+    @Query("select csi from ClassModel csi,TotalScorePass cci where cci.classId=csi.classId and cci.teacherGongHao=?1 and cci.courseId =?2 group by cci.courseId,cci.classId order by csi.classId ")
+    List<ClassModel> getClassByCourseidUseridpass(String teacherid, int courseId);
 }

@@ -35,4 +35,6 @@ public interface CourseInfoService {
     CourseInfoDto findByCourseInfoIdAndClassId(int courseInfoId, int classId);
 
     List<CourseInfoDto2> findByArrangeCourseInfoDto2byClassId(int classId);
+
+    List<ClassModel> getClassByCourseidUseridpass(String id, int courseId);
 }

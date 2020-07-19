@@ -6,10 +6,10 @@
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="stylesheet" href="../../static/css/layui.css" media="all">
-    <link rel="stylesheet" type="text/css" href="../../static/css/page.css"/>
-    <link rel="stylesheet" type="text/css" href="../../static/css/code.css"/>
-    <link rel="stylesheet" type="text/css" href="../../static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" th:href="@{/css/layui.css}" media="all">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/page.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/code.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}"/>
     <style type="text/css">
         * {
             margin: 0;
@@ -101,7 +101,6 @@
 
         <tr>
             <th style="padding:10px 0">
-                <form class="layui-form" action="">
                     <div class="layui-form-item">
                         <!--									<label class="layui-form-label" >当期往期</label>-->
                         <!--									<div class="layui-input-block" style="width: 30%;">-->
@@ -126,40 +125,35 @@
                         <!--									</div>-->
 
                     </div>
-                </form>
             </th>
             <th style="padding: 10px 0">
-                <!--							<form class="layui-form" action="">-->
-                <div class="layui-form-item">
-                    <label class="layui-form-label">课程班级筛选</label>
-                    <div class="layui-input-block" style="width: 45%;">
-                        <!--										<select name="interest" lay-filter="aihao" >-->
-
-                        <!--										<select name="interest" lay-filter="aihao" onchange="window.open(this.options[this.selectedIndex].value,target='_self')" style="margin-top: 13px;">-->
-                        <!--											<option>请选择</option>-->
-                        <!--											<div th:each="clazz:${classList}" >-->
-                        <!--												<option th:value="|/passTotalscore/${clazz.getClassId()}/list|"  th:text="${clazz.getClassName()}">18信管01</option>-->
-                        <!--											</div>-->
-                        <!--										</select>-->
-                        <select name="interest" lay-filter="aihao"
-                                onchange="window.open(this.options[this.selectedIndex].value,target='_self')"
-                                style="margin-top: 13px;">
-                            <option th:value="|/passTotalscore/report/-1|">--请选择--</option>
-                            <div th:each="arrangeInfo:${arrangeInfoDTOs}">
-                                <option th:value="|/passTotalscore/report/${arrangeInfo.getArrangeId()}|"
-                                        th:text="${arrangeInfo.getCourseName()+'-'+arrangeInfo.getClassName()}"
-                                        th:if="${arrangeInfo.getArrangeId() ne selected}">18信管01
-                                </option>
-                                <option th:value="|/passTotalscore/report/${arrangeInfo.getArrangeId()}|"
-                                        th:text="${arrangeInfo.getCourseName()+'-'+arrangeInfo.getClassName()}"
-                                        selected="selected" th:if="${arrangeInfo.getArrangeId() eq selected}">18信管01
-                                </option>
+                <form class="layui-form" lay-filter="dataform" id="dataform">
+<!--                    <div class="layui-col-xs4">-->
+                        <div class="layui-form-item ">
+                            <label class="layui-form-label">课程选择</label>
+                            <div class="layui-input-block">
+                                <select name="course" lay-filter="course" id="course" required>
+                                    <option value="0" selected>请选择课程</option>
+                                    <div th:each="course:${courseList}">
+                                    <option  th:value="${course.getId()}" th:text="${course.courseName}"></option>
+                                    </div>
+                                </select>
                             </div>
-                        </select>
-                    </div>
-
-                </div>
-                <!--							</form>-->
+                        </div>
+<!--                    </div>-->
+<!--                    <div class="layui-col-xs4">-->
+                        <div class="layui-form-item ">
+                            <label class="layui-form-label">班级选择</label>
+                            <div class="layui-input-block">
+                                <select name="class" id="class" lay-filter="class" required></span>
+                                </select>
+                            </div>
+                        </div>
+<!--                    </div>-->
+<!--                    <div class="layui-col-xs4">-->
+                        <button type="submit" class="layui-btn"  id="view" lay-filter="sub">查询</button>
+<!--                    </div>-->
+                </form>
             </th>
 
             <th style="padding:0 10px;width: 18%;">
@@ -291,11 +285,12 @@
 	</div>
 
 </div>
-
-<script src="../../static/js/layui.js" type="text/javascript" charset="utf-8"></script>
-<script type="text/javascript" src="../../static/js/layui.all.js"></script>
-<script src="../../static/js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
-<script src="../../static/js/jquery.z-pager.js" type="text/javascript" charset="utf-8"></script>
+<script th:src="@{/js/jquery-3.4.1.min.js}" type="text/javascript" charset="utf-8"></script>
+<script th:src="@{/js/layui.all.js}" type="text/javascript" charset="utf-8"></script>
+<script th:src="@{/js/layui.js}" type="text/javascript" charset="utf-8"></script>
+<!--<script type="text/javascript" src="../../static/js/layui.all.js"></script>-->
+<!--<script th:src="@{/js/jquery.min.js}" type="text/javascript" charset="utf-8"></script>-->
+<script th:src="@{/js/jquery.z-pager.js}" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
     $("#pager").zPager({
         totalData: 50,
@@ -311,5 +306,69 @@
         console.log("当前页码数：" + currentPage);
     }
 </script>
+
+<script th:inline="javascript">
+    layui.use(['form','element','jquery'],function () {
+        const $ = layui.jquery;
+        const layer = layui.layer;
+        const form = layui.form
+        let classId
+
+        form.on('select(course)',function (data) {
+            $("#class")[0].options.length=0
+            $.get("/passTotalscore/findClassByCourse/"+data.value,function (data) {
+                let flag = 0;
+                $("#class").append( "<option value='0' selected>请选择班级</option>")
+                $.each(JSON.parse(data),function (k,v) {
+                    $("#class").append( "<option value='"+v[flag].classId+"'>"+v[flag].className+"</option>")
+                    flag += 1;
+                    form.render('select');
+                })
+            })
+        })
+
+        form.on('submit(sub)',function () {
+            let parm = $("#dataform").serialize();
+            $.get("/expmodel/kaoheProgress",parm,function () {
+                $("select [id='class'] option").each(function () {
+                    console.log($(this).value)
+                    if($(this).value == classId){
+                        $(this).attr("selected","selected")
+                    }
+                })
+            })
+        })
+    })
+</script>
+<script>
+    var submitBtn = document.getElementById("submit");
+    submitBtn.onclick = function (event) {
+        var baogao = document.getElementById('baogao').value;
+        var score = document.getElementById('score').value;	//获取input框内的值
+        // alter(score);
+        if(baogao == null || baogao == ""){
+            alert("请填写实验报告课程名称");
+            return false;
+        }else{
+            if(score == null || score == ""){
+                alert("请填写得分");	//如果值为空，提示用户填写
+                return false;
+            }else{
+                if(score<0 || score>100 ){
+                    alert("请输入0-100的分数");
+                    // $("#myfrom").submit();
+                    return false;
+                }else{
+                    //这可写信息都正确后  应该跳转的页面
+                    return true;
+                }
+
+            }
+        }
+        return true;
+    }
+
+</script>
+
 </body>
 </html>

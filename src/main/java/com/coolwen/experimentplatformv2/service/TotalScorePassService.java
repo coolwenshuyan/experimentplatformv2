@@ -1,5 +1,8 @@
 package com.coolwen.experimentplatformv2.service;
 
+import com.coolwen.experimentplatformv2.model.CourseInfo;
+import com.coolwen.experimentplatformv2.model.DTO.CourseClassInfo;
+import com.coolwen.experimentplatformv2.model.DTO.StuTotalScoreCurrentDTO;
 import com.coolwen.experimentplatformv2.model.TotalScorePass;
 import org.springframework.data.domain.Page;
 
@@ -16,4 +19,10 @@ public interface TotalScorePassService {
 
 
     List<TotalScorePass> findByStuId(int stuId);
+
+    List<CourseClassInfo> findClassAndCoursebyGongHao(String gonghao);
+
+    List<CourseInfo> findCoursebyGongHao(String gonghao);
+
+    Page<StuTotalScoreCurrentDTO> findTotalScorePassbyCourseIdClassId(Integer pageNum, String select_orderId, int courseId, int classId);
 }

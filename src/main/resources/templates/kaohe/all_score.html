@@ -221,7 +221,16 @@
         </tr>
 
     </table>
-
+    <div th:if="${Choose} " >
+        <a th:href="@{|/totalscore/guhuaall/${arrageId}|}" class="list_op layui-btn" type="button" id="currenttopassscore"
+           style="margin-left: 72%;margin-top: 2%;">
+            将当前班级成绩存入往期
+        </a>
+        <!--        <a th:href="@{|/totalscore/guhuaall/${arrageId}|}" class="list_op layui-btn" type="button"-->
+        <!--           style="margin-left: 72%;margin-top: 2%;">-->
+        <!--            将当期成绩全部存入往期成绩-->
+        <!--        </a>-->
+    </div>
     <div class="table-wrapper" th:if="${Choose} ">
         <table id="consumption-data" class="layui-table data" lay-size="lg" style="    text-align: center;">
             <colgroup>
@@ -259,11 +268,44 @@
             </tbody>
         </table>
     </div>
-    <div th:if="${Choose} ">
-        <a th:href="@{|/totalscore/guhuaall/${arrageId}|}" class="list_op layui-btn" type="button"
-           style="margin-left: 72%;margin-top: 2%;">
-            将当期成绩全部存入往期成绩
-        </a>
+
+
+    <div class="modal-footer no-margin-top" th:if="${Choose} ">
+
+        <ul class="pagination pull-right no-margin" th:align="right">
+
+            <!-- 首页 -->
+            <li>
+                <a th:href="'/totalscore/report/'+${arrageId}+'?pageNum=0'">首页</a>
+            </li>
+
+            <!-- 上一页 -->
+            <li th:if="${pageTotalScore.hasPrevious()}">
+                <a th:href="'/totalscore/report/'+${arrageId}+'?pageNum=' + ${pageTotalScore.previousPageable().getPageNumber()}"
+                   th:text="上一页"></a>
+            </li>
+
+            <!-- 中间页 -->
+            <li th:each="pageNum:${#numbers.sequence(0, pageTotalScore.getTotalPages() - 1)}">
+                <a th:href="'/totalscore/report/'+${arrageId}+'?pageNum='  + ${pageNum}" th:text="${pageNum + 1}"
+                   th:if="${pageNum ne pageTotalScore.pageable.getPageNumber()}"></a>
+                <a th:href="'/totalscore/report/'+${arrageId}+'?pageNum='  + ${pageNum}" th:text="${pageNum + 1}"
+                   th:if="${pageNum eq pageTotalScore.pageable.getPageNumber()}"
+                   th:style="'font-weight:bold;background: #6faed9;'"></a>
+            </li>
+
+            <!-- 下一页 -->
+            <li th:if="${pageTotalScore.hasNext()}">
+                <a th:href="'/totalscore/report/'+${arrageId}+'?pageNum='  + ${pageTotalScore.nextPageable().getPageNumber()}"
+                   th:text="下一页"></a>
+            </li>
+
+            <!-- 尾页 -->
+            <li>
+                <a th:href="'/totalscore/report/'+${arrageId}+'?pageNum='  + ${pageTotalScore.getTotalPages() - 1}">尾页</a>
+            </li>
+
+        </ul>
     </div>
 
 </div>
@@ -275,47 +317,49 @@
 
 
 <!--		分页-->
-<div style="text-align: center;" th:if="${totalScore}">
+<!--<div style="text-align: center;" th:if="${totalScore}">-->
     <!--			<div id="pager" class="pager clearfix">-->
     <!--			</div>-->
-    <div class="modal-footer no-margin-top" th:if="${Choose} ">
-        <ul class="pagination pull-right no-margin">
 
-            <!-- 首页 -->
-            <li>
-                <a th:href="'/totalscore/list?pageNum=0'">首页</a>
-            </li>
 
-            <!-- 上一页 -->
-            <li th:if="${pageTotalScore.hasPrevious()}">
-                <a th:href="'/totalscore/list?pageNum=' + ${pageTotalScore.previousPageable().getPageNumber()}"
-                   th:text="上一页"></a>
-            </li>
+<!--<div class="modal-footer no-margin-top" th:if="${Choose} ">-->
+<!--    <ul class="pagination pull-right no-margin">-->
 
-            <!-- 中间页 -->
-            <li th:each="pageNum:${#numbers.sequence(0, pageTotalScore.getTotalPages() - 1)}">
-                <a th:href="'/totalscore/list?pageNum=' + ${pageNum}" th:text="${pageNum + 1}"
-                   th:if="${pageNum ne pageTotalScore.pageable.getPageNumber()}"></a>
-                <a th:href="'/totalscore/list?pageNum=' + ${pageNum}" th:text="${pageNum + 1}"
-                   th:if="${pageNum eq pageTotalScore.pageable.getPageNumber()}"
-                   th:style="'font-weight:bold;background: #6faed9;'"></a>
-            </li>
+<!--        &lt;!&ndash; 首页 &ndash;&gt;-->
+<!--        <li>-->
+<!--            <a th:href="'/totalscore/list?pageNum=0'">首页</a>-->
+<!--        </li>-->
 
-            <!-- 下一页 -->
-            <li th:if="${pageTotalScore.hasNext()}">
-                <a th:href="'/totalscore/list?pageNum=' + ${pageTotalScore.nextPageable().getPageNumber()}"
-                   th:text="下一页"></a>
-            </li>
+<!--        &lt;!&ndash; 上一页 &ndash;&gt;-->
+<!--        <li th:if="${pageTotalScore.hasPrevious()}">-->
+<!--            <a th:href="'/totalscore/list?pageNum=' + ${pageTotalScore.previousPageable().getPageNumber()}"-->
+<!--               th:text="上一页"></a>-->
+<!--        </li>-->
 
-            <!-- 尾页 -->
-            <li>
-                <a th:href="'/totalscore/list?pageNum=' + ${pageTotalScore.getTotalPages() - 1}">尾页</a>
-            </li>
+<!--        &lt;!&ndash; 中间页 &ndash;&gt;-->
+<!--        <li th:each="pageNum:${#numbers.sequence(0, pageTotalScore.getTotalPages() - 1)}">-->
+<!--            <a th:href="'/totalscore/list?pageNum=' + ${pageNum}" th:text="${pageNum + 1}"-->
+<!--               th:if="${pageNum ne pageTotalScore.pageable.getPageNumber()}"></a>-->
+<!--            <a th:href="'/totalscore/list?pageNum=' + ${pageNum}" th:text="${pageNum + 1}"-->
+<!--               th:if="${pageNum eq pageTotalScore.pageable.getPageNumber()}"-->
+<!--               th:style="'font-weight:bold;background: #6faed9;'"></a>-->
+<!--        </li>-->
 
-        </ul>
-    </div>
+<!--        &lt;!&ndash; 下一页 &ndash;&gt;-->
+<!--        <li th:if="${pageTotalScore.hasNext()}">-->
+<!--            <a th:href="'/totalscore/list?pageNum=' + ${pageTotalScore.nextPageable().getPageNumber()}"-->
+<!--               th:text="下一页"></a>-->
+<!--        </li>-->
 
-</div>
+<!--        &lt;!&ndash; 尾页 &ndash;&gt;-->
+<!--        <li>-->
+<!--            <a th:href="'/totalscore/list?pageNum=' + ${pageTotalScore.getTotalPages() - 1}">尾页</a>-->
+<!--        </li>-->
+
+<!--    </ul>-->
+<!--</div>-->
+
+<!--</div>-->
 
 <script src="../../static/js/layui.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript" src="../../static/js/layui.all.js"></script>
@@ -334,6 +378,17 @@
             触发页码数位置： Page/js/jquery.z-pager.js 64行
         */
         console.log("当前页码数：" + currentPage);
+    }
+
+    var currenttopassscore = document.getElementById("currenttopassscore");
+    currenttopassscore.onclick = function (event) {
+        if(confirm("将当前选择班级成绩存入往期，是在该班级所有学生完成本门课程考核后进行的操作，操作后教师和学生将不能再对本次班级的课程进行操作。此操作为不可逆操作。"))
+        {
+            return  true;
+        }
+        else {
+            return false;
+        }
     }
 </script>
 </body>

@@ -173,7 +173,7 @@ public interface StudentRepository extends BaseRepository<Student, Integer>, Jpa
 
     //只处理当期班级的学生成绩
     @Query("select new com.coolwen.experimentplatformv2.model.DTO.StudentLastTestScoreDTO " +
-            "(st.stuXuehao, st.stuName, clas.className,tsc.totalScore) " +
+            "(st.stuXuehao, st.stuName, clas.className,tsc.testScore) " +
             "from Student st,ClassModel clas,TotalScoreCurrent tsc where st.classId=clas.classId  and st.id = tsc.stuId and clas.classIscurrent = false and tsc.arrageId=?1")
     public Page<StudentLastTestScoreDTO> listStudentLastTestScoreDTOByArranId(Pageable page, int arrangeClassId);
 

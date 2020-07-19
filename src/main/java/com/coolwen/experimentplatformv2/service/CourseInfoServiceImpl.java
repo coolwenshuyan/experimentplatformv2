@@ -75,4 +75,9 @@ public class CourseInfoServiceImpl implements CourseInfoService {
     public List<CourseInfoDto2> findByArrangeCourseInfoDto2byClassId(int classId) {
         return courseInfoRepository.findByArrangeCourseInfoDto2byClassId(classId);
     }
+
+    @Override
+    public List<ClassModel> getClassByCourseidUseridpass(String teacherid, int courseId) {
+        return courseInfoRepository.getClassByCourseidUseridpass(teacherid, courseId) ;
+    }
 }

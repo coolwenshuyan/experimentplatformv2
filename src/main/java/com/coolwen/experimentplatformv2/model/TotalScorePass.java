@@ -16,53 +16,59 @@ public class TotalScorePass {
     @TableGenerator(name = "t_totalscore_pass", initialValue = 0, allocationSize = 1,table = "seq_table")
     private int id;
 
-    @Column(length = 11,nullable = false)
+    @Column(name = "stu_id",length = 11,nullable = false)
     private int stuId;
 
-    @Column(nullable = false)
+    @Column(name = "kaohe_num",nullable = false)
     private int kaoheNum;
 
-    @Column(columnDefinition = "text")
+    @Column(name = "kaohe_name",columnDefinition = "text")
     private String kaoheName;
 
-    @Column(columnDefinition = "text")
+    @Column(name = "kaohe_mtestscore",columnDefinition = "text")
     private String kaoheMtestscore;
 
-    @Column(columnDefinition = "text")
+    @Column(name = "kaohe_mreportscore",columnDefinition = "text")
     private String kaoheMreportscore;
 
-    @Column(columnDefinition = "text")
+    @Column(name = "kaohe_mtestscore_baifengbi",columnDefinition = "text")
     private String kaoheMtestscoreBaifengbi;
 
-    @Column(columnDefinition = "text")
+    @Column(name = "kaohe_mreportscore_baifengbi",columnDefinition = "text")
     private String kaoheMreportscoreBaifengbi;
 
-    @Column(columnDefinition = "text")
+    @Column(name = "kaohe_mscale",columnDefinition = "text")
     private String kaoheMscale;
 
-    @Column(nullable = false,columnDefinition = "float default 0")
+    @Column(name = "m_total_score",nullable = false,columnDefinition = "float default 0")
     private float mTotalScore;
 
-    @Column(nullable = false,columnDefinition = "float default 0")
+    @Column(name = "test_score",nullable = false,columnDefinition = "float default 0")
     private float testScore;
 
-    @Column(nullable = false)
+    @Column(name = "test_baifenbi",nullable = false,columnDefinition = "float default 0")
     private float testBaifenbi;
 
-    @Column(nullable = false)
+    @Column(name = "kaohe_baifenbi",nullable = false,columnDefinition = "float default 0")
     private float kaoheBaifenbi;
 
-    @Column(nullable = false,columnDefinition = "float default 0")
+    @Column(name = "total_score",nullable = false,columnDefinition = "float default 0")
     private float totalScore;
 
-    @Column(nullable = false)
+    @Column(name = "final_datetime",nullable = false)
     private Date finalDatetime;
 
     @Column(name = "course_name",nullable = false)
     private String courseName;
 
+    @Column(name = "course_id",nullable = false)
+    private int courseId;
+
     @Column(name = "class_name",nullable = false)
     private String className;
+
+    @Column(name = "class_id",nullable = false)
+    private int classId;
 
     @Column(name = "teacher_name",nullable = false)
     private String teacherName;
@@ -74,7 +80,7 @@ public class TotalScorePass {
     public TotalScorePass() {
     }
 
-    public TotalScorePass(int stuId, int kaoheNum, String kaoheName, String kaoheMtestscore, String kaoheMreportscore, String kaoheMtestscoreBaifengbi, String kaoheMreportscoreBaifengbi, String kaoheMscale, float testScore, float testBaifenbi, float kaoheBaifenbi, float totalScore, Date finalDatetime) {
+    public TotalScorePass(int stuId, int kaoheNum, String kaoheName, String kaoheMtestscore, String kaoheMreportscore, String kaoheMtestscoreBaifengbi, String kaoheMreportscoreBaifengbi, String kaoheMscale, float mTotalScore, float testScore, float testBaifenbi, float kaoheBaifenbi, float totalScore, Date finalDatetime, String courseName, int courseId, String className, int classId, String teacherName, String teacherGongHao) {
         this.stuId = stuId;
         this.kaoheNum = kaoheNum;
         this.kaoheName = kaoheName;
@@ -83,19 +89,18 @@ public class TotalScorePass {
         this.kaoheMtestscoreBaifengbi = kaoheMtestscoreBaifengbi;
         this.kaoheMreportscoreBaifengbi = kaoheMreportscoreBaifengbi;
         this.kaoheMscale = kaoheMscale;
+        this.mTotalScore = mTotalScore;
         this.testScore = testScore;
         this.testBaifenbi = testBaifenbi;
         this.kaoheBaifenbi = kaoheBaifenbi;
         this.totalScore = totalScore;
         this.finalDatetime = finalDatetime;
-    }
-
-    public float getmTotalScore() {
-        return mTotalScore;
-    }
-
-    public void setmTotalScore(float mTotalScore) {
-        this.mTotalScore = mTotalScore;
+        this.courseName = courseName;
+        this.courseId = courseId;
+        this.className = className;
+        this.classId = classId;
+        this.teacherName = teacherName;
+        this.teacherGongHao = teacherGongHao;
     }
 
     public int getId() {
@@ -170,6 +175,14 @@ public class TotalScorePass {
         this.kaoheMscale = kaoheMscale;
     }
 
+    public float getmTotalScore() {
+        return mTotalScore;
+    }
+
+    public void setmTotalScore(float mTotalScore) {
+        this.mTotalScore = mTotalScore;
+    }
+
     public float getTestScore() {
         return testScore;
     }
@@ -218,12 +231,28 @@ public class TotalScorePass {
         this.courseName = courseName;
     }
 
+    public int getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
+    }
+
     public String getClassName() {
         return className;
     }
 
     public void setClassName(String className) {
         this.className = className;
+    }
+
+    public int getClassId() {
+        return classId;
+    }
+
+    public void setClassId(int classId) {
+        this.classId = classId;
     }
 
     public String getTeacherName() {
@@ -240,30 +269,5 @@ public class TotalScorePass {
 
     public void setTeacherGongHao(String teacherGongHao) {
         this.teacherGongHao = teacherGongHao;
-    }
-
-    @Override
-    public String toString() {
-        return "TotalScorePass{" +
-                "id=" + id +
-                ", stuId=" + stuId +
-                ", kaoheNum=" + kaoheNum +
-                ", kaoheName='" + kaoheName + '\'' +
-                ", kaoheMtestscore='" + kaoheMtestscore + '\'' +
-                ", kaoheMreportscore='" + kaoheMreportscore + '\'' +
-                ", kaoheMtestscoreBaifengbi='" + kaoheMtestscoreBaifengbi + '\'' +
-                ", kaoheMreportscoreBaifengbi='" + kaoheMreportscoreBaifengbi + '\'' +
-                ", kaoheMscale='" + kaoheMscale + '\'' +
-                ", mTotalScore=" + mTotalScore +
-                ", testScore=" + testScore +
-                ", testBaifenbi=" + testBaifenbi +
-                ", kaoheBaifenbi=" + kaoheBaifenbi +
-                ", totalScore=" + totalScore +
-                ", finalDatetime=" + finalDatetime +
-                ", courseName='" + courseName + '\'' +
-                ", className='" + className + '\'' +
-                ", teacherName='" + teacherName + '\'' +
-                ", teacherGongHao='" + teacherGongHao + '\'' +
-                '}';
     }
 }

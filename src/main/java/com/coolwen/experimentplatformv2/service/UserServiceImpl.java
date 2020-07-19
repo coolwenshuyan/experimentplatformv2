@@ -83,18 +83,12 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User update(User user, List<Integer> rids) {
-        logger.debug("user:" + user.toString());
         userRoleRepository.deleteByUserId(user.getId());
         for (int rid : rids) {
             UserRole ur = new UserRole();
             ur.setUserId(user.getId());
             ur.setRoleId(rid);
             userRoleRepository.save(ur);
-        }
-        logger.debug("修改密码前:" + user);
-//        给密码加密
-        if (!ShiroKit.isEmpty(user.getPassword())) {
-            user.setPassword(ShiroKit.md5(user.getPassword(), user.getUsername()));
         }
         logger.debug("修改密码后:" + user.toString());
         userRepository.save(user);

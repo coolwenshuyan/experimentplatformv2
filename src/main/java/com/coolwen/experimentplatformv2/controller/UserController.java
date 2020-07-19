@@ -1,5 +1,6 @@
 package com.coolwen.experimentplatformv2.controller;
 
+import com.coolwen.experimentplatformv2.kit.ShiroKit;
 import com.coolwen.experimentplatformv2.model.Resource;
 import com.coolwen.experimentplatformv2.model.Role;
 import com.coolwen.experimentplatformv2.model.User;
@@ -39,6 +40,7 @@ public class UserController {
         User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
         model.addAttribute("username", username);
         logger.debug("登陆信息:" + user);
+        logger.debug("搜索信息:" + username);
         model.addAttribute("users", userService.findUserPageAndCon(pageNum, username));
         return "user/list";
     }
@@ -97,16 +99,21 @@ public class UserController {
     public String update(@PathVariable int id, HttpServletRequest req, User user) {
         logger.debug("更新用户的:" + user);
         User tu = userService.load(id);
+        logger.debug("更新之前用户信息:" + tu);
         tu.setNickname(user.getNickname());
         tu.setStatus(user.getStatus());
         tu.setGonghao(user.getGonghao());
-//        if (user.getPassword()== "" && user.getPassword().isEmpty() && user.getPassword() == null){
-//            tu.setPassword(tu.getPassword());
-//        }
-        tu.setPassword(user.getPassword());
+//        tu.setPassword(user.getPassword());
+        //
+        if (!ShiroKit.isEmpty(user.getPassword())) {
+            logger.debug("密码不为空:" + user);
+//            tu.setPassword(user.getPassword());
+            tu.setPassword(ShiroKit.md5(user.getPassword(), user.getUsername()));
+        }
         String[] trids = req.getParameterValues("rids");
         List<Integer> rids = new ArrayList<Integer>();
-        for (String rid : trids) {
+        for (
+                String rid : trids) {
             rids.add(Integer.parseInt(rid));
         }
         logger.debug("更新用户的:rids" + rids);

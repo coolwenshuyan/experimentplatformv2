@@ -83,7 +83,7 @@ public class MyShiroRealm extends AuthorizingRealm {
             //成功则放入session
             SecurityUtils.getSubject().getSession().setAttribute("student", student);
             SecurityUtils.getSubject().getSession().getAttribute("student");
-            SecurityUtils.getSubject().getSession().getAttribute("teacher");
+//            SecurityUtils.getSubject().getSession().getAttribute("teacher");
             info = new SimpleAuthenticationInfo(student, student.getStuPassword(), this.getName());
             info.setCredentialsSalt(ByteSource.Util.bytes(student.getStuXuehao()));
         } else {

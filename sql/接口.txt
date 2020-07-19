@@ -1,0 +1,148 @@
+/admin/*
+/arrangeclass/*     课程安排表
+/courseinfo/*      课程信息表
+
+学院版报告
+/collegereport/mark/{mid}/{stuid}/{arrangeId} 学院版教师评分
+
+/collegereport/allreport/{mid}
+/collegereport/content/{mid}
+/collegereport/env/{mid}
+/collegereport/info/{mid}
+/collegereport/purpose/{mid}
+/collegereport/summary/{mid}
+
+
+实验模块
+/expmodel/addExpModel
+/expmodel/addTheory
+/expmodel/addTheoryFile/{id}
+/expmodel/deleteExpModel/{id}
+/expmodel/expModelListByCourseId/{courseId}   查询模块信息页面
+/expmodel/kaoheModel
+/expmodel/kaoheProgress           考核模块进度
+/expmodel/kaoheProgressQuery/{id}  考核模块进度查询详情
+/expmodel/list                    查询模块信息页面
+/expmodel/moduleList             模块测试和实验报告汇总页面
+/expmodel/moduleList/{courseId}
+/expmodel/savePath/{mid}          保存理论资料路径
+/expmodel/updateExpModel/{id}   进行模块更新
+/expmodel/updateExpTheory/{id}    执行理论更新操作
+/expmodel/updateTheoryFile/{id}    理论资料修改上传接口
+/expmodel/viewExpModel           搜索模块
+
+
+/expmodel/alltestModel          实验大厅全部模块
+/expmodel/contiuneStudy/{id}     继续学习
+/expmodel/home_exp/{id}         首页跳转过来的模块
+/expmodel/homeExpDispatcher/{id}  中转站
+/expmodel/moduleDispathcher      精准返回进入模块测试或填写报告，或理论学习模块所在的页面
+/expmodel/theoryStudy/{id}      进入理论学习页面
+
+考核模块
+/kaohemodel/**
+
+
+学生考试
+/kaoshi/**
+
+整体模块测试题的增删改查
+后台管理系统：实验模块测试题目、选项的增删改查；实验报告的增删改查
+/shiyan/**
+
+期末理论测试成绩管理
+/lastTestScoreManage/**
+
+学习效果
+/learning/{courseId}/list
+/learning/list
+/learning/kuangjia
+/learning/add
+/learning/{id}/delete
+/learning/{id}/update
+
+/learning/learningList
+/learning/learningList/{id}
+
+
+学生模块报告成绩管理
+/reportScoreManage/**
+
+学生模块测试成绩管理
+/testScoreManage/**
+
+
+公告
+/newsinfo/add NewsInfoController.java [POST]
+/newsinfo/list NewsInfoController.java [GET]
+/newsinfo/{id}/delete NewsInfoController.java [GET]
+/newsinfo/{id}/update NewsInfoController.java [POST]
+
+/newsinfo/shiyan/{courInforId} NewsInfoController.java [GET]
+/newsinfo/more NewsInfoController.java [GET]
+/newsinfo/newslist NewsInfoController.java [GET]
+/newsinfo/noticeDetails/{id} NewsInfoController.java [GET]
+
+
+
+答疑室
+/question/teacherlist/{courseinfoId} QuestionController.java [GET]
+/question/{courseId}/list QuestionController.java [GET]
+/question/{id}/dayiMore QuestionController.java [GET]
+/question/{id}/delete QuestionController.java [GET]
+
+/question/add QuestionController.java [POST]
+/question/detaill/{id} QuestionController.java [GET]
+/question/list QuestionController.java [GET]
+
+回复
+/reply/{id}/add1 ReplyController.java [POST]
+/reply/{id}/delete ReplyController.java [GET]
+/reply/{id}/update ReplyController.java [POST]
+
+/reply/add2/{id} ReplyController.java [POST]
+
+
+首页设置
+/setinfo/addplat SetInfoController.java [POST]
+/setinfo/addus SetInfoController.java [POST]
+/setinfo/lunbo SetInfoController.java [POST]
+
+/setinfo/jiesao SetInfoController.java [GET]
+/setinfo/aboutus SetInfoController.java [GET]
+/setinfo/situation SetInfoController.java [GET]
+
+
+设置学生信息
+/setstudentinfo/**
+
+后台管理系统 学生管理页面
+/studentManage/**
+
+师资队伍页面
+/teachers/add TeacherController.java [POST]
+/teachers/list TeacherController.java [GET]
+/teachers/{courseId}/list TeacherController.java [GET]
+/teachers/{id}/delete TeacherController.java [GET]
+/teachers/{id}/update TeacherController.java [GET]
+
+/teachers/frontList TeacherController.java [GET]
+/teachers/frontList/{id} TeacherController.java [GET]
+
+总成绩管理
+/totalscore/** （当期）
+/passTotalscore/**  （往期）
+
+老师对学生提交的报告进行评分
+/TreportGrade/**
+
+学生填写报告
+/WriteReport/**
+
+
+
+不清楚
+/expmodel/findClassByCourse/{id} ExpModelController.java [GET]
+
+/grade/*      学生成绩
+/choose/course/*    课程选择

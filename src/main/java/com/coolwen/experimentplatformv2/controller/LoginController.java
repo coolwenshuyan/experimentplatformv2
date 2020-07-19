@@ -185,8 +185,8 @@ public class LoginController {
             if (loginType.equals("admin")) {
                 subject.login(token);
                 logger.debug("老师登陆");
-                User admin = (User) subject.getPrincipal();
-                session.setAttribute("admin", admin);
+//                User admin = (User) subject.getPrincipal();
+//                session.setAttribute("admin", admin);
                 model.setViewName("redirect:/learning/kuangjia");
 //                return "redirect:/learning/kuangjia";
             }

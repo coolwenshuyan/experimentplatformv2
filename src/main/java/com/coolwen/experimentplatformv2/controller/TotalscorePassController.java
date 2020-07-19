@@ -121,9 +121,13 @@ public class TotalscorePassController {
     }
 
 
-    @RequestMapping("/exportExcel")
-    public void exportExcel(HttpServletResponse response) {
-        List<StuTotalScoreCurrentDTO> totalScore = studentService.listAllStuTotalScoreCurrentDTOOfPass();
+    @RequestMapping("/exportExcel/{courseId}/{classId}")
+    public void exportExcel(
+            @PathVariable int courseId,
+            @PathVariable int classId,
+            HttpServletResponse response) {
+//        List<StuTotalScoreCurrentDTO> totalScore = studentService.listAllStuTotalScoreCurrentDTOOfPass();
+        List<StuTotalScoreCurrentDTO> totalScore = totalScorePassService.findallTotalScorePassbyCourseIdClassId(courseId, classId);
 
 //        List<Student> b = studentRepository.findAll();
         // 设置响应输出的头类型(设置响应类型)
@@ -140,7 +144,7 @@ public class TotalscorePassController {
         FileExcelUtil.exportExcel(totalScore, "往期成绩汇总", "往期成绩", StuTotalScoreCurrentDTO.class, "往期成绩表.xls", response);
     }
 
-    @GetMapping(value = "/report/{courseId}/{classId}")
+    @GetMapping(value = "/list/{courseId}/{classId}")
     public String loadPassScoreByArrageId(Model model,
                                           @PathVariable int courseId,
                                           @PathVariable int classId,
@@ -151,6 +155,7 @@ public class TotalscorePassController {
 
         List<CourseInfo> courseInfos = totalScorePassService.findCoursebyGongHao(user.getGonghao());
         model.addAttribute("courseList", courseInfos);
+        logger.debug("courseInfos:" + courseInfos);
 //        List<CourseClassInfo> courseClassInfos = totalScorePassService.findClassAndCoursebyGongHao(user.getGonghao());
 //        logger.debug("课程信息:" + courseClassInfos);
 //        String couse1 = "[]";
@@ -249,6 +254,11 @@ public class TotalscorePassController {
 //        model.addAttribute("selectOrderId", select_orderId);
 //
 //
+        model.addAttribute("courseId", courseId);
+        model.addAttribute("classId", classId);
+        model.addAttribute("pageNum", pageNum);
+        model.addAttribute("totalPages", totalScore.getTotalPages());
+        model.addAttribute("pageNum", pageNum);
         model.addAttribute("pageTotalScore", totalScore);
 
         return "kaohe/all_score_pass";

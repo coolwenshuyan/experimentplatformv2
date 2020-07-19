@@ -331,7 +331,7 @@ public class TotalscoreCurrentController {
 //        }
 
 
-        return "redirect:/passTotalscore/list";
+        return "redirect:/passTotalscore/list/0/0";
     }
 
     @GetMapping(value = "/report/{arrangeId}")

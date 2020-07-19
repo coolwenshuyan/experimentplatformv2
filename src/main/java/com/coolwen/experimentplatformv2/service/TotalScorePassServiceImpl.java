@@ -72,4 +72,9 @@ public class TotalScorePassServiceImpl implements TotalScorePassService {
         Pageable pager = PageRequest.of(pageNum, size);
         return totalScorePassRepository.findTotalScorePassbyCourseIdClassId(pager, courseId, classId, select_orderId);
     }
+
+    @Override
+    public List<StuTotalScoreCurrentDTO> findallTotalScorePassbyCourseIdClassId(int courseId, int classId) {
+        return totalScorePassRepository.findallTotalScorePassbyCourseIdClassId(courseId,classId);
+    }
 }

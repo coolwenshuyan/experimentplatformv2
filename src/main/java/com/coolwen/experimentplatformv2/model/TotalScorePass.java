@@ -270,4 +270,31 @@ public class TotalScorePass {
     public void setTeacherGongHao(String teacherGongHao) {
         this.teacherGongHao = teacherGongHao;
     }
+
+    @Override
+    public String toString() {
+        return "TotalScorePass{" +
+                "id=" + id +
+                ", stuId=" + stuId +
+                ", kaoheNum=" + kaoheNum +
+                ", kaoheName='" + kaoheName + '\'' +
+                ", kaoheMtestscore='" + kaoheMtestscore + '\'' +
+                ", kaoheMreportscore='" + kaoheMreportscore + '\'' +
+                ", kaoheMtestscoreBaifengbi='" + kaoheMtestscoreBaifengbi + '\'' +
+                ", kaoheMreportscoreBaifengbi='" + kaoheMreportscoreBaifengbi + '\'' +
+                ", kaoheMscale='" + kaoheMscale + '\'' +
+                ", mTotalScore=" + mTotalScore +
+                ", testScore=" + testScore +
+                ", testBaifenbi=" + testBaifenbi +
+                ", kaoheBaifenbi=" + kaoheBaifenbi +
+                ", totalScore=" + totalScore +
+                ", finalDatetime=" + finalDatetime +
+                ", courseName='" + courseName + '\'' +
+                ", courseId=" + courseId +
+                ", className='" + className + '\'' +
+                ", classId=" + classId +
+                ", teacherName='" + teacherName + '\'' +
+                ", teacherGongHao='" + teacherGongHao + '\'' +
+                '}';
+    }
 }

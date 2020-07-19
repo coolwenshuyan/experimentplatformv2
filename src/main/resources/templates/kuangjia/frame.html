@@ -35,13 +35,15 @@
 								<dd><a class="to-url" data-url="/setinfoback/addus" href="javascript:;">关于我们</a></dd>
 							</dl>
 							</shiro:hasRole>
+							<shiro:hasRole name="courseleader">
 							<dl class="layui-nav-child">
 								<dd><a class="to-url" data-url="/teachers/list" href="javascript:;">师资队伍</a></dd>
 								<dd><a class="to-url" data-url="/learning/list" href="javascript:;">学习效果</a></dd>
 							</dl>
+							</shiro:hasRole>
 						</li>
 						</shiro:hasAnyRoles>
-						<shiro:hasAnyRoles name="admin,teacher">
+						<shiro:hasRole name="teacher">
 						<li class="layui-nav-item">
 							<a href="javascript:;"><i class="layui-icon layui-icon-app"></i>实验模块设置</a>
 							<dl class="layui-nav-child">
@@ -61,7 +63,7 @@
 								<dd><a class="to-url" data-url="/expmodel/kaoheProgress" href="javascript:;">考核进度</a></dd>
 							</dl>
 						</li>
-						</shiro:hasAnyRoles>
+						</shiro:hasRole>
 						<shiro:hasRole name="admin">
 						<li class="layui-nav-item">
 							<a href="javascript:;"><i class="layui-icon layui-icon-user"></i>基础设置</a>
@@ -90,11 +92,11 @@
 							<a class="to-url" data-url="/admin/user/list"><i class="layui-icon layui-icon-username"></i>教师账号管理</a>
 						</li>
 						</shiro:hasRole>
-						<shiro:hasAnyRoles name="admin,teacher">
+						<shiro:hasRole name="teacher">
 						<li class="layui-nav-item">
 							<a class="to-url" data-url="/question/teacherlist/-1"><i class="layui-icon layui-icon-help"></i>学生答疑管理</a>
 						</li>
-						</shiro:hasAnyRoles>
+						</shiro:hasRole>
 						<shiro:hasRole name="admin">
 						<li class="layui-nav-item">
 							<a class="to-url" data-url="monitor"><i class="layui-icon layui-icon-console"></i>平台服务监控</a>

@@ -18,7 +18,7 @@
 		</style>
 	</head>
 	<body>
-		<form class="layui-form" method="POST" th:object="${user}">
+		<form class="layui-form" method="POST" id="updateForm" th:object="${user}">
 			<div class="layui-form-item">
 				<label class="layui-form-label">教师姓名</label>
 				<div class="layui-input-block">
@@ -40,7 +40,7 @@
 			</div>
 			<div class="layui-form-item">
 				<div class="layui-input-block">
-					<button type="submit" class="layui-btn" lay-submit="" id="updateBtn">更新</button>
+					<button type="submit" class="layui-btn" lay-submit="" lay-filter="updateBtn">更新</button>
 					<button type="button" class="layui-btn layui-btn-primary" id="closeIframe">返回</button>
 				</div>
 			</div>
@@ -72,7 +72,10 @@
 		<script src="//cdn.staticfile.org/layui/2.5.6/layui.all.min.js"></script>
 		<script>
 			$(function () {
-				var hasRoles = []
+				var form = layui.form,
+					layer = layui.layer,
+					hasRoles = [],
+					index = parent.layer.getFrameIndex(window.name)
 				$('.hasRole').each(function () {
 					hasRoles.push($(this).val())
 				})
@@ -81,15 +84,22 @@
 						$(this).attr('checked', 'checked')
 					}
 				})
-				layui.form.render('checkbox')
-				var index = parent.layer.getFrameIndex(window.name)
+				form.render('checkbox')
 				$('#closeIframe').click(function () {
 					parent.layer.close(index)
 				})
-				$('#updateBtn').click(function () {
-					setTimeout(() => {
-						parent.layer.close(index)
-					}, 500)
+				form.on('submit(updateBtn)', function (data) {
+					var _d = $('#updateForm').serialize()
+					if (_d.indexOf('rids') > -1) {
+						$.post(window.location.href + '?' + _d, function (data) {
+							if (data) {
+								parent.layer.close(index)
+							}
+						})
+					} else {
+						layer.msg('请选择角色')
+					}
+					return false
 				})
 			})
 		</script>

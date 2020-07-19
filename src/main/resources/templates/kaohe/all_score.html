@@ -44,6 +44,9 @@
 							<option th:each="arrangeInfo:${arrangeInfoDTOs}" th:value="|/totalscore/report/${arrangeInfo.getArrangeId()}|" th:text="${arrangeInfo.getCourseName()+'-'+arrangeInfo.getClassName()}" th:selected="${arrangeInfo.getArrangeId() eq selected}"></option>
 						</select>
 					</div>
+					<div class="layui-input-inline" th:if="${Choose}">
+						<button type="button" class="layui-btn" id="saveBtn" th:data-url="@{|/totalscore/guhuaall/${arrageId}|}">将当期成绩全部存入往期成绩</button>
+					</div>
 				</div>
 			</form>
 			<form th:if="${Choose}" class="layui-form" action="/totalscore/GreatestWeight" method="POST">
@@ -53,7 +56,7 @@
 					<div class="layui-input-inline">
 						<input type="text" name="kaoheBaifenbi" lay-verify="required|grade" autocomplete="off" class="layui-input" th:value="${kaoheBaifenbi}" />
 					</div>
-					<label class="layui-form-label">课程与班级</label>
+					<label class="layui-form-label">理论占比</label>
 					<div class="layui-input-inline">
 						<input type="text" name="testBaifenbi" lay-verify="required|grade" autocomplete="off" class="layui-input" th:value="${testBaifenbi}" />
 					</div>
@@ -84,16 +87,25 @@
 					</tr>
 				</tbody>
 			</table>
-			<div th:if="${Choose}">
-				<button type="button" class="layui-btn" id="saveBtn" th:data-url="@{|/totalscore/guhuaall/${arrageId}|}">将当期成绩全部存入往期成绩</button>
-			</div>
+			<div id="pager"></div>
 		</div>
 		<script src="//cdn.staticfile.org/jquery/1.8.0/jquery.min.js"></script>
 		<script src="//cdn.staticfile.org/layui/2.5.6/layui.all.min.js"></script>
 		<script>
 			$(function () {
 				var form = layui.form,
-					layer = layui.layer
+					layer = layui.layer,
+					laypage = layui.laypage
+				laypage.render({
+					elem: 'pager',
+					curr: parseInt('[[${pageNum}]]'),
+					count: parseInt('[[${pageTotalScore}]]'),
+					jump: function (obj, first) {
+						if (!first) {
+							window.location.href = window.location.origin + window.location.pathname + '?pageNum=' + (obj.curr - 1)
+						}
+					}
+				})
 				form.on('select(url)', function (data) {
 					if (data.value) {
 						window.location.href = data.value
@@ -110,7 +122,7 @@
 							btn: ['确定', '取消']
 						},
 						function () {
-							window.location.href = $('#saveBtn').data(url)
+							window.location.href = $('#saveBtn').data('url')
 						}
 					)
 				})

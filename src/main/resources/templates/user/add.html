@@ -1,68 +1,78 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-        <title>添加账号</title>
-        <link rel="stylesheet" href="../../static/new/css/reset.css" />
-        <link rel="stylesheet" href="//cdn.staticfile.org/layui/2.5.6/css/layui.min.css" />
-        <style>
-            .layui-form {
-                padding: 20px;
-            }
-            .layui-form-label {
-                text-align: left;
-            }
-        </style>
-    </head>
-    <body>
-        <form class="layui-form" method="POST" th:object="${user}">
-            <div class="layui-form-item">
-                <label class="layui-form-label">教师账号</label>
-                <div class="layui-input-block">
-                    <input type="text" th:field="${user.username}" lay-verify="required" autocomplete="off" placeholder="请输入教师账号" class="layui-input" />
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">教师姓名</label>
-                <div class="layui-input-block">
-                    <input type="text" th:field="${user.nickname}" lay-verify="required" autocomplete="off" placeholder="请输入教师姓名" class="layui-input" />
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">教师工号</label>
-                <div class="layui-input-block">
-                    <input type="text" th:field="${user.gonghao}" lay-verify="required" autocomplete="off" placeholder="请输入教师工号" class="layui-input" />
-                </div>
-            </div>
-            <div class="layui-form-item" pane="">
-                <label class="layui-form-label">角色</label>
-                <div class="layui-input-block">
-                    <input type="checkbox" lay-skin="primary" name="rids" th:each="role:${roles}" th:title="${role.name}" th:value="${role.id}" />
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <div class="layui-input-block">
-                    <button type="submit" class="layui-btn" lay-submit="" id="addBtn">添加</button>
-                    <button type="button" class="layui-btn layui-btn-primary" id="closeIframe">返回</button>
-                </div>
-            </div>
-        </form>
-        <script src="//cdn.staticfile.org/jquery/1.8.0/jquery.min.js"></script>
-        <script src="//cdn.staticfile.org/layui/2.5.6/layui.all.min.js"></script>
-        <script>
-            $(function () {
-                var index = parent.layer.getFrameIndex(window.name)
-                $('#closeIframe').click(function () {
-                    parent.layer.close(index)
-                })
-                $('#addBtn').click(function () {
-                    setTimeout(() => {
-                        parent.layer.close(index)
-                    }, 500)
-                })
-            })
-        </script>
-    </body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<title>添加账号</title>
+		<link rel="stylesheet" href="../../static/new/css/reset.css" />
+		<link rel="stylesheet" href="//cdn.staticfile.org/layui/2.5.6/css/layui.min.css" />
+		<style>
+			.layui-form {
+				padding: 20px;
+			}
+			.layui-form-label {
+				text-align: left;
+			}
+		</style>
+	</head>
+	<body>
+		<form class="layui-form" id="addForm" method="POST" th:object="${user}">
+			<div class="layui-form-item">
+				<label class="layui-form-label">教师账号</label>
+				<div class="layui-input-block">
+					<input type="text" th:field="${user.username}" lay-verify="required" autocomplete="off" placeholder="请输入教师账号" class="layui-input" />
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">教师姓名</label>
+				<div class="layui-input-block">
+					<input type="text" th:field="${user.nickname}" lay-verify="required" autocomplete="off" placeholder="请输入教师姓名" class="layui-input" />
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">教师工号</label>
+				<div class="layui-input-block">
+					<input type="text" th:field="${user.gonghao}" lay-verify="required" autocomplete="off" placeholder="请输入教师工号" class="layui-input" />
+				</div>
+			</div>
+			<div class="layui-form-item" pane="">
+				<label class="layui-form-label">角色</label>
+				<div class="layui-input-block">
+					<input type="checkbox" lay-skin="primary" name="rids" th:each="role:${roles}" th:title="${role.name}" th:value="${role.id}" />
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-input-block">
+					<button type="button" class="layui-btn" lay-submit lay-filter="addBtn">添加</button>
+					<button type="button" class="layui-btn layui-btn-primary" id="closeIframe">返回</button>
+				</div>
+			</div>
+		</form>
+		<script src="//cdn.staticfile.org/jquery/1.8.0/jquery.min.js"></script>
+		<script src="//cdn.staticfile.org/layui/2.5.6/layui.all.min.js"></script>
+		<script>
+			$(function () {
+				var form = layui.form,
+					layer = layui.layer
+				var index = parent.layer.getFrameIndex(window.name)
+				$('#closeIframe').click(function () {
+					parent.layer.close(index)
+				})
+				form.on('submit(addBtn)', function (data) {
+					var _d = $('#addForm').serialize()
+					if (_d.indexOf('rids') > -1) {
+						$.post('/admin/user/add?' + _d, function (data) {
+							if (data) {
+								parent.layer.close(index)
+							}
+						})
+					} else {
+						layer.msg('请选择角色')
+					}
+					return false
+				})
+			})
+		</script>
+	</body>
 </html>

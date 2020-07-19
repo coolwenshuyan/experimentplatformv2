@@ -301,7 +301,7 @@ public class LoginController {
 //                logger.debug(student.toString());
                 logger.debug("注册学生信息message: {}", student.toString());
                 model.addObject("msg2", "注册成功！！！");
-                model.setViewName("home_page/login");
+                model.setViewName("newsinfo/newslist");
             }
         } else {
             model.setViewName("register");

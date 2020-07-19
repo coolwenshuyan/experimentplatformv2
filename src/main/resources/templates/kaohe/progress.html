@@ -97,7 +97,11 @@
 					getClassList(_courseId)
 				}
 				form.on('select(course)', function (data) {
-					getClassList(data.value)
+					if (data.value) {
+						getClassList(data.value)
+					} else {
+						$('#class').empty().append('<option value="">请选择班级</option>')
+					}
 				})
 				function getClassList(courseId) {
 					$.get('/expmodel/findClassByCourse/' + courseId, function (data) {

@@ -1,374 +1,104 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>总评成绩</title>
-    <meta name="renderer" content="webkit">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="stylesheet" th:href="@{/css/layui.css}" media="all">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/page.css}"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/code.css}"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}"/>
-    <style type="text/css">
-        * {
-            margin: 0;
-            padding: 0
-        }
-
-        .table-wrapper {
-            overflow-x: scroll;
-            overflow-y: visible;
-            /*width: 230px;*/
-            /*margin-left: 120px;*/
-            /*border: 1px solid #f00;*/
-            margin: 0 auto;
-            width: 1000px;
-        }
-
-        .table-wrapper td,
-        th {
-            /*padding: 5px 20px;*/
-            width: 100px;
-        }
-
-        .text-overflow {
-            display: block; /*内联对象需加*/
-            width: 31em; /*指定宽度*/
-            word-break: keep-all; /* 不换行 */
-            white-space: nowrap; /* 强制在同一行内显示所有文本，直到文本结束或者遭遇 br 对象。不换行 */
-            overflow: hidden; /* 内容超出宽度时隐藏超出部分的内容 */
-            text-overflow: ellipsis; /* IE 专有属性，当对象内文本溢出时显示省略标记() ；需与overflow:hidden;一起使用。*/
-        }
-
-        table {
-            width: 30em;
-            table-layout: fixed; /* 只有定义了表格的布局算法为fixed，下面td的定义才能起作用。 */
-        }
-
-        td {
-            width: 100%;
-            word-break: keep-all; /* 不换行 */
-            white-space: nowrap; /* 不换行 */
-            overflow: hidden; /* 内容超出宽度时隐藏超出部分的内容 */
-            text-overflow: ellipsis; /* 当对象内文本溢出时显示省略标记() ；需与overflow:hidden;一起使用。*/
-        }
-
-        .layui-table th {
-            text-align: center;
-            font-weight: 900;
-        }
-
-        .top1 th {
-            text-align: center;
-            font-weight: 500;
-        }
-
-        .top1 .layui-form-label {
-            font-weight: 900;
-        }
-
-        .top1 {
-            width: 90%;
-            margin: 0 auto;
-        }
-
-        .layui-form-label {
-            padding: 9px 0px;
-        }
-
-        .layui-form-item {
-            float: left;
-        }
-    </style>
-</head>
-<body>
-<div class="layui-container">
-    <!--			<img src="../../static/images/LOGO2.png"> <br><br>-->
-    <!--			<span class="layui-breadcrumb">-->
-    <!--  			<a href="/">首页</a>-->
-    <!--  			&lt;!&ndash;<a href="/demo/">轮播公告</a>&ndash;&gt;-->
-    <!--  			<a><cite>总评成绩</cite></a>-->
-    <!--			</span> <br><br><br>-->
-
-
-    <table class="top1" lay-size="lg" style="    text-align: center;">
-        <!--<colgroup>
-            <col width="150">
-            <col width="200">
-            <col>
-        </colgroup>-->
-
-        <tr>
-            <th style="padding:10px 0">
-                    <div class="layui-form-item">
-                        <!--									<label class="layui-form-label" >当期往期</label>-->
-                        <!--									<div class="layui-input-block" style="width: 30%;">-->
-                        <!--										<select name="interest" lay-filter="aihao">-->
-                        <!--											-->
-                        <!--											<option value="0" selected="">当期</option>-->
-                        <!--											<option value="1">往期</option>-->
-                        <!--											-->
-                        <!--										</select>-->
-                        <!--									<p>往期</p>-->
-                        <a href="/totalscore/list">
-                            <button type="button" class="layui-btn layui-btn-primary"
-                                    style="border-color: #174f37;color: #174f37;">当期
-                            </button>
-                        </a>
-                        <a href="/passTotalscore/list">
-                            <button type="button" class="layui-btn layui-btn-primary"
-                                    style="border-color: #174f37;color: #ffffff;background: #009688">往期
-                            </button>
-                        </a>
-
-                        <!--									</div>-->
-
-                    </div>
-            </th>
-            <th style="padding: 10px 0">
-                <form class="layui-form" lay-filter="dataform" id="dataform">
-<!--                    <div class="layui-col-xs4">-->
-                        <div class="layui-form-item ">
-                            <label class="layui-form-label">课程选择</label>
-                            <div class="layui-input-block">
-                                <select name="course" lay-filter="course" id="course" required>
-                                    <option value="0" selected>请选择课程</option>
-                                    <div th:each="course:${courseList}">
-                                    <option  th:value="${course.getId()}" th:text="${course.courseName}"></option>
-                                    </div>
-                                </select>
-                            </div>
-                        </div>
-<!--                    </div>-->
-<!--                    <div class="layui-col-xs4">-->
-                        <div class="layui-form-item ">
-                            <label class="layui-form-label">班级选择</label>
-                            <div class="layui-input-block">
-                                <select name="class" id="class" lay-filter="class" required></span>
-                                </select>
-                            </div>
-                        </div>
-<!--                    </div>-->
-<!--                    <div class="layui-col-xs4">-->
-                        <button type="submit" class="layui-btn"  id="view" lay-filter="sub">查询</button>
-<!--                    </div>-->
-                </form>
-            </th>
-
-            <th style="padding:0 10px;width: 18%;">
-
-
-                <!--                <li>-->
-                <!--                    <form th:action="@{/passTotalscore/list}">-->
-                <!--                <li>-->
-                <!--                    <div class="layui-input-block ak" style="float: left; position: relative;">-->
-                <!--                        <label class="layui-form-label" style="margin-left: -80px;">学号搜索</label>-->
-                <!--                        <input style="width: 115px;" type="text" th:value="${select_orderId}" id="select_orderId"-->
-                <!--                               name="select_orderId" lay-verify="required" placeholder="请输入学号" autocomplete="off"-->
-                <!--                               class="layui-input">-->
-                <!--                    </div>-->
-                <!--                    <button class="layui-btn" lay-submit="" id="searchBtn" data-type="getInfo" style="float: left;">搜索-->
-                <!--                    </button>-->
-
-                <!--                </li>-->
-
-                <!--                </form>-->
-                <!--								<div class="layui-input-block" style="float: left; position: relative;    margin-left: -30px;">-->
-                <!--									<label class="layui-form-label" >学号搜索</label>-->
-                <!--									<input style="width: auto;" type="text" id="select_orderId" name="select_orderId" lay-verify="required" placeholder="请输入学号" autocomplete="off" class="layui-input">-->
-                <!--								</div>-->
-                <!--								<button class="layui-btn" lay-submit="" id="searchBtn" data-type="getInfo" style="float: left;">搜索</button>-->
-                <!--								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <!--								<button type="导出" class="layui-btn" lay-submit="" lay-filter="demo1">导出</button>-->
-                </li>
-            </th>
-        </tr>
-        <tr>
-
-        </tr>
-
-    </table>
-
-    <div class="table-wrapper" th:if="${Choose}">
-        <table id="consumption-data" class="layui-table data" lay-size="lg" style="    text-align: center;">
-            <colgroup>
-                <col width="150">
-                <col width="200">
-                <col>
-            </colgroup>
-            <thead class="header">
-
-            <tr align="center">
-                <th>学号</th>
-                <th>姓名</th>
-                <th>班级</th>
-                <th>模块考核总成绩</th>
-                <th>理论测试总成绩</th>
-                <!--						<th>模块考核占比</th>-->
-                <!--						<th>理论测试占比</th>-->
-                <th>总评成绩</th>
-            </tr>
-            </thead>
-            <tbody class="results">
-            <tr th:each="one:${pageTotalScore}">
-                <td><p th:text="${one.xuehao}">12345678</p></td>
-                <td><p th:text="${one.sName}">张三</p></td>
-                <td><p th:text="${one.className}">18信管01</p></td>
-                <td><p th:text="${one.mTotalScore}">87</p></td>
-                <td><p th:text="${one.testScore}">87</p></td>
-                <!--						<td><p>0.3</td>-->
-                <!--						<td><p>0.7</td>-->
-                <td><p th:text="${one.totalScore}">78</p></td>
-
-            </tr>
-
-
-            </tbody>
-        </table>
-        <a th:href="@{/passTotalscore/exportExcel}">
-            <button type="updata" class="layui-btn" lay-submit="" lay-filter="demo1"
-                    style="margin-left: 72%;margin-top: 2%;">导出表格
-            </button>
-        </a>
-    </div>
-
-
-</div>
-
-<!--		<div style="text-align: center; margin-top: 2%;">-->
-<!--			<div id="pager" class="pager clearfix">-->
-<!--			</div>-->
-<!--		</div>-->
-
-
-<!--		分页-->
-<div style="text-align: center;" th:if="${totalScore}">
-	<!--			<div id="pager" class="pager clearfix">-->
-	<!--			</div>-->
-	<div class="modal-footer no-margin-top" th:if="${Choose} ">
-		<ul class="pagination pull-right no-margin">
-
-			<!-- 首页 -->
-			<li>
-				<a th:href="'/totalscore/list?pageNum=0'">首页</a>
-			</li>
-
-			<!-- 上一页 -->
-			<li th:if="${pageTotalScore.hasPrevious()}">
-				<a th:href="'/totalscore/list?pageNum=' + ${pageTotalScore.previousPageable().getPageNumber()}"
-				   th:text="上一页"></a>
-			</li>
-
-			<!-- 中间页 -->
-			<li th:each="pageNum:${#numbers.sequence(0, pageTotalScore.getTotalPages() - 1)}">
-				<a th:href="'/totalscore/list?pageNum=' + ${pageNum}" th:text="${pageNum + 1}"
-				   th:if="${pageNum ne pageTotalScore.pageable.getPageNumber()}"></a>
-				<a th:href="'/totalscore/list?pageNum=' + ${pageNum}" th:text="${pageNum + 1}"
-				   th:if="${pageNum eq pageTotalScore.pageable.getPageNumber()}"
-				   th:style="'font-weight:bold;background: #6faed9;'"></a>
-			</li>
-
-			<!-- 下一页 -->
-			<li th:if="${pageTotalScore.hasNext()}">
-				<a th:href="'/totalscore/list?pageNum=' + ${pageTotalScore.nextPageable().getPageNumber()}"
-				   th:text="下一页"></a>
-			</li>
-
-			<!-- 尾页 -->
-			<li>
-				<a th:href="'/totalscore/list?pageNum=' + ${pageTotalScore.getTotalPages() - 1}">尾页</a>
-			</li>
-
-		</ul>
-	</div>
-
-</div>
-<script th:src="@{/js/jquery-3.4.1.min.js}" type="text/javascript" charset="utf-8"></script>
-<script th:src="@{/js/layui.all.js}" type="text/javascript" charset="utf-8"></script>
-<script th:src="@{/js/layui.js}" type="text/javascript" charset="utf-8"></script>
-<!--<script type="text/javascript" src="../../static/js/layui.all.js"></script>-->
-<!--<script th:src="@{/js/jquery.min.js}" type="text/javascript" charset="utf-8"></script>-->
-<script th:src="@{/js/jquery.z-pager.js}" type="text/javascript" charset="utf-8"></script>
-<script type="text/javascript">
-    $("#pager").zPager({
-        totalData: 50,
-        htmlBox: $('#wraper'),
-        btnShow: true,
-        ajaxSetData: false
-    });
-
-    function currentPage(currentPage) {
-        /*
-            触发页码数位置： Page/js/jquery.z-pager.js 64行
-        */
-        console.log("当前页码数：" + currentPage);
-    }
-</script>
-
-<script th:inline="javascript">
-    layui.use(['form','element','jquery'],function () {
-        const $ = layui.jquery;
-        const layer = layui.layer;
-        const form = layui.form
-        let classId
-
-        form.on('select(course)',function (data) {
-            $("#class")[0].options.length=0
-            $.get("/passTotalscore/findClassByCourse/"+data.value,function (data) {
-                let flag = 0;
-                $("#class").append( "<option value='0' selected>请选择班级</option>")
-                $.each(JSON.parse(data),function (k,v) {
-                    $("#class").append( "<option value='"+v[flag].classId+"'>"+v[flag].className+"</option>")
-                    flag += 1;
-                    form.render('select');
-                })
-            })
-        })
-
-        form.on('submit(sub)',function () {
-            let parm = $("#dataform").serialize();
-            $.get("/expmodel/kaoheProgress",parm,function () {
-                $("select [id='class'] option").each(function () {
-                    console.log($(this).value)
-                    if($(this).value == classId){
-                        $(this).attr("selected","selected")
-                    }
-                })
-            })
-        })
-    })
-</script>
-<script>
-    var submitBtn = document.getElementById("submit");
-    submitBtn.onclick = function (event) {
-        var baogao = document.getElementById('baogao').value;
-        var score = document.getElementById('score').value;	//获取input框内的值
-        // alter(score);
-        if(baogao == null || baogao == ""){
-            alert("请填写实验报告课程名称");
-            return false;
-        }else{
-            if(score == null || score == ""){
-                alert("请填写得分");	//如果值为空，提示用户填写
-                return false;
-            }else{
-                if(score<0 || score>100 ){
-                    alert("请输入0-100的分数");
-                    // $("#myfrom").submit();
-                    return false;
-                }else{
-                    //这可写信息都正确后  应该跳转的页面
-                    return true;
-                }
-
-            }
-        }
-        return true;
-    }
-
-</script>
-
-</body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<title>总评成绩</title>
+		<link rel="stylesheet" href="../../static/new/css/reset.css" />
+		<link rel="stylesheet" href="//cdn.staticfile.org/layui/2.5.6/css/layui.min.css" />
+		<style>
+			body {
+				padding: 20px;
+				background: #f7f7f7;
+			}
+			.layui-fluid {
+				padding: 20px;
+				background: #fff;
+			}
+			#pager {
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="layui-fluid">
+			<form class="layui-form">
+				<div class="layui-form-item">
+					<div class="layui-input-inline">
+						<a href="/totalscore/list" class="layui-btn layui-btn-primary">当期</a>
+						<a href="/passTotalscore/list" class="layui-btn">往期</a>
+					</div>
+					<label class="layui-form-label">课程与班级</label>
+					<div class="layui-input-inline">
+						<select name="course" lay-filter="course" lay-verify="required">
+							<option value="">请选择课程</option>
+							<option th:each="course:${courseList}" th:value="${course.id}" th:text="${course.courseName}" th:selected="${course.id == courseId}"></option>
+						</select>
+					</div>
+					<div class="layui-input-inline">
+						<select name="class" id="class" lay-verify="required">
+							<option value="">请选择班级</option>
+						</select>
+					</div>
+					<div class="layui-input-inline"><a href="/passTotalscore/exportExcel" class="layui-btn" th:if="${Choose}">导出表格</a></div>
+				</div>
+			</form>
+			<table class="layui-table">
+				<thead>
+					<tr>
+						<th>学号</th>
+						<th>姓名</th>
+						<th>班级</th>
+						<th>模块考核总成绩</th>
+						<th>理论测试总成绩</th>
+						<th>总评成绩</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="one:${pageTotalScore}">
+						<td th:text="${one.xuehao}"></td>
+						<td th:text="${one.sName}"></td>
+						<td th:text="${one.className}"></td>
+						<td th:text="${one.mTotalScore}"></td>
+						<td th:text="${one.testScore}"></td>
+						<td th:text="${one.totalScore}"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<script src="//cdn.staticfile.org/jquery/1.8.0/jquery.min.js"></script>
+		<script src="//cdn.staticfile.org/layui/2.5.6/layui.all.min.js"></script>
+		<script>
+			$(function () {
+				var form = layui.form,
+					_courseId = '[[${courseId}]]',
+					_classId = '[[${classId}]]'
+				if (_courseId) {
+					getClassList(_courseId)
+				}
+				form.on('select(course)', function (data) {
+					if (data.value) {
+						getClassList(data.value)
+					} else {
+						$('#class').empty().append('<option value="">请选择班级</option>')
+					}
+				})
+				function getClassList(courseId) {
+					$.get('/passTotalscore/findClassByCourse/' + courseId, function (data) {
+						var _clist = JSON.parse(data)
+						$('#class').empty().append('<option value="">请选择班级</option>')
+						$.each(_clist.data, function (i, e) {
+							if (e.classId == _classId) {
+								$('#class').append('<option value="' + e.classId + '" selected>' + e.className + '</option>')
+							} else {
+								$('#class').append('<option value="' + e.classId + '">' + e.className + '</option>')
+							}
+						})
+						form.render('select')
+					})
+				}
+			})
+		</script>
+	</body>
 </html>

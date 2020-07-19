@@ -596,6 +596,7 @@ public class ModuleController {
 //        把mid传给前端
         model.addAttribute("mId", mId);
 //        返回静态资源下的shiyan/part-list.html
+
         return "shiyan/part-list";
     }
 

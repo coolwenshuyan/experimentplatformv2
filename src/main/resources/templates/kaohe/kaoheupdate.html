@@ -1,178 +1,104 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>实验设置</title>
-    <link rel="stylesheet" type="text/css" href="../../static/css/layui.css" />
-    <!--<link rel="stylesheet" type="text/css" href="css/page.css"/>-->
-    <link rel="stylesheet" type="text/css" href="../../static/css/code.css">
-
-    <link rel="stylesheet" th:href="@{/js/laydate/theme/default/laydate.css}">
-    <link rel="stylesheet" th:href="@{/css/laydate.css}">
-
-    <style type="text/css">
-        body{
-            background-color: rgb(242,242,242);
-        }
-
-        .layui-container {
-            width: 50%;
-            background-color: white;
-        }
-
-        .layui-input,
-        .layui-textarea {
-            width: 90%;
-        }
-        .layui-form-label {
-            width: 100px;
-        }
-        .text-overflow {
-            display:block;/*内联对象需加*/
-            width:31em;/*指定宽度*/
-            word-break:keep-all;/* 不换行 */
-            white-space:nowrap;/* 强制在同一行内显示所有文本，直到文本结束或者遭遇 br 对象。不换行 */
-            overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
-            text-overflow:ellipsis;/* IE 专有属性，当对象内文本溢出时显示省略标记() ；需与overflow:hidden;一起使用。*/
-        }
-
-        table{
-            width:0;
-            table-layout:fixed;/* 只有定义了表格的布局算法为fixed，下面td的定义才能起作用。 */
-        }
-        td{
-            width:100%;
-            word-break:keep-all;/* 不换行 */
-            white-space:nowrap;/* 不换行 */
-            overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
-            text-overflow:ellipsis;/* 当对象内文本溢出时显示省略标记() ；需与overflow:hidden;一起使用。*/
-        }
-        /*.acc{*/
-        /*   border: 1px solid green;*/
-        /*    !*width: 500px;*!*/
-        /*}*/
-        .layui-form-label b{
-            font-weight: 900;
-            font-size: 20px;
-            color: rgb(0,150,136);
-        }
-        .layui-form-label{
-            text-align: left;
-        }
-        .bo{
-            margin-bottom: 5%;
-        }
-    </style>
-</head>
-<body>
-<div class="layui-container acc">
-<!--    <img src="../../static/images/LOGO2.png"> <br><br>-->
-<!--    <span class="layui-breadcrumb">-->
-<!--  			<a href="/kaohe/check_Module">首页</a>-->
-<!--        &lt;!&ndash;<a href="/demo/">轮播公告</a>&ndash;&gt;-->
-<!--  			<a><cite>考核实验</cite></a>-->
-<!--			</span><br><br><br>-->
-
-    <form th:object="${kaohemodel}" class="layui-form" th:action="@{update}" method="post">
-        <div class="layui-form-item">
-            <label class="layui-form-label">
-                <b>|</b>&nbsp;
-
-                实验名</label>
-
-            <p th:text="${kaohemodel.experiment_name}" style="padding-top: 2%;">实验名</p>
-        </div>
-
-
-        <div class="layui-form-item">
-            <label class="layui-form-label">
-                <b>|</b>&nbsp;
-                测试成绩占比</label>
-            <div class="layui-input-block">
-                <input type="text" th:value="${kaohemodel.m_test_baifenbi}" name="m_test_baifenbi" lay-verify="title" autocomplete="off"  class="layui-input" title="请输入0-1之间的数" pattern="^(1|(0(.\d{1,10})?))$">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">
-                <b>|</b>&nbsp;
-                报告成绩占比</label>
-            <div class="layui-input-block">
-                <input type="text" th:value="${kaohemodel.m_report_baifenbi}" name="m_report_baifenbi" lay-verify="title" autocomplete="off"  class="layui-input" title="请输入0-1之间的数" pattern="^(1|(0(.\d{1,10})?))$" >
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">
-                <b>|</b>&nbsp;
-                权重</label>
-            <div class="layui-input-block">
-                <input type="text" th:value="${kaohemodel.m_scale}" name="m_scale" lay-verify="title" autocomplete="off"  class="layui-input" title="请输入0-1之间的数" pattern="^(1|(0(.\d{1,10})?))$" style="width: 15%;">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">
-                <b>|</b>&nbsp;
-                序号</label>
-            <div class="layui-input-block">
-                <input type="number" th:value="${kaohemodel.m_order}" name="m_order" lay-verify="title" autocomplete="off"  class="layui-input" style="width: 15%;">
-            </div>
-        </div>
-
-        <div class="layui-form">
-            <div class="layui-form-item">
-                <div class="layui-inline">
-                    <div class="layui-inline">
-                        <label class="layui-form-label">开始时间</label>
-                        <div class="layui-input-inline">
-                            <input th:value="${kaohemodel.kaohe_starttime}" name="arrangeStart" type="text" class="layui-input" id="test5"  placeholder="yyyy-MM-dd HH:mm:ss">
-                        </div>
-                    </div>
-                </div>
-                <div class="layui-inline">
-                    <div class="layui-inline">
-                        <label class="layui-form-label">结束时间</label>
-                        <div class="layui-input-inline">
-                            <input th:value="${kaohemodel.kaohe_endtime}" name="arrangeEnd" type="text" class="layui-input" id="test2" placeholder="yyyy-MM-dd HH:mm:ss">
-                        </div>
-
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-        <div class="layui-form-item">
-            <div class="layui-input-block">
-                <button type="submit" class="layui-btn bo" lay-submit="" lay-filter="demo1">修改</button>
-                <a th:href="@{/kaohemodel/checkModule}" class="layui-btn layui-btn-primary bo">取消</a>
-            </div>
-        </div>
-    </form>
-</div>
-
-<script th:src="@{/js/layui.js}" type="text/javascript" charset="utf-8"></script>
-<!-- <script src="js/layui.all.js" type="text/javascript" charset="utf-8"></script> -->
-
-<script th:src="@{/js/laydate/laydate.js}" type="text/javascript" charset="utf-8"></script>
-
-<script>
-    layui.use('laydate', function(){
-        var laydate = layui.laydate;
-
-
-        //日期时间选择器
-        laydate.render({
-            elem: '#test5'
-            ,type: 'datetime'
-        });
-        //日期时间选择器
-        laydate.render({
-            elem: '#test2'
-            ,type: 'datetime'
-        });
-    });
-
-
-</script>
-</body>
-
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<title>添加账号</title>
+		<link rel="stylesheet" href="../../static/new/css/reset.css" />
+		<link rel="stylesheet" href="//cdn.staticfile.org/layui/2.5.6/css/layui.min.css" />
+		<style>
+			.layui-form {
+				padding: 20px;
+			}
+			.layui-form-label {
+				text-align: left;
+			}
+		</style>
+	</head>
+	<body>
+		<form class="layui-form" id="updateForm" method="POST" th:action="@{update}" th:object="${kaohemodel}">
+			<div class="layui-form-item">
+				<label class="layui-form-label">实验名称</label>
+				<div class="layui-input-block">
+					<p th:text="${kaohemodel.experiment_name}" style="line-height: 38px;"></p>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">测试成绩占比</label>
+				<div class="layui-input-block">
+					<input type="text" th:value="${kaohemodel.m_test_baifenbi}" name="m_test_baifenbi" lay-verify="required|grade" autocomplete="off" class="layui-input" />
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">报告成绩占比</label>
+				<div class="layui-input-block">
+					<input type="text" th:value="${kaohemodel.m_report_baifenbi}" name="m_report_baifenbi" lay-verify="required|grade" autocomplete="off" class="layui-input" />
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">权重</label>
+				<div class="layui-input-block">
+					<input type="text" th:value="${kaohemodel.m_scale}" name="m_scale" lay-verify="required|grade" autocomplete="off" class="layui-input" />
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">序号</label>
+				<div class="layui-input-block">
+					<input type="number" th:value="${kaohemodel.m_order}" name="m_order" lay-verify="required" autocomplete="off" class="layui-input" />
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">开始时间</label>
+				<div class="layui-input-block">
+					<input th:value="${#dates.format(kaohemodel.kaohe_starttime,'yyyy-MM-dd hh:mm:ss')}" name="arrangeStart" lay-verify="required" type="text" class="layui-input" id="date1" />
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">结束时间</label>
+				<div class="layui-input-block">
+					<input th:value="${#dates.format(kaohemodel.kaohe_endtime,'yyyy-MM-dd hh:mm:ss')}" name="arrangeEnd" lay-verify="required" type="text" class="layui-input" id="date2" />
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-input-block">
+					<button type="button" class="layui-btn" lay-submit lay-filter="updateBtn">修改</button>
+					<button type="button" class="layui-btn layui-btn-primary" id="closeIframe">返回</button>
+				</div>
+			</div>
+		</form>
+		<script src="//cdn.staticfile.org/jquery/1.8.0/jquery.min.js"></script>
+		<script src="//cdn.staticfile.org/layui/2.5.6/layui.all.min.js"></script>
+		<script>
+			$(function () {
+				var form = layui.form,
+					layer = layui.layer,
+					laydate = layui.laydate
+				var index = parent.layer.getFrameIndex(window.name)
+				laydate.render({
+					elem: '#date1',
+					type: 'datetime'
+				})
+				laydate.render({
+					elem: '#date2',
+					type: 'datetime'
+				})
+				$('#closeIframe').click(function () {
+					parent.layer.close(index)
+				})
+				form.verify({
+					grade: [/^(1|(0(.\d{1,10})?))$/, '请输入0-1之间的数']
+				})
+				form.on('submit(updateBtn)', function (data) {
+					var _d = $('#updateForm').serialize()
+					$.post(window.location.href + '?' + _d, function (data) {
+						if (data) {
+							parent.layer.close(index)
+						}
+					})
+					return false
+				})
+			})
+		</script>
+	</body>
 </html>

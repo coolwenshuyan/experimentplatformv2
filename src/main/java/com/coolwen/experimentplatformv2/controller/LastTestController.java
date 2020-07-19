@@ -7,6 +7,7 @@ import com.coolwen.experimentplatformv2.model.ModuleTestQuest;
 import com.coolwen.experimentplatformv2.model.User;
 import com.coolwen.experimentplatformv2.service.*;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -235,7 +236,8 @@ public class LastTestController {
 //        将分页信息传给前端
 //        model.addAttribute("termList", termList);
 
-        User user = (User) session.getAttribute("admin");
+//        User user = (User) session.getAttribute("admin");
+        User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
         logger.debug("user:>>"+user);
         List<ArrangeInfoDTO> arrangeInfoDTOs =  arrangeClassService.findArrangeInfoDTOByTeacherId(user.getId());
         model.addAttribute("arrangeInfoDTOs",arrangeInfoDTOs);
@@ -280,8 +282,8 @@ public class LastTestController {
 
 //        将分页信息传给前端
         model.addAttribute("termList", termList);
-
-        User user = (User) session.getAttribute("admin");
+        User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
+//        User user = (User) session.getAttribute("admin");
         logger.debug("user:>>"+user);
         List<ArrangeInfoDTO> arrangeInfoDTOs =  arrangeClassService.findArrangeInfoDTOByTeacherId(user.getId());
         model.addAttribute("arrangeInfoDTOs",arrangeInfoDTOs);

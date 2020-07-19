@@ -1,135 +1,119 @@
 <!DOCTYPE html>
-<html lang="en"  xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="renderer" content="webkit">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
-    <link rel="stylesheet" href="../../static/css/font.css">
-    <link rel="stylesheet" href="../../static/css/layui.css">
-    <link rel="stylesheet" href="../../static/css/xadmin.css">
-    <script src="../../static/js/layui.js" charset="utf-8"></script>
-    <script type="text/javascript" src="../../static/js/xadmin.js"></script>
-    <title>考核模块进度查询</title>
-    <style>
-        select{
-            width: 115px;
-            height: 30px;
-            /*color: green;*/
-        }
-        .layui-input-block{
-            line-height: 40px;
-        }
-        .layui-card-body img{
-            height: 170px;
-            width: 100%;
-            text-align: center;
-        }
-        .layui-card-body p{
-            text-align: center;
-        }
-    </style>
-</head>
-<body>
-    <div class="layui-container">
-        <div class="layui-row">
-            <form class="layui-form" lay-filter="dataform" id="dataform">
-                <div class="layui-col-xs4">
-                    <div class="layui-form-item ">
-                        <label class="layui-form-label">课程选择</label>
-                        <div class="layui-input-block">
-                            <select name="course" lay-filter="course" id="course" required>
-                                <option value="0" selected>请选择课程</option>
-                                <span th:each="course:${courseList}">
-                                <option th:value="${course.id}" th:text="${course.courseName}"></option>
-                            </span>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="layui-col-xs4">
-                    <div class="layui-form-item ">
-                        <label class="layui-form-label">班级选择</label>
-                        <div class="layui-input-block">
-                            <select name="class" id="class" lay-filter="class" required></span>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="layui-col-xs4">
-                    <button type="submit" class="layui-btn"  id="view" lay-filter="sub">查询</button>
-                </div>
-            </form>
-
-        </div>
-
-        <div style="padding: 20px;">
-            <div class="layui-row layui-col-space15">
-                <div class="layui-col-md4" th:each="l:${list}">
-                    <div class="layui-card">
-                        <div class="layui-card-body">
-                            <img src="../../static/images/img_shiyan/java.jpg" th:src="${l.imageurl}">
-                            <div style="text-align: center">
-                                <span style="margin-right: 10px">模块测试</span>
-                                <span style="margin-right: 10px">已提交：<span th:text="${l.classTotalNum - l.mTestFalseNum}"></span>人</span>
-                                <span>未提交：<span th:text="${l.mTestFalseNum}"></span>人</span>  <br>
-                                <span style="margin-right: 10px">模块报告</span>
-                                <span style="margin-right: 10px">已提交：<span th:text="${l.classTotalNum - l.mReportFalseNum}"></span>人</span>
-                                <span>未提交：<span th:text="${l.mReportFalseNum}"></span>人</span>
-                            </div>
-                            <div style="text-align: center">
-                                <a type="button" class="layui-btn layui-btn-primary" style="height: 32px;line-height:32px;" th:href="@{|/expmodel/kaoheProgressQuery/${l.m_id}}">查看详情</a>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-
-
-
-
-
-
-
-    <script th:src="@{../../static/js/jquery-3.4.1.min.js}" type="text/javascript" charset="utf-8"></script>
-    <script th:src="@{../../static/js/layui.all.js}" type="text/javascript" charset="utf-8"></script>
-    <script th:inline="javascript">
-        layui.use(['form','element','jquery'],function () {
-            const $ = layui.jquery;
-            const layer = layui.layer;
-            const form = layui.form
-            let classId
-
-            form.on('select(course)',function (data) {
-                $("#class")[0].options.length=0
-                $.get("/expmodel/findClassByCourse/"+data.value,function (data) {
-                    let flag = 0;
-                    $("#class").append( "<option value='0' selected>请选择班级</option>")
-                    $.each(JSON.parse(data),function (k,v) {
-                        $("#class").append( "<option value='"+v[flag].classId+"'>"+v[flag].className+"</option>")
-                        flag += 1;
-                        form.render('select');
-                    })
-                })
-            })
-
-            form.on('submit(sub)',function () {
-                let parm = $("#dataform").serialize();
-                $.get("/expmodel/kaoheProgress",parm,function () {
-                    $("select [id='class'] option").each(function () {
-                        console.log($(this).value)
-                        if($(this).value == classId){
-                            $(this).attr("selected","selected")
-                        }
-                    })
-                })
-            })
-        })
-    </script>
-</body>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<title>考核进度</title>
+		<link rel="stylesheet" href="../../static/new/css/reset.css" />
+		<link rel="stylesheet" href="//cdn.staticfile.org/layui/2.5.6/css/layui.min.css" />
+		<style>
+			body {
+				padding: 20px;
+				background: #f7f7f7;
+			}
+			.layui-fluid {
+				padding: 20px;
+				background: #fff;
+				margin-bottom: 20px;
+			}
+			.layui-form-item {
+				margin: 0;
+			}
+			.layui-form-label {
+				padding-left: 0;
+			}
+			.result-list {
+				display: flex;
+				flex-wrap: wrap;
+			}
+			.layui-card {
+				width: 400px;
+				box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.25);
+				margin: 0 15px 20px 0;
+			}
+			.layui-card:last-child {
+				margin: 0 15px 20px 0;
+			}
+			.layui-card:nth-child(4n) {
+				margin-right: 0;
+			}
+			.layui-card-body img {
+				width: 100%;
+				height: 170px;
+				box-sizing: border-box;
+				border: 1px solid #efefef;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="layui-fluid">
+			<form class="layui-form" action="/expmodel/kaoheProgress" method="GET">
+				<div class="layui-form-item">
+					<label class="layui-form-label">课程与班级</label>
+					<div class="layui-input-inline">
+						<select name="course" lay-filter="course" lay-verify="required">
+							<option value="">请选择课程</option>
+							<option th:each="course:${courseList}" th:value="${course.id}" th:text="${course.courseName}" th:selected="${course.id == courseId}"></option>
+						</select>
+					</div>
+					<div class="layui-input-inline">
+						<select name="class" id="class" lay-verify="required">
+							<option value="">请选择班级</option>
+						</select>
+					</div>
+					<div class="layui-input-inline">
+						<button type="submit" class="layui-btn" lay-submit>查询</button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="layui-fluid result-list">
+			<div class="layui-card" th:each="l:${list}">
+				<div class="layui-card-body">
+					<img th:src="${l.imageurl}" />
+					<div style="text-align: center;">
+						<span style="margin-right: 10px;">模块测试</span>
+						<span style="margin-right: 10px;">已提交：<span th:text="${l.classTotalNum - l.mTestFalseNum}"></span>人</span>
+						<span>未提交：<span th:text="${l.mTestFalseNum}"></span>人</span> <br />
+						<span style="margin-right: 10px;">模块报告</span>
+						<span style="margin-right: 10px;">已提交：<span th:text="${l.classTotalNum - l.mReportFalseNum}"></span>人</span>
+						<span>未提交：<span th:text="${l.mReportFalseNum}"></span>人</span>
+					</div>
+					<div style="text-align: center;">
+						<a type="button" class="layui-btn layui-btn-primary" style="height: 32px; line-height: 32px;" th:href="@{|/expmodel/kaoheProgressQuery/${l.m_id}}">查看详情</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="//cdn.staticfile.org/jquery/1.8.0/jquery.min.js"></script>
+		<script src="//cdn.staticfile.org/layui/2.5.6/layui.all.min.js"></script>
+		<script>
+			$(function () {
+				var form = layui.form,
+					_courseId = '[[${courseId}]]',
+					_classId = '[[${classId}]]'
+				if (_courseId) {
+					getClassList(_courseId)
+				}
+				form.on('select(course)', function (data) {
+					getClassList(data.value)
+				})
+				function getClassList(courseId) {
+					$.get('/expmodel/findClassByCourse/' + courseId, function (data) {
+						var _clist = JSON.parse(data)
+						$('#class').empty().append('<option value="">请选择班级</option>')
+						$.each(_clist.data, function (i, e) {
+							if (e.classId == _classId) {
+								$('#class').append('<option value="' + e.classId + '" selected>' + e.className + '</option>')
+							} else {
+								$('#class').append('<option value="' + e.classId + '">' + e.className + '</option>')
+							}
+						})
+						form.render('select')
+					})
+				}
+			})
+		</script>
+	</body>
 </html>

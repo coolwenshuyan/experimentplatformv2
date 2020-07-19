@@ -54,6 +54,9 @@ public class ModuleController {
     @Autowired
     private ReportAnswerService reportAnswerService;
 
+    @Autowired
+    private ArrangeClassService arrangeClassService;
+
     /**
      * 添加实验模块试题
      *
@@ -246,8 +249,14 @@ public class ModuleController {
         }
 //        调用questService中的方法删除问题id，就是问题的主键
         questService.deleteQuest(questId);
-//        更新学生信息
-        scoreUpdateService.allStudentScoreUpdate();
+//        更新学生成绩
+        ExpModel expModels= expModelService.findExpModelByID(moduleTestQuest.getmId()) ;
+        List<ArrangeClass> arrangeClasses = arrangeClassService.findByCourseID(expModels.getCourseId());
+        if(arrangeClasses.size()>0) {
+            for (ArrangeClass arrangeClasse1:arrangeClasses) {
+                scoreUpdateService.allStudentScoreUpdate2(arrangeClasse1.getId());
+            }
+        }
 //        通过moduleTestQuest找到问题的mid，返回试题列表
         return "redirect:/shiyan/list/" + moduleTestQuest.getmId();
     }
@@ -316,7 +325,13 @@ public class ModuleController {
         }
 
 //        更新学生成绩
-        scoreUpdateService.allStudentScoreUpdate();
+        ExpModel expModels= expModelService.findExpModelByID(quest1.getmId()) ;
+        List<ArrangeClass> arrangeClasses = arrangeClassService.findByCourseID(expModels.getCourseId());
+        if(arrangeClasses.size()>0) {
+            for (ArrangeClass arrangeClasse1:arrangeClasses) {
+                scoreUpdateService.allStudentScoreUpdate2(arrangeClasse1.getId());
+            }
+        }
 //        返回模块测试题的列表
         return "redirect:/shiyan/list/" + quest1.getmId();
     }
@@ -499,7 +514,13 @@ public class ModuleController {
 //        删除学生填写的相应的实验报告答题记录
         reportAnswerService.deleteReportAnswerByReportId(reportId);
 //        更新学生成绩
-        scoreUpdateService.allStudentScoreUpdate();
+        ExpModel expModels= expModelService.findExpModelByID(report.getmId()) ;
+        List<ArrangeClass> arrangeClasses = arrangeClassService.findByCourseID(expModels.getCourseId());
+        if(arrangeClasses.size()>0) {
+            for (ArrangeClass arrangeClasse1:arrangeClasses) {
+                scoreUpdateService.allStudentScoreUpdate2(arrangeClasse1.getId());
+            }
+        }
 //        返回实验报告的列表页面
         return "redirect:/shiyan/reportList/" + report.getmId();
     }

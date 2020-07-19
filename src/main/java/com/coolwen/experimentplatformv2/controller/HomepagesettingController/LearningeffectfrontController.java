@@ -150,6 +150,8 @@ public class LearningeffectfrontController {
     public String effectDetails(@PathVariable int id, Model model){
         //查询对应id的优秀实验报告的整条数据
         Effect effect = effectService.findById(id);
+        effect.setDic_num(effect.getDic_num()+1);
+        effectService.add(effect);
         model.addAttribute("effect",effect);
         return "home_page/effectDetails";
     }

@@ -42,7 +42,7 @@
 								<div class="report-item">
 									<a th:href="@{|/learningfront/effectDetails/${effect.id}|}">
 										<img src="../../static/new/images/1.jpg" th:src="@{'/upload/'+${effect.effect_imgurl}}" />
-										<p>效果展示名称1</p>
+										<p th:text="${effect.getEffect_name()}">效果展示名称1</p>
 									</a>
 								</div>
 							</div>

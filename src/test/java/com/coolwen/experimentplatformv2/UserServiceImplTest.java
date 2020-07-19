@@ -80,6 +80,12 @@ public class UserServiceImplTest {
         resourceService.add(res);
 
         res = new Resource();
+        res.setName("权限和教师账号管理");
+        res.setUrl("/admin/**");
+        res.setPermission("admin:*");
+        resourceService.add(res);
+
+        res = new Resource();
         res.setName("平台公告");
         res.setUrl("/newsinfoback/**");
         res.setPermission("newsinfoback:*");
@@ -101,6 +107,12 @@ public class UserServiceImplTest {
         res.setName("课程安排");
         res.setUrl("/arrangeclass/**");
         res.setPermission("arrangeclass:*");
+        resourceService.add(res);
+
+        res = new Resource();
+        res.setName("学生账户管理");
+        res.setUrl("/studentManage/**");
+        res.setPermission("/studentManage:*");
         resourceService.add(res);
 
         res = new Resource();
@@ -189,13 +201,17 @@ public class UserServiceImplTest {
 
     @Test
     public void testAddRoleRes() {
-        roleService.addRoleResource(1, 1);
+        roleService.addRoleResource(1, 2);
+        roleService.addRoleResource(1, 3);
+        roleService.addRoleResource(1, 4);
+        roleService.addRoleResource(1, 5);
+        roleService.addRoleResource(1, 6);
+        roleService.addRoleResource(1, 7);
+        roleService.addRoleResource(1, 8);
         roleService.addRoleResource(2, 2);
-        roleService.addRoleResource(2, 7);
-        roleService.addRoleResource(2, 8);
+        roleService.addRoleResource(2, 9);
+        roleService.addRoleResource(2, 10);
         roleService.addRoleResource(3, 2);
-        roleService.addRoleResource(3, 9);
-        roleService.addRoleResource(3, 10);
         roleService.addRoleResource(3, 11);
         roleService.addRoleResource(3, 12);
         roleService.addRoleResource(3, 13);
@@ -203,6 +219,8 @@ public class UserServiceImplTest {
         roleService.addRoleResource(3, 15);
         roleService.addRoleResource(3, 16);
         roleService.addRoleResource(3, 17);
+        roleService.addRoleResource(3, 18);
+        roleService.addRoleResource(3, 19);
     }
 
     @Test

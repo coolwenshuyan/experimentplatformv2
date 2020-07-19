@@ -48,6 +48,12 @@ public class StudentServiceImplTest {
     @Autowired
     private ReplyService replyService;
 
+    @Autowired
+    private EffectService effectService;
+
+    @Autowired
+    TeacherService teacherService;
+
     protected static final Logger logger = LoggerFactory.getLogger(StudentServiceImplTest.class);
 
     //该测试用例是把全校老师信息存入系统
@@ -370,6 +376,43 @@ public class StudentServiceImplTest {
         for (int i = 1; i < 10000; i++) {
             String seqNum = String.format("%05d", i);
             System.out.println(seqNum);
+        }
+    }
+
+    //添加学习效果
+    @Test
+    public void testEffect(){
+        List<CourseInfo> courseInfos = courseInfoService.findAll();
+        Effect effect = new Effect();
+        for (int i = 0; i < courseInfos.size(); i++) {
+            for (int j = 0; j < Math.random() * 10; j++) {
+                logger.debug("随机数"+(Math.random()*10));
+                effect = new Effect();
+                effect.setCourse_id(courseInfos.get(i).getId());
+                effect.setEffect_imgurl(courseInfos.get(i).getCourseImgurl());
+                effect.setEffect_name(courseInfos.get(i).getCourseName()+j);
+                effect.setEffect_person(getName());
+                effect.setDic_datetime(new Date());
+                effect.setEffect_content(courseInfos.get(i).getCourseIntruduce());
+                effect.setDic_num(0);
+                effectService.add(effect);
+            }
+        }
+    }
+    //添加师资队伍
+    @Test
+    public void testTeacher(){
+        List<CourseInfo> courseInfos = courseInfoService.findAll();
+        Teacher teacher = new Teacher();
+        for (int i = 0; i < courseInfos.size(); i++) {
+            for (int j = 0; j < Math.random() * 20; j++) {
+                logger.debug("随机数"+(Math.random()*10));
+                teacher = new Teacher();
+                teacher.setCourse_id(courseInfos.get(i).getId());
+                teacher.setPerson_name(getName());
+                teacher.setIntro(teacher.getPerson_name()+",现任四川旅游学院教师一职");
+                teacherService.add(teacher);
+            }
         }
     }
 }

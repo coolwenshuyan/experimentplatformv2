@@ -80,56 +80,6 @@ public class LoginController {
         return "home_page/login";
     }
 
-    /**
-     * Cas登录成功后跳转的链接地址
-     * <P></P>
-     * 根据cas返回的信息
-     * <P></P>
-     * 判断当前用户身份类型
-     * <P></P>
-     * 根据当前用户类型指定跳转地址
-     *
-     * @return {@link  ModelAndView}
-     */
-    @GetMapping("/index")
-    public ModelAndView index(Model model) {
-        logger.debug("index_方法进入");
-        Session session = SecurityUtils.getSubject().getSession();
-
-        ModelAndView modelAndView = new ModelAndView();
-        Map<Object, Object> map = CasUtils.getUserInfo(SecurityUtils.getSubject().getSession());
-//        Subject subject = SecurityUtils.getSubject();
-//        subject.getPrincipal();
-//        ModelAndView model = new ModelAndView();
-        Subject subject = SecurityUtils.getSubject();
-//        Session session = subject.getSession();
-        String comsys_role = (String) map.get("comsys_role");
-        String number = (String) map.get("comsys_student_number");
-
-        if (comsys_role.contains("ROLE_STUDENT")) {
-            LoginToken token = new LoginToken("zhuzhiwen", ShiroKit.md5("123", "zhuzhiwen"), "student");
-            subject.login(token);
-//            Student student2 = (Student) subject.getPrincipal();
-//            身份类型是学生
-            Student student = studentService.findByStuXuehao(number);
-            session.setAttribute("username", student.getStuUname());
-            session.setAttribute("student", student);
-            session.setAttribute("loginType", "student");
-            modelAndView.setViewName("redirect:/newsinfo/newslist");
-        } else {
-            //            身份类型不是学生
-            Admin admin = adminService.findByUname(number);
-            if (admin != null) {
-                session.setAttribute("admin", admin);
-                modelAndView.setViewName("redirect:/learning/kuangjia");
-            } else {
-                modelAndView.setViewName("redirect:/newsinfo/newslist");
-            }
-        }
-
-        return modelAndView;
-    }
-
     @RequestMapping(value = {"/login"}, method = RequestMethod.POST)
     public ModelAndView login(@RequestParam("account") String username,
 //    public String login(@RequestParam("account") String username,
@@ -301,7 +251,7 @@ public class LoginController {
 //                logger.debug(student.toString());
                 logger.debug("注册学生信息message: {}", student.toString());
                 model.addObject("msg2", "注册成功！！！");
-                model.setViewName("home_page/index");
+                model.setViewName("redirect:/newsinfo/newslist");
             }
         } else {
             model.setViewName("register");

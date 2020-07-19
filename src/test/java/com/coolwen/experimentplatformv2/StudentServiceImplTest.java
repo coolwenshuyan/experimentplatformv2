@@ -259,7 +259,7 @@ public class StudentServiceImplTest {
         setInfo.setSet_aboutus("aboutus");
         setInfo.setSet_platintro("platintro");
         setInfo.setSet_platstep("step");
-        setInfo.setSet_rotateimg("1、2");
+        setInfo.setSet_rotateimg("1,2,3,4,5,6");
         setInfoService.add(setInfo);
     }
 

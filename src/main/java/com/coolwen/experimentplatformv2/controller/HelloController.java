@@ -44,7 +44,7 @@ public class HelloController {
      *
      * @return
      */
-    @RequestMapping("/")
+    @RequestMapping(value = {"/","/index"})
 //    @RequiresRoles("Admin")
     public String hello(HttpSession session, SessionStatus sessionStatus) throws UnsupportedEncodingException {
         logger.debug("通过信息门户进入系统的");

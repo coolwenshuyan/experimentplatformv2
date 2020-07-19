@@ -4,8 +4,7 @@
             <p>旅游大数据虚拟仿真实验教学平台</p>
             <div class="user-info" th:if="${session.student == null and session.teacher==null}">
                 <a href="/login">登陆</a>
-                //todo 单点登录需要修改地址
-                <!-- <a href="http://tysf.sctu.edu.cn:8071/sso//login?service=http://172.17.55.112:8889/shiro-cas">登陆</a> -->
+                 <a href="http://tysf.sctu.edu.cn:8071/sso//login?service=http://172.17.55.112:8889/shiro-cas">登陆</a>
                 <a href="/register">注册</a>
             </div>
             <div class="user-info" th:if="${session.student} != null">

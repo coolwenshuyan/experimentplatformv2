@@ -20,4 +20,12 @@ public interface NewsInfoService {
     int findQualifiedpeople();
 
     int findUnqualifiedpeople();
+
+    int findAllpasspeopleByCourseId(int id);
+
+    int findExcellentpeopleByCourseId(int id);
+
+    int findQualifiedpeopleByCourseId(int id);
+
+    int findUnqualifiedpeopleByCourseId(int id);
 }

@@ -98,13 +98,13 @@ public class LearningeffectfrontController {
         model.addAttribute("courseId",id);
 
         //往期参与考核的全部学生
-        int allpasspeople = newsInfoService.findAllpasspeople();
+        int allpasspeople = newsInfoService.findAllpasspeopleByCourseId(id);
         //往期参与考核的优秀学生（85分以上）
-        int excellent = newsInfoService.findExcellentpeople();
+        int excellent = newsInfoService.findExcellentpeopleByCourseId(id);
         //往期参与考核的优秀学生（60分-85分）
-        int qualified = newsInfoService.findQualifiedpeople();
+        int qualified = newsInfoService.findQualifiedpeopleByCourseId(id);
         //往期参与考核的优秀学生（60分以下）
-        int unqualified = newsInfoService.findUnqualifiedpeople();
+        int unqualified = newsInfoService.findUnqualifiedpeopleByCourseId(id);
         model.addAttribute("allpasspeople",allpasspeople);
         model.addAttribute("excellentstu",excellent);
         model.addAttribute("qualifiedstu",qualified);
@@ -126,13 +126,13 @@ public class LearningeffectfrontController {
         model.addAttribute("courseId",id);
 
         //往期参与考核的全部学生
-        int allpasspeople = newsInfoService.findAllpasspeople();
+        int allpasspeople = newsInfoService.findAllpasspeopleByCourseId(id);
         //往期参与考核的优秀学生（85分以上）
-        int excellent = newsInfoService.findExcellentpeople();
+        int excellent = newsInfoService.findExcellentpeopleByCourseId(id);
         //往期参与考核的优秀学生（60分-85分）
-        int qualified = newsInfoService.findQualifiedpeople();
+        int qualified = newsInfoService.findQualifiedpeopleByCourseId(id);
         //往期参与考核的优秀学生（60分以下）
-        int unqualified = newsInfoService.findUnqualifiedpeople();
+        int unqualified = newsInfoService.findUnqualifiedpeopleByCourseId(id);
         model.addAttribute("allpasspeople",allpasspeople);
         model.addAttribute("excellentstu",excellent);
         model.addAttribute("qualifiedstu",qualified);

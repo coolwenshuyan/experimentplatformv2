@@ -37,4 +37,16 @@ public interface NewsInfoRepository  extends BaseRepository<NewsInfo, Integer>, 
 
     @Query(value = "select count(*) from t_totalscore_pass where total_score<60",nativeQuery=true)
     int findUnqualifiedpeople();
+    //查询该课程往期考核人数
+    @Query(value ="select count(*) from t_totalscore_pass where course_id = ?",nativeQuery=true)
+    int findAllpasspeopleByCourseId(int id);
+    //查询该课程往期考核分数高于85分的人
+    @Query(value = "select count(*) from t_totalscore_pass where total_score>=85 and course_id = ?",nativeQuery=true)
+    int findExcellentpeopleByCourseId(int id);
+    //查询该课程往期考核分数60-85分的人
+    @Query(value = "select count(*) from t_totalscore_pass where total_score>=60 and total_score<85 and course_id = ?",nativeQuery=true)
+    int findQualifiedpeopleByCourseId(int id);
+    //查询该课程往期考核分数60分以下的人
+    @Query(value = "select count(*) from t_totalscore_pass where total_score<60 and course_id = ?",nativeQuery=true)
+    int findUnqualifiedpeopleByCourseId(int id);
 }

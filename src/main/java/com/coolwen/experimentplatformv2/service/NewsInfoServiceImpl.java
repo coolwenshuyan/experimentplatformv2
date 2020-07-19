@@ -56,4 +56,24 @@ public class NewsInfoServiceImpl implements NewsInfoService {
         return newsInfoRepository.findUnqualifiedpeople();
     }
 
+    @Override
+    public int findAllpasspeopleByCourseId(int id) {
+        return newsInfoRepository.findAllpasspeopleByCourseId(id);
+    }
+
+    @Override
+    public int findExcellentpeopleByCourseId(int id) {
+        return newsInfoRepository.findExcellentpeopleByCourseId(id);
+    }
+
+    @Override
+    public int findQualifiedpeopleByCourseId(int id) {
+        return newsInfoRepository.findQualifiedpeopleByCourseId(id);
+    }
+
+    @Override
+    public int findUnqualifiedpeopleByCourseId(int id) {
+        return newsInfoRepository.findUnqualifiedpeopleByCourseId(id);
+    }
+
 }

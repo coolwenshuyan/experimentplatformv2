@@ -20,6 +20,7 @@ import com.coolwen.experimentplatformv2.service.TeacherService;
 import com.coolwen.experimentplatformv2.utils.FileUploadUtil;
 import com.coolwen.experimentplatformv2.utils.GetServerRealPathUnit;
 import org.apache.commons.io.FileUtils;
+import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +67,7 @@ public class TeacherController {
     @GetMapping(value = "/list")
     public String TeacherList(Model model, HttpSession session,
                               @RequestParam(defaultValue = "0", required=true,value = "pageNum")  Integer pageNum){
-        User user = (User) session.getAttribute("admin");
+        User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
         logger.debug("user:>>"+user);
         Pageable pageable = PageRequest.of(pageNum,6);
 //        Page<Teacher> page = teacherRepository.findAll(pageable);
@@ -86,7 +87,7 @@ public class TeacherController {
         logger.debug("courseId:>>"+courseId);
         model.addAttribute("teacherPageInfo",page);
 
-        User user = (User) session.getAttribute("admin");
+        User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
         logger.debug("user:>>"+user);
         List<CourseInfo> courseInfoList =  courseInfoService.getclassByCharge(user.getId());
         model.addAttribute("courseInfoList",courseInfoList);
@@ -106,7 +107,7 @@ public class TeacherController {
      */
     @GetMapping(value = "/add")
     public String TeacherAdd(Model model,HttpSession session){
-        User user = (User) session.getAttribute("admin");
+        User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
         List<CourseInfo> courseInfoList =  courseInfoService.getclassByCharge(user.getId());
         model.addAttribute("courseInfoList",courseInfoList);
         return "shouye/teacher_add";
@@ -180,7 +181,7 @@ public class TeacherController {
         Teacher teacher = teacherService.findById(id);
         model.addAttribute("teacher",teacher);
 
-        User user = (User) session.getAttribute("admin");
+        User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
         List<CourseInfo> courseInfoList =  courseInfoService.getclassByCharge(user.getId());
         model.addAttribute("courseInfoList",courseInfoList);
         return "shouye/teacher_updata";

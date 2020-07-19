@@ -19,6 +19,7 @@ import com.coolwen.experimentplatformv2.service.NewsInfoService;
 import com.coolwen.experimentplatformv2.utils.FileUploadUtil;
 import com.coolwen.experimentplatformv2.utils.GetServerRealPathUnit;
 import org.apache.commons.io.FileUtils;
+import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,7 +81,7 @@ public class LearningeffectController {
     @GetMapping(value = "/list")
     public String LearningeffectList(Model model, HttpSession session,
                                      @RequestParam(defaultValue = "0", required=true,value = "pageNum")  Integer pageNum){
-        User user = (User) session.getAttribute("admin");
+        User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
         logger.debug("user:>>"+user);
         //查询优秀实验报告所有数据
         Pageable pageable = PageRequest.of(pageNum,10);
@@ -103,7 +104,7 @@ public class LearningeffectController {
         logger.debug("courseId:>>>>>>>>>>>>>>"+courseId);
         model.addAttribute("learningPageInfo",page);
 
-        User user = (User) session.getAttribute("admin");
+        User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
         logger.debug("user:>>"+user);
         List<CourseInfo> courseInfoList =  courseInfoService.getclassByCharge(user.getId());
         model.addAttribute("courseInfoList",courseInfoList);
@@ -116,7 +117,7 @@ public class LearningeffectController {
      */
     @GetMapping(value = "/add")
     public String LearningeffectAdd(HttpSession session,Model model){
-        User user = (User) session.getAttribute("admin");
+        User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
         List<CourseInfo> courseInfoList =  courseInfoService.getclassByCharge(user.getId());
         model.addAttribute("courseInfoList",courseInfoList);
         return "shouye/study_add";
@@ -168,7 +169,7 @@ public class LearningeffectController {
      */
     @GetMapping(value = "/{id}/update")
     public String update(@PathVariable int id, Model model,HttpSession session){
-        User user = (User) session.getAttribute("admin");
+        User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
         List<CourseInfo> courseInfoList =  courseInfoService.getclassByCharge(user.getId());
         model.addAttribute("courseInfoList",courseInfoList);
 

@@ -120,13 +120,13 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public void saveStudent(Student student) {
-        if (ShiroKit.isEmpty(student.getStuUname()) || ShiroKit.isEmpty(student.getStuPassword())) {
-            throw new RuntimeException("用户名或者密码不能为空！");
-        }
-        Student u = studentRepository.findAllByStuUname(student.getStuUname());
-        if (u != null) {
-            throw new RuntimeException("用户名已经存在!");
-        }
+//        if (ShiroKit.isEmpty(student.getStuUname()) || ShiroKit.isEmpty(student.getStuPassword())) {
+//            throw new RuntimeException("用户名或者密码不能为空！");
+//        }
+//        Student u = studentRepository.findAllByStuUname(student.getStuUname());
+//        if (u != null) {
+//            throw new RuntimeException("用户名已经存在!");
+//        }
         student.setStuPassword(ShiroKit.md5(student.getStuPassword(), student.getStuUname()));
         studentRepository.save(student);
     }

@@ -91,9 +91,16 @@ public class ArrangeClassController {
         return "jichu/timePlan_management";
     }
 
-    @PostMapping(value = "/mhlist")
-    public String courseInfoList1(Model model, String courseName, String teacherName, String className,
-                                  @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum) {
+    @GetMapping(value = "/mhlist")
+    public String courseInfoList1(Model model,
+                                  @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum,
+                                  @RequestParam(required = true, defaultValue = "") String courseName,
+                                  @RequestParam(required = true, defaultValue = "") String teacherName,
+                                  @RequestParam(required = true, defaultValue = "") String className)
+    {
+        model.addAttribute("courseName",courseName);
+        model.addAttribute("teacherName",teacherName);
+        model.addAttribute("className",className);
         //查询课程安排表所有数据
 //        Pageable pageable = PageRequest.of(pageNum,10);
         Page<ArrangeClassDto> page = arrangeClassService.findBycidAndtidAndclaidLike(pageNum, courseName, teacherName, className);

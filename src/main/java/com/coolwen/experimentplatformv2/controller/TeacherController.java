@@ -116,7 +116,7 @@ public class TeacherController {
     @GetMapping(value = "/{id}/delete")
     public String delete(@PathVariable int id) {
         teacherService.delete(id);
-        return "redirect:/teachers/list";
+        return "redirect:/teachers/list/-1";
     }
 
     /**
@@ -162,7 +162,7 @@ public class TeacherController {
             }
         }
         teacherService.add(teacher);
-        return "redirect:/teachers/list";
+        return "redirect:/teachers/list/-1";
     }
 
 //    @RequestMapping(value = "/add", method = RequestMethod.POST)
@@ -233,7 +233,7 @@ public class TeacherController {
         }
         teacherService.add(teacher);
         logger.debug("修改成功");
-        return "redirect:/teachers/list";
+        return "redirect:/teachers/list/-1";
     }
 
 }

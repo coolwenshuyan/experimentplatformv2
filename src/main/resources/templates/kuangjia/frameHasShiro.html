@@ -23,8 +23,8 @@
     <div class="layui-side layui-bg-black">
         <div class="layui-side-scroll">
             <shiro:authenticated>
-                <ul  class="layui-nav layui-nav-tree" lay-shrink="all">
-                    <shiro:hasAnyRoles name="admin,courseleader" >
+                <ul class="layui-nav layui-nav-tree" lay-shrink="all">
+                    <shiro:hasAnyRoles name="admin,courseleader">
                         <li class="layui-nav-item">
                             <a href="javascript:;"><i class="layui-icon layui-icon-home"></i>首页设置</a>
                             <shiro:hasRole name="admin">
@@ -37,7 +37,7 @@
                             </shiro:hasRole>
                             <shiro:hasRole name="courseleader">
                                 <dl class="layui-nav-child">
-                                    <dd><a class="to-url" data-url="/teachers/list/-1" href="javascript:;">师资队伍</a></dd>
+                                    <dd><a class="to-url" data-url="/teachers/list" href="javascript:;">师资队伍</a></dd>
                                     <dd><a class="to-url" data-url="/learning/list" href="javascript:;">学习效果</a></dd>
                                 </dl>
                             </shiro:hasRole>
@@ -102,7 +102,6 @@
                             <a class="to-url" data-url="monitor"><i class="layui-icon layui-icon-console"></i>平台服务监控</a>
                         </li>
                     </shiro:hasRole>
-
                 </ul>
             </shiro:authenticated>
         </div>
@@ -116,6 +115,9 @@
 <script src="//cdn.staticfile.org/layui/2.5.6/layui.all.min.js"></script>
 <script>
     $(function () {
+        if (self != top) {
+            window.location.href = top.$('.layui-this a').data('url')
+        }
         $('.to-url').click(function (e) {
             e.preventDefault()
             if ($(this).data('url')) {

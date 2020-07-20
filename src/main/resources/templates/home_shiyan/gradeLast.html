@@ -110,8 +110,8 @@
 					laypage = layui.laypage
 				laypage.render({
 					elem: 'pager',
-					curr: parseInt('[[${}]]') + 1,
-					count: parseInt('[[${}]]') * 10,
+					curr: parseInt('[[${totalScoreCurrents.number}]]') + 1,
+					count: parseInt('[[${totalScoreCurrents.totalElements}]]') ,
 					jump: function (obj, first) {
 						if (!first) {
 							window.location.href = window.location.origin + window.location.pathname + '?pageNum=' + (obj.curr - 1)

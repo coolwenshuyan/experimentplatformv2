@@ -10,10 +10,7 @@ package com.coolwen.experimentplatformv2.controller;
 import com.coolwen.experimentplatformv2.dao.*;
 import com.coolwen.experimentplatformv2.model.*;
 import com.coolwen.experimentplatformv2.model.DTO.CourseInfoDto;
-import com.coolwen.experimentplatformv2.service.ClassService;
-import com.coolwen.experimentplatformv2.service.CourseInfoService;
-import com.coolwen.experimentplatformv2.service.NewsInfoService;
-import com.coolwen.experimentplatformv2.service.SetInfoService;
+import com.coolwen.experimentplatformv2.service.*;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,6 +61,8 @@ public class NewsInfoController {
     private ClassService classService;
     @Autowired
     private CourseInfoService courseInfoService;
+    @Autowired
+    private EffectService effectService;
 
     @Value("${web.count-path}")
     private String count;
@@ -96,24 +95,37 @@ public class NewsInfoController {
 //            String imgurl = setInfoService.findexpimg(Integer.parseInt(sid[i]));
 //            String imgurl = expModelRepository.findexpimg(Integer.parseInt(sid[i]));
             try {
-                ExpModel expModel = expModelRepository.findById(Integer.parseInt(sid[i])).get();
-                model.addAttribute("img" + String.valueOf(i), expModel.getImageurl());
-                model.addAttribute("mid" + String.valueOf(i), expModel.getM_id());
+//                ExpModel expModel = expModelRepository.findById(Integer.parseInt(sid[i])).get();
+//                model.addAttribute("img" + String.valueOf(i), expModel.getImageurl());
+//                model.addAttribute("mid" + String.valueOf(i), expModel.getM_id());
+                Effect effect = effectService.findById(Integer.parseInt(sid[i]));
+                model.addAttribute("img" + String.valueOf(i), effect.getEffect_imgurl());
+                model.addAttribute("mid" + String.valueOf(i), effect.getId());
+
             } catch (Exception e) {
 
             }
 
         }
 
-        List<ExpModel> expModels = new ArrayList<>();
+//        List<ExpModel> expModels = new ArrayList<>();
+//        for (int i = 0; i < sid.length; i++) {
+//            try {
+//                expModels.add(expModelRepository.findById(Integer.parseInt(sid[i])).get());
+//            } catch (Exception e) {
+//
+//            }
+//        }
+//        model.addAttribute("expModels", expModels);
+        List<Effect> effects = new ArrayList<>();
         for (int i = 0; i < sid.length; i++) {
             try {
-                expModels.add(expModelRepository.findById(Integer.parseInt(sid[i])).get());
+                effects.add(effectService.findById(Integer.parseInt(sid[i])));
             } catch (Exception e) {
 
             }
         }
-        model.addAttribute("expModels", expModels);
+        model.addAttribute("effects", effects);
 
         //课程展示
         List<CourseInfo> courseInfos = courseInfoService.findAll();

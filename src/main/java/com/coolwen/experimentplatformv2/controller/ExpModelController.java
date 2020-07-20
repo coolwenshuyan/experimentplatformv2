@@ -123,7 +123,7 @@ public class ExpModelController {
         User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
         logger.debug("expModelListByCourseId输出老师账号：" + user);
 //        List<CourseInfo> courseInfoList = courseInfoService.getclassByCharge(user.getId());
-        List<CourseInfo> courseInfoList = courseInfoService.getclassByCharge(1);
+        List<CourseInfo> courseInfoList = courseInfoService.getclassByCharge(user.getId());
         model.addAttribute("courseInfoList", courseInfoList);
 //        model.addAttribute("page", expModelService.findModelList(pageNum));
         //绑定courseId，以便下拉框选中筛选的课程
@@ -135,6 +135,7 @@ public class ExpModelController {
         model.addAttribute("page", expModelPage);
         logger.debug("模块信息:：" + expModelPage.getContent());
         session.setAttribute("ExpModelcourseId", courseId);
+
         return "shiyan/lookExpModel";
     }
 

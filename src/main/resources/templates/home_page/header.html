@@ -1,36 +1,35 @@
 <div th:fragment="common_header" xmlns:th="http://www.w3.org/1999/xhtml">
-    <div class="topbar">
-        <div class="main cl">
-            <p>旅游大数据虚拟仿真实验教学平台</p>
-            <div class="user-info" th:if="${session.student == null and session.teacher==null}">
-                <a href="/login">登陆</a>
-                 <a href="http://tysf.sctu.edu.cn:8071/sso//login?service=http://172.17.55.112:8889/shiro-cas">登陆</a>
-                <a href="/register">注册</a>
-            </div>
-            <div class="user-info" th:if="${session.student} != null">
-                <span th:text="|欢迎你，${session.student.stuName} |"></span>
-                <a href="/logout">退出</a>
-            </div>
-            <div class="user-info" th:if="${session.teacher} != null">
-                <span th:text="|欢迎你，${session.teacher.nickname} |"></span>
-                <a href="/logout">退出</a>
-            </div>
-        </div>
-    </div>
-    <div class="navs cl">
-        <div class="logo">
-            <img src="../../static/new/images/sctu.png"/>
-            <p>旅游大数据虚拟仿真实验教学平台</p>
-        </div>
-        <ul class="nav">
-            <li><a href="/newsinfo/newslist">首页</a></li>
-            <li><a href="/setinfo/situation">平台概况</a></li>
-            <li><a href="/teachersfront/frontList">师资队伍</a></li>
-            <li><a href="/question/list">咨询答疑</a></li>
-            <li><a href="/learningfront/learningList">学习效果</a></li>
-            <!--            "${session.student} == null"-->
-            <li th:if="${session.student} != null"><a href="/choose/course/list">实验大厅</a></li>
-            <li th:if="${session.teacher} != null"><a href="/learning/kuangjia">平台管理</a></li>
-        </ul>
-    </div>
+	<div class="topbar">
+		<div class="main cl">
+			<p>旅游大数据虚拟仿真实验教学平台</p>
+			<div class="user-info" th:if="${session.student == null and session.teacher==null}">
+				<a href="/login">登陆</a>
+				<a href="http://tysf.sctu.edu.cn:8071/sso//login?service=http://172.17.55.112:8889/shiro-cas">登陆</a>
+				<a href="/register">注册</a>
+			</div>
+			<div class="user-info" th:if="${session.student} != null">
+				<span th:text="|欢迎你，${session.student.stuName} |"></span>
+				<a href="/logout">退出</a>
+			</div>
+			<div class="user-info" th:if="${session.teacher} != null">
+				<span th:text="|欢迎你，${session.teacher.nickname} |"></span>
+				<a href="/logout">退出</a>
+			</div>
+		</div>
+	</div>
+	<div class="navs cl">
+		<div class="logo">
+			<img src="../../static/new/images/sctu.png" />
+			<p>旅游大数据虚拟仿真实验教学平台</p>
+		</div>
+		<ul class="nav">
+			<li><a href="/newsinfo/newslist">首页</a></li>
+			<li><a href="/setinfo/situation">平台概况</a></li>
+			<li><a href="/teachersfront/frontList">师资队伍</a></li>
+			<li><a href="/question/list">咨询答疑</a></li>
+			<li><a href="/learningfront/learningList">学习效果</a></li>
+			<li th:if="${session.student} != null"><a href="/choose/course/list">实验大厅</a></li>
+			<li th:if="${session.teacher} != null"><a href="/learning/kuangjia">平台管理</a></li>
+		</ul>
+	</div>
 </div>

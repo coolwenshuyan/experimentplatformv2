@@ -66,8 +66,8 @@
 										<td th:text="${person.stuIsinschool == true?'是':'否'}"></td>
 										<td th:text="${person.className == null?'暂无班级':person.className}"></td>
 										<td class="td-manage">
-											<a class="layui-btn layui-btn-normal editBtn" th:data-url="@{|/studentManage/editStudent/${person.id}|}">编辑</a>
-											<button class="layui-btn layui-bg-red" id="del" type="button" th:name="${person.id}" lay-filter="del" onclick="del(this)">删除</button>
+											<button type="button" class="layui-btn layui-btn-normal editBtn" th:data-url="@{|/studentManage/editStudent/${person.id}|}">编辑</button>
+											<button type="button" class="layui-btn layui-btn-danger delBtn" th:data-id="${person.id}">删除</button>
 											<button class="layui-btn" id="change" th:name="${person.id}" lay-filter="change" lay-submit>Docker调整</button>
 										</td>
 									</tr>
@@ -148,8 +148,17 @@
 				layer.open({
 					title: '编辑',
 					type: 2,
-					area: ['500px', '500px'],
+					area: ['500px', '400px'],
 					content: _url
+				})
+			})
+			$('.delBtn').click(function (e) {
+				e.preventDefault()
+				var _id = $(this).data('id')
+				layer.confirm('确定要删除该学生吗？这将会删除他的所有相关记录', function () {
+					$.get('/studentManage/deleteStudent/' + _id, function () {
+						location.reload()
+					})
 				})
 			})
 			form.on('submit(change)', function (obj) {
@@ -161,12 +170,10 @@
 			function docker() {
 				index = layer.open({
 					type: 1,
-					skin: 'layui-layer-molv',
 					title: 'Docker修改',
 					shadeClose: false,
 					area: ['500px', '450px'],
 					shade: 0,
-					anim: 2,
 					content: $('#chooseDocker'),
 					success: function () {
 						$('#url')[0].options.length = 0
@@ -217,14 +224,5 @@
 				type: 'datetime'
 			})
 		})
-		function del(obj) {
-			var id = obj.name
-			var ques = confirm('确定要删除该学生吗？这将会删除他的所有相关记录')
-			if (ques == true) {
-				$.get('/studentManage/deleteStudent/' + id, function () {
-					location.reload()
-				})
-			}
-		}
 	</script>
 </html>

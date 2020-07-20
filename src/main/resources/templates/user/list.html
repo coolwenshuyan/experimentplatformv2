@@ -30,7 +30,7 @@
 	</head>
 	<body>
 		<div class="layui-fluid">
-			<div class="user-bar layui-clear">
+			<div class="layui-clear">
 				<div class="user-btns">
 					<button type="button" class="layui-btn" id="addUser">添加用户</button>
 				</div>
@@ -56,8 +56,8 @@
 						<td th:text="${user.nickname}"></td>
 						<td th:text="${user.gonghao}"></td>
 						<td>
-							<a th:data-id="${user.id}" class="layui-btn user-update">更新</a>
-							<a th:data-id="${user.id}" class="layui-btn user-view">查询管理资源</a>
+							<a th:data-id="${user.id}" class="layui-btn layui-btn-sm user-update">更新</a>
+							<a th:data-id="${user.id}" class="layui-btn layui-btn-sm user-view">查询管理资源</a>
 						</td>
 					</tr>
 				</tbody>

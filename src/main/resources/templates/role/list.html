@@ -1,91 +1,91 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-		<title>角色列表</title>
-		<link rel="stylesheet" href="../../static/new/css/reset.css" />
-		<link rel="stylesheet" href="//cdn.staticfile.org/layui/2.5.6/css/layui.min.css" />
-		<style>
-			body {
-				padding: 20px;
-				background: #f7f7f7;
-			}
-			.layui-fluid {
-				padding: 20px;
-				background: #fff;
-			}
-		</style>
-	</head>
-	<body>
-		<div class="layui-fluid">
-			<div>
-				<button type="button" class="layui-btn layui-btn-sm addBtn">添加角色</button>
-			</div>
-			<table class="layui-table">
-				<thead>
-					<tr>
-						<td>角色标识</td>
-						<td>角色名称</td>
-						<td>角色sn</td>
-						<td>操作</td>
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="role:${roles}">
-						<td th:text="${role.id}"></td>
-						<td th:text="${role.name}"></td>
-						<td th:text="${role.sn}"></td>
-						<td>
-							<a class="layui-btn layui-btn-sm updateBtn" th:data-url="@{|update/${role.id}|}">更新</a>
-							<a class="layui-btn layui-btn-sm viewBtn" th:data-url="@{|listRes/${role.id}|}">查询管理资源</a>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		<script src="//cdn.staticfile.org/jquery/1.8.0/jquery.min.js"></script>
-		<script src="//cdn.staticfile.org/layui/2.5.6/layui.all.min.js"></script>
-		<script>
-			$(function () {
-				var layer = layui.layer
-				$('.addBtn').click(function (e) {
-					e.preventDefault()
-					layer.open({
-						type: 2,
-						title: '添加角色',
-						shade: 0.1,
-						shadeClose: false,
-						area: ['400px', '280px'],
-						content: '/admin/role/add'
-					})
-				})
-				$('.updateBtn').click(function (e) {
-					e.preventDefault()
-					var _url = $(this).data('url')
-					layer.open({
-						type: 2,
-						title: '更新角色',
-						shade: 0.1,
-						shadeClose: false,
-						area: ['400px', '280px'],
-						content: _url
-					})
-				})
-				$('.viewBtn').click(function (e) {
-					e.preventDefault()
-					var _url = $(this).data('url')
-					layer.open({
-						type: 2,
-						title: '查询管理资源',
-						shade: 0.1,
-						shadeClose: false,
-						area: ['800px', '450px'],
-						content: _url
-					})
-				})
-			})
-		</script>
-	</body>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>角色列表</title>
+    <link rel="stylesheet" href="../../static/new/css/reset.css" />
+    <link rel="stylesheet" href="//cdn.staticfile.org/layui/2.5.6/css/layui.min.css" />
+    <style>
+        body {
+            padding: 20px;
+            background: #f7f7f7;
+        }
+        .layui-fluid {
+            padding: 20px;
+            background: #fff;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-fluid">
+    <div>
+        <button type="button" class="layui-btn layui-btn-sm addBtn">添加角色</button>
+    </div>
+    <table class="layui-table">
+        <thead>
+        <tr>
+            <td>角色标识</td>
+            <td>角色名称</td>
+            <td>角色sn</td>
+            <td>操作</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="role:${roles}">
+            <td th:text="${role.id}"></td>
+            <td th:text="${role.name}"></td>
+            <td th:text="${role.sn}"></td>
+            <td>
+                <a class="layui-btn layui-btn-sm updateBtn" th:data-url="@{|update/${role.id}|}">更新</a>
+                <a class="layui-btn layui-btn-sm viewBtn" th:data-url="@{|listRes/${role.id}|}">查询管理资源</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script src="//cdn.staticfile.org/jquery/1.8.0/jquery.min.js"></script>
+<script src="//cdn.staticfile.org/layui/2.5.6/layui.all.min.js"></script>
+<script>
+    $(function () {
+        var layer = layui.layer
+        $('.addBtn').click(function (e) {
+            e.preventDefault()
+            layer.open({
+                type: 2,
+                title: '添加角色',
+                shade: 0.1,
+                shadeClose: false,
+                area: ['400px', '280px'],
+                content: '/admin/role/add'
+            })
+        })
+        $('.updateBtn').click(function (e) {
+            e.preventDefault()
+            var _url = $(this).data('url')
+            layer.open({
+                type: 2,
+                title: '更新角色',
+                shade: 0.1,
+                shadeClose: false,
+                area: ['400px', '280px'],
+                content: _url
+            })
+        })
+        $('.viewBtn').click(function (e) {
+            e.preventDefault()
+            var _url = $(this).data('url')
+            layer.open({
+                type: 2,
+                title: '查询管理资源',
+                shade: 0.1,
+                shadeClose: false,
+                area: ['800px', '450px'],
+                content: _url
+            })
+        })
+    })
+</script>
+</body>
 </html>

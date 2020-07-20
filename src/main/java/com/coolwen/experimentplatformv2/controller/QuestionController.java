@@ -122,13 +122,13 @@ public class QuestionController {
             //查询该老师的课程信息
             Page<QuestionStudentDto> page = questionService.findByTeacherId(user.getId(), pageNum);
             model.addAttribute("questionPageInfo", page);
-            return "shouye/dayiManage";
+//            return "shouye/dayiManage";
         } else {
-            List<ArrangeClassDto> arrangeClassDtos = arrangeClassService.findByTeacherIdAndCourseId(1, courseinfoId);
+            List<ArrangeClassDto> arrangeClassDtos = arrangeClassService.findByTeacherIdAndCourseId(user.getId(), courseinfoId);
             //获取所有班级的ID
             List<Integer> integerList = arrangeClassDtos.stream().map(ArrangeClassDto -> ArrangeClassDto.getcIlassId()).collect(Collectors.toList());
             logger.debug("该老师负责的班级信息有:" + arrangeClassDtos);
-            Page<QuestionStudentDto> page = questionService.findByCourseIdAndTeacherId(courseinfoId, 1, pageNum);
+            Page<QuestionStudentDto> page = questionService.findByCourseIdAndTeacherId(courseinfoId, user.getId(), pageNum);
             logger.debug("该老师负责的班级信息有:" + page.getContent());
             model.addAttribute("questionPageInfo", page);
         }
@@ -254,7 +254,7 @@ public class QuestionController {
 //        通过id删除该问题
         questionService.delete(id);
         logger.debug("coureinfoId信息:" + courseinfoId);
-        return "redirect:/question/teacherlist/" + courseinfoId ;
+        return "redirect:/question/teacherlist/" + courseinfoId;
     }
 
     //老师进入查看页

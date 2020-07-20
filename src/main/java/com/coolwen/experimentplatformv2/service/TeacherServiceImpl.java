@@ -50,19 +50,29 @@ public class TeacherServiceImpl implements TeacherService {
     public Page<Teacher> findAllByCourseId(int pageNum, int courseId) {
 
         Pageable pager = PageRequest.of(pageNum, size);
-        Page<Teacher> teacherPage= teacherRepository.findAll(new SimpleSpecificationBuilder<Teacher>(
+        Page<Teacher> teacherPage = teacherRepository.findAll(new SimpleSpecificationBuilder<Teacher>(
                 "course_id", "=", courseId)
                 .generateSpecification(), pager);
         return teacherPage;
     }
 
     @Override
-    public Page<Teacher> findAllByUid(int uid,Pageable pageable) {
-        return teacherRepository.findAllByUid(uid,pageable);
+    public Page<Teacher> findAllByUid(int uid, Pageable pageable) {
+        return teacherRepository.findAllByUid(uid, pageable);
     }
 
     @Override
     public List<Teacher> findByCourseId(int id) {
         return teacherRepository.findByCourse_id(id);
+    }
+
+    @Override
+    public Page<Teacher> findAllByCourseIdAndTeacherId(int pageNum, int courseId, int teacherId) {
+        Pageable pager = PageRequest.of(pageNum, size);
+        Page<Teacher> teacherPage = teacherRepository.findAll(new SimpleSpecificationBuilder<Teacher>(
+                "course_id", "=", courseId)
+                .add("id", "=", teacherId)
+                .generateSpecification(), pager);
+        return teacherPage;
     }
 }

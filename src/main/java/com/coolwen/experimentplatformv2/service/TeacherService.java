@@ -18,7 +18,9 @@ public interface TeacherService {
 
     Page<Teacher> findAllByCourseId(int pageNum, int courseId);
 
-    Page<Teacher> findAllByUid(int uid,Pageable pageable);
+    Page<Teacher> findAllByUid(int uid, Pageable pageable);
 
     List<Teacher> findByCourseId(int id);
+
+    Page<Teacher> findAllByCourseIdAndTeacherId(int pageNum, int courseId, int teacherId);
 }

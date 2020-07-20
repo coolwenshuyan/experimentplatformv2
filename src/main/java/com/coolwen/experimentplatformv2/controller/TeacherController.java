@@ -11,6 +11,7 @@ import com.coolwen.experimentplatformv2.config.ShiroCasConfiguration;
 import com.coolwen.experimentplatformv2.controller.HomepagesettingController.FileUploadController;
 import com.coolwen.experimentplatformv2.dao.TeacherRepository;
 import com.coolwen.experimentplatformv2.model.CourseInfo;
+import com.coolwen.experimentplatformv2.model.DTO.QuestionStudentDto;
 import com.coolwen.experimentplatformv2.model.DTO.StuTotalScoreCurrentDTO;
 import com.coolwen.experimentplatformv2.model.KaoheModel;
 import com.coolwen.experimentplatformv2.model.Teacher;
@@ -24,6 +25,7 @@ import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -39,11 +41,11 @@ import java.io.IOException;
 import java.util.List;
 
 /**
-*@Description 后台管理系统-->首页-->师资队伍页面
-*@Author 王宇
-*@Version 1.0
-*@Date 2020/5/30 11:06
-*/
+ * @Description 后台管理系统-->首页-->师资队伍页面
+ * @Author 王宇
+ * @Version 1.0
+ * @Date 2020/5/30 11:06
+ */
 @Controller
 @RequestMapping(value = "/teachers")
 public class TeacherController {
@@ -54,43 +56,57 @@ public class TeacherController {
     @Autowired
     CourseInfoService courseInfoService;
 
-    FileUploadController fileUploadController =new FileUploadController();  //上传文件
+    FileUploadController fileUploadController = new FileUploadController();  //上传文件
 
     protected static final Logger logger = LoggerFactory.getLogger(TeacherController.class);
 
+    @Value("${SimplePageBuilder.pageSize}")
+    int size;
+
     /**
      * 后台管理系统，首页-->师资队伍列表查询
+     *
      * @param model
      * @param pageNum
      * @return
      */
-    @GetMapping(value = "/list")
+    @GetMapping(value = "/list/{courseinfoId}")
     public String TeacherList(Model model, HttpSession session,
-                              @RequestParam(defaultValue = "0", required=true,value = "pageNum")  Integer pageNum){
+                              @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum, @PathVariable int courseinfoId) {
         User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
-        logger.debug("user:>>"+user);
-        Pageable pageable = PageRequest.of(pageNum,6);
+        logger.debug("登陆老师信息:" + user);
+        model.addAttribute("selected", courseinfoId);
+        List<CourseInfo> courseInfoList = courseInfoService.getclassByCharge(user.getId());
+        model.addAttribute("courseInfoList", courseInfoList);
+        if (courseinfoId == -1) {
+//            展示全部老师信息
+//            Page<Teacher> page = teacherService.findAllByCourseId(user.getId(), 6);
+            logger.debug("courseinfoId信息:" + courseinfoId);
+            Pageable pageable = PageRequest.of(pageNum, size);
+            Page<Teacher> page = teacherService.findAllByUid(size, pageable);
+            model.addAttribute("teacherPageInfo", page);
+        } else {
+            //查询代老师和课程ID的师资队伍
 //        Page<Teacher> page = teacherRepository.findAll(pageable);
-        Page<Teacher> page = teacherService.findAllByUid(user.getId(),pageable);
-        model.addAttribute("teacherPageInfo",page);
-
-        List<CourseInfo> courseInfoList =  courseInfoService.getclassByCharge(user.getId());
-        model.addAttribute("courseInfoList",courseInfoList);
+            Page<Teacher> page = teacherService.findAllByCourseIdAndTeacherId(size, courseinfoId, user.getId());
+            logger.debug("登陆老师信息:" + page.getContent());
+            model.addAttribute("teacherPageInfo", page);
+        }
         return "shouye/teacher_change";
     }
 
     @GetMapping("/{courseId}/list")
-    public String getTotalScoreCirrentByGroupId(Model model,HttpSession session,
+    public String getTotalScoreCirrentByGroupId(Model model, HttpSession session,
                                                 @PathVariable int courseId,
-                                                @RequestParam(value = "pageNum",defaultValue = "0",required = true) int pageNum) {
-        Page<Teacher> page = teacherService.findAllByCourseId(pageNum,courseId);
-        logger.debug("courseId:>>"+courseId);
-        model.addAttribute("teacherPageInfo",page);
+                                                @RequestParam(value = "pageNum", defaultValue = "0", required = true) int pageNum) {
+        Page<Teacher> page = teacherService.findAllByCourseId(pageNum, courseId);
+        logger.debug("courseId:>>" + courseId);
+        model.addAttribute("teacherPageInfo", page);
 
         User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
-        logger.debug("user:>>"+user);
-        List<CourseInfo> courseInfoList =  courseInfoService.getclassByCharge(user.getId());
-        model.addAttribute("courseInfoList",courseInfoList);
+        logger.debug("user:>>" + user);
+        List<CourseInfo> courseInfoList = courseInfoService.getclassByCharge(user.getId());
+        model.addAttribute("courseInfoList", courseInfoList);
         return "shouye/teacher_change";
     }
 
@@ -98,31 +114,33 @@ public class TeacherController {
      * 后台管理系统 师资队伍单条删除
      */
     @GetMapping(value = "/{id}/delete")
-    public String delete(@PathVariable int id){
+    public String delete(@PathVariable int id) {
         teacherService.delete(id);
         return "redirect:/teachers/list";
     }
+
     /**
      * 跳转到师资队伍添加页面
      */
     @GetMapping(value = "/add")
-    public String TeacherAdd(Model model,HttpSession session){
+    public String TeacherAdd(Model model, HttpSession session) {
         User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
-        List<CourseInfo> courseInfoList =  courseInfoService.getclassByCharge(user.getId());
-        model.addAttribute("courseInfoList",courseInfoList);
+        List<CourseInfo> courseInfoList = courseInfoService.getclassByCharge(user.getId());
+        model.addAttribute("courseInfoList", courseInfoList);
         return "shouye/teacher_add";
     }
 
 
     /**
      * 完成师资添加
+     *
      * @param teacher 前端返回的参数（person_name，intro）
-//     * @param file  前端传回的图片
+     *                //     * @param file  前端传回的图片
      * @param req
      * @return 重定向到师资队伍列表
      */
     @PostMapping(value = "/add")
-    public String add(Teacher teacher, @RequestParam("attachs") MultipartFile[] attachs, HttpServletRequest req){
+    public String add(Teacher teacher, @RequestParam("attachs") MultipartFile[] attachs, HttpServletRequest req) {
         //储存图片，并将图片路径储存到数据库
         String realpath = GetServerRealPathUnit.getPath("static/upload/");
 //       logger.debug("realPath:" + realpath);
@@ -177,19 +195,20 @@ public class TeacherController {
 
     //进入修改界面
     @GetMapping(value = "/{id}/update")
-    public String update(@PathVariable int id, Model model,HttpSession session){
+    public String update(@PathVariable int id, Model model, HttpSession session) {
         Teacher teacher = teacherService.findById(id);
-        model.addAttribute("teacher",teacher);
+        model.addAttribute("teacher", teacher);
 
         User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
-        List<CourseInfo> courseInfoList =  courseInfoService.getclassByCharge(user.getId());
-        model.addAttribute("courseInfoList",courseInfoList);
+        List<CourseInfo> courseInfoList = courseInfoService.getclassByCharge(user.getId());
+        model.addAttribute("courseInfoList", courseInfoList);
         return "shouye/teacher_updata";
     }
 
     //完成修改操作
     @PostMapping(value = "/{id}/update")
-    public String update(@PathVariable int id, Teacher teacher, @RequestParam("attachs") MultipartFile[] attachs, HttpServletRequest req){
+    public String update(@PathVariable int id, Teacher teacher, @RequestParam("attachs") MultipartFile[]
+            attachs, HttpServletRequest req) {
         teacher.setId(id);
         //储存图片，并将图片路径储存到数据库
         String realpath = GetServerRealPathUnit.getPath("static/upload/");

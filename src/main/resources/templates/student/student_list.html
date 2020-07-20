@@ -1,228 +1,228 @@
 <!DOCTYPE html>
-<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="UTF-8" />
-		<title>实验模块设置</title>
-		<meta name="renderer" content="webkit" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-		<meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
-		<link rel="stylesheet" href="../../static/css/font.css" />
-		<link rel="stylesheet" href="../../static/css/layui.css" />
-		<link rel="stylesheet" href="../../static/css/xadmin.css" />
-		<script src="../../static/js/layui.js" charset="utf-8"></script>
-		<script type="text/javascript" src="../../static/js/xadmin.js"></script>
-		<link rel="stylesheet" href="../../static/css/modules/layer/default/layer.css" />
-		<link rel="stylesheet" href="../../static/css/modules/laydate/default/laydate.css" />
+		<title>学生账号管理</title>
+		<link rel="stylesheet" href="../../static/new/css/reset.css" />
+		<link rel="stylesheet" href="//cdn.staticfile.org/layui/2.5.6/css/layui.min.css" />
 		<style>
 			body {
 				padding: 20px;
-				background: #f2f2f2;
-				box-sizing: border-box;
+				background: #f7f7f7;
 			}
 			.layui-fluid {
-				padding: 0;
-			}
-			.search-bar {
-				margin: 0 0 10px 0;
+				padding: 20px;
 				background: #fff;
-				padding: 10px;
+			}
+			#pager {
+				text-align: center;
+			}
+			#chooseDocker {
+				display: none;
+				padding: 30px 0 0 30px;
+			}
+			.layui-form-label {
+				width: 100px;
 			}
 		</style>
 	</head>
 	<body>
 		<div class="layui-fluid">
-			<form class="layui-form search-bar" th:action="@{/studentManage/list}" method="get">
+			<form class="layui-form" th:action="@{/studentManage/list}" method="get">
 				<div class="layui-input-inline">
-					<input type="text" name="stu_xuehao" placeholder="请输入学号或姓名" autocomplete="off" class="layui-input" th:value="${stu_xuehao}" />
+					<input type="text" name="stu_xuehao" placeholder="请输入学号" autocomplete="off" class="layui-input" style="height: 30px;" th:value="${stu_xuehao}" />
 				</div>
 				<div class="layui-input-inline">
-					<button type="submit" class="layui-btn" lay-submit>搜索</button>
+					<button type="submit" class="layui-btn layui-btn-sm" lay-submit>搜索</button>
 				</div>
 			</form>
-			<div class="layui-row layui-col-space15">
-				<div class="layui-col-md12">
-					<div class="layui-card">
-						<div class="layui-card-body layui-table-body layui-table-main">
-							<table class="layui-table layui-form" id="demo" lay-filter="demo">
-								<thead>
-									<tr>
-										<th>ID</th>
-										<th>登陆账号</th>
-										<th>真实姓名</th>
-										<th>学号</th>
-										<th>手机号</th>
-										<th>是否本校</th>
-										<th>班级</th>
-										<th>操作</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr th:each="person:${studentList}">
-										<td th:text="${person.id}"></td>
-										<td th:text="${person.stuUname}"></td>
-										<td th:text="${person.stuName}"></td>
-										<td th:text="${person.stuXuehao}"></td>
-										<td th:text="${person.stuMobile}"></td>
-										<td th:text="${person.stuIsinschool == true?'是':'否'}"></td>
-										<td th:text="${person.className == null?'暂无班级':person.className}"></td>
-										<td class="td-manage">
-											<button type="button" class="layui-btn layui-btn-normal editBtn" th:data-url="@{|/studentManage/editStudent/${person.id}|}">编辑</button>
-											<button type="button" class="layui-btn layui-btn-danger delBtn" th:data-id="${person.id}">删除</button>
-											<button class="layui-btn" id="change" th:name="${person.id}" lay-filter="change" lay-submit>Docker调整</button>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-						<div class="layui-card-body">
-							<div class="page">
-								<div>
-									<a class="prev" th:href="@{/studentManage/list(pageNum=${studentList.hasPrevious()}?${studentList.number}-1:0)}">&lt;&lt;</a>
-									<a class="next" th:href="@{/studentManage/list(pageNum=${studentList.hasNext()}?${studentList.number}+1:${studentList.number})}">&gt;&gt;</a>
-								</div>
+			<table class="layui-table">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>登陆账号</th>
+						<th>真实姓名</th>
+						<th>学号</th>
+						<th>手机号</th>
+						<th>是否本校</th>
+						<th>班级</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="person:${studentList}">
+						<td th:text="${person.id}"></td>
+						<td th:text="${person.stuUname}"></td>
+						<td th:text="${person.stuName}"></td>
+						<td th:text="${person.stuXuehao}"></td>
+						<td th:text="${person.stuMobile}"></td>
+						<td th:text="${person.stuIsinschool == true?'是':'否'}"></td>
+						<td th:text="${person.className == null?'暂无班级':person.className}"></td>
+						<td>
+							<button type="button" class="layui-btn layui-btn-sm editBtn" th:data-id="${person.id}">编辑</button>
+							<button type="button" class="layui-btn layui-btn-sm dockerBtn" th:data-id="${person.id}">Docker调整</button>
+							<button type="button" class="layui-btn layui-btn-sm layui-btn-danger delBtn" th:data-id="${person.id}">删除</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<div id="pager"></div>
+			<div id="chooseDocker">
+				<form class="layui-form" lay-filter="dataform" id="dataform">
+					<div class="layui-form-item">
+						<div class="layui-inline">
+							<label class="layui-form-label">学号:</label>
+							<div class="layui-input-inline">
+								<input type="text" name="stuXuehao" id="stuXuehao" disabled autocomplete="off" value="该生为校外学生" class="layui-input" />
 							</div>
 						</div>
 					</div>
-				</div>
+					<div class="layui-form-item">
+						<div class="layui-inline">
+							<label class="layui-form-label">姓名:</label>
+							<div class="layui-input-inline">
+								<input type="text" name="stuName" id="stuName" disabled autocomplete="off" class="layui-input" />
+							</div>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">Docker地址:</label>
+						<div class="layui-input-inline">
+							<select name="dc_url" id="url" autocomplete="off"></select>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">使用开始时间:</label>
+						<div class="layui-input-inline">
+							<input type="text" name="dc_start_datetime" id="beginTime" class="layui-input" />
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">使用结束时间:</label>
+						<div class="layui-input-inline">
+							<input type="text" name="dc_end_datetime" id="endTime" class="layui-input" />
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label"></label>
+						<div class="layui-input-inline">
+							<button type="button" class="layui-btn" lay-filter="doSubmit" lay-submit="">修改</button>
+							<button type="button" class="layui-btn layui-btn-primary closeBtn">取消</button>
+						</div>
+					</div>
+				</form>
 			</div>
 		</div>
-		<div style="display: none; padding-top: 15px; padding-left: 10%; padding-right: 10%;" id="chooseDocker">
-			<form class="layui-form" lay-filter="dataform" id="dataform">
-				<div class="layui-form-item">
-					<div class="layui-inline">
-						<label class="layui-form-label">学号:</label>
-						<div class="layui-input-inline">
-							<input type="text" name="stuXuehao" id="stuXuehao" disabled autocomplete="off" value="该生为校外学生" class="layui-input" />
-						</div>
-					</div>
-				</div>
-				<div class="layui-form-item">
-					<div class="layui-inline">
-						<label class="layui-form-label">姓名:</label>
-						<div class="layui-input-inline">
-							<input type="text" name="stuName" id="stuName" disabled autocomplete="off" class="layui-input" />
-						</div>
-					</div>
-				</div>
-				<div class="layui-form-item">
-					<label class="layui-form-label">Docker地址:</label>
-					<div class="layui-input-inline">
-						<select name="dc_url" id="url" autocomplete="off"></select>
-					</div>
-				</div>
-				<div class="layui-form-item">
-					<label class="layui-form-label">使用开始时间:</label>
-					<div class="layui-input-inline">
-						<input type="text" name="dc_start_datetime" id="beginTime" class="layui-input" />
-					</div>
-				</div>
-				<div class="layui-form-item" pane="">
-					<label class="layui-form-label">使用结束时间:</label>
-					<div class="layui-input-inline">
-						<input type="text" name="dc_end_datetime" id="endTime" class="layui-input" />
-					</div>
-				</div>
-				<div class="layui-form-item" pane="" style="margin-left: 10%;">
-					<div class="layui-input-block">
-						<button type="button" class="layui-btn layui-btn-normal layui-btn-sm" lay-filter="doSubmit" lay-submit="">修改</button>
-						<button type="button" class="layui-btn layui-btn-warm layui-btn-sm" lay-filter="noSubmit" lay-submit="">取消</button>
-					</div>
-				</div>
-			</form>
-		</div>
-	</body>
-	<script src="../../static/js/jquery-3.4.1.min.js" type="text/javascript" charset="utf-8"></script>
-	<script src="../../static/js/layui.all.js" type="text/javascript" charset="utf-8"></script>
-	<script type="text/javascript" src="../../static/js/xadmin.js"></script>
-	<script>
-		layui.use(['jquery', 'layer', 'element', 'form', 'table', 'laydate'], function () {
-			const $ = layui.jquery
-			const laydate = layui.laydate
-			const layer = layui.layer
-			const form = layui.form
-			let index
-			let s
-			$('.editBtn').click(function (e) {
-				e.preventDefault()
-				var _url = $(this).data('url')
-				layer.open({
-					title: '编辑',
-					type: 2,
-					area: ['500px', '400px'],
-					content: _url
-				})
-			})
-			$('.delBtn').click(function (e) {
-				e.preventDefault()
-				var _id = $(this).data('id')
-				layer.confirm('确定要删除该学生吗？这将会删除他的所有相关记录', function () {
-					$.get('/studentManage/deleteStudent/' + _id, function () {
-						location.reload()
-					})
-				})
-			})
-			form.on('submit(change)', function (obj) {
-				$('#dataform')[0].reset()
-				s = obj.elem.name
-				stuMessage(s)
-				docker()
-			})
-			function docker() {
-				index = layer.open({
-					type: 1,
-					title: 'Docker修改',
-					shadeClose: false,
-					area: ['500px', '450px'],
-					shade: 0,
-					content: $('#chooseDocker'),
-					success: function () {
-						$('#url')[0].options.length = 0
-						$.get('/studentManage/dockerUrl', function (data) {
-							$('#url').append("<option value='metal' selected>不更改</option>")
-							$('#url').append("<option value='duck'>&nbsp;</option>")
-							$.each(JSON.parse(data), function (k, v) {
-								$.each(v, function (i, t) {
-									var options = "<option value='" + t.dc_url + "'>" + t.dc_url + '</option>'
-									$('#url').append(options)
-									form.render('select')
-								})
-							})
-						})
+		<script src="//cdn.staticfile.org/jquery/1.8.0/jquery.min.js"></script>
+		<script src="//cdn.staticfile.org/layui/2.5.6/layui.all.min.js"></script>
+		<script th:inline="javascript">
+			$(function () {
+				var layer = layui.layer,
+					form = layui.form,
+					laypage = layui.laypage,
+					laydate = layui.laydate,
+					dialogIndex = null,
+					currentId = null
+				laypage.render({
+					elem: 'pager',
+					layout: ['count', 'prev', 'page', 'next'],
+					curr: parseInt('[[${studentList.number}]]') + 1,
+					count: parseInt('[[${studentList.totalElements}]]'),
+					jump: function (obj, first) {
+						if (!first) {
+							var _str = window.location.origin + window.location.pathname + '?pageNum=' + (obj.curr - 1)
+							var _username = getUrlParam('stu_xuehao')
+							if (_username) {
+								_str += '&stu_xuehao=' + _username
+							}
+							window.location.href = _str
+						}
 					}
 				})
-			}
-			function stuMessage(metal) {
-				$.get('/studentManage/updateStuDocker/' + s, function (data) {
-					$.each(JSON.parse(data), function (k, v) {
-						if (v.stuXuehao == '') {
-							$('#stuXuehao').val('该生为校外学生')
-						} else {
-							$('#stuXuehao').val(v.stuXuehao)
-						}
-						$('#stuName').val(v.stuName)
-						$('#beginTime').val(v.dc_start_datetime)
-						$('#endTime').val(v.dc_end_datetime)
+				laydate.render({
+					elem: '#beginTime',
+					type: 'datetime',
+					value: new Date()
+				})
+				laydate.render({
+					elem: '#endTime',
+					type: 'datetime'
+				})
+				$('.editBtn').click(function (e) {
+					e.preventDefault()
+					var _id = $(this).data('id')
+					layer.open({
+						type: 2,
+						title: '编辑',
+						area: ['500px', '400px'],
+						content: '/studentManage/editStudent/' + _id
 					})
 				})
-			}
-			form.on('submit(doSubmit)', function () {
-				let parm = $('#dataform').serialize()
-				$.post('/studentManage/updateStuDocker/' + s, parm, function () {
-					layer.close(index)
+				$('.dockerBtn').click(function (e) {
+					e.preventDefault()
+					currentId = $(this).data('id')
+					$.get('/studentManage/updateStuDocker/' + currentId, function (data) {
+						$.each(JSON.parse(data), function (k, v) {
+							if (v.stuXuehao == '') {
+								$('#stuXuehao').val('该生为校外学生')
+							} else {
+								$('#stuXuehao').val(v.stuXuehao)
+							}
+							$('#stuName').val(v.stuName)
+							$('#beginTime').val(v.dc_start_datetime)
+							$('#endTime').val(v.dc_end_datetime)
+							dialogIndex = layer.open({
+								type: 1,
+								title: 'Docker修改',
+								area: ['500px', '450px'],
+								content: $('#chooseDocker'),
+								success: function () {
+									$('#url')[0].options.length = 0
+									$.get('/studentManage/dockerUrl', function (data) {
+										$('#url').append('<option value="metal" selected>不更改</option>')
+										$('#url').append('<option value="duck">&nbsp;</option>')
+										$.each(JSON.parse(data), function (k, v) {
+											$.each(v, function (i, t) {
+												var options = "<option value='" + t.dc_url + "'>" + t.dc_url + '</option>'
+												$('#url').append(options)
+												form.render('select')
+											})
+										})
+									})
+								}
+							})
+						})
+					})
+				})
+				$('.delBtn').click(function (e) {
+					e.preventDefault()
+					var _id = $(this).data('id')
+					layer.confirm('确定要删除该学生吗？这将会删除他的所有相关记录', function () {
+						$.get('/studentManage/deleteStudent/' + _id, function () {
+							location.reload()
+						})
+					})
+				})
+				form.on('submit(doSubmit)', function () {
+					let parm = $('#dataform').serialize()
+					$.post('/studentManage/updateStuDocker/' + s, parm, function () {
+						layer.close(index)
+					})
+				})
+				$('.closeBtn').click(function (e) {
+					e.preventDefault()
+					layer.close(dialogIndex)
+					window.location.reload()
 				})
 			})
-			form.on('submit(noSubmit)', function () {
-				layer.close(index)
-			})
-			laydate.render({
-				elem: '#beginTime',
-				type: 'datetime',
-				value: new Date()
-			})
-			laydate.render({
-				elem: '#endTime',
-				type: 'datetime'
-			})
-		})
-	</script>
+			function getUrlParam(name) {
+				var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)')
+				var r = window.location.search.substr(1).match(reg)
+				if (r != null) return decodeURI(r[2])
+				return null
+			}
+		</script>
+	</body>
 </html>

@@ -31,7 +31,7 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">所属课程</label>
 					<div class="layui-input-inline">
-						<select name="interest" lay-filter="id">
+						<select lay-filter="id">
 							<option value="/question/teacherlist/-1">全部</option>
 							<option th:each="courseInfo:${courseInfoList}" th:selected="${courseInfo.id == selected}" th:value="|/question/teacherlist/${courseInfo.id}|" th:text="${courseInfo.courseName}"></option>
 						</select>

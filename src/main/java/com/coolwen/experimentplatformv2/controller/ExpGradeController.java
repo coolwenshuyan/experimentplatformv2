@@ -18,10 +18,13 @@ import com.coolwen.experimentplatformv2.service.TotalScorePassService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -131,10 +134,81 @@ public class ExpGradeController {
     }
 
 
-    @GetMapping(value = "/studentlast")
-    public String getStudentLast(HttpSession session) {
-//        Student student = (Student) SecurityUtils.getSubject().getPrincipal();
+    @GetMapping(value = "/studentlast/{courseinfoId}")
+    public String getStudentLast(Model model, HttpSession session, @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum, @PathVariable int courseinfoId) {
         Student student = (Student) session.getAttribute("student");
+        List<TotalScorePass> totalScorePassList = totalScorePassService.findByStuId(student.getId());
+        model.addAttribute("totalScorePast", totalScorePassList);
+        if (courseinfoId == -1) {
+            logger.debug("courseinfoId信息:" + courseinfoId);
+            Page<TotalScorePass> page = totalScorePassService.findByStudentId(pageNum, student.getId());
+            model.addAttribute("totalScoreCurrents", page);
+            logger.debug("学生的往期所有成绩" + page);
+            if (page.getContent().size() > 0) {
+                //查询该学生的考核实验模块成绩
+                ModuleGradesDto[] moduleGrades = new ModuleGradesDto[page.getContent().get(0).getKaoheNum()];
+                //考核模块名
+                String[] kaohename = page.getContent().get(0).getKaoheName().split(";");
+                //考核模块测试分数
+                String[] kaohetest = page.getContent().get(0).getKaoheMtestscore().split(";");
+                //考核模块测试百分比
+                String[] kaohetestbaifenbi = page.getContent().get(0).getKaoheMtestscoreBaifengbi().split(";");
+                //考核模块报告分数
+                String[] kaohereport = page.getContent().get(0).getKaoheMreportscore().split(";");
+                //考核模块报告百分比
+                String[] kaohereportbaifenbi = page.getContent().get(0).getKaoheMreportscoreBaifengbi().split(";");
+
+                for (int i = 0; i < page.getContent().get(0).getKaoheNum(); i++) {
+                    moduleGrades[i] = new ModuleGradesDto(
+                            i + 1,
+                            kaohename[i],
+                            Float.parseFloat(kaohetest[i]),
+                            Float.parseFloat(kaohetestbaifenbi[i]),
+                            Float.parseFloat(kaohereport[i]),
+                            Float.parseFloat(kaohereportbaifenbi[i]),
+                            Float.parseFloat(String.format("%.1f", Float.parseFloat(kaohetest[i]) * Float.parseFloat(kaohetestbaifenbi[i]) +
+                                    Float.parseFloat(kaohereport[i]) * Float.parseFloat(kaohereportbaifenbi[i]))));
+//                    logger.debug(Float.parseFloat(kaohetest[i])+">>>"+Float.parseFloat(kaohetestbaifenbi[i]) +
+//                            ">>>"+Float.parseFloat(kaohereport[i])+">>>"+Float.parseFloat(kaohereportbaifenbi[i]));
+//                    logger.debug(moduleGrades[i].getM_score());
+                }
+                model.addAttribute("ModuleGrades", moduleGrades);
+            }
+
+        } else {
+            Page<TotalScorePass> page = totalScorePassService.findByStudentIdAndCourseId(pageNum, student.getId(), courseinfoId);
+            logger.debug("学生的往期所有成绩" + page);
+            model.addAttribute("totalScoreCurrents", page);
+            if (page.getContent().size() > 0) {
+                //查询该学生的考核实验模块成绩
+                ModuleGradesDto[] moduleGrades = new ModuleGradesDto[page.getContent().get(0).getKaoheNum()];
+                //考核模块名
+                String[] kaohename = page.getContent().get(0).getKaoheName().split(";");
+                //考核模块测试分数
+                String[] kaohetest = page.getContent().get(0).getKaoheMtestscore().split(";");
+                //考核模块测试百分比
+                String[] kaohetestbaifenbi = page.getContent().get(0).getKaoheMtestscoreBaifengbi().split(";");
+                //考核模块报告分数
+                String[] kaohereport = page.getContent().get(0).getKaoheMreportscore().split(";");
+                //考核模块报告百分比
+                String[] kaohereportbaifenbi = page.getContent().get(0).getKaoheMreportscoreBaifengbi().split(";");
+                for (int i = 0; i < page.getContent().get(0).getKaoheNum(); i++) {
+                    moduleGrades[i] = new ModuleGradesDto(
+                            i + 1,
+                            kaohename[i],
+                            Float.parseFloat(kaohetest[i]),
+                            Float.parseFloat(kaohetestbaifenbi[i]),
+                            Float.parseFloat(kaohereport[i]),
+                            Float.parseFloat(kaohereportbaifenbi[i]),
+                            Float.parseFloat(String.format("%.1f", Float.parseFloat(kaohetest[i]) * Float.parseFloat(kaohetestbaifenbi[i]) +
+                                    Float.parseFloat(kaohereport[i]) * Float.parseFloat(kaohereportbaifenbi[i]))));
+//                    logger.debug(Float.parseFloat(kaohetest[i])+">>>"+Float.parseFloat(kaohetestbaifenbi[i]) +
+//                            ">>>"+Float.parseFloat(kaohereport[i])+">>>"+Float.parseFloat(kaohereportbaifenbi[i]));
+//                    logger.debug(moduleGrades[i].getM_score());
+                }
+                model.addAttribute("ModuleGrades", moduleGrades);
+            }
+        }
         return "home_shiyan/gradelast";
     }
 }

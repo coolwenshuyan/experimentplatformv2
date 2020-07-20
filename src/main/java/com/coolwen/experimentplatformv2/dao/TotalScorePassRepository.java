@@ -4,16 +4,18 @@ import com.coolwen.experimentplatformv2.dao.basedao.BaseRepository;
 import com.coolwen.experimentplatformv2.model.CourseInfo;
 import com.coolwen.experimentplatformv2.model.DTO.CourseClassInfo;
 import com.coolwen.experimentplatformv2.model.DTO.StuTotalScoreCurrentDTO;
+import com.coolwen.experimentplatformv2.model.Teacher;
 import com.coolwen.experimentplatformv2.model.TotalScorePass;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface TotalScorePassRepository extends BaseRepository<TotalScorePass,Integer> {
+public interface TotalScorePassRepository extends BaseRepository<TotalScorePass, Integer>, JpaSpecificationExecutor<TotalScorePass> {
     @Query("select t from TotalScorePass t where t.stuId = ?1")
     TotalScorePass findTotalScorePassByStuId(int id);
 
@@ -34,7 +36,7 @@ public interface TotalScorePassRepository extends BaseRepository<TotalScorePass,
             "(st.stuXuehao,st.stuName,cla.className,tsc.mTotalScore,tsc.testScore,tsc.totalScore) " +
             "from Student st left join TotalScorePass tsc on st.id = tsc.stuId " +
             "left join ClassModel cla on st.classId=cla.classId where tsc.courseId = ?1 and tsc.classId = ?2")
-    Page<StuTotalScoreCurrentDTO> findTotalScorePassbyCourseIdClassId(Pageable page, int courseId, int classId,String select_orderId );
+    Page<StuTotalScoreCurrentDTO> findTotalScorePassbyCourseIdClassId(Pageable page, int courseId, int classId, String select_orderId);
 
     @Query("select new com.coolwen.experimentplatformv2.model.DTO.StuTotalScoreCurrentDTO " +
             "(st.stuXuehao,st.stuName,cla.className,tsc.mTotalScore,tsc.testScore,tsc.totalScore) " +

@@ -18,10 +18,11 @@
                 <label class="layui-form-label">所属课程</label>
                 <div class="layui-input-inline">
                     <select name="interest" lay-filter="id">
-                        <option value="/question/teacherlist/-1">全部</option>
-                        <option th:each="courseInfo:${courseInfoList}" th:selected="${courseInfo.id == selected}"
-                                th:value="|/question/teacherlist/${courseInfo.id}|"
-                                th:text="${courseInfo.courseName}"></option>
+                        <option value="/grade/studentlast/-1">全部</option>
+                        <option th:each="totalScorePass:${totalScorePast}"
+                                th:selected="${totalScorePass.courseId == courseinfoId}"
+                                th:value="|/grade/studentlast/${totalScorePass.courseId}|"
+                                th:text="${totalScorePass.courseName}"></option>
                     </select>
                 </div>
             </div>
@@ -58,12 +59,14 @@
         <div class="table2">
             <div class="tb_header cl">
                 <div>序号</div>
+                <div>课程名</div>
                 <div>考核实验模块成绩</div>
                 <div>理论测试成绩</div>
                 <div>总评成绩</div>
             </div>
             <div class="tb_row cl" th:each="totalScore:${totalScoreCurrents}">
                 <div th:text="${totalScore.id}">1</div>
+                <div th:text="${totalScore.courseName}">1</div>
                 <div th:text="${totalScore.mTotalScore}">76</div>
                 <div th:text="${totalScore.testScore}">87</div>
                 <div th:text="${totalScore.totalScore}">78</div>
@@ -84,6 +87,25 @@
             $('.content' + _tab).show()
         })
         $('.card-tab')[0].click()
+    })
+    $(function () {
+        var form = layui.form,
+            laypage = layui.laypage
+        laypage.render({
+            elem: 'pager',
+            curr: parseInt($('#currentPage').val()),
+            count: parseInt($('#totalPage').val()) * 10,
+            jump: function (obj, first) {
+                if (!first) {
+                    window.location.href = window.location.origin + window.location.pathname + '?pageNum=' + (obj.curr - 1)
+                }
+            }
+        })
+        form.on('select(id)', function (data) {
+            if (data.value) {
+                window.location.href = data.value
+            }
+        })
     })
 </script>
 </body>

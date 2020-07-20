@@ -27,4 +27,8 @@ public interface TotalScorePassService {
     Page<StuTotalScoreCurrentDTO> findTotalScorePassbyCourseIdClassId(Integer pageNum, String select_orderId, int courseId, int classId);
 
     List<StuTotalScoreCurrentDTO> findallTotalScorePassbyCourseIdClassId(int courseId, int classId);
+
+    Page<TotalScorePass> findByStudentIdAndCourseId(int pageNum, int studentId, int CourseId);
+
+    Page<TotalScorePass> findByStudentId(int pageNum, int studentId);
 }

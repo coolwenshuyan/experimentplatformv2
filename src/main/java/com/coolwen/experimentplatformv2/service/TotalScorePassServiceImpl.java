@@ -4,7 +4,9 @@ import com.coolwen.experimentplatformv2.dao.TotalScorePassRepository;
 import com.coolwen.experimentplatformv2.model.CourseInfo;
 import com.coolwen.experimentplatformv2.model.DTO.CourseClassInfo;
 import com.coolwen.experimentplatformv2.model.DTO.StuTotalScoreCurrentDTO;
+import com.coolwen.experimentplatformv2.model.Teacher;
 import com.coolwen.experimentplatformv2.model.TotalScorePass;
+import com.coolwen.experimentplatformv2.specification.SimpleSpecificationBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -13,8 +15,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 @Service
 public class TotalScorePassServiceImpl implements TotalScorePassService {
     protected static final Logger logger = LoggerFactory.getLogger(TotalScorePassServiceImpl.class);
@@ -27,7 +31,7 @@ public class TotalScorePassServiceImpl implements TotalScorePassService {
     @Override
     public void delteTotalScorePassByStuId(int id) {
         TotalScorePass totalScorePass = totalScorePassRepository.findTotalScorePassByStuId(id);
-        if(totalScorePass != null){
+        if (totalScorePass != null) {
             totalScorePassRepository.delete(totalScorePass);
 
         }
@@ -41,7 +45,7 @@ public class TotalScorePassServiceImpl implements TotalScorePassService {
     @Override
     public Page<TotalScorePass> findAll(int pageNum) {
         logger.debug("成功进入");
-        Pageable pageable  = PageRequest.of(pageNum,10);
+        Pageable pageable = PageRequest.of(pageNum, 10);
 
         return totalScorePassRepository.findAll(pageable);
     }
@@ -75,6 +79,25 @@ public class TotalScorePassServiceImpl implements TotalScorePassService {
 
     @Override
     public List<StuTotalScoreCurrentDTO> findallTotalScorePassbyCourseIdClassId(int courseId, int classId) {
-        return totalScorePassRepository.findallTotalScorePassbyCourseIdClassId(courseId,classId);
+        return totalScorePassRepository.findallTotalScorePassbyCourseIdClassId(courseId, classId);
+    }
+
+    @Override
+    public Page<TotalScorePass> findByStudentIdAndCourseId(int pageNum, int studentId, int CourseId) {
+        Pageable pager = PageRequest.of(pageNum, size);
+        Page<TotalScorePass> teacherPage = totalScorePassRepository.findAll(new SimpleSpecificationBuilder<TotalScorePass>(
+                "stuId", "=", studentId)
+                .add("courseId", "=", CourseId)
+                .generateSpecification(), pager);
+        return teacherPage;
+    }
+
+    @Override
+    public Page<TotalScorePass> findByStudentId(int pageNum, int studentId) {
+        Pageable pager = PageRequest.of(pageNum, size);
+        Page<TotalScorePass> teacherPage = totalScorePassRepository.findAll(new SimpleSpecificationBuilder<TotalScorePass>(
+                "stuId", "=", studentId)
+                .generateSpecification(), pager);
+        return teacherPage;
     }
 }

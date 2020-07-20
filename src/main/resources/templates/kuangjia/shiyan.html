@@ -18,8 +18,8 @@
 					<p>旅游大数据虚拟仿真实验教学平台</p>
 					<span>实验中心</span>
 				</div>
-				<div class="top-link" th:if="${session.teacher} != null">
-					<span th:text="|欢迎你，${session.teacher.nickname} |"></span>
+				<div class="top-link" th:if="${session.student} != null">
+					<span th:text="|欢迎你，${session.student.stuName} |"></span>
 					<a href="/logout">退出</a>
 				</div>
 <!--				<div class="top-link"><a href="/logout">退出登录</a></div>-->
@@ -28,7 +28,7 @@
 				<div class="layui-side-scroll">
 					<ul class="layui-nav layui-nav-tree">
 						<li class="layui-nav-item">
-							<a href="/"><i class="layui-icon layui-icon-home"></i>首页</a>
+							<a href="/choose/course/list"><i class="layui-icon layui-icon-home"></i>首页</a>
 						</li>
 						<li class="layui-nav-item">
 							<a href="javascript:;"><i class="layui-icon layui-icon-app"></i>实验大厅</a>

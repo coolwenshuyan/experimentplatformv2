@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1"/>
+    <meta name="renderer" content="webkit"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>成绩 - 四川旅游学院虚拟仿真实验教学管理平台</title>
+    <link rel="stylesheet" href="../../static/new/css/reset.css"/>
+    <link rel="stylesheet" href="../../static/new/css/grade.css"/>
+</head>
+<body>
+
+<div class="grade-card">
+    <div class="layui-fluid">
+        <form class="layui-form">
+            <div class="layui-form-item">
+                <label class="layui-form-label">所属课程</label>
+                <div class="layui-input-inline">
+                    <select name="interest" lay-filter="id">
+                        <option value="/question/teacherlist/-1">全部</option>
+                        <option th:each="courseInfo:${courseInfoList}" th:selected="${courseInfo.id == selected}"
+                                th:value="|/question/teacherlist/${courseInfo.id}|"
+                                th:text="${courseInfo.courseName}"></option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="card-tabs">
+        <div class="card-tab" data-tab="1">考核实验模块成绩</div>
+        <div class="card-tab" data-tab="2">总评成绩</div>
+    </div>
+    <div class="card-content content1">
+        <div class="table1">
+            <div class="tb_header cl">
+                <div>序号</div>
+                <div>考核实验名称</div>
+                <div>实验模块测试成绩</div>
+                <div>实验模块测试占比</div>
+                <div>实验模块报告成绩</div>
+                <div>实验模块报告占比</div>
+                <div>实验模块总成绩</div>
+            </div>
+            <div class="tb_row cl" th:each="moduleGrade:${ModuleGrades}">
+                <div th:text="${moduleGrade.m_id}"></div>
+                <div th:text="${moduleGrade.m_name}"></div>
+                <div th:text="${moduleGrade.m_test_score}"></div>
+                <div th:text="${moduleGrade.m_test_baifenbi}"></div>
+                <div th:text="${moduleGrade.m_report_score}"></div>
+                <div th:text="${moduleGrade.m_report_baifenbi}"></div>
+                <div th:text="${moduleGrade.m_score}"></div>
+            </div>
+        </div>
+        <p class="ps">注：考核实验模块成绩：考核实验模块测试成绩*比例+考核实验模块报告成绩*比例=考核实验模块成绩。</p>
+    </div>
+    <div class="card-content content2">
+        <div class="table2">
+            <div class="tb_header cl">
+                <div>序号</div>
+                <div>考核实验模块成绩</div>
+                <div>理论测试成绩</div>
+                <div>总评成绩</div>
+            </div>
+            <div class="tb_row cl" th:each="totalScore:${totalScoreCurrents}">
+                <div th:text="${totalScore.id}">1</div>
+                <div th:text="${totalScore.mTotalScore}">76</div>
+                <div th:text="${totalScore.testScore}">87</div>
+                <div th:text="${totalScore.totalScore}">78</div>
+            </div>
+        </div>
+        <p class="ps">注：总评成绩 = (考核实验模块1成绩 * 权重 + 考核实验模块2成绩 * 权重...) * 比例 + 理论测试成绩 * 比例。</p>
+    </div>
+</div>
+<script src="//cdn.staticfile.org/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(function () {
+        $('.card-tab').click(function (e) {
+            e.preventDefault()
+            var _tab = $(this).data('tab')
+            $('.card-tab').removeClass('active')
+            $(this).addClass('active')
+            $('.card-content').hide()
+            $('.content' + _tab).show()
+        })
+        $('.card-tab')[0].click()
+    })
+</script>
+</body>
+</html>

@@ -43,6 +43,12 @@ public class ChooseController {
 
     @GetMapping("list")
     public String choosecourse(Model model) {
+
+
+        User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
+        if (!ShiroKit.isEmpty(user)) {
+            return "redirect:/learning/kuangjia";
+        }
         //获取登陆学生的信息
         logger.debug("登陆信息:laile");
         Student student = (Student) SecurityUtils.getSubject().getSession().getAttribute("student");

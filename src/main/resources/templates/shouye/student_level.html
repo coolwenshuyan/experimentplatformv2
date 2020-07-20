@@ -40,6 +40,9 @@
         overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
         text-overflow:ellipsis;/* 当对象内文本溢出时显示省略标记() ；需与overflow:hidden;一起使用。*/
     }
+    #pager {
+        text-align: center;
+    }
 </style>
 <body>
 <div  class="layui-container">
@@ -100,26 +103,19 @@
             </tr>
             </tbody>
         </table>
+        <div id="pager"></div>
 
-        <div id="d2" class="layui-row">
-            <div style="margin:0 auto; width: 80%; text-align: center;">
-                <p>当前 <span th:text="${learningPageInfo.number}+1"></span> 页,
-                    总 <span th:text="${learningPageInfo.totalPages}"></span> 页,
-                    共 <span th:text="${learningPageInfo.totalElements}"></span> 条记录</p>
-                <a th:href="@{/learning/list}">首页</a>
-                <a th:href="@{/learning/list(pageNum=${learningPageInfo.hasPrevious()}?${learningPageInfo.number}-1:0)}">上一页</a>
-                <a th:href="@{/learning/list(pageNum=${learningPageInfo.hasNext()}?${learningPageInfo.number}+1:${learningPageInfo.number})}">下一页</a>
-                <a th:href="@{/learning/list(pageNum=${learningPageInfo.totalPages}-1)}">尾页</a>
-            </div>
-            <!--            	<div class="layui-col-md1  layui-col-md-offset7">-->
-            <!--            		<select name="page" lay-verify="" lay-search>-->
-            <!--                        <option value="010">第1页</option>-->
-            <!--                        <option value="021">第2页</option>-->
-            <!--                        <option value="0571" selected>第3页</option>-->
-            <!--                        ……-->
-            <!--                    </select>     -->
-            <!--            	</div>-->
-        </div>
+<!--        <div id="d2" class="layui-row">-->
+<!--            <div style="margin:0 auto; width: 80%; text-align: center;">-->
+<!--                <p>当前 <span th:text="${learningPageInfo.number}+1"></span> 页,-->
+<!--                    总 <span th:text="${learningPageInfo.totalPages}"></span> 页,-->
+<!--                    共 <span th:text="${learningPageInfo.totalElements}"></span> 条记录</p>-->
+<!--                <a th:href="@{/learning/list}">首页</a>-->
+<!--                <a th:href="@{/learning/list(pageNum=${learningPageInfo.hasPrevious()}?${learningPageInfo.number}-1:0)}">上一页</a>-->
+<!--                <a th:href="@{/learning/list(pageNum=${learningPageInfo.hasNext()}?${learningPageInfo.number}+1:${learningPageInfo.number})}">下一页</a>-->
+<!--                <a th:href="@{/learning/list(pageNum=${learningPageInfo.totalPages}-1)}">尾页</a>-->
+<!--            </div>-->
+<!--        </div>-->
 
     </div>
 </div>
@@ -135,5 +131,25 @@
 
 <script src="../../static/js/layui.all.js" type="text/javascript" charset="utf-8"></script>
 <script src="../../static/js/layui.js" type="text/javascript" charset="utf-8"></script>
+<script src="//cdn.staticfile.org/jquery/1.8.0/jquery.min.js"></script>
+<script src="//cdn.staticfile.org/layui/2.5.6/layui.all.min.js"></script>
+<script th:inline="javascript">
+    $(function () {
+        var layer = layui.layer,
+            laypage = layui.laypage
+        laypage.render({
+            elem: 'pager',
+            layout: ['count', 'prev', 'page', 'next'],
+            curr: parseInt('[[${learningPageInfo.number}]]') + 1,
+            count: parseInt('[[${learningPageInfo.totalElements}]]'),
+            jump: function (obj, first) {
+                if (!first) {
+                    var _str = window.location.origin + window.location.pathname + '?pageNum=' + (obj.curr - 1)
+                    window.location.href = _str
+                }
+            }
+        })
+    })
+</script>
 </body>
 </html>

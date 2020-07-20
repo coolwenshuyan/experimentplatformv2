@@ -10,87 +10,6 @@
 		<link rel="stylesheet" href="../../static/new/css/common.css" />
 		<link rel="stylesheet" href="//cdn.staticfile.org/bxslider/4.2.15/jquery.bxslider.min.css" />
 		<link rel="stylesheet" href="../../static/new/css/index.css" />
-		<!--    <script>-->
-		<!--        var chartsInfo = {-->
-		<!--            1: {-->
-		<!--                data: [-->
-		<!--                    {value: 30, name: '考核模块'},-->
-		<!--                    {value: 50, name: '实验模块'},-->
-		<!--                    {-->
-		<!--                        name: '实验总数\n80个',-->
-		<!--                        value: 0,-->
-		<!--                        label: {-->
-		<!--                            formatter: '{b}',-->
-		<!--                            position: 'center',-->
-		<!--                            fontSize: 18,-->
-		<!--                            fontWeight: 'bold',-->
-		<!--                            align: 'center',-->
-		<!--                            lineHeight: 28,-->
-		<!--                            color: '#215130'-->
-		<!--                        }-->
-		<!--                    }-->
-		<!--                ]-->
-		<!--            },-->
-		<!--            2: {-->
-		<!--                data: [-->
-		<!--                    {value: 536, name: '校内人员'},-->
-		<!--                    {value: 43, name: '校外人员'},-->
-		<!--                    {-->
-		<!--                        name: '用户总数\n' + 579 + '个',-->
-		<!--                        value: 0,-->
-		<!--                        label: {-->
-		<!--                            formatter: '{b}',-->
-		<!--                            position: 'center',-->
-		<!--                            fontSize: 18,-->
-		<!--                            fontWeight: 'bold',-->
-		<!--                            align: 'center',-->
-		<!--                            lineHeight: 28,-->
-		<!--                            color: '#215130'-->
-		<!--                        }-->
-		<!--                    }-->
-		<!--                ]-->
-		<!--            },-->
-		<!--            3: {-->
-		<!--                data: [-->
-		<!--                    {value: 571, name: '通过考核'},-->
-		<!--                    {value: 8, name: '未通过考核'},-->
-		<!--                    {-->
-		<!--                        name: '考核总数\n579个',-->
-		<!--                        value: 0,-->
-		<!--                        label: {-->
-		<!--                            formatter: '{b}',-->
-		<!--                            position: 'center',-->
-		<!--                            fontSize: 18,-->
-		<!--                            fontWeight: 'bold',-->
-		<!--                            align: 'center',-->
-		<!--                            lineHeight: 28,-->
-		<!--                            color: '#215130'-->
-		<!--                        }-->
-		<!--                    }-->
-		<!--                ]-->
-		<!--            },-->
-		<!--            4: {-->
-		<!--                data: [-->
-		<!--                    {value: 174, name: '高'},-->
-		<!--                    {value: 280, name: '中'},-->
-		<!--                    {value: 125, name: '低'},-->
-		<!--                    {-->
-		<!--                        name: '成绩总数\n579份',-->
-		<!--                        value: 0,-->
-		<!--                        label: {-->
-		<!--                            formatter: '{b}',-->
-		<!--                            position: 'center',-->
-		<!--                            fontSize: 18,-->
-		<!--                            fontWeight: 'bold',-->
-		<!--                            align: 'center',-->
-		<!--                            lineHeight: 28,-->
-		<!--                            color: '#215130'-->
-		<!--                        }-->
-		<!--                    }-->
-		<!--                ]-->
-		<!--            }-->
-		<!--        }-->
-		<!--    </script>-->
 		<script>
 			var chartsInfo = {
 				1: {
@@ -197,42 +116,6 @@
 								<span th:text="${#dates.format(news.dic_datetime,'yyyy-MM-dd')}">2020-02-02</span>
 							</a>
 						</li>
-						<!--                <li th:each="news:${newsPageInfo.content}" class="news-item cl">-->
-						<!--                    <a th:href="@{|noticeDetails/${news.id}|}" th:title="${news.news_name}">-->
-						<!--                        <p th:text="${news.news_name}">这里是一条公告的标题</p>-->
-						<!--                        <span th:text="${#dates.format(news.dic_datetime,'yyyy-MM-dd')}">2020-02-02</span>-->
-						<!--                    </a>-->
-						<!--                </li>-->
-						<!--                <li th:each="news:${newsPageInfo.content}" class="news-item cl">-->
-						<!--                    <a th:href="@{|noticeDetails/${news.id}|}" th:title="${news.news_name}">-->
-						<!--                        <p th:text="${news.news_name}">这里是一条公告的标题</p>-->
-						<!--                        <span th:text="${#dates.format(news.dic_datetime,'yyyy-MM-dd')}">2020-02-02</span>-->
-						<!--                    </a>-->
-						<!--                </li>-->
-						<!--                <li th:each="news:${newsPageInfo.content}" class="news-item cl">-->
-						<!--                    <a th:href="@{|noticeDetails/${news.id}|}" th:title="${news.news_name}">-->
-						<!--                        <p th:text="${news.news_name}">这里是一条公告的标题</p>-->
-						<!--                        <span th:text="${#dates.format(news.dic_datetime,'yyyy-MM-dd')}">2020-02-02</span>-->
-						<!--                    </a>-->
-						<!--                </li>-->
-						<!--                <li th:each="news:${newsPageInfo.content}" class="news-item cl">-->
-						<!--                    <a th:href="@{|noticeDetails/${news.id}|}" th:title="${news.news_name}">-->
-						<!--                        <p th:text="${news.news_name}">这里是一条公告的标题</p>-->
-						<!--                        <span th:text="${#dates.format(news.dic_datetime,'yyyy-MM-dd')}">2020-02-02</span>-->
-						<!--                    </a>-->
-						<!--                </li>-->
-						<!--                <li th:each="news:${newsPageInfo.content}" class="news-item cl">-->
-						<!--                    <a th:href="@{|noticeDetails/${news.id}|}" th:title="${news.news_name}">-->
-						<!--                        <p th:text="${news.news_name}">这里是一条公告的标题</p>-->
-						<!--                        <span th:text="${#dates.format(news.dic_datetime,'yyyy-MM-dd')}">2020-02-02</span>-->
-						<!--                    </a>-->
-						<!--                </li>-->
-						<!--                <li th:each="news:${newsPageInfo.content}" class="news-item cl">-->
-						<!--                    <a th:href="@{|noticeDetails/${news.id}|}" th:title="${news.news_name}">-->
-						<!--                        <p th:text="${news.news_name}">这里是一条公告的标题</p>-->
-						<!--                        <span th:text="${#dates.format(news.dic_datetime,'yyyy-MM-dd')}">2020-02-02</span>-->
-						<!--                    </a>-->
-						<!--                </li>-->
 					</ul>
 				</div>
 				<div class="recommend">
@@ -248,30 +131,6 @@
 								</a>
 							</div>
 						</div>
-						<!--                <div class="slide">-->
-						<!--                    <div class="recommend-item">-->
-						<!--                        <a th:href="@{|/expmodel/homeExpDispatcher/${mid0}|}">-->
-						<!--                            <img src="../../static//new/images/1.jpg"/>-->
-						<!--                            <p>教学成果展示</p>-->
-						<!--                        </a>-->
-						<!--                    </div>-->
-						<!--                </div>-->
-						<!--                <div class="slide">-->
-						<!--                    <div class="recommend-item">-->
-						<!--                        <a th:href="@{|/expmodel/homeExpDispatcher/${mid0}|}">-->
-						<!--                            <img src="../../static//new/images/1.jpg"/>-->
-						<!--                            <p>教学成果展示</p>-->
-						<!--                        </a>-->
-						<!--                    </div>-->
-						<!--                </div>-->
-						<!--                <div class="slide">-->
-						<!--                    <div class="recommend-item">-->
-						<!--                        <a th:href="@{|/expmodel/homeExpDispatcher/${mid0}|}">-->
-						<!--                            <img src="../../static//new/images/1.jpg"/>-->
-						<!--                            <p>教学成果展示</p>-->
-						<!--                        </a>-->
-						<!--                    </div>-->
-						<!--                </div>-->
 					</div>
 				</div>
 			</div>
@@ -288,30 +147,6 @@
 							</a>
 						</div>
 					</div>
-					<!--            <div class="slide">-->
-					<!--                <div class="lession-item">-->
-					<!--                    <img src="../../static/new/images/c1.jpg"/>-->
-					<!--                    <p>某某课程</p>-->
-					<!--                </div>-->
-					<!--            </div>-->
-					<!--            <div class="slide">-->
-					<!--                <div class="lession-item">-->
-					<!--                    <img src="../../static/new/images/c2.jpg"/>-->
-					<!--                    <p>某某课程</p>-->
-					<!--                </div>-->
-					<!--            </div>-->
-					<!--            <div class="slide">-->
-					<!--                <div class="lession-item">-->
-					<!--                    <img src="../../static/new/images/c3.jpg"/>-->
-					<!--                    <p>某某课程</p>-->
-					<!--                </div>-->
-					<!--            </div>-->
-					<!--            <div class="slide">-->
-					<!--                <div class="lession-item">-->
-					<!--                    <img src="../../static/new/images/c4.jpg"/>-->
-					<!--                    <p>某某课程</p>-->
-					<!--                </div>-->
-					<!--            </div>-->
 				</div>
 			</div>
 		</div>

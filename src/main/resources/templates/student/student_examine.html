@@ -59,7 +59,7 @@
 										<td th:text="${student.stuMobile}"></td>
 										<td class="td-manage">
 											<button class="layui-btn" lay-submit lay-filter="formDemo" th:name="${student.id}" id="pass">通过</button>
-											<a class="layui-btn layui-bg-red" th:href="@{|/studentManage/deleteReviewd/${student.id}|}">删除</a>
+											<a class="layui-btn layui-btn-danger delBtn" th:data-url="@{|/studentManage/deleteReviewd/${student.id}|}">删除</a>
 										</td>
 									</tr>
 								</tbody>
@@ -132,6 +132,13 @@
 				var $ = layui.jquery
 				let index
 				let s
+				$('.delBtn').click(function (e) {
+					e.preventDefault()
+					var _url = $(this).data('url')
+					layer.confirm('确定要删除该学生吗？', function () {
+						window.location.href = _url
+					})
+				})
 				form.on('submit(formDemo)', function (obj) {
 					s = obj.elem.name
 					studentPass(s)

@@ -76,7 +76,10 @@
 						type: 2,
 						title: '添加课程',
 						area: ['500px', '600px'],
-						content: '/courseinfo/add'
+						content: '/courseinfo/add',
+						end: function () {
+							window.location.reload()
+						}
 					})
 				})
 				$('.editBtn').click(function (e) {
@@ -86,7 +89,10 @@
 						type: 2,
 						title: '修改课程',
 						area: ['500px', '600px'],
-						content: '/courseinfo/' + _id + '/update'
+						content: '/courseinfo/' + _id + '/update',
+						end: function () {
+							window.location.reload()
+						}
 					})
 				})
 				$('.delBtn').click(function (e) {

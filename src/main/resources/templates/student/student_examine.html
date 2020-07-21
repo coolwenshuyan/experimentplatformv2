@@ -175,7 +175,7 @@
 					let parm = $('#dataform').serialize()
 					$.get('/studentManage/passReviewd/' + currentId, function () {
 						$.post('/studentManage/giveDocker/' + currentId, parm, function () {
-							layer.close(index)
+							layer.close(dialogIndex)
 							window.location.reload()
 						})
 					})

@@ -156,7 +156,7 @@
 					layer.open({
 						type: 2,
 						title: '编辑',
-						area: ['500px', '400px'],
+						area: ['500px', '500px'],
 						content: '/studentManage/editStudent/' + _id
 					})
 				})
@@ -173,26 +173,24 @@
 							$('#stuName').val(v.stuName)
 							$('#beginTime').val(v.dc_start_datetime)
 							$('#endTime').val(v.dc_end_datetime)
-							dialogIndex = layer.open({
-								type: 1,
-								title: 'Docker修改',
-								area: ['500px', '450px'],
-								content: $('#chooseDocker'),
-								success: function () {
-									$('#url')[0].options.length = 0
-									$.get('/studentManage/dockerUrl', function (data) {
-										$('#url').append('<option value="metal" selected>不更改</option>')
-										$('#url').append('<option value="duck">&nbsp;</option>')
-										$.each(JSON.parse(data), function (k, v) {
-											$.each(v, function (i, t) {
-												var options = "<option value='" + t.dc_url + "'>" + t.dc_url + '</option>'
-												$('#url').append(options)
-												form.render('select')
-											})
+						})
+						dialogIndex = layer.open({
+							type: 1,
+							title: 'Docker修改',
+							area: ['500px', '450px'],
+							content: $('#chooseDocker'),
+							success: function () {
+								$('#url')[0].options.length = 0
+								$.get('/studentManage/dockerUrl', function (data) {
+									$('#url').append('<option value="metal" selected>不更改</option>')
+									$.each(JSON.parse(data), function (k, v) {
+										$.each(v, function (i, t) {
+											$('#url').append("<option value='" + t.dc_url + "'>" + t.dc_url + '</option>')
 										})
+										form.render('select')
 									})
-								}
-							})
+								})
+							}
 						})
 					})
 				})
@@ -207,8 +205,8 @@
 				})
 				form.on('submit(doSubmit)', function () {
 					let parm = $('#dataform').serialize()
-					$.post('/studentManage/updateStuDocker/' + s, parm, function () {
-						layer.close(index)
+					$.post('/studentManage/updateStuDocker/' + currentId, parm, function () {
+						layer.close(dialogIndex)
 					})
 				})
 				$('.closeBtn').click(function (e) {

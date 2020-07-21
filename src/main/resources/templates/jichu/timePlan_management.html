@@ -134,8 +134,11 @@
 					layer.open({
 						type: 2,
 						title: '添加课程',
-						area: ['500px', '480px'],
-						content: '/arrangeclass/add'
+						area: ['500px', '550px'],
+						content: '/arrangeclass/add',
+						end: function () {
+							window.location.reload()
+						}
 					})
 				})
 				$('.editBtn').click(function (e) {
@@ -144,8 +147,11 @@
 					layer.open({
 						type: 2,
 						title: '修改课程',
-						area: ['500px', '480px'],
-						content: '/arrangeclass/' + _id + '/update'
+						area: ['500px', '450px'],
+						content: '/arrangeclass/' + _id + '/update',
+						end: function () {
+							window.location.reload()
+						}
 					})
 				})
 				$('.delBtn').click(function (e) {

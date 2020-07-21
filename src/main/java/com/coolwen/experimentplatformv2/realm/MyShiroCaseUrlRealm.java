@@ -1,5 +1,6 @@
 package com.coolwen.experimentplatformv2.realm;
 
+import com.alibaba.fastjson.JSON;
 import com.coolwen.experimentplatformv2.kit.ShiroKit;
 import com.coolwen.experimentplatformv2.model.*;
 import com.coolwen.experimentplatformv2.service.AdminService;
@@ -132,33 +133,39 @@ public class MyShiroCaseUrlRealm extends CasRealm {
     //清除认证
     @Override
     public void clearCachedAuthenticationInfo(PrincipalCollection principals) {
-        logger.debug("授权缓存清除:");
+        logger.debug("认证缓存清除:");
 ////        User u = (User) principals.getPrimaryPrincipal();
-//        String xuehao = (String) SecurityUtils.getSubject().getSession().getAttribute("account");
-//        SimplePrincipalCollection sp = new SimplePrincipalCollection(xuehao, getName());
+        String xuehao = (String) SecurityUtils.getSubject().getSession().getAttribute("account");
+        SimplePrincipalCollection sp = new SimplePrincipalCollection(xuehao, getName());
+        logger.debug("认证缓存清除信息:" + JSON.toJSONString(sp));
 //        Cache c = this.getAuthenticationCache();
+//        logger.debug("认证缓存清除信息:" + JSON.toJSONString(c));
 //        Set<Object> keys = c.keys();
 //        for (Object o : keys) {
-//            logger.debug("授权缓存:", o);
-//            logger.debug("授权缓存:", c.get(o));
+//            logger.debug("认证缓存:", o);
+//            logger.debug("认证缓存:", c.get(o));
 //        }
-//        super.clearCachedAuthenticationInfo(sp);
-        super.clearCachedAuthenticationInfo(principals);
+        super.clearCachedAuthenticationInfo(sp);
+//        super.clearCachedAuthenticationInfo(principals);
     }
 
 
     //清除权限
     @Override
     public void clearCachedAuthorizationInfo(PrincipalCollection principals) {
-//
+////
 //        Cache c = this.getAuthorizationCache();
+//        logger.debug("清除权限信息:" + JSON.toJSONString(c));
 //        Set<Object> keys = c.keys();
 //        for (Object o : keys) {
-//            logger.debug("认证缓存: {0}.", o);
-//            logger.debug("认证缓存: {0}.", c.get(o));
+//            logger.debug("权限缓存: {0}.", o);
+//            logger.debug("权限缓存: {0}.", c.get(o));
 //        }
+        String xuehao = (String) SecurityUtils.getSubject().getSession().getAttribute("account");
 //        User user = ((User) principals.getPrimaryPrincipal());
-//        SimplePrincipalCollection spc = new SimplePrincipalCollection(user.getUsername(), getName());
-        super.clearCachedAuthorizationInfo(principals);
+        SimplePrincipalCollection spc = new SimplePrincipalCollection(xuehao, getName());
+        logger.debug("清除权限信息:" + JSON.toJSONString(spc));
+//        super.clearCachedAuthorizationInfo(principals);
+        super.clearCachedAuthorizationInfo(spc);
     }
 }

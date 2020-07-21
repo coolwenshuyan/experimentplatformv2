@@ -1,5 +1,6 @@
 package com.coolwen.experimentplatformv2.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.coolwen.experimentplatformv2.kit.ShiroKit;
 import com.coolwen.experimentplatformv2.model.Student;
 import com.coolwen.experimentplatformv2.model.User;
@@ -44,13 +45,14 @@ public class HelloController {
      *
      * @return
      */
-    @RequestMapping(value = {"/","/index"})
+    @RequestMapping(value = {"/", "/index"})
 //    @RequiresRoles("Admin")
     public String hello(HttpSession session, SessionStatus sessionStatus) throws UnsupportedEncodingException {
         logger.debug("通过信息门户进入系统的");
         //拿到登陆账号，学生是学号，老师是身份证号码
         String account = (String) SecurityUtils.getSubject().getSession().getAttribute("account");
         Map<Object, Object> map = CasUtils.getUserInfo(SecurityUtils.getSubject().getSession());
+        logger.debug(JSON.toJSONString(map));
         //获取登陆用户角色
         String comsys_role = (String) map.get("comsys_role");
         logger.debug("角色信息:" + comsys_role);

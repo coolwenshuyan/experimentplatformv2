@@ -17,14 +17,17 @@ import java.util.List;
 public interface ArrangeClassRepository extends BaseRepository<ArrangeClass, Integer>, JpaSpecificationExecutor<ArrangeClass> {
 
 
-    @Query(value = "select  new com.coolwen.experimentplatformv2.model.DTO.ArrangeClassDto(a.id,cin.courseName,u.nickname,c.className,a.arrangeStart,a.arrangeEnd,a.skAddress) from ArrangeClass a,CourseInfo cin,ClassModel c,User u where a.teacherId = u.id and a.classId=c.classId and a.courseId=cin.id")
+    @Query(value = "select new com.coolwen.experimentplatformv2.model.DTO.ArrangeClassDto" +
+            "(a.id,cin.courseName,u.nickname,c.className,a.arrangeStart,a.arrangeEnd,a.skAddress,c.classGrade) " +
+            "from ArrangeClass a,CourseInfo cin,ClassModel c,User u " +
+            "where a.teacherId = u.id and a.classId=c.classId and a.courseId=cin.id")
     Page<ArrangeClassDto> findByAll(Pageable pageable);
 
     @Query(value = "select  new com.coolwen.experimentplatformv2.model.DTO.ArrangeClassDto" +
-            "(a.id,cin.courseName,u.nickname,c.className,a.arrangeStart,a.arrangeEnd) " +
+            "(a.id,cin.courseName,u.nickname,c.className,a.arrangeStart,a.arrangeEnd,a.skAddress,c.classGrade) " +
             "from ArrangeClass a,CourseInfo cin,ClassModel c,User u " +
-            "where a.teacherId = u.id and a.classId=c.classId and a.courseId=cin.id and cin.courseName like %?1% and u.nickname like %?2% and c.className like %?3%")
-    Page<ArrangeClassDto> findBycidAndtidAndclaidLike(String courseName, String teacherName, String className, Pageable pager);
+            "where a.teacherId = u.id and a.classId=c.classId and a.courseId=cin.id and cin.courseName like %?1% and u.nickname like %?2% and c.className like %?3% and c.classGrade like %?4%")
+    Page<ArrangeClassDto> findBycidAndtidAndclaidLike(String courseName, String teacherName, String className,String classGrade, Pageable pager);
 
     ArrangeClass findByCourseIdAndClassId(int courseId, int classId);
 

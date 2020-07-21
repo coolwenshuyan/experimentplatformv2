@@ -63,6 +63,15 @@
 						</div>
 					</div>
 					<div class="layui-inline">
+						<label class="layui-form-label">年级</label>
+						<div class="layui-input-inline">
+							<select name="classGrade">
+								<option value="">请选择年级</option>
+								<option th:each="class:${classList}" th:selected="${class.classGrade}==${classGrade}" th:value="${class.classGrade}" th:text="${class.classGrade}"></option>
+							</select>
+						</div>
+					</div>
+					<div class="layui-inline">
 						<button type="submit" class="layui-btn layui-btn-sm" lay-submit>查询</button>
 					</div>
 				</div>
@@ -73,6 +82,7 @@
 						<th>ID</th>
 						<th>课程名</th>
 						<th>教师</th>
+						<th>年级</th>
 						<th>班级</th>
 						<th>上课教室名</th>
 						<th>开始时间</th>
@@ -85,6 +95,7 @@
 						<td th:text="${arrangeClass.getId()}"></td>
 						<td th:text="${arrangeClass.getCourseName()}"></td>
 						<td th:text="${arrangeClass.getTeacherName()}"></td>
+						<td th:text="${arrangeClass.getClassGrade()}"></td>
 						<td th:text="${arrangeClass.getClassName()}"></td>
 						<td th:text="${arrangeClass.getSkAddress()}"></td>
 						<td th:text="${arrangeClass.getArrangeStart()}"></td>
@@ -124,6 +135,10 @@
 							var _className = getUrlParam('className')
 							if (_className) {
 								_str += '&className=' + _className
+							}
+							var _classGrade = getUrlParam('classGrade')
+							if (_classGrade) {
+								_str += '&classGrade=' + _classGrade
 							}
 							window.location.href = _str
 						}

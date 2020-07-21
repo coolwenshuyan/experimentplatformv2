@@ -73,9 +73,9 @@ public class ArrangeClassServiceImpl implements ArrangeClassService {
     }
 
     @Override
-    public Page<ArrangeClassDto> findBycidAndtidAndclaidLike(Integer pageNum, String courseName, String teacherName, String className) {
+    public Page<ArrangeClassDto> findBycidAndtidAndclaidLike(Integer pageNum, String courseName, String teacherName, String className, String classGrade) {
         Pageable pager = PageRequest.of(pageNum, size);
-        Page<ArrangeClassDto> arrangeClassDtos = arrangeClassRepository.findBycidAndtidAndclaidLike(courseName, teacherName, className, pager);
+        Page<ArrangeClassDto> arrangeClassDtos = arrangeClassRepository.findBycidAndtidAndclaidLike(courseName, teacherName, className, classGrade, pager);
         return arrangeClassDtos;
     }
 

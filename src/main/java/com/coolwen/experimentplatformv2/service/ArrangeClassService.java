@@ -20,7 +20,7 @@ public interface ArrangeClassService {
 
     Page<ArrangeClassDto> findByAll(Pageable pageable);
 
-    Page<ArrangeClassDto> findBycidAndtidAndclaidLike(Integer pageNum, String courseName, String teacherName, String className);
+    Page<ArrangeClassDto> findBycidAndtidAndclaidLike(Integer pageNum, String courseName, String teacherName, String className, String classGrade);
 
     List<ArrangeClassDto> findByTeacherIdAndCourseId(int tid, int cid);
 

@@ -91,22 +91,22 @@ public class NewsInfoController {
         String[] sid = ids.split(",");
         logger.debug("轮播数量:" + sid.length);
 
-        for (int i = 0; i < sid.length; i++) {
-//            String imgurl = setInfoService.findexpimg(Integer.parseInt(sid[i]));
-//            String imgurl = expModelRepository.findexpimg(Integer.parseInt(sid[i]));
-            try {
-//                ExpModel expModel = expModelRepository.findById(Integer.parseInt(sid[i])).get();
-//                model.addAttribute("img" + String.valueOf(i), expModel.getImageurl());
-//                model.addAttribute("mid" + String.valueOf(i), expModel.getM_id());
-                Effect effect = effectService.findById(Integer.parseInt(sid[i]));
-                model.addAttribute("img" + String.valueOf(i), effect.getEffect_imgurl());
-                model.addAttribute("mid" + String.valueOf(i), effect.getId());
-
-            } catch (Exception e) {
-
-            }
-
-        }
+//        for (int i = 0; i < sid.length; i++) {
+////            String imgurl = setInfoService.findexpimg(Integer.parseInt(sid[i]));
+////            String imgurl = expModelRepository.findexpimg(Integer.parseInt(sid[i]));
+//            try {
+////                ExpModel expModel = expModelRepository.findById(Integer.parseInt(sid[i])).get();
+////                model.addAttribute("img" + String.valueOf(i), expModel.getImageurl());
+////                model.addAttribute("mid" + String.valueOf(i), expModel.getM_id());
+//                Effect effect = effectService.findById(Integer.parseInt(sid[i]));
+//                model.addAttribute("img" + String.valueOf(i), effect.getEffect_imgurl());
+//                model.addAttribute("mid" + String.valueOf(i), effect.getId());
+//
+//            } catch (Exception e) {
+//
+//            }
+//
+//        }
 
 //        List<ExpModel> expModels = new ArrayList<>();
 //        for (int i = 0; i < sid.length; i++) {
@@ -120,11 +120,15 @@ public class NewsInfoController {
         List<Effect> effects = new ArrayList<>();
         for (int i = 0; i < sid.length; i++) {
             try {
-                effects.add(effectService.findById(Integer.parseInt(sid[i])));
+                Effect effect = effectService.findById(Integer.parseInt(sid[i]));
+                if (effect != null){
+                    effects.add(effect);
+                }
             } catch (Exception e) {
 
             }
         }
+        logger.debug(">>"+effects);
         model.addAttribute("effects", effects);
 
         //课程展示

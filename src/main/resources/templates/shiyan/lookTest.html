@@ -1,205 +1,86 @@
 <!DOCTYPE html>
-<html class="x-admin-sm" lang="en" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <meta charset="UTF-8">
-        <title>模块测试列表</title>
-        <meta name="renderer" content="webkit">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
-        <link rel="stylesheet" type="text/css" href="../../static/css/layui.css"/>
-        <link rel="stylesheet" type="text/css" href="../../static/css/xadmin.css"/>
-        <!--<script src="./lib/layui/layui.js" charset="utf-8"></script>-->
-        <script src="../../static/js/layui.js" type="text/javascript" charset="utf-8"></script>
-    </head>
-    <style>
-        .text-overflow {
-            display:block;/*内联对象需加*/
-            width:31em;/*指定宽度*/
-            word-break:keep-all;/* 不换行 */
-            white-space:nowrap;/* 强制在同一行内显示所有文本，直到文本结束或者遭遇 br 对象。不换行 */
-            overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
-            text-overflow:ellipsis;/* IE 专有属性，当对象内文本溢出时显示省略标记() ；需与overflow:hidden;一起使用。*/
-        }
-
-        table{
-            width:30em;
-            table-layout:fixed;/* 只有定义了表格的布局算法为fixed，下面td的定义才能起作用。 */
-        }
-        .layui-table th{
-            text-align: center;
-            font-weight: 900;
-        }
-        td{
-            text-align: center;
-            width:100%;
-            word-break:keep-all;/* 不换行 */
-            white-space:nowrap;/* 不换行 */
-            overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
-            text-overflow:ellipsis;/* 当对象内文本溢出时显示省略标记() ；需与overflow:hidden;一起使用。*/
-        }
-        .return{
-            float: right;
-        }
-    </style>
-    <body>
-
-        <div class="layui-fluid">
-            <div class="layui-row layui-col-space15">
-                <div class="layui-col-md12">
-                    <div class="layui-card">
-
-                        <div class="layui-card-body ">
-                            <form class="layui-form layui-col-space5" method="post">
-                                <!--<a href="addTest.html" th:href="@{|/shiyan/addQuest|}">-->
-                                    <a type="layui-btn" th:href="@{|/shiyan/addQuest|}" class="layui-btn layui-bg-green">新建</a>
-                                <!--</a>-->
-
-                                <!--<div class="layui-inline layui-show-xs-block">-->
-                                    <!--<input type="text" name="search" th:value="${search}" placeholder="请输入实验模块号" autocomplete="off" class="layui-input">-->
-                                <!--</div>-->
-                                <!--<div class="layui-inline layui-show-xs-block">-->
-                                    <!--<button class="layui-btn"  lay-submit="" lay-filter="sreach">-->
-                                        <!--<a th:href="@{|/shiyan/list|}" class="layui-btn layui-bg-green">搜索</a></button>-->
-                                <!--</div>-->
-
-                                <div class="layui-inline layui-show-xs-block">
-                                    <p th:text="${session.msg2020612}"></p>
-                                </div>
-
-                                <!--<div class="layui-inline layui-show-xs-block">
-                                    <a class="layui-btn"  lay-submit="" title="增加" onclick="xadmin.open('增加','班级新增.html')"><i class="layui-icon"></i>增加</a>
-                                </div>-->
-                                <a type="layui-btn" th:href="@{|/expmodel/moduleList|}" class="layui-btn layui-bg-green return">返回上一级</a>
-                            </form>
-                        </div>
-                       
-                        <div class="layui-card-body ">
-                            <table class="layui-table layui-form">
-                                <thead>
-                                  <tr>
-                                    
-                                    <th>问题序号</th>
-                                    <th>题目</th>
-                                    <th>分值(链接)</th>
-                                    <th>实验模块号</th>
-                                    <th>问题类型</th>
-                                    <th>操作</th>
-                                </thead>
-                                <tbody>
-                                  <tr th:each="Quest:${questsPage.content}">
-                                    
-                                    <td th:text="${Quest.questOrder}">1</td>
-                                    <td th:text="${Quest.questDescribe}">java</td>
-                                    <td th:text="${Quest.questScore}">100</td>
-                                    <td th:text="${Quest.mId}">1</td>
-                                    <td th:text="${Quest.questType}">单选</td>
-                                    <td class="td-manage">
-                                      <a title="编辑" th:href="@{|/shiyan/updateQuest/${Quest.questId}|}">
-                                        <!--<i class="layui-icon">&#xe642;</i>-->
-                                        <button type="layui-btn" class="layui-btn layui-bg-green" >修改</button>
-                                      </a>
-                                      <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;" th:href="@{|/shiyan/deleteQuest/${Quest.questId}|}">
-                                        <!--<i class="layui-icon">&#xe640;</i>-->
-                                        <button type="layui-btn" class="layui-btn layui-bg-red">删除</button>
-                                      </a>
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                        </div>
-                        <div class="layui-card-body ">
-                            <div class="page">
-                                <div>
-                                  <!--<a class="prev" th:if="${questsPage.hasPrevious()}" th:href="@{/list(page=${userPageInfo.hasPrevious()}?${userPageInfo.number}-1:0)|}">&lt;&lt;</a>-->
-                                  <!--<a class="num" th:href="@{|/shiyan/list|}">首页</a>-->
-                                  <!--<a class="num" th:href="@{|/shiyan/list(page=${questsPage.number}+2)|}">2</a>-->
-                                  <!--<a class="num" th:href="@{|/shiyan/list(page=${questsPage.number}+3)|}">3</a>-->
-                                  <!--<a class="num" th:href="@{|/shiyan/list(page=${questsPage.totalPages})|}">489</a>-->
-                                  <!--<a class="next" th:href="@{|/shiyan/list(page=${questsPage.hasNext()}?${questsPage.number}+1:${questsPage.number})|}">&gt;&gt;</a>-->
-
-                                    <p>当前 <span th:text="${questsPage.number}+1"></span> 页,
-                                        总 <span th:text="${questsPage.totalPages}"></span> 页,
-                                        共 <span th:text="${questsPage.totalElements}"></span> 条记录</p>
-                                    <a th:href="@{'/shiyan/list/'+${mId}}">首页</a>
-                                    <a th:href="@{'/shiyan/list/'+${mId}(pageNum=${questsPage.hasPrevious()}?${questsPage.number}-1:0)}">上一页</a>
-                                    <!--<a th:href="@{|/shiyan/list/${mId}(pageNum=${questsPage.hasNext()}?${questsPage.number}+1:${questsPage.number})|}">下一页</a>-->
-                                    <a th:href="@{'/shiyan/list/'+${mId}(pageNum=${questsPage.hasNext()}?${questsPage.number}+1:${questsPage.number})}">下一页</a>
-                                    <a th:href="@{'/shiyan/list/'+${mId}(pageNum=${questsPage.totalPages}-1)}">尾页</a>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> 
-    </body>
-    <script>
-      layui.use(['laydate','form'], function(){
-        var laydate = layui.laydate;
-        var form = layui.form;
-        
-        //执行一个laydate实例
-        laydate.render({
-          elem: '#start' //指定元素
-        });
-
-        //执行一个laydate实例
-        laydate.render({
-          elem: '#end' //指定元素
-        });
-      });
-
-       /*用户-停用*/
-//    function member_stop(obj,id){
-//        layer.confirm('确认要停用吗？',function(index){
-//
-//            if($(obj).attr('title')=='启用'){
-//
-//              //发异步把用户状态进行更改
-//              $(obj).attr('title','停用')
-//              $(obj).find('i').html('&#xe62f;');
-//
-//              $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
-//              layer.msg('已停用!',{icon: 5,time:1000});
-//
-//            }else{
-//              $(obj).attr('title','启用')
-//              $(obj).find('i').html('&#xe601;');
-//
-//              $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
-//              layer.msg('已启用!',{icon: 5,time:1000});
-//            }
-//            
-//        });
-//    }
-
-      /*用户-删除*/
-      function member_del(obj,id){
-          layer.confirm('确认要删除吗？',function(index){
-              //发异步删除数据
-              $(obj).parents("tr").remove();
-              layer.msg('已删除!',{icon:1,time:1000});
-          });
-      }
-
-
-
-      function delAll (argument) {
-
-        var data = tableCheck.getData();
-  
-        layer.confirm('确认要删除吗？'+data,function(index){
-            //捉到所有被选中的，发异步进行删除
-            layer.msg('删除成功', {icon: 1});
-            $(".layui-form-checked").not('.header').parents('tr').remove();
-        });
-      }
-    </script>
-    <script>var _hmt = _hmt || []; (function() {
-        var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-      })();</script>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<title>标题</title>
+		<link rel="stylesheet" href="../../static/new/css/reset.css" />
+		<link rel="stylesheet" href="//cdn.staticfile.org/layui/2.5.6/css/layui.min.css" />
+		<style>
+			body {
+				padding: 20px;
+				background: #f7f7f7;
+			}
+			.layui-fluid {
+				padding: 20px;
+				background: #fff;
+			}
+			#pager {
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="layui-fluid">
+			<div>
+				<a class="layui-btn layui-btn-sm" href="/shiyan/addQuest">新建</a>
+				<a class="layui-btn layui-btn-sm layui-btn-primary" href="/expmodel/moduleList">返回</a>
+			</div>
+			<table class="layui-table">
+				<thead>
+					<tr>
+						<th>问题序号</th>
+						<th>题目</th>
+						<th>分值(链接)</th>
+						<th>实验模块号</th>
+						<th>问题类型</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="Quest:${questsPage.content}">
+						<td th:text="${Quest.questOrder}"></td>
+						<td th:text="${Quest.questDescribe}"></td>
+						<td th:text="${Quest.questScore}"></td>
+						<td th:text="${Quest.mId}"></td>
+						<td th:text="${Quest.questType}"></td>
+						<td>
+							<a class="layui-btn layui-btn-sm" th:href="@{|/shiyan/updateQuest/${Quest.questId}|}">修改</a>
+							<a class="layui-btn layui-btn-sm delBtn" th:data-id="${Quest.questId}">删除</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<div id="pager"></div>
+			<input type="hidden" id="totalCount" th:value="${questsPage.totalElements}" />
+			<input type="hidden" id="currentPage" th:value="${questsPage.number}" />
+		</div>
+		<script src="//cdn.staticfile.org/jquery/1.8.0/jquery.min.js"></script>
+		<script src="//cdn.staticfile.org/layui/2.5.6/layui.all.min.js"></script>
+		<script>
+			$(function () {
+				var layer = layui.layer,
+					laypage = layui.laypage
+				laypage.render({
+					elem: 'pager',
+					layout: ['count', 'prev', 'page', 'next'],
+					curr: parseInt($('#currentPage').val()) + 1,
+					count: parseInt($('#totalCount').val()),
+					jump: function (obj, first) {
+						if (!first) {
+							window.location.href = window.location.origin + window.location.pathname + '?pageNum=' + (obj.curr - 1)
+						}
+					}
+				})
+				$('.delBtn').click(function (e) {
+					e.preventDefault()
+					var _id = $(this).data('id')
+					layer.confirm('确认要删除吗？', function () {
+						window.location.href = '/shiyan/deleteQuest/' + _id
+					})
+				})
+			})
+		</script>
+	</body>
 </html>

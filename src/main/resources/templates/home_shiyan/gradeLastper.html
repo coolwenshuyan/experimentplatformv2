@@ -29,42 +29,44 @@
 					<label class="layui-form-label">所属课程</label>
 					<div class="layui-input-inline">
 						<select name="interest" lay-filter="id">
-							<option value="/grade/studentlast/-1">全部</option>
-							<option th:each="totalScorePass:${totalScorePast}" th:selected="${totalScorePass.courseId == courseinfoId}" th:value="|/grade/studentlast/${totalScorePass.courseId}|" th:text="${totalScorePass.courseName}"></option>
+							<option value="/grade/studentlastper/-1">请选择</option>
+							<option th:each="totalScorePass:${totalScorePast}" th:selected="${totalScorePass.courseId == courseinfoId}" th:value="|/grade/studentlastper/${totalScorePass.courseId}|" th:text="${totalScorePass.courseName}"></option>
 						</select>
 					</div>
 				</div>
 			</form>
 			<div class="layui-input-inline">
-				<a th:href="${selected1}" class="layui-btn layui-btn-primary">考核实验模块成绩</a>
-				<a th:href="${selected2}" class="layui-btn">总评成绩</a>
+				<a th:href="${selected1}" class="layui-btn">考核实验模块成绩</a>
+				<a th:href="${selected2}" class="layui-btn layui-btn-primary">总评成绩</a>
 			</div>
 			<div>
 				<table class="layui-table">
 					<thead>
 						<tr>
 							<th>序号</th>
-							<th>课程名</th>
-							<th>考核实验模块成绩</th>
-							<th>理论测试成绩</th>
-							<th>总评成绩</th>
+							<th>考核实验名称</th>
+							<th>实验模块测试成绩</th>
+							<th>实验模块测试占比</th>
+							<th>实验模块报告成绩</th>
+							<th>实验模块报告占比</th>
+							<th>实验模块总成绩</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr th:each="totalScore:${totalScoreCurrents}">
-							<td th:text="${totalScore.id}"></td>
-							<td th:text="${totalScore.courseName}"></td>
-							<td th:text="${totalScore.mTotalScore}"></td>
-							<td th:text="${totalScore.testScore}"></td>
-							<td th:text="${totalScore.totalScore}"></td>
+						<tr th:each="moduleGrade:${ModuleGrades}">
+							<td th:text="${moduleGrade.m_id}"></td>
+							<td th:text="${moduleGrade.m_name}"></td>
+							<td th:text="${moduleGrade.m_test_score}"></td>
+							<td th:text="${moduleGrade.m_test_baifenbi}"></td>
+							<td th:text="${moduleGrade.m_report_score}"></td>
+							<td th:text="${moduleGrade.m_report_baifenbi}"></td>
+							<td th:text="${moduleGrade.m_score}"></td>
 						</tr>
 					</tbody>
 				</table>
+				<p class="ps">注：考核实验模块成绩：考核实验模块测试成绩*比例+考核实验模块报告成绩*比例=考核实验模块成绩。</p>
 			</div>
 
-			<p class="ps">注：总评成绩 = (考核实验模块1成绩 * 权重 + 考核实验模块2成绩 * 权重...) * 比例 + 理论测试成绩 * 比例。</p>
-			<div id="pager"></div>
-<!--		</div>-->
 		<script src="//cdn.staticfile.org/jquery/3.5.1/jquery.min.js"></script>
 		<script src="//cdn.staticfile.org/layui/2.5.6/layui.all.min.js"></script>
 		<script>
@@ -80,20 +82,8 @@
 				$('.card-tab')[0].click()
 			})
 			$(function () {
-				console.log(">:"+'[[${totalScoreCurrents.number}]]')
-				console.log(">:"+'[[${totalScoreCurrents.totalElements}]]')
 				var form = layui.form,
 					laypage = layui.laypage
-				laypage.render({
-					elem: 'pager',
-					curr: parseInt('[[${totalScoreCurrents.number}]]') + 1,
-					count: parseInt('[[${totalScoreCurrents.totalElements}]]') ,
-					jump: function (obj, first) {
-						if (!first) {
-							window.location.href = window.location.origin + window.location.pathname + '?pageNum=' + (obj.curr - 1)
-						}
-					}
-				})
 				form.on('select(id)', function (data) {
 					if (data.value) {
 						window.location.href = data.value

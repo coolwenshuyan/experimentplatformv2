@@ -3,6 +3,7 @@ package com.coolwen.experimentplatformv2.service;
 import com.coolwen.experimentplatformv2.dao.ExpModelRepository;
 import com.coolwen.experimentplatformv2.dao.ModuleTestAnswerStuRepository;
 import com.coolwen.experimentplatformv2.dao.ModuleTestQuestRepository;
+import com.coolwen.experimentplatformv2.model.CourseInfo;
 import com.coolwen.experimentplatformv2.model.DTO.KaoheModuleProgressDTO;
 import com.coolwen.experimentplatformv2.model.ExpModel;
 import com.coolwen.experimentplatformv2.model.ModuleTestAnswerStu;
@@ -122,5 +123,10 @@ public class ExpModelServiceImpl implements ExpModelService {
     public Page<ExpModel> findOneCourseModelList2(int courseId, int pageNum, int size) {
         Pageable pageable = PageRequest.of(pageNum,size);
         return expModelRepository.findOneCourseModelList(courseId,pageable);
+    }
+
+    @Override
+    public CourseInfo findCourseNameByMid(int mid) {
+        return expModelRepository.findCourseNameByMid(mid);
     }
 }

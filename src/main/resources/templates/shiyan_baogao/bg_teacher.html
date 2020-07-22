@@ -125,6 +125,11 @@
             margin-top: 2%;
 
         }
+        .title {
+            line-height: 3;
+            font-size: 30px;
+            text-align: center;
+        }
 
 
     </style>
@@ -138,9 +143,10 @@
         </div>
     </div>
 
-    <div class="tit">
-        <input type="text" id="baogao" name="crClassName" th:value="${collegeReport.getCrClassName()}" placeholder="请输入课程名称">
-        实验报告</div>
+<!--    <div class="tit">-->
+<!--        <input type="text" id="baogao" name="crClassName" th:value="${collegeReport.getCrClassName()}" placeholder="请输入课程名称">-->
+<!--        实验报告</div>-->
+    <div class="title">[[${collegeReport.getCrClassName()}]]实验报告</div>
 
     <div class="layui-row ming">
         <div class="layui-col-xs4 layui-col-xs-offset1">实验序号：7</div>

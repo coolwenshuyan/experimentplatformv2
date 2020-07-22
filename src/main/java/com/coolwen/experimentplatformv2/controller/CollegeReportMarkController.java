@@ -66,7 +66,6 @@ public class CollegeReportMarkController {
         CollegeReport collegeReport1 = collegeReportService.findStuidAndMid(stuid, mid);
         collegeReport1.setCrTcComment(collegeReport.getCrTcComment());
         logger.debug(collegeReport.getCrTcComment());
-        collegeReport1.setCrClassName(collegeReport.getCrClassName());
         collegeReport1.setCrScore(collegeReport.getCrScore());
         collegeReport1.setCrTcState(true);
 

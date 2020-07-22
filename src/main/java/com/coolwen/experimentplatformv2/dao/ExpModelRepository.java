@@ -1,6 +1,7 @@
 package com.coolwen.experimentplatformv2.dao;
 
 import com.coolwen.experimentplatformv2.dao.basedao.BaseRepository;
+import com.coolwen.experimentplatformv2.model.CourseInfo;
 import com.coolwen.experimentplatformv2.model.DTO.KaoheModuleProgressDTO;
 import com.coolwen.experimentplatformv2.model.ExpModel;
 import org.springframework.data.domain.Page;
@@ -48,4 +49,7 @@ public interface ExpModelRepository extends BaseRepository<ExpModel,Integer> {
 
 
     List<ExpModel> findByCourseId(int id);
+
+    @Query("select c from ExpModel e,CourseInfo c where e.courseId = c.id and e.m_id = ?1")
+    CourseInfo findCourseNameByMid(int mid);
 }

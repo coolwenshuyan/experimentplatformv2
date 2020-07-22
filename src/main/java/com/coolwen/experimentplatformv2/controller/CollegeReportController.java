@@ -1,15 +1,9 @@
 package com.coolwen.experimentplatformv2.controller;
 
 import com.coolwen.experimentplatformv2.kit.ShiroKit;
-import com.coolwen.experimentplatformv2.model.CollegeReport;
+import com.coolwen.experimentplatformv2.model.*;
 import com.coolwen.experimentplatformv2.model.DTO.CollegeReportStuExpDto;
-import com.coolwen.experimentplatformv2.model.KaoHeModelScore;
-import com.coolwen.experimentplatformv2.model.KaoheModel;
-import com.coolwen.experimentplatformv2.model.Student;
-import com.coolwen.experimentplatformv2.service.CollegeReportService;
-import com.coolwen.experimentplatformv2.service.KaoHeModelScoreService;
-import com.coolwen.experimentplatformv2.service.KaoheModelService;
-import com.coolwen.experimentplatformv2.service.ScoreUpdateService;
+import com.coolwen.experimentplatformv2.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +38,9 @@ public class CollegeReportController {
     @Autowired
     KaoheModelService kaoheModelService;
 
+    @Autowired
+    ExpModelService expModelService;
+
     /**
      * 进入填写实验目的页面
      *
@@ -57,11 +54,13 @@ public class CollegeReportController {
 //        Student student = (Student) SecurityUtils.getSubject().getPrincipal();
         Student student = (Student) session.getAttribute("student");
         CollegeReport collegeReport = collegeReportService.findStuidAndMid(student.getId(), mid);
+        CourseInfo courseInfo = expModelService.findCourseNameByMid(mid);
         //如果没有记录，则创建一条数据
         if (collegeReport == null) {
             CollegeReport collegeReport1 = new CollegeReport();
             collegeReport1.setStuid(student.getId());
             collegeReport1.setMid(mid);
+            collegeReport1.setCrClassName(courseInfo.getCourseName());
             collegeReportService.addCollegeReport(collegeReport1);
         }
         //如果是考核模块，并教师已经评分，直接跳转到查看页面

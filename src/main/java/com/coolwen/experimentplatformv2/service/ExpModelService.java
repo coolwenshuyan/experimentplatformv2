@@ -1,5 +1,6 @@
 package com.coolwen.experimentplatformv2.service;
 
+import com.coolwen.experimentplatformv2.model.CourseInfo;
 import com.coolwen.experimentplatformv2.model.DTO.KaoheModuleProgressDTO;
 import com.coolwen.experimentplatformv2.model.ExpModel;
 import com.coolwen.experimentplatformv2.model.ModuleTestQuest;
@@ -46,4 +47,6 @@ public interface ExpModelService {
     void deleteAll(List<ExpModel> expModels);
 
     Page<ExpModel> findOneCourseModelList2(int courseId, int pageNum, int size);
+
+    CourseInfo findCourseNameByMid(int mid);
 }

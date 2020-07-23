@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="../../static/css/font.css">
     <link rel="stylesheet" href="../../static/css/xadmin.css">
     <link rel="stylesheet" href="../../static/css/layui.css">
-    <script src="../../static/js/layui.js" charset="utf-8"></script>
     <script type="text/javascript" src="../../static/js/xadmin.js"></script>
     <script type="text/javascript" th:src="@{/js/jquery-2.1.1.min.js}"></script>
     <script type="text/javascript">
@@ -37,6 +36,10 @@
             text-align: center;
 
         }
+        #chooseDocker {
+            display: none;
+            padding: 30px 0 0 30px;
+        }
     </style>
 </head>
 <body>
@@ -58,6 +61,51 @@
                         </div>
                     </form>
                 </div>
+                <div id="chooseDocker" style="display: none">
+                    <form class="layui-form" lay-filter="dataform" id="dataform">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label">学号:</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="stuXuehao" id="stuXuehao" disabled autocomplete="off" value="该生为校外学生" class="layui-input" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label">姓名:</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="stuName" id="stuName" disabled autocomplete="off" class="layui-input" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">Docker地址:</label>
+                            <div class="layui-input-inline">
+                                <select name="dc_url" id="url" autocomplete="off"></select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">使用开始时间:</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="dc_start_datetime" id="beginTime" class="layui-input" />
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">使用结束时间:</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="dc_end_datetime" id="endTime" class="layui-input" />
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label"></label>
+                            <div class="layui-input-inline">
+                                <button type="button" class="layui-btn" lay-filter="doSubmit" lay-submit="">修改</button>
+                                <button type="button" class="layui-btn layui-btn-primary closeBtn">取消</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
 
                 <div class="layui-card-body ">
                     <table class="layui-table layui-form">
@@ -72,9 +120,10 @@
                             <td th:text="${s.stuName}"></td>
                             <td th:text="${s.stuXuehao}"></td>
                             <td class="td-manage">
-                                <a class="layui-btn" th:href="@{|/studentManage/deleteStuClass/${s.id}|}">
-                                    删除
-                                </a>
+                                <a class="layui-btn" th:href="@{|/studentManage/deleteStuClass/${s.id}|}">删除</a>
+                                <span th:if="${s.dockerState == true}">
+                                    <button class="layui-btn layui-btn-normal dockerBtn" th:data-id="${s.id}">打开Docker</button>
+                                </span>
                             </td>
                         </tr>
                         </tbody>
@@ -88,10 +137,12 @@
         <a class="layui-btn" th:href="@{/studentManage/classManage}">完成</a></div>
 </div>
 </body>
+<script src="//cdn.staticfile.org/layui/2.5.6/layui.all.min.js"></script>
 <script>
     layui.use(['laydate', 'form'], function () {
         var laydate = layui.laydate;
-        var form = layui.form;
+        var form = layui.form,
+        dialogIndex = null,currentId = null
 
         //执行一个laydate实例
         laydate.render({
@@ -102,6 +153,52 @@
         laydate.render({
             elem: '#end' //指定元素
         });
+
+        $('.dockerBtn').click(function (e) {
+            currentId = $(this).data('id')
+            $.get('/studentManage/updateStuDocker/' + currentId, function (data) {
+                $.each(JSON.parse(data), function (k, v) {
+                    if (v.stuXuehao == '') {
+                        $('#stuXuehao').val('该生为校外学生')
+                    } else {
+                        $('#stuXuehao').val(v.stuXuehao)
+                    }
+                    $('#stuName').val(v.stuName)
+                    $('#beginTime').val(v.dc_start_datetime)
+                    $('#endTime').val(v.dc_end_datetime)
+                })
+                dialogIndex = layer.open({
+                    type: 1,
+                    title: 'Docker修改',
+                    area: ['500px', '450px'],
+                    content: $('#chooseDocker'),
+                    success: function () {
+                        $('#url')[0].options.length = 0
+                        $.get('/studentManage/dockerUrl', function (data) {
+                            $('#url').append('<option value="metal" selected>不更改</option>')
+                            $.each(JSON.parse(data), function (k, v) {
+                                $.each(v, function (i, t) {
+                                    $('#url').append("<option value='" + t.dc_url + "'>" + t.dc_url + '</option>')
+                                })
+                                form.render('select')
+                            })
+                        })
+                    }
+                })
+            })
+        })
+        form.on('submit(doSubmit)', function () {
+            let parm = $('#dataform').serialize()
+            $.post('/studentManage/updateStuDocker/' + currentId, parm, function () {
+                layer.close(dialogIndex)
+            })
+        })
+        $('.closeBtn').click(function (e) {
+            e.preventDefault()
+            layer.close(dialogIndex)
+            window.location.reload()
+        })
+
     });
 
 

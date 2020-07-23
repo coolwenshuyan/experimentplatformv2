@@ -5,6 +5,7 @@ import com.coolwen.experimentplatformv2.kit.ShiroKit;
 import com.coolwen.experimentplatformv2.model.*;
 import com.coolwen.experimentplatformv2.model.ClassModel;
 import com.coolwen.experimentplatformv2.model.DTO.StuDocker;
+import com.coolwen.experimentplatformv2.model.DTO.StudentDockerDTO;
 import com.coolwen.experimentplatformv2.model.DTO.StudentListDTO;
 import com.coolwen.experimentplatformv2.model.DTO.StudentVo;
 import com.coolwen.experimentplatformv2.model.Student;
@@ -23,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -589,7 +591,18 @@ public class StudentController {
     //班级页面管理学生
     @GetMapping("/addStudent/{id}")
     public String toaddStudent(@PathVariable("id") int id, Model model) {
-        model.addAttribute("student", studentservice.findStudentByClassId(id));
+        List<StudentDockerDTO> studentDockerDTOS = new ArrayList<>();
+        StudentDockerDTO studentDockerDTO = null;
+        List<Student> students = studentservice.findStudentByClassId(id);
+        for (Student s : students){
+            if(dockerService.findDockerByStu_id(s.getId()) != null){
+                studentDockerDTO = new StudentDockerDTO(s.getId(),s.getStuUname(),s.getStuPassword(),s.getStuName(),s.getStuXuehao(),s.getStuMobile(),s.isStuCheckstate(),s.isStuIsinschool(),s.getClassId(),true);
+            }else {
+                studentDockerDTO = new StudentDockerDTO(s.getId(),s.getStuUname(),s.getStuPassword(),s.getStuName(),s.getStuXuehao(),s.getStuMobile(),s.isStuCheckstate(),s.isStuIsinschool(),s.getClassId(),false);
+            }
+            studentDockerDTOS.add(studentDockerDTO);
+        }
+        model.addAttribute("student",studentDockerDTOS);
         model.addAttribute("classId", id);
         ClassModel classModel = clazzService.findById(id);
         model.addAttribute("class", classModel);
@@ -698,8 +711,6 @@ public class StudentController {
         List<KaoHeModelScore> kaoHeModelScores = kaoHeModelScoreService.findKaoheModuleScoreByStuId(stuid);
         //删除学生考核信息
         kaoHeModelScoreService.deleteAllKaohe(kaoHeModelScores);
-
-
         Student student = studentservice.findStudentById(stuid);
         int preClassId = student.getClassId();
         student.setClassId(0);

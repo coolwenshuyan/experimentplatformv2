@@ -26,7 +26,8 @@ public interface TotalScoreCurrentRepository extends BaseRepository<TotalScoreCu
 
     @Query("select t from TotalScoreCurrent t where t.stuId = ?1")
     TotalScoreCurrent findTotalScoreCurrentByStuID(int stuId);
-
+    @Modifying
+    @Transactional
     @Query("select t from TotalScoreCurrent t where t.stuId = ?1")
     List<TotalScoreCurrent> findTotalScoreCurrentByStuId(int stuid);
 

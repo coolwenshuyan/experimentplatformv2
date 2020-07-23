@@ -102,6 +102,8 @@ public interface StudentRepository extends BaseRepository<Student, Integer>, Jpa
 
     List<Student> findStudentByClassId(int class_id);
 
+
+
 //    Page<Student> pageStudentByClassId(int class_id);
 
     @Query("select s from Student s where s.stuUname = ?1 ")

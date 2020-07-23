@@ -380,4 +380,5 @@ public class StudentServiceImpl implements StudentService {
         Pageable pageable = PageRequest.of(pageNum, 10);
         return studentRepository.findAllByStuid(pageable);
     }
+
 }

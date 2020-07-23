@@ -26,9 +26,9 @@ public class StudentDockerDTO {
     //所属班级id
     private int classId;
 
-    private Boolean dockerState;
+    private String dc_url;
 
-    public StudentDockerDTO(int id, String stuUname, String stuPassword, String stuName, String stuXuehao, String stuMobile, boolean stuCheckstate, boolean stuIsinschool, int classId, boolean dockerState) {
+    public StudentDockerDTO(int id, String stuUname, String stuPassword, String stuName, String stuXuehao, String stuMobile, boolean stuCheckstate, boolean stuIsinschool, int classId, String dc_url) {
         this.id = id;
         this.stuUname = stuUname;
         this.stuPassword = stuPassword;
@@ -38,7 +38,7 @@ public class StudentDockerDTO {
         this.stuCheckstate = stuCheckstate;
         this.stuIsinschool = stuIsinschool;
         this.classId = classId;
-        this.dockerState = dockerState;
+        this.dc_url = dc_url;
     }
 
     public int getId() {
@@ -113,12 +113,12 @@ public class StudentDockerDTO {
         this.classId = classId;
     }
 
-    public Boolean getDockerState() {
-        return dockerState;
+    public String getDc_url() {
+        return dc_url;
     }
 
-    public void setDockerState(Boolean dockerState) {
-        this.dockerState = dockerState;
+    public void setDc_url(String dc_url) {
+        this.dc_url = dc_url;
     }
 
     @Override
@@ -133,7 +133,7 @@ public class StudentDockerDTO {
                 ", stuCheckstate=" + stuCheckstate +
                 ", stuIsinschool=" + stuIsinschool +
                 ", classId=" + classId +
-                ", dockerState=" + dockerState +
+                ", dockerState=" + dc_url +
                 '}';
     }
 }

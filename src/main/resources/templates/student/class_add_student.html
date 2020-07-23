@@ -121,8 +121,8 @@
                             <td th:text="${s.stuXuehao}"></td>
                             <td class="td-manage">
                                 <a class="layui-btn" th:href="@{|/studentManage/deleteStuClass/${s.id}|}">删除</a>
-                                <span th:if="${s.dockerState == true}">
-                                    <button class="layui-btn layui-btn-normal dockerBtn" th:data-id="${s.id}">打开Docker</button>
+                                <span th:if="${s.dc_url != null}">
+                                    <a class="layui-btn layui-btn-normal dockerBtn" th:href="${s.dc_url}">打开Docker</a>
                                 </span>
                             </td>
                         </tr>
@@ -154,50 +154,7 @@
             elem: '#end' //指定元素
         });
 
-        $('.dockerBtn').click(function (e) {
-            currentId = $(this).data('id')
-            $.get('/studentManage/updateStuDocker/' + currentId, function (data) {
-                $.each(JSON.parse(data), function (k, v) {
-                    if (v.stuXuehao == '') {
-                        $('#stuXuehao').val('该生为校外学生')
-                    } else {
-                        $('#stuXuehao').val(v.stuXuehao)
-                    }
-                    $('#stuName').val(v.stuName)
-                    $('#beginTime').val(v.dc_start_datetime)
-                    $('#endTime').val(v.dc_end_datetime)
-                })
-                dialogIndex = layer.open({
-                    type: 1,
-                    title: 'Docker修改',
-                    area: ['500px', '450px'],
-                    content: $('#chooseDocker'),
-                    success: function () {
-                        $('#url')[0].options.length = 0
-                        $.get('/studentManage/dockerUrl', function (data) {
-                            $('#url').append('<option value="metal" selected>不更改</option>')
-                            $.each(JSON.parse(data), function (k, v) {
-                                $.each(v, function (i, t) {
-                                    $('#url').append("<option value='" + t.dc_url + "'>" + t.dc_url + '</option>')
-                                })
-                                form.render('select')
-                            })
-                        })
-                    }
-                })
-            })
-        })
-        form.on('submit(doSubmit)', function () {
-            let parm = $('#dataform').serialize()
-            $.post('/studentManage/updateStuDocker/' + currentId, parm, function () {
-                layer.close(dialogIndex)
-            })
-        })
-        $('.closeBtn').click(function (e) {
-            e.preventDefault()
-            layer.close(dialogIndex)
-            window.location.reload()
-        })
+
 
     });
 

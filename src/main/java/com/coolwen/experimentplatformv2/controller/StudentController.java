@@ -595,10 +595,11 @@ public class StudentController {
         StudentDockerDTO studentDockerDTO = null;
         List<Student> students = studentservice.findStudentByClassId(id);
         for (Student s : students){
-            if(dockerService.findDockerByStu_id(s.getId()) != null){
-                studentDockerDTO = new StudentDockerDTO(s.getId(),s.getStuUname(),s.getStuPassword(),s.getStuName(),s.getStuXuehao(),s.getStuMobile(),s.isStuCheckstate(),s.isStuIsinschool(),s.getClassId(),true);
+            Docker docker = dockerService.findDockerByStu_id(s.getId());
+            if(docker != null){
+                studentDockerDTO = new StudentDockerDTO(s.getId(),s.getStuUname(),s.getStuPassword(),s.getStuName(),s.getStuXuehao(),s.getStuMobile(),s.isStuCheckstate(),s.isStuIsinschool(),s.getClassId(),docker.getDc_url());
             }else {
-                studentDockerDTO = new StudentDockerDTO(s.getId(),s.getStuUname(),s.getStuPassword(),s.getStuName(),s.getStuXuehao(),s.getStuMobile(),s.isStuCheckstate(),s.isStuIsinschool(),s.getClassId(),false);
+                studentDockerDTO = new StudentDockerDTO(s.getId(),s.getStuUname(),s.getStuPassword(),s.getStuName(),s.getStuXuehao(),s.getStuMobile(),s.isStuCheckstate(),s.isStuIsinschool(),s.getClassId(),null);
             }
             studentDockerDTOS.add(studentDockerDTO);
         }

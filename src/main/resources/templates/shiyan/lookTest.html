@@ -25,7 +25,16 @@
 		<div class="layui-fluid">
 			<div>
 				<a class="layui-btn layui-btn-sm" href="/shiyan/addQuest">新建</a>
-				<a class="layui-btn layui-btn-sm layui-btn-primary" href="/expmodel/moduleList">返回</a>
+				<a class="layui-btn layui-btn-sm layui-btn-primary" href="/expmodel/moduleList">返回</a><br>
+<!--				<a class="layui-btn layui-btn-sm layui-btn-primary" href="/shiyan/excelIn">Excel导入</a>-->
+
+				<form class="layui-form-item" th:action="@{/shiyan/excelIn}" th:method="post" enctype="multipart/form-data">
+					<i class="layui-icon layui-icon-upload"></i>
+					<label class="layui-form-label">Excel导入:</label>
+					<input type="file" name="file" >
+					<input class="layui-btn layui-btn-sm layui-btn-primary" type="submit">
+				</form>
+
 			</div>
 			<table class="layui-table">
 				<thead>

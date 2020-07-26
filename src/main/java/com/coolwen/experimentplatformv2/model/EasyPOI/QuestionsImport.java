@@ -7,7 +7,6 @@ import cn.afterturn.easypoi.excel.annotation.Excel;
  * @version 2020/7/23 17:38
  */
 
-// 工作经历对象
 
 public class QuestionsImport {
 

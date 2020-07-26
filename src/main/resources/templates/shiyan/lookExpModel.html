@@ -43,7 +43,14 @@
 					<div class="layui-input-inline" th:if="${Choose}">
 						<a href="/expmodel/addExpModel" class="layui-btn layui-btn-sm">新建实验模块</a>
 					</div>
+
 				</div>
+			</form>
+			<a href="/expmodel/downloadTemplate" class="layui-btn layui-btn-sm">下载模板</a>
+			<form class="layui-form-item" th:action="@{/expmodel/ExcelInputExpModel}" th:method="post" enctype="multipart/form-data">
+				<label class="layui-form-label">Excel导入课程及实验模块:</label>
+				<input type="file" name="file" >
+				<input class="layui-btn layui-btn-sm layui-btn-primary" type="submit">
 			</form>
 			<table class="layui-table layui-form" th:if="${Choose}">
 				<thead>

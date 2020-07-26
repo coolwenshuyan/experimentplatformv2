@@ -37,4 +37,6 @@ public interface CourseInfoService {
     List<CourseInfoDto2> findByArrangeCourseInfoDto2byClassId(int classId);
 
     List<ClassModel> getClassByCourseidUseridpass(String id, int courseId);
+
+    List<CourseInfo> findAllByCourseCode(String courseCode);
 }

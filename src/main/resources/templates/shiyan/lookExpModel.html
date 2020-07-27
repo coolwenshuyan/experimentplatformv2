@@ -24,6 +24,9 @@
 			.layui-input {
 				height: 30px;
 			}
+			.layui-form-item .layui-input-inline {
+				width: auto;
+			}
 			#pager {
 				text-align: center;
 			}
@@ -43,14 +46,16 @@
 					<div class="layui-input-inline" th:if="${Choose}">
 						<a href="/expmodel/addExpModel" class="layui-btn layui-btn-sm">新建实验模块</a>
 					</div>
-
+					<div class="layui-input-inline">
+						<a href="/expmodel/downloadTemplate" class="layui-btn layui-btn-sm">下载模板</a>
+					</div>
+					<div class="layui-input-inline">
+						<a class="layui-btn layui-btn-sm selectFile"><i class="layui-icon layui-icon-upload"></i>Excel导入</a>
+					</div>
 				</div>
 			</form>
-			<a href="/expmodel/downloadTemplate" class="layui-btn layui-btn-sm">下载模板</a>
-			<form class="layui-form-item" th:action="@{/expmodel/ExcelInputExpModel}" th:method="post" enctype="multipart/form-data">
-				<label class="layui-form-label">Excel导入课程及实验模块:</label>
-				<input type="file" name="file" >
-				<input class="layui-btn layui-btn-sm layui-btn-primary" type="submit">
+			<form id="fileForm" action="/expmodel/ExcelInputExpModel" method="POST" enctype="multipart/form-data" style="display: none;">
+				<input type="file" name="file" id="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
 			</form>
 			<table class="layui-table layui-form" th:if="${Choose}">
 				<thead>
@@ -87,6 +92,30 @@
 					layer = layui.layer
 				form.on('select(id)', function (data) {
 					window.location.href = data.value
+				})
+				$('.selectFile').click(function (e) {
+					e.preventDefault()
+					$('#file').click()
+				})
+				$('#file').live('change', function () {
+					console.log(this.files)
+					var _name = this.files[0].name
+					var _index = _name.lastIndexOf('.')
+					var _ext = _name.substr(_index + 1)
+					if (_ext != 'xlsx') {
+						layer.msg('请选择正确格式的文件')
+						$('#file').val('')
+						return false
+					}
+					layer.confirm(
+						'确定导入' + _name + '吗？',
+						function () {
+							$('#fileForm').submit()
+						},
+						function () {
+							$('#file').val('')
+						}
+					)
 				})
 				$('.delBtn').click(function (e) {
 					e.preventDefault()

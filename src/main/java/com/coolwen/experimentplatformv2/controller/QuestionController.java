@@ -11,7 +11,6 @@ import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -49,9 +48,6 @@ public class QuestionController {
 
     @Autowired
     private StudentService studentService;
-
-    @Value("${SimplePageBuilder.pageSize}")
-    int size;
 
     protected static final Logger logger = LoggerFactory.getLogger(QuestionController.class);
 
@@ -109,27 +105,24 @@ public class QuestionController {
     public String QuestionList(Model model, HttpSession session,
                                @RequestParam(defaultValue = "0", required = true, value = "pageNum") Integer pageNum, @PathVariable int courseinfoId) {
         User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
-//        user.setId(1);
         logger.debug("登陆老师信息:" + user);
         model.addAttribute("selected", courseinfoId);
-        session.setAttribute("teacherChooseCourseId", courseinfoId);
-        List<CourseInfo> courseInfoList = courseInfoService.getclass_by_arrangeteacher(user.getId());
+        List<CourseInfo> courseInfoList = courseInfoService.getclass_by_arrangeteacher(1);
         logger.debug("该老师负责的课程信息:" + courseInfoList);
         model.addAttribute("courseInfoList", courseInfoList);
         if (courseinfoId == -1) {
-            logger.debug("courseinfoId信息:" + courseinfoId);
-            Pageable pageable = PageRequest.of(pageNum, size);
+            Pageable pageable = PageRequest.of(pageNum, 10);
             //查询该老师的课程信息
-            Page<QuestionStudentDto> page = questionService.findByTeacherId(user.getId(), pageNum);
+            //TODO 加入老师信息筛选
+            Page<QuestionStudentDto> page = questionService.findAndUname(pageable);
             model.addAttribute("questionPageInfo", page);
-//            return "shouye/dayiManage";
+            return "shouye/dayiManage";
         } else {
-            List<ArrangeClassDto> arrangeClassDtos = arrangeClassService.findByTeacherIdAndCourseId(user.getId(), courseinfoId);
+            List<ArrangeClassDto> arrangeClassDtos = arrangeClassService.findByTeacherIdAndCourseId(1, courseinfoId);
             //获取所有班级的ID
             List<Integer> integerList = arrangeClassDtos.stream().map(ArrangeClassDto -> ArrangeClassDto.getcIlassId()).collect(Collectors.toList());
             logger.debug("该老师负责的班级信息有:" + arrangeClassDtos);
-            Page<QuestionStudentDto> page = questionService.findByCourseIdAndTeacherId(courseinfoId, user.getId(), pageNum);
-            logger.debug("该老师负责的班级信息有:" + page.getContent());
+            Page<QuestionStudentDto> page = questionService.findByCourseIdAndTeacherId(courseinfoId, 1, pageNum);
             model.addAttribute("questionPageInfo", page);
         }
         return "shouye/dayiManage";
@@ -241,21 +234,22 @@ public class QuestionController {
 //        return "redirect:/questionORreply/{id}/seesee";
 //    }
 
-    //老师删除问题及所有回复
+    //删除问题及所有回复
     @GetMapping(value = "/{id}/delete")
-    public String delete(@PathVariable int id, HttpSession session) {
+    public String delete(@PathVariable int id) {
 //        通过id删除所有该问题的回复
         replyService.deleteByQid(id);
-        int courseinfoId = -1;
-        if (!ShiroKit.isEmpty(session.getAttribute("teacherChooseCourseId"))) {
-            courseinfoId = (int) session.getAttribute("teacherChooseCourseId");
-        }
-        ;
 //        通过id删除该问题
         questionService.delete(id);
-        logger.debug("coureinfoId信息:" + courseinfoId);
-        return "redirect:/question/teacherlist/" + courseinfoId;
+        return "redirect:/question/list";
     }
+
+//    //后台管理进入答疑室
+//    @GetMapping(value = "index")
+//    public String index() {
+//        return "question_reply/index";
+//    }
+
 
     //老师进入查看页
     @GetMapping(value = "/{id}/dayiMore")
@@ -273,7 +267,7 @@ public class QuestionController {
         return "shouye/dayiMore";
     }
 
-    //学生进入问题查看页
+    //学生进入查看页
     @GetMapping(value = "/detaill/{id}")
     public String seesee1(@PathVariable int id, Model model, @RequestParam(required = true, defaultValue = "0") Integer pageNum) {
 //        查到该问题

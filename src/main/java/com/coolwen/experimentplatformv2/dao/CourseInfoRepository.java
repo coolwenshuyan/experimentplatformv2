@@ -40,4 +40,7 @@ public interface CourseInfoRepository extends BaseRepository<CourseInfo, Integer
 
     @Query("select csi from ClassModel csi,TotalScorePass cci where cci.classId=csi.classId and cci.teacherGongHao=?1 and cci.courseId =?2 group by cci.courseId,cci.classId order by csi.classId ")
     List<ClassModel> getClassByCourseidUseridpass(String teacherid, int courseId);
+
+    @Query("select ci from CourseInfo ci where ci.courseCode = ?1")
+    List<CourseInfo> findAllByCourseCode(String courseCode);
 }

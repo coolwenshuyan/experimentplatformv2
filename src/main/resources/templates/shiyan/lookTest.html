@@ -24,8 +24,13 @@
 	<body>
 		<div class="layui-fluid">
 			<div>
-				<a class="layui-btn layui-btn-sm" href="/courseleader/modeltest/addQuest">新建</a>
 				<a class="layui-btn layui-btn-sm layui-btn-primary" href="/expmodel/moduleList">返回</a>
+				<a class="layui-btn layui-btn-sm" href="/shiyan/addQuest">新建</a>
+				<a class="layui-btn layui-btn-sm" href="/shiyan/downloadTemplate">模板下载</a>
+				<a class="layui-btn layui-btn-sm selectFile"><i class="layui-icon layui-icon-upload"></i>Excel导入</a>
+				<form id="fileForm" action="/shiyan/excelIn" method="POST" enctype="multipart/form-data" style="display: none;">
+					<input type="file" name="file" id="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+				</form>
 			</div>
 			<table class="layui-table">
 				<thead>
@@ -61,7 +66,8 @@
 		<script>
 			$(function () {
 				var layer = layui.layer,
-					laypage = layui.laypage
+					laypage = layui.laypage,
+					layer = layui.layer
 				laypage.render({
 					elem: 'pager',
 					layout: ['count', 'prev', 'page', 'next'],
@@ -72,6 +78,30 @@
 							window.location.href = window.location.origin + window.location.pathname + '?pageNum=' + (obj.curr - 1)
 						}
 					}
+				})
+				$('.selectFile').click(function (e) {
+					e.preventDefault()
+					$('#file').click()
+				})
+				$('#file').live('change', function () {
+					console.log(this.files)
+					var _name = this.files[0].name
+					var _index = _name.lastIndexOf('.')
+					var _ext = _name.substr(_index + 1)
+					if (_ext != 'xlsx') {
+						layer.msg('请选择正确格式的文件')
+						$('#file').val('')
+						return false
+					}
+					layer.confirm(
+						'确定导入' + _name + '吗？',
+						function () {
+							$('#fileForm').submit()
+						},
+						function () {
+							$('#file').val('')
+						}
+					)
 				})
 				$('.delBtn').click(function (e) {
 					e.preventDefault()

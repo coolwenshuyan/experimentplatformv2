@@ -80,4 +80,9 @@ public class CourseInfoServiceImpl implements CourseInfoService {
     public List<ClassModel> getClassByCourseidUseridpass(String teacherid, int courseId) {
         return courseInfoRepository.getClassByCourseidUseridpass(teacherid, courseId) ;
     }
+
+    @Override
+    public List<CourseInfo> findAllByCourseCode(String courseCode) {
+        return courseInfoRepository.findAllByCourseCode(courseCode);
+    }
 }

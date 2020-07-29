@@ -23,6 +23,17 @@
 			#pager {
 				text-align: center;
 			}
+			.p1 {
+				color: #009688;
+				margin-top: 1rem;
+				font-size: 16px;
+				margin-left: 7rem;
+				font-weight: 600;
+			}
+
+			.p2 {
+				margin: 1rem auto 1rem 7rem;
+			}
 		</style>
 	</head>
 	<body>
@@ -37,10 +48,14 @@
 						</select>
 					</div>
 					<div class="layui-input-inline" th:if="${Choose}">
-						<a th:href="@{|/shiyan/addLastQuest/${arrangeId}|}" class="layui-btn">新建</a>
+						<!--<a th:href="@{|/shiyan/addLastQuest/${arrangeId}|}" class="layui-btn">新建</a>-->
+						<a th:href="@{|/courseleader/modeltest/addLastQuest/${arrangeId}|}" class="layui-btn">新建</a>
 					</div>
 				</div>
 			</form>
+
+			<p class="p1 p2" th:if="${NoChoose}" th:text="${nowList.getCourseName()+'-'+nowList.getClassName()}"></p>
+
 			<table class="layui-table" th:if="${Choose}">
 				<thead>
 					<tr>

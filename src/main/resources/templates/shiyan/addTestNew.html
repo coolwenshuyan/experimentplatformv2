@@ -66,7 +66,7 @@
 
 <!--<span th:text="|欢迎你，${session.student.stuName} |"></span>-->
 <body>
-<h2 class="p1" th:text="|对模块${expMedel.m_name}添加模块测试题|">添加模块测试题</h2>
+<h2 class="p1" th:text="'对模块'+'《'+${expMedel.m_name}+'》'+'添加模块测试题'">添加模块测试题</h2>
 <!--<p class="p1">先添加题目再添加选项</p>-->
 <div class="layui-row layui-col-space10">
     <div class="layui-col-md6">
@@ -114,11 +114,12 @@
                 <div class="layui-input-block">
                     <!--                    <input type="text" name="questType" th:field="*{questType}" value="单选" title="单选">-->
                     <!--                    <input type="text" name="questType" th:field="*{questType}" value="多选" title="多选">-->
-                    <input type="radio" name="questType" value="单选" title="单选" checked="checked">
-                    <input type="radio" name="questType" value="多选" title="多选">
+                    <input type="radio" name="questType" th:field="${quest.questType}" value="单选" title="单选"
+                           checked="checked">
+                    <input type="radio" name="questType" th:field="${quest.questType}" value="多选" title="多选">
                 </div>
             </div>
-<!--            <div class="layui-form-item">-->
+            <!--            <div class="layui-form-item">-->
             <!--                <label class="layui-form-label">答案</label>-->
             <!--                <div class="layui-input-block">-->
             <!--                    <input type="text" name="questAnswer" th:value="${questAnswer}" required lay-verify="required"-->
@@ -131,11 +132,10 @@
 
             <div class="layui-form-item">
                 <div class="layui-input-block">
-                    <!--                    <a href="lookTest.html" th:href="@{|/shiyan/list/${mId}|}"-->
-                    <!--                       class="layui-btn layui-btn-primary">返回</a>-->
                     <button class="layui-btn" lay-submit lay-filter="formDemo">完成添加题目</button>
-                    <a href="lookTest.html" th:href="@{/courseleader/modeltest/addAnswer}"
-                       class="layui-btn layui-bg-green">继续添加问题选项</a>
+                    <a href="addAnswerNew.html.html" th:href="@{|/courseleader/modeltest/addAnswer|}" class="layui-btn layui-bg-green">继续添加问题选项</a>
+                    <a href="lookTest.html" th:href="@{|/shiyan/list/${mId}|}" class="layui-btn layui-btn-primary">返回</a>
+
                 </div>
             </div>
 

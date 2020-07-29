@@ -7,7 +7,7 @@
     <title>添加模块测试</title>
 
     <link rel="stylesheet" type="text/css" th:href="@{/css/layui.css}"/>
-
+    <link rel="stylesheet" type="text/css" href="../../static/css/layui.css"/>
 </head>
 <style type="text/css">
     .layui-row {
@@ -60,11 +60,12 @@
 
 <body>
 <h2>添加理论测试题</h2>
-<p class="p1">先添加题目再添加选项</p>
+<!--<h2 class="p1" th:text="'对模块'+'《'+${expModel.m_name}+'》'+'添加模块测试题'">添加模块测试题</h2>-->
 <div class="layui-row layui-col-space10">
     <div class="layui-col-md6">
         <!--<form class="layui-form" action="">	-->
-        <form class="layui-form" th:action="@{|/shiyan/addLastQuest/${mId}|}" method="post" th:object="${Lastquest}">
+        <!--th:action="@{|/shiyan/addLastQuest/${mId}|}"-->
+        <form class="layui-form"  method="post" th:object="${Lastquest}">
             <div class="layui-form-item">
                 <label class="layui-form-label">题目</label>
                 <div class="layui-input-block">
@@ -105,21 +106,23 @@
                     <input type="radio" name="questType" th:field="${Lastquest.questType}" value="多选" title="多选">
                 </div>
             </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">答案</label>
-                <div class="layui-input-block">
-                    <input type="text" name="questAnswer" th:value="${questAnswer}" required lay-verify="required" placeholder="1,2,3"
-                           autocomplete="off" class="layui-input">
-                </div>
-            </div>
+            <!--<div class="layui-form-item">-->
+                <!--<label class="layui-form-label">答案</label>-->
+                <!--<div class="layui-input-block">-->
+                    <!--<input type="text" name="questAnswer" th:value="${questAnswer}" required lay-verify="required" placeholder="1,2,3"-->
+                           <!--autocomplete="off" class="layui-input">-->
+                <!--</div>-->
+            <!--</div>-->
 
-            <p class="p1 P2" th:text="${session.errorInformation}"></p>
+            <!--<p class="p1 P2" th:text="${session.errorInformation}"></p>-->
 
             <div class="layui-form-item">
                 <div class="layui-input-block">
-                    <a href="lookTest.html" th:href="@{|/shiyan/lastTestList/${mId*-1}|}" class="layui-btn layui-btn-primary">返回</a>
                     <button class="layui-btn" lay-submit lay-filter="formDemo">添加题目</button>
-                    <a href="lookTest.html" th:href="@{|/shiyan/lastTestList/${mId*-1}|}" class="layui-btn layui-bg-green">添加完成</a>
+                    <!--<a href="lookTest.html" th:href="@{|/shiyan/lastTestList/${mId*-1}|}" class="layui-btn layui-bg-green">添加完成</a>-->
+                    <a th:href="@{|/courseleader/modeltest/addLastAnswer/${arrangeId}|}" class="layui-btn layui-bg-green">继续添加选项</a>
+                    <a href="lookTest.html" th:href="@{|/shiyan/lastTestList/${arrangeId}|}" class="layui-btn layui-btn-primary">返回</a>
+
                 </div>
             </div>
 
@@ -128,61 +131,61 @@
 
     </div>
 
-    <div class="layui-col-md5">
+    <!--<div class="layui-col-md5">-->
 
-        <form class="layui-form" th:action="@{/shiyan/addLastQuest}" method="get">
+        <!--<form class="layui-form" th:action="@{/shiyan/addLastQuest}" method="get">-->
 
-            <div class="layui-form-item">
-                <label class="layui-form-label">选项</label>
-                <div class="layui-input-block content">
-                    <div class="layui-card-body ">
-                        <table class="layui-table layui-form">
-                            <thead>
-                            <tr>
-                                <th>
-                                    <input type="checkbox" name="" lay-skin="primary">
-                                </th>
-                                <th>选项</th>
-                                <th>内容</th>
-                                <th>操作</th>
-                            </thead>
-                            <tbody>
-                            <tr th:each="answer:${addLastAnswer}">
-                                <td>
-                                    <input type="checkbox" name="answerId" lay-skin="primary">
-                                </td>
-                                <td th:text="${answer.answerOrder}" name="answerOrder">1</td>
-                                <td th:text="${answer.answerDescribe}" name="answerDescribe">怎么实现？？</td>
+            <!--<div class="layui-form-item">-->
+                <!--<label class="layui-form-label">选项</label>-->
+                <!--<div class="layui-input-block content">-->
+                    <!--<div class="layui-card-body ">-->
+                        <!--<table class="layui-table layui-form">-->
+                            <!--<thead>-->
+                            <!--<tr>-->
+                                <!--<th>-->
+                                    <!--<input type="checkbox" name="" lay-skin="primary">-->
+                                <!--</th>-->
+                                <!--<th>选项</th>-->
+                                <!--<th>内容</th>-->
+                                <!--<th>操作</th>-->
+                            <!--</thead>-->
+                            <!--<tbody>-->
+                            <!--<tr th:each="answer:${addLastAnswer}">-->
+                                <!--<td>-->
+                                    <!--<input type="checkbox" name="answerId" lay-skin="primary">-->
+                                <!--</td>-->
+                                <!--<td th:text="${answer.answerOrder}" name="answerOrder">1</td>-->
+                                <!--<td th:text="${answer.answerDescribe}" name="answerDescribe">怎么实现？？</td>-->
 
-                                <td class="td-manage">
-                                    <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;"
-                                       th:href="@{|/shiyan/deleteLastAnswer/${answer.answerId}|}">
-                                        <button type="button" class="layui-btn">删除</button>
-                                    </a>
-                                </td>
-                                <!--th:href="@{|deleteAnswer/${answer.answerId}|}"-->
-                                <!--@{/detele/}+${student?.id}-->
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                                <!--<td class="td-manage">-->
+                                    <!--<a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;"-->
+                                       <!--th:href="@{|/shiyan/deleteLastAnswer/${answer.answerId}|}">-->
+                                        <!--<button type="button" class="layui-btn">删除</button>-->
+                                    <!--</a>-->
+                                <!--</td>-->
+                                <!--&lt;!&ndash;th:href="@{|deleteAnswer/${answer.answerId}|}"&ndash;&gt;-->
+                                <!--&lt;!&ndash;@{/detele/}+${student?.id}&ndash;&gt;-->
+                            <!--</tr>-->
+                            <!--</tbody>-->
+                        <!--</table>-->
+                    <!--</div>-->
+                <!--</div>-->
 
-            </div>
+            <!--</div>-->
 
-            <div class="layui-form-item  bt">
-                <!--<a class="layui-input-block">-->
-                    <a th:href="@{|/shiyan/addLastAnswer/${arrangeId}|}" class="layui-btn layui-btn-primary layui-bg-green" lay-submit>增加选项</a>
-                <!--</a>-->
-            </div>
+            <!--<div class="layui-form-item  bt">-->
+                <!--&lt;!&ndash;<a class="layui-input-block">&ndash;&gt;-->
+                    <!--<a th:href="@{|/shiyan/addLastAnswer/${arrangeId}|}" class="layui-btn layui-btn-primary layui-bg-green" lay-submit>增加选项</a>-->
+                <!--&lt;!&ndash;</a>&ndash;&gt;-->
+            <!--</div>-->
 
-        </form>
+        <!--</form>-->
 
 
-    </div>
+    <!--</div>-->
 </div>
 <script th:src="@{/js/layui.all.js}" type="text/javascript" charset="utf-8"></script>
-
+<script src="../../static/js/layui.all.js" type="text/javascript" charset="utf-8"></script>
     <!--<script>-->
     <!--//Demo-->
     <!--layui.use('form', function(){-->

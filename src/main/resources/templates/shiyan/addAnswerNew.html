@@ -46,16 +46,26 @@
         overflow: hidden; /* 内容超出宽度时隐藏超出部分的内容 */
         text-overflow: ellipsis; /* 当对象内文本溢出时显示省略标记() ；需与overflow:hidden;一起使用。*/
     }
+    .p1{
+        color: #009688;
+        margin-top: 1rem;
+        font-size: 16px;
+        margin-left: 7rem;
+        font-weight: 600;
+    }
+    .p2{
+        margin: 1rem auto 1rem 7rem;
+    }
 </style>
 
 
 <body>
-<h2 class="p1" th:text="|对问题${moduleTestQuest.questDescribe}添加选项|">添加模块测试题</h2>
-<div class="layui-row layui-col-space10">
+<h2 class="p1" th:text="'对问题'+'《'+${moduleTestQuest.questDescribe}+'》'+'添加选项'">添加模块测试题</h2>
+<div class="layui-row layui-col-space12">
     <div class="layui-col-md6">
         <!--<form class="layui-form" action="">	-->
-
-        <table th:if="${moduleTestAnswers}" class="layui-table layui-form">
+        <!--th:if="${moduleTestAnswers}"-->
+        <table class="layui-table layui-form">
             <thead>
             <!--            <tr>-->
             <!--                <th>-->
@@ -82,9 +92,14 @@
             </tr>
 
         </table>
-        <label>正确答案</label>
-        <!--        <label th:each="right:${answerRights}"><span th:text="${right}">Python</span></label>-->
-        <label th:text="${answerRight}"></label>
+
+        <p class="p1 p2" th:text="${session.EF}"></p>
+
+            <label>正确答案</label>
+            <!--        <label th:each="right:${answerRights}"><span th:text="${right}">Python</span></label>-->
+            <label th:text="${answerRight}"></label>
+
+
         <form class="layui-form" method="post">
             <input type="hidden" name="questionId" th:value="${moduleTestQuest.questId}">
             <div class="layui-form-item">
@@ -113,14 +128,15 @@
             <div class="layui-form-item">
                 <div class="layui-input-block">
                     <!--                    <a th:href="@{|/shiyan/addQuest|}" class="layui-btn layui-btn-primary layui-bg-green">返回</a>-->
-
-                    <a href="lookTest.html" th:href="@{/courseleader/modeltest/addAnswer}"
-                       class="layui-btn layui-bg-green">继续添加问题选项</a>
-                    <button class="layui-btn layui-btn-primary layui-bg-green" lay-submit>添加完成</button>
+                    <!--th:href="@{/courseleader/modeltest/addAnswer}"-->
+                    <button lay-submit
+                       class="layui-btn layui-bg-green">继续添加问题选项</button>
+                    <a class="layui-btn layui-btn-primary layui-bg-green" th:href="@{|/shiyan/list/${mId}|}">添加完成</a>
                 </div>
 
             </div>
 
+            <!--<p class="p1 p2" th:text="${session.EF}"></p>-->
 
         </form>
 
@@ -170,7 +186,7 @@
     <!--</form>-->
 
 
-</div>
+<!--</div>-->
 </div>
 <script src="../../static/js/layui.all.js" type="text/javascript" charset="utf-8"></script>
 

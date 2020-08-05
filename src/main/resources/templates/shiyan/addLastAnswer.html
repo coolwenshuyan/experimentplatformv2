@@ -64,7 +64,7 @@
 <div class="layui-row layui-col-space10">
     <div class="layui-col-md6">
         <!--<form class="layui-form" action="">	-->
-        <form class="layui-form" th:action="@{|/courseleader/modeltest/addLastAnswer/${arrangeId}|}" method="post">
+        <form class="layui-form" th:action="@{|/shiyan/addLastAnswer/${arrangeId}|}" method="post">
             <!--<div class="layui-form-item">-->
             <!--<label class="layui-form-label">题目</label>-->
             <!--<div class="layui-input-block">-->
@@ -97,7 +97,7 @@
 
                                 <td class="td-manage">
                                     <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;"
-                                       th:href="@{|deleteAnswer/${answer.answerId}|}">
+                                       th:href="@{|/shiyan/deleteLastAnswer/${answer.answerId}/${arrangeId}|}">
                                         <button type="button" class="layui-btn">删除</button>
                                     </a>
                                 </td>

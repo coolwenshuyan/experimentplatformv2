@@ -20,6 +20,7 @@ import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -79,12 +80,18 @@ public class ModuleController {
     @GetMapping("addQuest")
     public String addQuest(Model model, HttpSession session) {
 
+//        先清除添加选项中的提示缓存
+        session.removeAttribute("EF");
+//        从缓存中取到mId
+        int mId = (int) session.getAttribute("mId");
+        logger.debug("模块id信息为:" + mId);
+        ExpModel expModel = expModelService.findExpModelByID(mId);
+        logger.debug("模块信息为:" + expModel);
+        model.addAttribute("expMedel", expModel);
 
 //        从缓存中取到questDescribe，即题目的信息
         String questDescribe = (String) session.getAttribute("questDescribe");
         logger.debug("打印题目信息~~~~~~" + questDescribe);
-//        从缓存中取到mId
-        int mId = (int) session.getAttribute("mId");
 
 //        开始拦截，即学生已作答的模块不允许添加试题
 //        找到当前模块的所有试题
@@ -95,16 +102,12 @@ public class ModuleController {
 //            找到对应问题的学生答题记录
             stuList = moduleTestAnswerStuService.findByQuest_id(q.getQuestId());
 //            如果记录不为空，stuList列表
-//            if (stu != null) {
-//                stuList.add(stu);
-//                logger.debug("————————————stuList" + stuList);
-//            }
         }
 //        如果stuList列表为空
         if (stuList == null || stuList.isEmpty() || CollectionUtils.isEmpty(stuList)) {
 //            判断题目是否为空，如果为空就允许添加对象
             if (questDescribe == null || questDescribe.isEmpty() || questDescribe == "") {
-                model.addAttribute("addAnswer", new ModuleTestAnswer());
+//                model.addAttribute("addAnswer", new ModuleTestAnswer());
                 model.addAttribute("quest", new ModuleTestQuest());
 
             } else {
@@ -112,13 +115,13 @@ public class ModuleController {
 //                如果题目不为空，先从session中取到在添加试题的post方法里存入的questId，即问题id
                 int qId = (int) session.getAttribute("questId");
 //                定义一个quest对象，并以当前缓存的questId查找这个题目的所有信息赋值给quest
-                ModuleTestQuest quest = questService.findQuestByQuestId(qId);
-//                再用那个questId查找对应题目的选项，并存入ModuleTestAnswer的list里面
-                List<ModuleTestAnswer> addAnswer = answerService.findAllByQuestId(qId);
-//                传递查出来的参数，将数据和前端绑定
-                model.addAttribute("addAnswer", addAnswer);
-                model.addAttribute("quest", quest);
-                session.removeAttribute("errorInformation");
+//                ModuleTestQuest quest = questService.findQuestByQuestId(qId);
+////                再用那个questId查找对应题目的选项，并存入ModuleTestAnswer的list里面
+//                List<ModuleTestAnswer> addAnswer = answerService.findAllByQuestId(qId);
+////                传递查出来的参数，将数据和前端绑定
+//                model.addAttribute("addAnswer", addAnswer);
+                model.addAttribute("quest", questService.findQuestByQuestId(qId));
+//                session.removeAttribute("errorInformation");
             }
 
             model.addAttribute("mId", mId);
@@ -157,30 +160,31 @@ public class ModuleController {
 //      获取在shiyan/list/{mId}这个路径方法里存的mid
         int id = (int) session.getAttribute("mId");
 //        完成添加题目、题目类型、题目分数、题目答案、题目序号的操作
-        moduleTestQuest.setQuestDescribe(questDescribe);
-        moduleTestQuest.setQuestType(questType);
-        moduleTestQuest.setQuestScore(questScore);
-        moduleTestQuest.setQuestAnswer(questAnswer);
-        moduleTestQuest.setQuestOrder(questOrder);
+//        moduleTestQuest.setQuestDescribe(questDescribe);
+//        moduleTestQuest.setQuestType(questType);
+//        moduleTestQuest.setQuestScore(questScore);
+//        moduleTestQuest.setQuestAnswer(questAnswer);
+//        moduleTestQuest.setQuestOrder(questOrder);
 //        添加题目的mid，为前面从list/{mid}里取到的mid
         moduleTestQuest.setmId(id);
 //        在控制台打印得到的这个moduleTestQuest对象
         logger.debug(moduleTestQuest.toString());
+        questService.addModuleTestQuest(moduleTestQuest);
 
-        String a = moduleTestQuest.getQuestType();
-        String b = moduleTestQuest.getQuestAnswer();
-        if (a.equals("单选")) {
-            try {
-                Integer.parseInt(b);
-                questService.addModuleTestQuest(moduleTestQuest);
-            } catch (Exception e) {
-                session.setAttribute("errorInformation", "单选答案必须是数字");
-                return "redirect:/shiyan/addQuest";
-            }
-        } else {
-//            利用questService里的保存方法，将数据存到数据库
-            questService.addModuleTestQuest(moduleTestQuest);
-        }
+//        String a = moduleTestQuest.getQuestType();
+//        String b = moduleTestQuest.getQuestAnswer();
+//        if (a.equals("单选")) {
+//            try {
+//                Integer.parseInt(b);
+//                questService.addModuleTestQuest(moduleTestQuest);
+//            } catch (Exception e) {
+//                session.setAttribute("errorInformation", "单选答案必须是数字");
+//                return "redirect:/shiyan/addQuest";
+//            }
+//        } else {
+////            利用questService里的保存方法，将数据存到数据库
+//            questService.addModuleTestQuest(moduleTestQuest);
+//        }
 
 //        控制台打印看添加进去的问题id是多少
         logger.debug("添加测试题里面的questID~~~~~~" + moduleTestQuest.getQuestId());
@@ -405,11 +409,71 @@ public class ModuleController {
      * @return 返回添加模块测试题的页面
      */
     @RequestMapping("deleteAnswer/{answerId}")
-    public String deleteAnswer(@PathVariable("answerId") int answerId) {
+    public String deleteAnswer(@PathVariable("answerId") int answerId,HttpSession session,Model model) {
+
+
+        int qId = (int) session.getAttribute("questId");
+        ModuleTestQuest quest = questService.findQuestByQuestId(qId);
+
+        ModuleTestAnswer answer = answerService.findByAnswerId(answerId);
+        String answerRight = quest.getQuestAnswer();
+
+//        这个会报错java.lang.UnsupportedOperationException: null
+        List<String> answerRights = Arrays.asList(answerRight.split(","));
+//        加上这行解决上面报错
+        answerRights = new ArrayList<>(answerRights);
+
+        logger.debug("正确答案的选项有:" + answerRights);
+
+        logger.debug("youduoshoage有多少个" + answerRights.size());
+        for (int j = 0; j < answerRights.size(); j++) {
+            if (answer.getAnswerOrder() == Integer.valueOf(answerRights.get(j))){
+//        把已有的正确答案取出来
+                for (int i = 0; i < answerRights.size(); i++) {
+                    logger.debug("看看索引的数值" + i);
+                    String daan = answerRights.get(i);
+//                    对比信息
+//                    logger.debug("数值对应的答案是多少" + daan);
+//                    logger.debug("选项信息" + answer);
+                    if (daan.equals(String.valueOf(answer.getAnswerOrder()))) {
+//                        把要删除的选项id对应的问题答案数字移除列表
+                        logger.debug("删除选项的id" + answer.getAnswerOrder());
+                        logger.debug("对比后的结果" + daan);
+                        answerRights.remove(i);
+                    }
+                }
+            }
+        }
+
+        logger.debug("pan判断一下有没有经过");
+        List<String> newList = new ArrayList<>();
+//        删除后还有多个正确答案
+        if (answerRights.size() != 0 || answerRights.size() > 1) {
+            for (String str : answerRights) {
+                newList.add(str);
+            }
+            logger.debug("我是多选，我还剩答案");
+            quest.setQuestAnswer(String.valueOf(newList));
+        }
+//        删除后答案为空
+        if (answerRights.size() == 0) {
+            logger.debug("++++++++++++————————"+ "_____——————————————————————");
+            quest.setQuestAnswer(null);
+        }
+//        删除后只剩一个正确答案
+        else {
+            quest.setQuestAnswer(answerRights.get(0));
+            logger.debug("我是多选，但我没有答案了");
+        }
+        questService.addModuleTestQuest(quest);
+        String newAnswerRight = quest.getQuestAnswer();
+        model.addAttribute("answerRight", newAnswerRight);
+        logger.debug("正确答案:" + newAnswerRight);
+
 //        调用answerService的方法删除选项id来删除选项
         answerService.deleteAnswer(answerId);
 //        返回添加模块测试题的页面
-        return "redirect:/shiyan/addQuest";
+        return "redirect:/shiyan/addAnswer";
     }
 
 
@@ -436,7 +500,27 @@ public class ModuleController {
      * @return 返回静态资源下的shiyan/addAnswer.html
      */
     @GetMapping("addAnswer")
-    public String addAnswer() {
+    public String addAnswer(HttpSession session,Model model) {
+        int id = (int) session.getAttribute("questId");
+        ModuleTestQuest moduleTestQuest = questService.findQuestByQuestId(id);
+        logger.debug("要添加测试题目信息为:" + moduleTestQuest);
+//        从缓存中取到mId
+        int mId = (int) session.getAttribute("mId");
+//
+        String answerRight = moduleTestQuest.getQuestAnswer();
+        model.addAttribute("answerRight", answerRight);
+        logger.debug("正确答案:" + answerRight);
+        //todo 判断可能有的错误
+        List<ModuleTestAnswer> moduleTestAnswers = answerService.findAllByQuestId(id);
+
+        if (moduleTestAnswers == null) {
+            model.addAttribute("moduleTestAnswers", new ModuleTestAnswer());
+        } else {
+            logger.debug("已有题目选项:" + moduleTestAnswers);
+            model.addAttribute("answers", moduleTestAnswers);
+            model.addAttribute("mId", mId);
+        }
+        model.addAttribute("moduleTestQuest", moduleTestQuest);
 //       返回静态资源下的shiyan/addAnswer.html
         return "shiyan/addAnswer";
     }
@@ -449,7 +533,7 @@ public class ModuleController {
      * @return 返回添加模块测试题页面
      */
     @PostMapping("addAnswer")
-    public String addAnswer(ModuleTestAnswer moduleTestAnswer, HttpSession session) {
+    public String addAnswer(ModuleTestAnswer moduleTestAnswer, HttpSession session, String questAnswer, int questionId) {
 //        从添加模块测试题post方法中存入的问题id取出来，并赋值给qId
         int qId = (int) session.getAttribute("questId");
 //        控制台打印获取的问题id
@@ -458,8 +542,30 @@ public class ModuleController {
         moduleTestAnswer.setQuestId(qId);
 //        将添加的ModuleTestAnswer数据存入数据库
         answerService.addAnswers(moduleTestAnswer);
+        logger.debug("答案:" + questAnswer);
+
+        ModuleTestQuest moduleTestQuest = questService.findQuestByQuestId(questionId);
+        String a = moduleTestQuest.getQuestType();
+        if (0 != Integer.parseInt(questAnswer)) {
+            if (a.equals("单选")) {
+                if (moduleTestQuest.getQuestAnswer() == null) {
+                    moduleTestQuest.setQuestAnswer(String.valueOf(moduleTestAnswer.getAnswerOrder()));
+                } else {
+                    session.setAttribute("EF", "单选题目只能有一个正确答案");
+                }
+            } else {
+                if (moduleTestQuest.getQuestAnswer() == null) {
+                    moduleTestQuest.setQuestAnswer(String.valueOf(moduleTestAnswer.getAnswerOrder()));
+                } else {
+                    moduleTestQuest.setQuestAnswer(moduleTestQuest.getQuestAnswer() + ',' + moduleTestAnswer.getAnswerOrder());
+
+                }
+            }
+            logger.debug("多添加了正确选项:" + moduleTestQuest);
+            questService.addModuleTestQuest(moduleTestQuest);
+        }
 //        返回添加模块测试题页面
-        return "redirect:/shiyan/addQuest";
+        return "redirect:/shiyan/addAnswer";
     }
 
     /**

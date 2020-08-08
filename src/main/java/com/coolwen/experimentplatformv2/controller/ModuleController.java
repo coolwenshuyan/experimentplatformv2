@@ -155,7 +155,7 @@ public class ModuleController {
     @PostMapping("addQuest")
     public String addQuest(ModuleTestQuest moduleTestQuest, HttpSession session, Model model,
                            String questDescribe, String questType, float questScore, String questAnswer,
-                           int questOrder) {
+                           int questOrder,String judge) {
 //        在试题表添加试题信息
 //      获取在shiyan/list/{mId}这个路径方法里存的mid
         int id = (int) session.getAttribute("mId");
@@ -191,15 +191,22 @@ public class ModuleController {
 //        将这个问题id存入session
         session.setAttribute("questId", moduleTestQuest.getQuestId());
 
+        logger.debug("打印判断的传输结果"+judge);
+        if (judge.equals("添加题目")){
+
 //        利用model绑定数据到前端，实现数据回显
-        model.addAttribute("questDescribe", questDescribe);
-        model.addAttribute("questType", questType);
-        model.addAttribute("questScore", questScore);
-        model.addAttribute("questAnswer", questAnswer);
-        model.addAttribute("questOrder", questOrder);
+            model.addAttribute("questDescribe", questDescribe);
+            model.addAttribute("questType", questType);
+            model.addAttribute("questScore", questScore);
+            model.addAttribute("questOrder", questOrder);
 
 //        返回当前添加试题页面
-        return "redirect:/shiyan/addQuest";
+            return "redirect:/shiyan/addQuest";
+        }
+        else {
+            logger.debug("现在直接到添加选项链接了");
+            return "redirect:/shiyan/addAnswer";
+        }
     }
 
     /**
@@ -501,6 +508,7 @@ public class ModuleController {
      */
     @GetMapping("addAnswer")
     public String addAnswer(HttpSession session,Model model) {
+
         int id = (int) session.getAttribute("questId");
         ModuleTestQuest moduleTestQuest = questService.findQuestByQuestId(id);
         logger.debug("要添加测试题目信息为:" + moduleTestQuest);

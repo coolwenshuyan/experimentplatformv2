@@ -130,7 +130,7 @@ public class LastTestController {
     public String addQuest(ModuleTestQuest moduleTestQuest, HttpSession session, Model model, @PathVariable int arrangeId,
                            String questDescribe,
                            String questType, float questScore,
-                           String questAnswer, int questOrder) {
+                           String questAnswer, int questOrder,String judge) {
         logger.debug("开始添加++++++——————————");
 //        在试题表添加试题信息
 //        通过模块测试题的题目找到整条试题的信息
@@ -148,14 +148,20 @@ public class LastTestController {
         session.setAttribute("QuestID", moduleTestQuest.getQuestId());
         logger.debug("添加问题方法里问题id是："+moduleTestQuest.getQuestId());
 
-//        利用model绑定数据到前端，实现数据回显
-        model.addAttribute("questDescribe", questDescribe);
-        model.addAttribute("questType", questType);
-        model.addAttribute("questScore", questScore);
-        model.addAttribute("questAnswer", questAnswer);
-        model.addAttribute("questOrder", questOrder);
+        if (judge.equals("添加题目")){
 
-        return "redirect:/shiyan/addLastQuest/" + arrangeId;
+//        利用model绑定数据到前端，实现数据回显
+            model.addAttribute("questDescribe", questDescribe);
+            model.addAttribute("questType", questType);
+            model.addAttribute("questScore", questScore);
+            model.addAttribute("questAnswer", questAnswer);
+            model.addAttribute("questOrder", questOrder);
+            return "redirect:/shiyan/addLastQuest/" + arrangeId;
+        }
+        else {
+            return "redirect:/shiyan/addLastAnswer/" + arrangeId;
+        }
+
     }
 
     /**

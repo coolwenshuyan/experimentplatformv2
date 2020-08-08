@@ -148,19 +148,19 @@ public class LastTestController {
         session.setAttribute("QuestID", moduleTestQuest.getQuestId());
         logger.debug("添加问题方法里问题id是："+moduleTestQuest.getQuestId());
 
-        if (judge.equals("添加题目")){
-
-//        利用model绑定数据到前端，实现数据回显
-            model.addAttribute("questDescribe", questDescribe);
-            model.addAttribute("questType", questType);
-            model.addAttribute("questScore", questScore);
-            model.addAttribute("questAnswer", questAnswer);
-            model.addAttribute("questOrder", questOrder);
-            return "redirect:/shiyan/addLastQuest/" + arrangeId;
-        }
-        else {
+//        if (judge.equals("添加题目")){
+//
+////        利用model绑定数据到前端，实现数据回显
+//            model.addAttribute("questDescribe", questDescribe);
+//            model.addAttribute("questType", questType);
+//            model.addAttribute("questScore", questScore);
+//            model.addAttribute("questAnswer", questAnswer);
+//            model.addAttribute("questOrder", questOrder);
+//            return "redirect:/shiyan/addLastQuest/" + arrangeId;
+//        }
+//        else {
             return "redirect:/shiyan/addLastAnswer/" + arrangeId;
-        }
+//        }
 
     }
 

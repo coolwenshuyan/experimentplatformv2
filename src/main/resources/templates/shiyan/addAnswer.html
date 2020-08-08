@@ -46,15 +46,50 @@
         overflow: hidden; /* 内容超出宽度时隐藏超出部分的内容 */
         text-overflow: ellipsis; /* 当对象内文本溢出时显示省略标记() ；需与overflow:hidden;一起使用。*/
     }
-    .p1{
+
+    .p1 {
         color: #009688;
         margin-top: 1rem;
         font-size: 16px;
         margin-left: 7rem;
         font-weight: 600;
     }
-    .p2{
+
+    .p2 {
         margin: 1rem auto 1rem 7rem;
+    }
+
+    .layui-input-block {
+        margin-left: 70px;
+    }
+
+    .layui-form-label {
+        width: 30px;
+        text-align: left;
+        padding: 9px 0;
+    }
+
+    .layui-col-space12 > * {
+        margin: 0 40px;
+    }
+
+    .right {
+        margin: 10px 0;
+        width: auto;
+        height: 28px;
+    }
+
+    .right-content {
+        width: 70px;
+        height: 28px;
+    }
+
+    .r1 {
+        float: left;
+    }
+
+    .answer {
+        line-height: 21px;
     }
 </style>
 
@@ -90,10 +125,11 @@
 
         <p class="p1 p2" th:text="${session.EF}"></p>
 
-        <label>正确答案</label>
-        <!--        <label th:each="right:${answerRights}"><span th:text="${right}">Python</span></label>-->
-        <label th:text="${answerRight}"></label>
-
+        <div class="right">
+            <p class="right-content r1">正确答案</p>
+            <!--        <label th:each="right:${answerRights}"><span th:text="${right}">Python</span></label>-->
+            <p class="r1 answer" th:text="${answerRight}">1,2,3</p>
+        </div>
 
         <form class="layui-form" method="post">
             <input type="hidden" name="questionId" th:value="${moduleTestQuest.questId}">
@@ -125,7 +161,8 @@
                     <!--                    <a th:href="@{|/shiyan/addQuest|}" class="layui-btn layui-btn-primary layui-bg-green">返回</a>-->
                     <!--th:href="@{/courseleader/modeltest/addAnswer}"-->
                     <button lay-submit
-                            class="layui-btn layui-bg-green">继续添加问题选项</button>
+                            class="layui-btn layui-bg-green">继续添加问题选项
+                    </button>
                     <a class="layui-btn layui-btn-primary layui-bg-green" th:href="@{|/shiyan/list/${mId}|}">添加完成</a>
                 </div>
 

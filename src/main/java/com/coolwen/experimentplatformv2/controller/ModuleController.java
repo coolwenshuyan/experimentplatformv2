@@ -191,22 +191,23 @@ public class ModuleController {
 //        将这个问题id存入session
         session.setAttribute("questId", moduleTestQuest.getQuestId());
 
-        logger.debug("打印判断的传输结果"+judge);
-        if (judge.equals("添加题目")){
+//        logger.debug("打印判断的传输结果"+judge);
+//        if (judge.equals("添加题目")){
+//
+////        利用model绑定数据到前端，实现数据回显
+//            model.addAttribute("questDescribe", questDescribe);
+//            model.addAttribute("questType", questType);
+//            model.addAttribute("questScore", questScore);
+//            model.addAttribute("questOrder", questOrder);
+//
+////        返回当前添加试题页面
+//            return "redirect:/shiyan/addQuest";
+//        }
+//        else {
 
-//        利用model绑定数据到前端，实现数据回显
-            model.addAttribute("questDescribe", questDescribe);
-            model.addAttribute("questType", questType);
-            model.addAttribute("questScore", questScore);
-            model.addAttribute("questOrder", questOrder);
-
-//        返回当前添加试题页面
-            return "redirect:/shiyan/addQuest";
-        }
-        else {
             logger.debug("现在直接到添加选项链接了");
             return "redirect:/shiyan/addAnswer";
-        }
+//        }
     }
 
     /**

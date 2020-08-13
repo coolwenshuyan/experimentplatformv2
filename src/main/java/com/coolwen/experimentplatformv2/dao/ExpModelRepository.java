@@ -52,4 +52,7 @@ public interface ExpModelRepository extends BaseRepository<ExpModel,Integer> {
 
     @Query("select c from ExpModel e,CourseInfo c where e.courseId = c.id and e.m_id = ?1")
     CourseInfo findCourseNameByMid(int mid);
+
+    @Query("select e from ExpModel e, KaoheModel k where k.arrange_id=?1 and k.m_id = e.m_id")
+    List<ExpModel> findExpModelByArrangeId(int arrangeId);
 }

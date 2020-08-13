@@ -129,4 +129,9 @@ public class ExpModelServiceImpl implements ExpModelService {
     public CourseInfo findCourseNameByMid(int mid) {
         return expModelRepository.findCourseNameByMid(mid);
     }
+
+    @Override
+    public List<ExpModel> findExpModelByArrangeId(int arrangeId) {
+        return expModelRepository.findExpModelByArrangeId(arrangeId);
+    }
 }

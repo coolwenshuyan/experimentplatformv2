@@ -59,4 +59,9 @@ public class CollegeReportServiceImpl implements CollegeReportService {
         collegeReportRepository.deleteByModelId(mid);
     }
 
+    @Override
+    public List<CollegeReport> findCollegeReportsByArrangeIdAndMids(int arrangeId, List<Integer> mids) {
+        return collegeReportRepository.findCollegeReportsByArrangeIdAndMids(arrangeId,mids);
+    }
+
 }

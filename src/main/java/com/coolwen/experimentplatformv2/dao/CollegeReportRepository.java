@@ -37,4 +37,9 @@ public interface CollegeReportRepository extends BaseRepository<CollegeReport, I
     @Transactional(readOnly = false)
     @Query("delete from CollegeReport c where c.mid = ?1")
     void deleteByModelId(int mid);
+
+    @Query("select c from KaoheModel k ,CollegeReport c,Student s ,ArrangeClass a " +
+            "where k.arrange_id = ?1 and a.id = ?1 and a.classId =s.classId and c.mid = k.m_id and " +
+            "c.stuid = s.id and c.stuid = s.id and k.m_id in (?2)")
+    List<CollegeReport> findCollegeReportsByArrangeIdAndMids(int arrangeId, List<Integer> mids);
 }

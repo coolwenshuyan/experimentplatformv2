@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>测试 - 四川旅游学院虚拟仿真实验教学管理平台</title>
+    <link rel="stylesheet" href="../../static/new/css/reset.css" />
+    <link rel="stylesheet" href="../../static/new/css/test.css" />
+
+</head>
+<body>
+<div class="test-page">
+    <h1 class="test-title">当前安排表的考核模块</h1>
+    <form class="test-form" method="post" th:action="@{|/reportScoreManage/kaoheModelList/${arrangeId}|}">
+        <button class="test-submit" onclick="Submit" type="submit">打印</button>
+        <div><h3>请选择需要打印的模块</h3></div>
+        <div class="test-anws cl">
+            <label class="test-checkbox cl" th:each="expModel:${expModels}">
+                <input type="checkbox" name="mids" th:value="${expModel.getM_id()}" />
+                <em></em>
+                <span th:text="${expModel.getM_name()}"></span>
+            </label>
+        </div>
+    </form>
+</div>
+</body>
+</html>

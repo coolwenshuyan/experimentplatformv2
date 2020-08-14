@@ -23,11 +23,14 @@
 			#pager {
 				text-align: center;
 			}
+			.layui-btn{
+				float: right;
+			}
 		</style>
 	</head>
 	<body>
 		<div class="layui-fluid">
-			<form class="layui-form">
+			<form class="layui-form" style="float: left">
 				<div class="layui-form-item">
 					<label class="layui-form-label">课程班级</label>
 					<div class="layui-input-inline">
@@ -38,6 +41,7 @@
 					</div>
 				</div>
 			</form>
+			<a class="layui-btn" type="button" th:if="${Choose}" th:href="@{|/reportScoreManage/kaoheModelList/${arrangeId}|}">导出实验报告</a>
 			<table class="layui-table" th:if="${Choose}">
 				<thead>
 					<tr>

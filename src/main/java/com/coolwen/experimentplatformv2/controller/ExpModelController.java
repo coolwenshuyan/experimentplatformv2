@@ -471,8 +471,10 @@ public class ExpModelController {
 //        Student student = (Student) SecurityUtils.getSubject().getPrincipal();
         Student student = (Student) session.getAttribute("student");
         Docker docker = dockerService.findDockerByStu_id(student.getId());
+        logger.info("docker"+docker);
         long nowDate = new Date().getTime();
         String flag = "1314-06-21 00:00:00";
+        //todo docker时间过期或者其他错误信息需要一个提示
         if (docker != null) {
             if (simpleDateFormat.format(docker.getDc_start_datetime()).equals(flag) && simpleDateFormat.format(docker.getDc_end_datetime()).equals(flag)) {
                 model.addAttribute("docker", docker);

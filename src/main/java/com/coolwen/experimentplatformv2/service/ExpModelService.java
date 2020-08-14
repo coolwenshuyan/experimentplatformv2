@@ -49,4 +49,6 @@ public interface ExpModelService {
     Page<ExpModel> findOneCourseModelList2(int courseId, int pageNum, int size);
 
     CourseInfo findCourseNameByMid(int mid);
+
+    List<ExpModel> findExpModelByArrangeId(int arrangeId);
 }

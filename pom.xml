@@ -151,6 +151,12 @@
             <artifactId>shiro-cas</artifactId>
             <version>1.2.4</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.xhtmlrenderer</groupId>
+            <artifactId>flying-saucer-pdf</artifactId>
+            <version>9.0.7</version>
+        </dependency>
     </dependencies>
 
     <build>

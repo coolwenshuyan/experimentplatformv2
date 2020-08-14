@@ -2,29 +2,35 @@ package com.coolwen.experimentplatformv2.controller;
 
 import com.coolwen.experimentplatformv2.dao.KaoheModelRepository;
 import com.coolwen.experimentplatformv2.dao.StudentRepository;
-import com.coolwen.experimentplatformv2.model.ArrangeClass;
-import com.coolwen.experimentplatformv2.model.ClassModel;
+import com.coolwen.experimentplatformv2.model.*;
 import com.coolwen.experimentplatformv2.model.DTO.ArrangeInfoDTO;
+import com.coolwen.experimentplatformv2.model.DTO.CollegeReportStuExpDto;
 import com.coolwen.experimentplatformv2.model.DTO.StudentReportScoreDTO;
-import com.coolwen.experimentplatformv2.model.Student;
-import com.coolwen.experimentplatformv2.model.User;
-import com.coolwen.experimentplatformv2.service.ArrangeClassService;
-import com.coolwen.experimentplatformv2.service.ClazzService;
-import com.coolwen.experimentplatformv2.service.StudentService;
+import com.coolwen.experimentplatformv2.service.*;
+import com.coolwen.experimentplatformv2.utils.HtmlToPdf;
+import com.coolwen.experimentplatformv2.utils.ZipUtil;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
 import java.util.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toCollection;
+import static org.apache.catalina.startup.ExpandWar.deleteDir;
 
 /**
  * 学生模块报告成绩管理
@@ -50,6 +56,16 @@ public class ModleTestReportController {
 
     @Autowired
     private ArrangeClassService arrangeClassService;//课程安排表
+
+    @Autowired
+    private CollegeReportService collegeReportService;
+    @Autowired
+    private TemplateEngine templateEngine;
+    @Autowired
+    private ExpModelService expModelService;
+
+    @Value("${web.pdf-rootPath}")
+    private String rootPath;
 
     /**
      * 列出所有学生的所有的模块的报告成绩
@@ -225,5 +241,97 @@ public class ModleTestReportController {
 
         return "kaohe/score2_manage";
     }
+
+    /**
+     * 查询到当前课程安排所对应的所有考核模块
+     * @param arrangeId
+     * @return
+     */
+    @GetMapping(value = "/kaoheModelList/{arrangeId}")
+    public String kaoheModelList(@PathVariable int arrangeId,Model model){
+        List<ExpModel> expModels = expModelService.findExpModelByArrangeId(arrangeId);
+        logger.debug("实验模块:"+expModels);
+//        model.addAttribute("arrangeId",arrangeId);
+        model.addAttribute("expModels",expModels);
+        return "kaohe/kaohemodlelist";
+    }
+
+    @PostMapping(value = "/kaoheModelList/{arrangeId}")
+    public void kaoheModelList(@PathVariable int arrangeId, HttpServletRequest request, HttpServletResponse response) throws Exception{
+        String[] ids = null;
+        ids = request.getParameterValues("mids");
+        List<Integer> mids = new ArrayList<Integer>();
+        if(ids!=null) {
+            for (String mid : ids){
+                mids.add(Integer.parseInt(mid));
+            }
+        }
+        List<CollegeReport> collegeReports = collegeReportService.findCollegeReportsByArrangeIdAndMids(arrangeId,mids);
+        logger.debug("collegeReports数量:"+collegeReports.size());
+        if (collegeReports.size() == 0){
+            return;
+        }
+        //总文件夹名字
+        String f = "";
+        //子文件夹名
+        String fileName = "";
+        //pdf文件名
+        String pdfName = "";
+        //创建总文件夹
+        File filef = new File("");
+        //创建子文件夹
+        File file = new File("");
+        List<File> fileList = new ArrayList<>();
+
+        for (CollegeReport collegeReport : collegeReports){
+            logger.debug(collegeReport.getMid()+">>>>"+collegeReport.getStuid());
+            Student s = studentService.findStudentById(collegeReport.getStuid());
+            ExpModel expModel = expModelService.findExpModelsByKaoheMid(collegeReport.getMid());
+
+            fileName = expModel.getM_name();
+            pdfName = expModel.getM_name()+"-"+s.getStuXuehao()+"-"+s.getStuName();
+
+            f = collegeReport.getCrClassName();
+            filef = new File(rootPath+f);
+            //创建文件夹
+            file = new File(rootPath+f+"/"+fileName);
+            fileList.add(file);
+            if (file.mkdirs()) {
+                logger.debug("多级层文件夹创建成功！创建后的文件目录为：" + file.getPath() + ",上级文件为:" + file.getParent());
+            }
+
+            CollegeReportStuExpDto collegeReportStuExpDto = collegeReportService.findByStuidMid(collegeReport.getStuid(),collegeReport.getMid());
+            final Context ctx = new Context();
+            //这里图片路径设置成了全路径，要不然在pdf中不显示
+            ctx.setVariable("collegeReport",collegeReportStuExpDto);
+            //"/contract" 为模板文件，注意路径和“/”
+            String htmlcontext = templateEngine.process("bg_student1", ctx);
+            HtmlToPdf.topdf(htmlcontext,rootPath+f+"/"+fileName+"/"+pdfName+".pdf");
+        }
+        logger.debug("f:"+f);
+        /** 3.设置response的header */
+        response.setContentType("application/zip");
+//        response.setHeader("Content-Disposition", "attachment; filename=阿斯蒂芬.zip");
+        response.setHeader("Content-Disposition", "attachment; filename=" + java.net.URLEncoder.encode(f+".zip", "UTF-8"));
+
+        /** 4.调用工具类，下载zip压缩包 */
+        ZipUtil.toZip(rootPath+f, response.getOutputStream(),true);
+
+        if (filef.isFile()) {
+            filef.delete(); // 删除文件
+        } else {
+            File[] files = filef.listFiles();
+            if (files == null) {
+                filef.delete(); // 删除空文件夹
+            } else {
+                for (File fs : files) {
+                    deleteDir(fs); // 迭代删除非空文件夹
+                }
+                filef.delete();
+            }
+        }
+
+    }
+
 
 }

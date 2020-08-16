@@ -108,7 +108,7 @@ public class LoginController {
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);
         Message message = new Message();
         try {
-//            subject.login(token);
+            subject.login(token);
             if (loginType.equals("student")) {
 
 //                Student student = (Student) subject.getPrincipal();

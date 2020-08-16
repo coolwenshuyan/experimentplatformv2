@@ -26,6 +26,7 @@
 				color:#000;
 			};
 		}
+
 		body{font-family: 'SimSun'}
 		html,
 		body,
@@ -175,6 +176,7 @@
 			font: 16px '-apple-system,BlinkMacSystemFont,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif';
 			color: #000;
 			outline: 0;
+
 		}
 		a {
 			color: inherit;
@@ -195,16 +197,17 @@
 			padding: 30px 50px;
 		}
 		.report-show-page {
-			width: 800px;
+			width: 900px;
 			margin: 20px auto;
 			box-sizing: border-box;
-			border: 1px solid #ccc;
+			/*border: 1px solid #ccc;*/
 			padding: 30px 50px;
 		}
 		.logo {
 			text-align: center;
 		}
 		.title {
+			font-weight: 900;
 			line-height: 3;
 			font-size: 30px;
 			text-align: center;
@@ -239,6 +242,7 @@
 			text-align: center;
 		}
 		.step-name {
+			/*font-weight: 900;*/
 			font-size: 20px;
 			line-height: 3;
 		}
@@ -254,7 +258,7 @@
 			justify-content: space-between;
 		}
 		.score-area .comment {
-			width: 70%;
+			/*width: 70%;*/
 			position: relative;
 			padding-bottom: 80px;
 		}
@@ -265,7 +269,7 @@
 			line-height: 50px;
 		}
 		.score-area .score {
-			width: 30%;
+			/*width: 30%;*/
 			border-left: 1px solid #666;
 		}
 		h3 {
@@ -359,9 +363,12 @@
 			border: 1px solid #999999;
 			width: 100%;
 			font-size: 16px;
+
 		}
 		td{
 			border: 1px solid #999999;
+			height: 3em;
+
 		}
 	</style>
 </head>
@@ -375,7 +382,7 @@
 	<div class="title">[[${collegeReport.getCrClassName()}]]实验报告</div>
 	<p class="name">实验名称：<span th:text="${collegeReport.getMname()}"></span></p>
 	<div>
-		<table class="t_table">
+		<table class="t_table" style="text-align: center;">
 			<tr>
 				<td class="tab_tit">学号</td>
 				<td th:text="${collegeReport.getStuXuehao()}">1806101040</td>
@@ -406,14 +413,14 @@
 	<div style="margin-top: 40px;">
 		<table class="t_table" style="table-layout:fixed;">
 			<tr>
-				<td colspan="2"><h3>教师评语</h3></td>
-				<td>成绩</td>
+				<td colspan="2" style="padding-left: 20px;font-size: 20px">教师评语</td>
+				<td style="padding-left: 20px;font-size: 20px">成绩</td>
 			</tr>
 			<tr>
 				<td colspan="2">
 					<div class="comment-area" th:utext="${collegeReport.getCrTcComment()}"></div>
 				</td>
-				<td style="font-size: 20px;">
+				<td style="font-size: 20px;padding-left: 10px">
 					日期：<a>asdfas</a><br />
 					签名：<a>fdsdgadggsad</a>
 				</td>

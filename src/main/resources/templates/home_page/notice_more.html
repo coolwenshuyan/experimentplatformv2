@@ -7,10 +7,14 @@
     <meta name="Keywords" content="四川旅游学院虚拟仿真实验教学管理平台</">
     <meta name="Description" content="四川旅游学院虚拟仿真实验教学管理平台</">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="../../static/css/bootstrap.min.css"/>
 
+
+    <link rel="stylesheet" href="../../static/new/css/reset.css"/>
+    <link rel="stylesheet" href="../../static/new/css/common.css"/>
+    <link rel="stylesheet" type="text/css" href="../../static/css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="../../static/css/css_home/style.css"/>
     <link rel="stylesheet" type="text/css" href="../../static/css/css_home/aos.css"/>
+
     <script src="../../static/js/js_home/jquery-3.4.1.min.js" type="text/javascript" charset="utf-8"></script>
 
     <script src="../../static/js/js_home/echart.js" type="text/javascript" charset="utf-8"></script>
@@ -32,11 +36,11 @@
 
         }
 
-        p {
-            line-height: 30px;
-            font-size: 17px;
-            margin-top: 20px;
-        }
+        /*p {*/
+        /*    line-height: 30px;*/
+        /*    font-size: 17px;*/
+        /*    margin-top: 20px;*/
+        /*}*/
 
         .data {
             float: right;
@@ -56,89 +60,98 @@
         .hr0 {
             clear: both;
         }
+        .nav>li>a {
+            position: static;
+            display: block;
+            padding: 0px;
+        }
     </style>
 </head>
 <body>
-<div class="top visible-lg">
-    <div class="container">
-        <div class="container">
+<!--<div class="top visible-lg">-->
+<!--    <div class="container">-->
+<!--        <div class="container">-->
 
 
-            <div style="float:right;color:#fff ; margin: 10px" class="top-fr">
-                欢迎来到四川旅游学院《旅游大数据虚拟仿真实验教学平台》&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<!--            <div style="float:right;color:#fff ; margin: 10px" class="top-fr">-->
+<!--                欢迎来到四川旅游学院《旅游大数据虚拟仿真实验教学平台》&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+<!--                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
 
-                <!-- <i class="fa fa-sign-out"></i><a style="color:#fff" href="/sso/login.php">教务门户登录</a>&nbsp;&nbsp;&nbsp;&nbsp; -->
-                <i class="fa fa-sign-out"></i>
-                <a th:if="${session.username}==null">
-                    <a style="color:#fff" href="/login">用户登录</a>&nbsp;&nbsp;&nbsp;&nbsp; <i class="fa fa-cog"></i>
-                    <a style="color:#fff" href="/register">注册用户</a>&nbsp;&nbsp;&nbsp;&nbsp;
-                </a>
-                <a th:if="${session.username}!=null">
-                    <a th:text="|Welcome to you, ${session.username}!|"></a>&nbsp;&nbsp;
-                    <!--					<a style="color:#fff" th:href="@{/logout}">退出登录</a>-->
-                </a>
-                <!--				<a style="color:#fff" href="javascript:;">后台入口</a>-->
-            </div>
-        </div>
-    </div>
-</div>
-<script type="text/javascript">
-    $("#logout").click(function () {
-        awdid = 111;
-        $.post("/index.php/Home/Login/Studentlogout.html", {awdid: "daw"}, function (data) {
-            if (data == 1) {
-                location.href = "/index.php/Home/Index/index.html";
-            }
-        })
-    })
-</script>
-<header id="header" style="background:#fff">
-    <nav class="navbar navbar-default navbar-static-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
+<!--                &lt;!&ndash; <i class="fa fa-sign-out"></i><a style="color:#fff" href="/sso/login.php">教务门户登录</a>&nbsp;&nbsp;&nbsp;&nbsp; &ndash;&gt;-->
+<!--                <i class="fa fa-sign-out"></i>-->
+<!--                <a th:if="${session.username}==null">-->
+<!--                    <a style="color:#fff" href="/login">用户登录</a>&nbsp;&nbsp;&nbsp;&nbsp; <i class="fa fa-cog"></i>-->
+<!--                    <a style="color:#fff" href="/register">注册用户</a>&nbsp;&nbsp;&nbsp;&nbsp;-->
+<!--                </a>-->
+<!--                <a th:if="${session.username}!=null">-->
+<!--                    <a th:text="|Welcome to you, ${session.username}!|"></a>&nbsp;&nbsp;-->
+<!--                    &lt;!&ndash;					<a style="color:#fff" th:href="@{/logout}">退出登录</a>&ndash;&gt;-->
+<!--                </a>-->
+<!--                &lt;!&ndash;				<a style="color:#fff" href="javascript:;">后台入口</a>&ndash;&gt;-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+<!--<script type="text/javascript">-->
+<!--    $("#logout").click(function () {-->
+<!--        awdid = 111;-->
+<!--        $.post("/index.php/Home/Login/Studentlogout.html", {awdid: "daw"}, function (data) {-->
+<!--            if (data == 1) {-->
+<!--                location.href = "/index.php/Home/Index/index.html";-->
+<!--            }-->
+<!--        })-->
+<!--    })-->
+<!--</script>-->
+<!--<header id="header" style="background:#fff">-->
+<!--    <nav class="navbar navbar-default navbar-static-top">-->
+<!--        <div class="container">-->
+<!--            <div class="navbar-header">-->
+<!--                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"-->
+<!--                        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">-->
+<!--                    <span class="sr-only"></span>-->
+<!--                    <span class="icon-bar"></span>-->
+<!--                    <span class="icon-bar"></span>-->
+<!--                    <span class="icon-bar"></span>-->
+<!--                </button>-->
 
-                <div class="navbar-brand">
-                    <img src="../../static/images/LOGO2.png" style="height:61px" alt="" width="" height=""
-                         class="img-responsive"/>
-                </div>
-            </div>
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" role="navigation">
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="dhbt"><a style="color: #000;font-size: 18px;font-weight: 400" rel="nofollow"
-                                        href="/newsinfo/newslist">首页</a></li>
-                    <li>
-                        <a style="color:  #000;font-size: 18px;font-weight: 400" rel="nofollow" href="/newsinfo/shiyan">实验大厅入口</a>
+<!--                <div class="navbar-brand">-->
+<!--                    <img src="../../static/images/LOGO2.png" style="height:61px" alt="" width="" height=""-->
+<!--                         class="img-responsive"/>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" role="navigation">-->
+<!--                <ul class="nav navbar-nav navbar-right">-->
+<!--                    <li class="dhbt"><a style="color: #000;font-size: 18px;font-weight: 400" rel="nofollow"-->
+<!--                                        href="/newsinfo/newslist">首页</a></li>-->
+<!--                    <li>-->
+<!--                        <a style="color:  #000;font-size: 18px;font-weight: 400" rel="nofollow" href="/newsinfo/shiyan">实验大厅入口</a>-->
 
-                    </li>
-                    <li class="dhbt"><a style="color: #000;font-size: 18px;font-weight: 400" rel="nofollow"
-                                        href="/setinfo/situation">仿真平台概况</a></li>
-                    <li class="dhbt"><a style="color: #000;font-size: 18px;font-weight: 400" rel="nofollow"
-                                        href="/teachersfront/frontList">师资队伍</a></li>
-                    <li class="dhbt"><a style="color: #000;font-size: 18px;font-weight: 400" rel="nofollow"
-                                        href="/question/list">咨询答疑</a></li>
-                    <li class="dhbt"><a style="color: #000;font-size: 18px;font-weight: 400" rel="nofollow"
-                                        href="/learningfront/learningList">学习效果</a></li>
-                    <li class="dhbt" th:if="${session.student} != null"><a
-                            style="color: #000;font-size: 18px;font-weight: 400" rel="nofollow"
-                            href="/choose/course/list">实验大厅</a></li>
-                    <li class="dhbt" th:if="${session.teacher} != null"><a
-                            style="color: #000;font-size: 18px;font-weight: 400" rel="nofollow"
-                            href="/learning/kuangjia">实验大厅</a></li>
-                    <!-- <li class="dhbt"><a style="color: #000;font-size: 18px;font-weight: 400" rel="nofollow" href="/index.php/Home/Erji/Index/type/13.html">上传规范</a></li> -->
-                </ul>
+<!--                    </li>-->
+<!--                    <li class="dhbt"><a style="color: #000;font-size: 18px;font-weight: 400" rel="nofollow"-->
+<!--                                        href="/setinfo/situation">仿真平台概况</a></li>-->
+<!--                    <li class="dhbt"><a style="color: #000;font-size: 18px;font-weight: 400" rel="nofollow"-->
+<!--                                        href="/teachersfront/frontList">师资队伍</a></li>-->
+<!--                    <li class="dhbt"><a style="color: #000;font-size: 18px;font-weight: 400" rel="nofollow"-->
+<!--                                        href="/question/list">咨询答疑</a></li>-->
+<!--                    <li class="dhbt"><a style="color: #000;font-size: 18px;font-weight: 400" rel="nofollow"-->
+<!--                                        href="/learningfront/learningList">学习效果</a></li>-->
+<!--                    <li class="dhbt" th:if="${session.student} != null"><a-->
+<!--                            style="color: #000;font-size: 18px;font-weight: 400" rel="nofollow"-->
+<!--                            href="/choose/course/list">实验大厅</a></li>-->
+<!--                    <li class="dhbt" th:if="${session.teacher} != null"><a-->
+<!--                            style="color: #000;font-size: 18px;font-weight: 400" rel="nofollow"-->
+<!--                            href="/learning/kuangjia">实验大厅</a></li>-->
+<!--                    &lt;!&ndash; <li class="dhbt"><a style="color: #000;font-size: 18px;font-weight: 400" rel="nofollow" href="/index.php/Home/Erji/Index/type/13.html">上传规范</a></li> &ndash;&gt;-->
+<!--                </ul>-->
 
-            </div>
-        </div>
-    </nav>
-</header>
+<!--            </div>-->
+<!--        </div>-->
+<!--    </nav>-->
+<!--</header>-->
+
+<div th:include="home_page/header :: common_header"></div>
+
+
 <!-- 引入head -->
 <!-- 引入二级页html -->
 <!--

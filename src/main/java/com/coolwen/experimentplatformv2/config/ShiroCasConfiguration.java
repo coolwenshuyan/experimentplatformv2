@@ -151,6 +151,7 @@ public class ShiroCasConfiguration {
         filterChainDefinitionMap.put("/newsinfo/**", "anon");
         filterChainDefinitionMap.put("/setinfo/**", "anon");
         filterChainDefinitionMap.put("/learningfront/**", "anon");
+        filterChainDefinitionMap.put("/file/**", "anon");
 
 
         filterChainDefinitionMap.put("/admin/**", "authc,resourceCheckFilter");

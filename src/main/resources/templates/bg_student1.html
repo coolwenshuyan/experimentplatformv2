@@ -413,16 +413,17 @@
 	<div style="margin-top: 40px;">
 		<table class="t_table" style="table-layout:fixed;">
 			<tr>
-				<td colspan="2" style="padding-left: 20px;font-size: 20px">教师评语</td>
+				<td colspan="3" style="padding-left: 20px;font-size: 20px">五、教师评语</td>
 				<td style="padding-left: 20px;font-size: 20px">成绩</td>
 			</tr>
 			<tr>
-				<td colspan="2">
+				<td colspan="3">
 					<div class="comment-area" th:utext="${collegeReport.getCrTcComment()}"></div>
 				</td>
-				<td style="font-size: 20px;padding-left: 10px">
-					日期：<a>asdfas</a><br />
-					签名：<a>fdsdgadggsad</a>
+				<td  style="font-size: 20px;padding-left: 10px">
+					成绩：<a th:text="${collegeReport.getCrScore()}"></a><br />
+					日期：<a th:text="${#dates.format(collegeReport.getCrSigningTime(),'yyyy/MM/dd')}">asdfas</a><br />
+					签名：<img style="width: 180px;height: 100px" class="layui-upload-img" id="selectImg" th:src="@{'http://localhost:8888/upload/'+${collegeReport.getCrImgurl()}}"></img>
 				</td>
 			</tr>
 		</table>

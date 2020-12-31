@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<title>更新</title>
+		<link rel="stylesheet" href="../../static/new/css/reset.css" />
+		<link rel="stylesheet" href="//cdn.staticfile.org/layui/2.5.6/css/layui.min.css" />
+		<style>
+			.layui-form {
+				padding: 20px;
+				width: 500px;
+				margin: 0 auto;
+			}
+
+			.layui-form-label {
+				text-align: left;
+			}
+		</style>
+	</head>
+	<body>
+		<form class="layui-form" action="/learning/personalDetails" method="post" id="updateForm" th:object="${user}"  enctype="multipart/form-data">
+			<p th:text="${msg}" style="color: red;"></p>
+			<div class="layui-form-item">
+				<label class="layui-form-label">教师姓名</label>
+				<div class="layui-input-block">
+					<input type="text" th:value="${user.nickname}"  autocomplete="off" placeholder="请输入教师姓名" class="layui-input layui-disabled" disabled/>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">教师工号</label>
+				<div class="layui-input-block">
+					<input type="text" th:value="${user.gonghao}"  autocomplete="off" placeholder="请输入教师工号" class="layui-input layui-disabled" disabled/>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">教师签名</label>
+				<input type="file" name="attachs" id="uploadImg" onchange="xmTanUploadImg(this)" value="请选择签名图片">
+				<div class="layui-upload-list">
+					<div th:if="${user.getSignature()==null}">
+						<img class="layui-upload-img" id="selectImg" style="width: 180px; height: 100px;">
+					</div>
+					<div th:if="${user.getSignature()!=null}">
+						<img style="width: 180px;height: 100px" class="layui-upload-img" id="selectImg" th:src="@{'/upload/'+${user.getSignature()}}">
+						<p id="demoText"></p>
+					</div>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-input-block">
+					<button type="submit" class="layui-btn a0" lay-submit="" lay-filter="demo1">保存</button>
+				</div>
+			</div>
+		</form>
+	</body>
+
+	<script src="/static/js/layui.all.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/static/js/layui.js" type="text/javascript" charset="utf-8"></script>
+
+	<script>
+		function xmTanUploadImg(obj) {
+			var file = obj.files[0];
+			var reader = new FileReader();
+			reader.readAsDataURL(file);
+			reader.onload = function(e) { //成功读取文件
+				var img = document.getElementById("selectImg");
+				img.src = e.target.result;
+			};
+		}
+	</script>
+
+</html>

@@ -4,21 +4,27 @@ import com.coolwen.experimentplatformv2.model.CollegeReport;
 import com.coolwen.experimentplatformv2.model.DTO.CollegeReportStuExpDto;
 import com.coolwen.experimentplatformv2.model.KaoHeModelScore;
 import com.coolwen.experimentplatformv2.model.KaoheModel;
+import com.coolwen.experimentplatformv2.model.User;
 import com.coolwen.experimentplatformv2.service.CollegeReportService;
 import com.coolwen.experimentplatformv2.service.KaoHeModelScoreService;
 import com.coolwen.experimentplatformv2.service.KaoheModelService;
 import com.coolwen.experimentplatformv2.service.ScoreUpdateService;
+import com.coolwen.experimentplatformv2.utils.FileUploadUtil;
+import com.coolwen.experimentplatformv2.utils.GetServerRealPathUnit;
+import org.apache.commons.io.FileUtils;
+import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -49,6 +55,10 @@ public class CollegeReportMarkController {
     public String mark(@PathVariable("mid") int mid,
                        @PathVariable("stuid") int stuid,
                        @PathVariable("arrangeId") int arrangeId, Model model) {
+
+        User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
+        model.addAttribute("attachs", user.getSignature());
+
         //查询到报告信息
         CollegeReportStuExpDto collegeReportStuExpDto = collegeReportService.findByStuidMid(stuid, mid);
         model.addAttribute("collegeReport", collegeReportStuExpDto);
@@ -61,13 +71,45 @@ public class CollegeReportMarkController {
     public String mark(@PathVariable("mid") int mid,
                        @PathVariable("stuid") int stuid,
                        @PathVariable("arrangeId") int arrangeId,
-                       CollegeReport collegeReport, HttpSession session) {
+                       CollegeReport collegeReport,
+                       @RequestParam("attachs") MultipartFile[] attachs,
+                       HttpSession session) {
 
         CollegeReport collegeReport1 = collegeReportService.findStuidAndMid(stuid, mid);
+
+        logger.debug("collegeReport1:"+collegeReport1);
+
         collegeReport1.setCrTcComment(collegeReport.getCrTcComment());
-        logger.debug(collegeReport.getCrTcComment());
+        logger.debug("CrTcComment:"+collegeReport.getCrTcComment());
         collegeReport1.setCrScore(collegeReport.getCrScore());
         collegeReport1.setCrTcState(true);
+        collegeReport1.setCrSigningTime(new Date());
+
+        //储存图片，并将图片路径储存到数据库
+        String realpath = GetServerRealPathUnit.getPath("static/upload/");
+//       logger.debug("realPath:" + realpath);
+        for (MultipartFile attach : attachs) {
+            if (attach.isEmpty()) {
+                continue;
+            }
+            //图片验证重命名
+            String picName = FileUploadUtil.picRename(attach.getContentType());
+            String path = realpath + "/" + picName;
+//            logger.debug(path);
+            File f = new File(path);
+//            user.setImg(picName);
+            collegeReport1.setCrImgurl(picName);
+            try {
+                FileUtils.copyInputStreamToFile(attach.getInputStream(), f);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (collegeReport1.getCrImgurl()==null){
+            User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
+            collegeReport1.setCrImgurl(user.getSignature());
+        }
 
         collegeReportService.addCollegeReport(collegeReport1);
 

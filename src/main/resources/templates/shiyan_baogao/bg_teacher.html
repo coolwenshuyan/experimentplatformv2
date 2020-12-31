@@ -135,7 +135,7 @@
     </style>
 </head>
 <body>
-<form th:action="@{|/collegereportmark/${collegeReport.getMid()}/${stuid}/${arrangeId}|}" method="post">
+<form th:action="@{|/collegereportmark/${collegeReport.getMid()}/${stuid}/${arrangeId}|}" method="post" enctype="multipart/form-data">
 <div class="layui-container">
     <div class="layui-row">
         <div class="layui-col-xs12 t_img">
@@ -223,6 +223,20 @@
                 </div>
                 <div class="score_">
                 <input  id="score" name="crScore" th:value="${collegeReport.getCrScore()}" type="number" placeholder="请输入0-100的成绩" oninput="value=value.replace(/[^\d]/g,'')">
+                    <div class="layui-upload">
+                        <!--		  		<input type="file" name="file">上传图片</input>-->
+                        <input type="file" name="attachs" id="uploadImg" onchange="xmTanUploadImg(this)" value="请选择签名图片">
+                        <div class="layui-upload-list">
+                            <div th:if="${collegeReport.getCrImgurl()==null}">
+                                <img class="layui-upload-img" id="selectImg" th:src="@{'/upload/'+${attachs}}" style="width: 180px; height: 100px;">
+                            </div>
+                            <div th:if="${collegeReport.getCrImgurl()!=null}">
+                                <img style="width: 180px;height: 100px" class="layui-upload-img" id="selectImg" th:src="@{'/upload/'+${collegeReport.getCrImgurl()}}">
+                                </dvi>
+                                <p id="demoText"></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -275,7 +289,15 @@
     }
 
 
-
+    function xmTanUploadImg(obj) {
+        var file = obj.files[0];
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function(e) { //成功读取文件
+            var img = document.getElementById("selectImg");
+            img.src = e.target.result;
+        };
+    }
 
 
 

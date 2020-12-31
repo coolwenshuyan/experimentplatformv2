@@ -38,11 +38,15 @@ public class CollegeReportStuExpDto {
     private String className;
     //模块名称
     private String mname;
+    //教师签名图片
+    private String crImgurl;
+    //教师签名的时间
+    private Date crSigningTime;
 
     public CollegeReportStuExpDto(int mid, String crClassName, String crDress, Date crDate, String crTeacher,
                                   String crExpPurpose, String crExpEvr, String crExpContent, String crExpSummary,
                                   String crTcComment, Float crScore, Boolean crTcState, String stuName, String stuXuehao,
-                                  String className, String mname) {
+                                  String className, String mname, String crImgurl, Date crSigningTime) {
         this.mid = mid;
         this.crClassName = crClassName;
         this.crDress = crDress;
@@ -59,6 +63,8 @@ public class CollegeReportStuExpDto {
         this.stuXuehao = stuXuehao;
         this.className = className;
         this.mname = mname;
+        this.crImgurl = crImgurl;
+        this.crSigningTime = crSigningTime;
     }
 
     public int getMid() {
@@ -187,5 +193,21 @@ public class CollegeReportStuExpDto {
 
     public void setMname(String mname) {
         this.mname = mname;
+    }
+
+    public String getCrImgurl() {
+        return crImgurl;
+    }
+
+    public void setCrImgurl(String crImgurl) {
+        this.crImgurl = crImgurl;
+    }
+
+    public Date getCrSigningTime() {
+        return crSigningTime;
+    }
+
+    public void setCrSigningTime(Date crSigningTime) {
+        this.crSigningTime = crSigningTime;
     }
 }

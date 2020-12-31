@@ -55,6 +55,12 @@ public class CollegeReport {
     @Column(name = "cr_tc_state",nullable = false,columnDefinition = "bit default 0")
     //教师评分状态，0未评分，1已经评分
     private boolean crTcState;
+    @Column(name = "cr_imgurl")
+    //教师签名图片
+    private String crImgurl;
+    @Column(name = "cr_signing_time",nullable = true)
+    //教师签名时间
+    private Date crSigningTime;
 
     public int getId() {
         return id;
@@ -168,6 +174,35 @@ public class CollegeReport {
         this.crTcState = crTcState;
     }
 
+    public String getCrImgurl() {
+        return crImgurl;
+    }
+
+    public void setCrImgurl(String crImgurl) {
+        this.crImgurl = crImgurl;
+    }
+
+    public void setCrScore(float crScore) {
+        this.crScore = crScore;
+    }
+
+    public boolean isCrTcState() {
+        return crTcState;
+    }
+
+    public void setCrTcState(boolean crTcState) {
+        this.crTcState = crTcState;
+    }
+
+    public Date getCrSigningTime() {
+        return crSigningTime;
+    }
+
+    public void setCrSigningTime(Date crSigningTime) {
+        this.crSigningTime = crSigningTime;
+    }
+
+
     @Override
     public String toString() {
         return "CollegeReport{" +
@@ -185,6 +220,8 @@ public class CollegeReport {
                 ", crTcComment='" + crTcComment + '\'' +
                 ", crScore=" + crScore +
                 ", crTcState=" + crTcState +
+                ", crImgurl='" + crImgurl + '\'' +
+                ", crSigningTime=" + crSigningTime +
                 '}';
     }
 }

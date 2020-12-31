@@ -22,6 +22,10 @@ public class User {
 
     private String gonghao;
 
+    //教师签名图片
+    private String signature;
+
+
     public User() {
     }
 
@@ -80,6 +84,15 @@ public class User {
         this.gonghao = gonghao;
     }
 
+    public String getSignature() {
+        return signature;
+    }
+
+    public void setSignature(String signature) {
+        this.signature = signature;
+    }
+
+
     @Override
     public String toString() {
         return "User{" +
@@ -89,6 +102,7 @@ public class User {
                 ", password='" + password + '\'' +
                 ", status=" + status +
                 ", gonghao='" + gonghao + '\'' +
+                ", signature='" + signature + '\'' +
                 '}';
     }
 }

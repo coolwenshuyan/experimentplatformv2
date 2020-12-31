@@ -18,7 +18,7 @@ public interface CollegeReportRepository extends BaseRepository<CollegeReport, I
 
     @Query("select new com.coolwen.experimentplatformv2.model.DTO.CollegeReportStuExpDto" +
             "(expm.m_id,cr.crClassName,cr.crDress,cr.crDate,cr.crTeacher,cr.crExpPurpose,cr.crExpEvr,cr.crExpContent," +
-            "cr.crExpSummary,cr.crTcComment,cr.crScore,cr.crTcState,st.stuName,st.stuXuehao,c.className,expm.m_name)" +
+            "cr.crExpSummary,cr.crTcComment,cr.crScore,cr.crTcState,st.stuName,st.stuXuehao,c.className,expm.m_name,cr.crImgurl,cr.crSigningTime)" +
             "from CollegeReport cr left join Student st on cr.stuid = st.id " +
             "left join ClassModel c on c.classId = st.classId " +
             "left join ExpModel expm on cr.mid = expm.m_id " +

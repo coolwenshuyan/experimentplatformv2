@@ -36,12 +36,22 @@
 				<div class="comment">
 					<h3>教师评语</h3>
 					<div class="comment-area" th:utext="${collegeReport.getCrTcComment()}"></div>
-					<div class="teacher-sign">签名：</div>
-					<div class="sign-date">日期：</div>
+<!--					<div class="teacher-sign">签名：</div>-->
+<!--					<div class="sign-date">日期：</div>-->
 				</div>
 				<div class="score">
 					<h3>成绩</h3>
 					<div class="score-text" th:text="${collegeReport.getCrScore()}">98.5</div>
+					<div style="margin: 20px">
+						签名：
+						<div th:if="${not #strings.isEmpty(collegeReport.getCrImgurl())}">
+							<img style="width: 180px;height: 100px" class="layui-upload-img" id="selectImg"  th:src="@{'/upload/'+${collegeReport.getCrImgurl()}}"></img>
+						</div>
+					</div>
+					<div style="margin: 20px">
+						日期：
+						<a th:text="${#dates.format(collegeReport.getCrSigningTime(),'yyyy/MM/dd')}">asdfas</a><br />
+					</div>
 				</div>
 			</div>
 		</div>

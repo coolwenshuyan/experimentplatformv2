@@ -7,15 +7,14 @@
 
 package com.coolwen.experimentplatformv2.controller.HomepagesettingController;
 
-import com.coolwen.experimentplatformv2.controller.TeacherController;
 import com.coolwen.experimentplatformv2.dao.EffectRepository;
 import com.coolwen.experimentplatformv2.model.CourseInfo;
 import com.coolwen.experimentplatformv2.model.Effect;
-import com.coolwen.experimentplatformv2.model.Teacher;
 import com.coolwen.experimentplatformv2.model.User;
 import com.coolwen.experimentplatformv2.service.CourseInfoService;
 import com.coolwen.experimentplatformv2.service.EffectService;
 import com.coolwen.experimentplatformv2.service.NewsInfoService;
+import com.coolwen.experimentplatformv2.service.UserService;
 import com.coolwen.experimentplatformv2.utils.FileUploadUtil;
 import com.coolwen.experimentplatformv2.utils.GetServerRealPathUnit;
 import org.apache.commons.io.FileUtils;
@@ -35,7 +34,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
-import java.text.NumberFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -57,6 +55,8 @@ public class LearningeffectController {
     NewsInfoService newsInfoService;
     @Autowired
     CourseInfoService courseInfoService;
+    @Autowired
+    UserService userService;
 
     FileUploadController fileUploadController =new FileUploadController();  //上传文件
 
@@ -69,6 +69,53 @@ public class LearningeffectController {
     @GetMapping(value = "kuangjia")
     public String kuangjia(){
         return "kuangjia/frame";
+    }
+
+    /**
+     * 教师个人信息修改页面
+     * @param model
+     * @return
+     */
+    @GetMapping(value = "/personalDetails")
+    public String personalDetails(Model model){
+        User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
+        model.addAttribute("user",user);
+        return "user/personalDetails";
+    }
+
+    /**
+     * 教师修改个人信息
+     * @param model
+     * @return
+     */
+    @PostMapping(value = "/personalDetails")
+    public String updatePersonalDetails( @RequestParam("attachs") MultipartFile[] attachs,Model model){
+        User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
+
+        //储存签名图片，并将图片路径储存到数据库
+        String realpath = GetServerRealPathUnit.getPath("static/upload/");
+//       logger.debug("realPath:" + realpath);
+        for (MultipartFile attach : attachs) {
+            if (attach.isEmpty()) {
+                continue;
+            }
+            //图片验证重命名
+            String picName = FileUploadUtil.picRename(attach.getContentType());
+            String path = realpath + "/" + picName;
+//            logger.debug(path);
+            File f = new File(path);
+//            user.setImg(picName);
+            user.setSignature(picName);
+            try {
+                FileUtils.copyInputStreamToFile(attach.getInputStream(), f);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        userService.update(user);
+        model.addAttribute("msg","修改个人信息成功");
+        model.addAttribute("user",user);
+        return "user/personalDetails";
     }
 
 

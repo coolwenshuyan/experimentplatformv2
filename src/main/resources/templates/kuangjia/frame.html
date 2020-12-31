@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 	<head>
 		<meta charset="UTF-8" />
 		<meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1" />
@@ -92,6 +92,9 @@
 									<a class="to-url" data-url="/admin/user/list"><i class="layui-icon layui-icon-username"></i>教师账号管理</a>
 								</li>
 							</shiro:hasRole>
+							<li class="layui-nav-item">
+								<a class="to-url" data-url="/learning/personalDetails"><i class="layui-icon layui-icon-username"></i>个人信息</a>
+							</li>
 							<shiro:hasRole name="teacher">
 								<li class="layui-nav-item">
 									<a class="to-url" data-url="/question/teacherlist/-1"><i class="layui-icon layui-icon-help"></i>学生答疑管理</a>

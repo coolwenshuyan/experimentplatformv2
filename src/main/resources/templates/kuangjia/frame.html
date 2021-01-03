@@ -1,143 +1,128 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
-	<head>
-		<meta charset="UTF-8" />
-		<meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1" />
-		<meta name="renderer" content="webkit" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>管理中心 - 旅游大数据虚拟仿真实验教学平台</title>
-		<link rel="stylesheet" href="../../static/new/css/reset.css" />
-		<link rel="stylesheet" href="//cdn.staticfile.org/layui/2.5.6/css/layui.min.css" />
-		<link rel="stylesheet" href="../../static/new/css/shiyan.css" />
-	</head>
-	<body>
-		<div class="layui-layout layui-layout-admin">
-			<div class="layui-header">
-				<div class="top-logo cl">
-					<img src="../../static/new/images/sctu_w.png" />
-					<p>旅游大数据虚拟仿真实验教学平台</p>
-					<span>管理中心</span>
-				</div>
-				<div class="top-link"><a href="/logout">退出登录</a></div>
-			</div>
-			<div class="layui-side layui-bg-black">
-				<div class="layui-side-scroll">
-					<shiro:authenticated>
-						<ul class="layui-nav layui-nav-tree" lay-shrink="all">
-							<shiro:hasAnyRoles name="admin,courseleader">
-								<li class="layui-nav-item">
-									<a href="javascript:;"><i class="layui-icon layui-icon-home"></i>首页设置</a>
-									<shiro:hasRole name="admin">
-										<dl class="layui-nav-child">
-											<dd><a class="to-url" data-url="/setinfoback/addplat" href="javascript:;">平台介绍</a></dd>
-											<dd><a class="to-url" data-url="/setinfoback/lunbo" href="javascript:;">轮播导航</a></dd>
-											<dd><a class="to-url" data-url="/newsinfoback/list" href="javascript:;">平台公告</a></dd>
-											<dd><a class="to-url" data-url="/setinfoback/addus" href="javascript:;">关于我们</a></dd>
-										</dl>
-									</shiro:hasRole>
-									<shiro:hasRole name="courseleader">
-										<dl class="layui-nav-child">
-											<dd><a class="to-url" data-url="/teachers/list" href="javascript:;">师资队伍</a></dd>
-											<dd><a class="to-url" data-url="/learning/list" href="javascript:;">学习效果</a></dd>
-										</dl>
-									</shiro:hasRole>
-								</li>
-							</shiro:hasAnyRoles>
-							<shiro:hasRole name="teacher">
-								<li class="layui-nav-item">
-									<a href="javascript:;"><i class="layui-icon layui-icon-app"></i>实验模块设置</a>
-									<dl class="layui-nav-child">
-										<dd><a class="to-url" data-url="/expmodel/list" href="javascript:;">实验模块管理</a></dd>
-										<dd><a class="to-url" data-url="/expmodel/moduleList" href="javascript:;">模块测试/报告管理</a></dd>
-									</dl>
-								</li>
-								<li class="layui-nav-item">
-									<a href="javascript:;"><i class="layui-icon layui-icon-survey"></i>考核设置</a>
-									<dl class="layui-nav-child">
-										<dd><a class="to-url" data-url="/kaohemodel/checkModule" href="javascript:;">考核模块设置</a></dd>
-										<dd><a class="to-url" data-url="/shiyan/lastTestList" href="javascript:;">课程理论测试管理</a></dd>
-										<dd><a class="to-url" data-url="/testScoreManage/list" href="javascript:;">模块测试成绩管理</a></dd>
-										<dd><a class="to-url" data-url="/reportScoreManage/list" href="javascript:;">模块报告成绩管理</a></dd>
-										<dd><a class="to-url" data-url="/lastTestScoreManage/list" href="javascript:;">课程理论测试成绩管理</a></dd>
-										<dd><a class="to-url" data-url="/totalscore/list" href="javascript:;">学生总评成绩管理</a></dd>
-										<dd><a class="to-url" data-url="/expmodel/kaoheProgress" href="javascript:;">考核进度</a></dd>
-									</dl>
-								</li>
-							</shiro:hasRole>
-							<shiro:hasRole name="admin">
-								<li class="layui-nav-item">
-									<a href="javascript:;"><i class="layui-icon layui-icon-set"></i>基础设置</a>
-									<dl class="layui-nav-child">
-										<dd><a class="to-url" data-url="/courseinfo/list" href="javascript:;">课程设置</a></dd>
-										<dd><a class="to-url" data-url="/arrangeclass/list" href="javascript:;">课程安排</a></dd>
-									</dl>
-								</li>
-								<li class="layui-nav-item">
-									<a href="javascript:;"><i class="layui-icon layui-icon-auz"></i>权限管理</a>
-									<dl class="layui-nav-child">
-										<dd><a class="to-url" data-url="/admin/role/list" href="javascript:;">角色列表</a></dd>
-										<dd><a class="to-url" data-url="/admin/res/list" href="javascript:;">资源列表</a></dd>
-									</dl>
-								</li>
-								<li class="layui-nav-item">
-									<a href="javascript:;"><i class="layui-icon layui-icon-user"></i>学生账户管理</a>
-									<dl class="layui-nav-child">
-										<dd><a class="to-url" data-url="/studentManage/toBeReviewd" href="javascript:;">学生账号信息审核</a></dd>
-										<dd><a class="to-url" data-url="/studentManage/list" href="javascript:;">学生账号信息管理</a></dd>
-										<dd><a class="to-url" data-url="/studentManage/classManage" href="javascript:;">班级管理</a></dd>
-										<dd><a class="to-url" data-url="/studentManage/dockerList" href="javascript:;">学生实验管理</a></dd>
-									</dl>
-								</li>
-								<li class="layui-nav-item">
-									<a class="to-url" data-url="/admin/user/list"><i class="layui-icon layui-icon-username"></i>教师账号管理</a>
-								</li>
-							</shiro:hasRole>
-							<li class="layui-nav-item">
-								<a class="to-url" data-url="/learning/personalDetails"><i class="layui-icon layui-icon-username"></i>个人信息</a>
-							</li>
-							<shiro:hasRole name="teacher">
-								<li class="layui-nav-item">
-									<a class="to-url" data-url="/question/teacherlist/-1"><i class="layui-icon layui-icon-help"></i>学生答疑管理</a>
-								</li>
-							</shiro:hasRole>
-							<shiro:hasRole name="admin">
-								<li class="layui-nav-item">
-									<a class="to-url" data-url="monitor"><i class="layui-icon layui-icon-console"></i>平台服务监控</a>
-								</li>
-							</shiro:hasRole>
-						</ul>
-					</shiro:authenticated>
-				</div>
-			</div>
-			<div class="layui-body">
-				<iframe src="about:blank" id="iframe" frameborder="0" width="100%" height="100%"></iframe>
-				<iframe src="//172.17.55.54:3000/d/9CWBz0bik/ji-qun-jian-kong?orgId=1&kiosk" id="monitor" frameborder="0" width="100%" height="100%"></iframe>
-			</div>
+<html lang="en" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1" />
+	<meta name="renderer" content="webkit" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>管理中心 - 旅游大数据虚拟仿真实验教学平台</title>
+	<link rel="stylesheet" href="../../static/new/css/reset.css" />
+	<link rel="stylesheet" href="//cdn.staticfile.org/layui/2.5.6/css/layui.min.css" />
+	<link rel="stylesheet" href="../../static/new/css/shiyan.css" />
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+	<div class="layui-header">
+		<div class="top-logo cl">
+			<img src="../../static/new/images/sctu_w.png" />
+			<p>旅游大数据虚拟仿真实验教学平台</p>
+			<span>管理中心</span>
 		</div>
-		<script src="//cdn.staticfile.org/jquery/1.8.0/jquery.min.js"></script>
-		<script src="//cdn.staticfile.org/layui/2.5.6/layui.all.min.js"></script>
-		<script>
-			$(function () {
-				if (self != top) {
-					window.location.href = top.$('.layui-this a').data('url')
+		<!--		<div class="top-link"><a href="/logout">退出登录</a></div>-->
+		<div class="top-link" th:if="${session.teacher} != null">
+			<span th:text="|欢迎你，${session.teacher.nickname} |"></span>
+			<a href="/logout">退出登录</a>
+		</div>
+	</div>
+	<div class="layui-side layui-bg-black">
+		<div class="layui-side-scroll">
+			<ul class="layui-nav layui-nav-tree" lay-shrink="all">
+				<li class="layui-nav-item">
+					<a href="javascript:;"><i class="layui-icon layui-icon-home"></i>首页设置</a>
+					<dl class="layui-nav-child">
+						<dd><a class="to-url" data-url="/setinfoback/addplat" href="javascript:;">平台介绍</a></dd>
+						<dd><a class="to-url" data-url="/setinfoback/lunbo" href="javascript:;">轮播导航</a></dd>
+						<dd><a class="to-url" data-url="/newsinfoback/list" href="javascript:;">平台公告</a></dd>
+						<dd><a class="to-url" data-url="/setinfoback/addus" href="javascript:;">关于我们</a></dd>
+					</dl>
+					<dl class="layui-nav-child">
+						<dd><a class="to-url" data-url="/teachers/list/-1" href="javascript:;">师资队伍</a></dd>
+						<dd><a class="to-url" data-url="/learning/list" href="javascript:;">学习效果</a></dd>
+					</dl>
+				</li>
+				<li class="layui-nav-item">
+					<a href="javascript:;"><i class="layui-icon layui-icon-app"></i>实验模块设置</a>
+					<dl class="layui-nav-child">
+						<dd><a class="to-url" data-url="/expmodel/list" href="javascript:;">实验模块管理</a></dd>
+						<dd><a class="to-url" data-url="/expmodel/moduleList" href="javascript:;">模块测试/报告管理</a></dd>
+					</dl>
+				</li>
+				<li class="layui-nav-item">
+					<a href="javascript:;"><i class="layui-icon layui-icon-survey"></i>考核设置</a>
+					<dl class="layui-nav-child">
+						<dd><a class="to-url" data-url="/kaohemodel/checkModule" href="javascript:;">考核模块设置</a></dd>
+						<dd><a class="to-url" data-url="/shiyan/lastTestList" href="javascript:;">课程理论测试管理</a></dd>
+						<dd><a class="to-url" data-url="/testScoreManage/list" href="javascript:;">模块测试成绩管理</a></dd>
+						<dd><a class="to-url" data-url="/reportScoreManage/list" href="javascript:;">模块报告成绩管理</a></dd>
+						<dd><a class="to-url" data-url="/lastTestScoreManage/list" href="javascript:;">课程理论测试成绩管理</a></dd>
+						<dd><a class="to-url" data-url="/totalscore/list" href="javascript:;">学生总评成绩管理</a></dd>
+						<dd><a class="to-url" data-url="/expmodel/kaoheProgress" href="javascript:;">考核进度</a></dd>
+					</dl>
+				</li>
+				<li class="layui-nav-item">
+					<a href="javascript:;"><i class="layui-icon layui-icon-set"></i>课程管理</a>
+					<dl class="layui-nav-child">
+						<dd><a class="to-url" data-url="/courseinfo/list" href="javascript:;">课程设置</a></dd>
+						<dd><a class="to-url" data-url="/arrangeclass/list" href="javascript:;">课程安排</a></dd>
+					</dl>
+				</li>
+				<li class="layui-nav-item">
+					<a href="javascript:;"><i class="layui-icon layui-icon-auz"></i>权限管理</a>
+					<dl class="layui-nav-child">
+						<dd><a class="to-url" data-url="/admin/role/list" href="javascript:;">角色列表</a></dd>
+						<dd><a class="to-url" data-url="/admin/res/list" href="javascript:;">资源列表</a></dd>
+					</dl>
+				</li>
+				<li class="layui-nav-item">
+					<a href="javascript:;"><i class="layui-icon layui-icon-user"></i>学生账户管理</a>
+					<dl class="layui-nav-child">
+						<dd><a class="to-url" data-url="/studentManage/toBeReviewd" href="javascript:;">学生账号信息审核</a></dd>
+						<dd><a class="to-url" data-url="/studentManage/list" href="javascript:;">学生账号信息管理</a></dd>
+						<dd><a class="to-url" data-url="/studentManage/classManage" href="javascript:;">班级管理</a></dd>
+						<dd><a class="to-url" data-url="/studentManage/dockerList" href="javascript:;">学生实验管理</a></dd>
+					</dl>
+				</li>
+				<li class="layui-nav-item">
+					<a class="to-url" data-url="/admin/user/list"><i class="layui-icon layui-icon-username"></i>教师账号管理</a>
+				</li>
+				<li class="layui-nav-item">
+					<a class="to-url" data-url="/question/teacherlist/-1"><i class="layui-icon layui-icon-help"></i>学生答疑管理</a>
+				</li>
+				<li class="layui-nav-item">
+					<a class="to-url" data-url="monitor"><i class="layui-icon layui-icon-console"></i>平台服务监控</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="layui-body">
+		<iframe src="about:blank" id="iframe" frameborder="0" width="100%" height="100%"></iframe>
+		<iframe src="//172.17.55.54:3000/d/9CWBz0bik/ji-qun-jian-kong?orgId=1&kiosk" id="monitor" frameborder="0" width="100%" height="100%"></iframe>
+	</div>
+</div>
+<script src="//cdn.staticfile.org/jquery/1.8.0/jquery.min.js"></script>
+<script src="//cdn.staticfile.org/layui/2.5.6/layui.all.min.js"></script>
+<script>
+	$(function () {
+		if (self != top) {
+			window.location.href = top.$('.layui-this a').data('url')
+		}
+		$('.to-url').click(function (e) {
+			e.preventDefault()
+			if ($(this).data('url')) {
+				if ($(this).data('url') == 'monitor') {
+					$('#iframe').attr('src', 'about:blank')
+					$('#iframe').hide()
+					$('#monitor').css('z-index', 10)
+					$('#monitor').css('visibility', 'visible')
+				} else {
+					$('#monitor').css('z-index', -10)
+					$('#monitor').css('visibility', 'hidden')
+					$('#iframe').show()
+					$('#iframe').attr('src', $(this).data('url'))
 				}
-				$('.to-url').click(function (e) {
-					e.preventDefault()
-					if ($(this).data('url')) {
-						if ($(this).data('url') == 'monitor') {
-							$('#iframe').attr('src', 'about:blank')
-							$('#iframe').hide()
-							$('#monitor').css('z-index', 10)
-							$('#monitor').css('visibility', 'visible')
-						} else {
-							$('#monitor').css('z-index', -10)
-							$('#monitor').css('visibility', 'hidden')
-							$('#iframe').show()
-							$('#iframe').attr('src', $(this).data('url'))
-						}
-					}
-				})
-			})
-		</script>
-	</body>
+			}
+		})
+	})
+</script>
+</body>
 </html>

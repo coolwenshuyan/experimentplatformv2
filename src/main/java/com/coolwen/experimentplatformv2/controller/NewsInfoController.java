@@ -193,6 +193,7 @@ public class NewsInfoController {
                     String.valueOf(obj[2])
             );
         }
+
         logger.debug("overallScoreDtos:"+overallScoreDtos.toString());
         model.addAttribute("overallScoreDtos",overallScoreDtos);
         //访问量

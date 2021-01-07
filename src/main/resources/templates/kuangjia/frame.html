@@ -127,6 +127,12 @@
 				if (self != top) {
 					window.location.href = top.$('.layui-this a').data('url')
 				}
+
+				var jiekou = '[[${jiekou}]]'
+				if (jiekou != null){
+					console.log("jiekou:",jiekou)
+					$('#iframe').attr('src', jiekou)
+				}
 				$('.to-url').click(function (e) {
 					e.preventDefault()
 					if ($(this).data('url')) {

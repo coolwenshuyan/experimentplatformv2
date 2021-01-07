@@ -25,7 +25,7 @@
         font-size: 0.7rem;
     }
     .introduce{
-        margin-top:2%;
+        margin:2%;
         /*margin-bottom: 2%;*/
         overflow: hidden;
         text-overflow: ellipsis;
@@ -58,7 +58,7 @@
         font-size: 1.3rem;
         font-weight: 400;
         border-bottom: none;
-        /*margin-top: 3%;*/
+        margin-top: 3%;
     }
     .mudi{
         width: 90%;
@@ -80,7 +80,7 @@
         margin: 2% 0;
     }
 
-    img{
+    .layui-col-xs1 img{
         width: 50px;
         height: 50px;
         border-radius: 50%;
@@ -112,7 +112,7 @@
         /*color: #d4d4d4;*/
         display: block;
         margin: 7% 2%;
-        color: #acaaaa;
+        color: black;
     }
 
     .layui-tab-title li{
@@ -141,19 +141,29 @@
                 <!--课程简介-->
                 <div class="layui-col-md12">
                     <div class="layui-card">
-                        <div class="layui-card-header name" th:text="${courseInfo.getCourseName()}">数据库课程</div>
-                        <div class="layui-card-body">
-                            <span th:text="${participantsNum + CompleteNum}+'人学习过'">参与人数：200人</span>
-                            <span th:text="'当前参与人数：'+${participantsNum}+'人'">参与人数：200人</span>
-                            <span th:text="'完成人数：' +${CompleteNum} + '人'">完成人数：190人</span>
-                            <span th:text="'负责人：'+${courseInfo.getTeacherId()}">负责人：李千</span>
-                            <div class="introduce" th:text="${courseInfo.getCourseIntruduce()}">
-                                你好啊这门课程讲的是什么，鬼知道，太耐了aaaaa
-                                你好啊这门课程讲的是什么，鬼知道，太耐了aaaaa
-                                你好啊这门课程讲的是什么，鬼知道，太耐了aaaaa
+                        <div class="layui-row layui-col-space20">
+                            <div class="layui-col-md7">
+                                <div class="layui-card-header name" th:text="${courseInfo.getCourseName()}">数据库课程</div>
+                                <div class="layui-card-body">
+                                    <span th:text="${participantsNum + CompleteNum}+'人学习过'">参与人数：200人</span>
+                                    <span th:text="'当前参与人数：'+${participantsNum}+'人'">参与人数：200人</span>
+                                    <span th:text="'完成人数：' +${CompleteNum} + '人'">完成人数：190人</span>
+                                    <span th:text="'负责人：'+${courseInfo.getTeacherId()}">负责人：李千</span>
+
+                                </div>
                             </div>
+
+                            <div class="layui-col-md5">
+                                <img th:src="@{'/upload/'+${courseInfo.getCourseImgurl()}}" alt="" style="width: 60%;height:100px">
+                            </div>
+
                         </div>
 
+                        <div class="introduce" th:text="${courseInfo.getCourseIntruduce()}">
+                            你好啊这门课程讲的是什么，鬼知道，太耐了aaaaa
+                            你好啊这门课程讲的是什么，鬼知道，太耐了aaaaa
+                            你好啊这门课程讲的是什么，鬼知道，太耐了aaaaa
+                        </div>
                     </div>
                 </div>
                 <!--课程介绍-->

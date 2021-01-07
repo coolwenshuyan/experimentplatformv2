@@ -177,7 +177,7 @@ public class AboutClassController {
         logger.debug("overallScoreDtos:"+overallScoreDtos.toString());
         model.addAttribute("overallScoreDtos",overallScoreDtos);
 
-        return "home_page/aboutClass";
+        return "home_page/aboutClass(1)";
     }
 
 }

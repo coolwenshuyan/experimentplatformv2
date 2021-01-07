@@ -19,6 +19,7 @@ import com.coolwen.experimentplatformv2.utils.FileUploadUtil;
 import com.coolwen.experimentplatformv2.utils.GetServerRealPathUnit;
 import org.apache.commons.io.FileUtils;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +68,21 @@ public class LearningeffectController {
      * @return 返回到后台框架界面
      */
     @GetMapping(value = "kuangjia")
-    public String kuangjia(){
+    public String kuangjia(Model model){
+        logger.debug("框架");
+        Subject subject = SecurityUtils.getSubject();
+        if (subject.hasRole("admin")){
+            logger.debug("admin");
+            model.addAttribute("jiekou","/courseinfo/list");
+        }
+        else if (subject.hasRole("courseleader")){
+            logger.debug("courseleader");
+            model.addAttribute("jiekou","/teachers/list/-1");
+        }
+        else if (subject.hasRole("teacher")){
+            logger.debug("teacher");
+            model.addAttribute("jiekou","/expmodel/list");
+        }
         return "kuangjia/frame";
     }
 

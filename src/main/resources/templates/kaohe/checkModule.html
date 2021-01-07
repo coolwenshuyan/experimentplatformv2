@@ -88,7 +88,7 @@
 					laypage = layui.laypage
 				laypage.render({
 					elem: 'pager',
-					curr: parseInt($('#currentPage').val()),
+					curr: parseInt($('#currentPage').val())+1,
 					count: parseInt($('#totalPage').val()) * 10,
 					jump: function (obj, first) {
 						if (!first) {

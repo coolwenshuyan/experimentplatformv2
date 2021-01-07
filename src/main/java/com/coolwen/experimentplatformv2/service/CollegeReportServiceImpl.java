@@ -4,6 +4,8 @@ import com.coolwen.experimentplatformv2.dao.CollegeReportRepository;
 import com.coolwen.experimentplatformv2.model.CollegeReport;
 import com.coolwen.experimentplatformv2.model.DTO.CollegeReportStuExpDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -62,6 +64,16 @@ public class CollegeReportServiceImpl implements CollegeReportService {
     @Override
     public List<CollegeReport> findCollegeReportsByArrangeIdAndMids(int arrangeId, List<Integer> mids) {
         return collegeReportRepository.findCollegeReportsByArrangeIdAndMids(arrangeId,mids);
+    }
+
+    @Override
+    public List<CollegeReportStuExpDto> findByCourseId(int courseId) {
+        return collegeReportRepository.findByCourseId(courseId);
+    }
+
+    @Override
+    public Page<CollegeReportStuExpDto> findByCourseIdPag(int courseId,Pageable pageable) {
+        return collegeReportRepository.findByCourseIdPag(courseId,pageable);
     }
 
 }

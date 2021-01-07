@@ -157,6 +157,20 @@
             <artifactId>flying-saucer-pdf</artifactId>
             <version>9.0.7</version>
         </dependency>
+
+        <!--Aop记录用户操作日志相关依赖start 王雨来 2020/12/30-->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>1.9.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.9.5</version>
+        </dependency>
+        <!--Aop记录用户操作日志相关依赖end-->
     </dependencies>
 
     <build>

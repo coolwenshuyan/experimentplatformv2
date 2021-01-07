@@ -29,6 +29,9 @@ public class CourseInfo {
 
     @Column(name = "course_intruduce")
     private String courseIntruduce;
+    //课程目的
+    @Column(name = "course_objective")
+    private String courseObjective;
 
     public int getId() {
         return id;
@@ -78,6 +81,14 @@ public class CourseInfo {
         this.courseIntruduce = courseIntruduce;
     }
 
+    public String getCourseObjective() {
+        return courseObjective;
+    }
+
+    public void setCourseObjective(String courseObjective) {
+        this.courseObjective = courseObjective;
+    }
+
     @Override
     public String toString() {
         return "CourseInfo{" +
@@ -87,6 +98,7 @@ public class CourseInfo {
                 ", teacherId=" + teacherId +
                 ", courseImgurl='" + courseImgurl + '\'' +
                 ", courseIntruduce='" + courseIntruduce + '\'' +
+                ", courseObjective='" + courseObjective + '\'' +
                 '}';
     }
 }

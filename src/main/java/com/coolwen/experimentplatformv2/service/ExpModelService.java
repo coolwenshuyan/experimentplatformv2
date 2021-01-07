@@ -1,12 +1,12 @@
 package com.coolwen.experimentplatformv2.service;
 
 import com.coolwen.experimentplatformv2.model.CourseInfo;
+import com.coolwen.experimentplatformv2.model.DTO.ExpModelDto;
 import com.coolwen.experimentplatformv2.model.DTO.KaoheModuleProgressDTO;
 import com.coolwen.experimentplatformv2.model.ExpModel;
+import com.coolwen.experimentplatformv2.model.KaoheModel;
 import com.coolwen.experimentplatformv2.model.ModuleTestQuest;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -51,4 +51,19 @@ public interface ExpModelService {
     CourseInfo findCourseNameByMid(int mid);
 
     List<ExpModel> findExpModelByArrangeId(int arrangeId);
+
+    Integer findOneCourseModelList2(int courseId,int m_id);
+
+    Integer findOneCourseKaoHeModelList(int courseId,int m_id);
+
+    List<ExpModel> findOneCourseModel(int id);
+
+    List<ExpModelDto> findExpModelDtoByID(int courseId);
+
+    int findKaoheNumByMid(int mid);
+
+    KaoheModel findIsKaohe(int mid, int id);
+
+    int findExpModelStuPassNum(String mName);
+
 }

@@ -3,11 +3,9 @@ package com.coolwen.experimentplatformv2.service;
 import com.coolwen.experimentplatformv2.dao.ExpModelRepository;
 import com.coolwen.experimentplatformv2.dao.ModuleTestAnswerStuRepository;
 import com.coolwen.experimentplatformv2.dao.ModuleTestQuestRepository;
-import com.coolwen.experimentplatformv2.model.CourseInfo;
+import com.coolwen.experimentplatformv2.model.*;
+import com.coolwen.experimentplatformv2.model.DTO.ExpModelDto;
 import com.coolwen.experimentplatformv2.model.DTO.KaoheModuleProgressDTO;
-import com.coolwen.experimentplatformv2.model.ExpModel;
-import com.coolwen.experimentplatformv2.model.ModuleTestAnswerStu;
-import com.coolwen.experimentplatformv2.model.ModuleTestQuest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -94,7 +92,7 @@ public class ExpModelServiceImpl implements ExpModelService {
 
     @Override
     public Page<ExpModel> findOneCourseModelList(int courseId,Integer pageNum) {
-        Pageable pageable = PageRequest.of(pageNum,100);
+        Pageable pageable = PageRequest.of(pageNum,10);
         return expModelRepository.findOneCourseModelList(courseId,pageable);
     }
 
@@ -134,4 +132,42 @@ public class ExpModelServiceImpl implements ExpModelService {
     public List<ExpModel> findExpModelByArrangeId(int arrangeId) {
         return expModelRepository.findExpModelByArrangeId(arrangeId);
     }
+
+    @Override
+    public Integer findOneCourseModelList2(int courseId, int m_id) {
+        return expModelRepository.findOneCourseModelList(courseId,m_id);
+    }
+
+    @Override
+    public Integer findOneCourseKaoHeModelList(int courseId, int m_id) {
+        return expModelRepository.findOneCourseKaoHeModelList(courseId, m_id);
+    }
+
+
+    @Override
+    public List<ExpModel> findOneCourseModel(int id) {
+        return expModelRepository.findOneCourseModel(id);
+    }
+
+    @Override
+    public List<ExpModelDto> findExpModelDtoByID(int courseId) {
+        return expModelRepository.findExpModelDtoByID(courseId);
+    }
+
+    @Override
+    public int findKaoheNumByMid(int mid) {
+        return expModelRepository.findKaoheNumByMid(mid);
+    }
+
+    @Override
+    public KaoheModel findIsKaohe(int mid, int id) {
+        return expModelRepository.findIsKaohe(mid,id);
+    }
+
+    @Override
+    public int findExpModelStuPassNum(String mName) {
+        return expModelRepository.findExpModelStuPassNum(mName);
+    }
+
+
 }

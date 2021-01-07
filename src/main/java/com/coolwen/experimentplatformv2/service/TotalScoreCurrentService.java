@@ -35,4 +35,6 @@ public interface TotalScoreCurrentService {
     List<TotalScoreCurrent> findAll();
 
     TotalScoreCurrent findTotalScoreCurrentByStuId2(int stuid, int arrageid);
+
+    TotalScoreCurrent findTotalScoreCurrentByStuIdAndArrageId(int stuid,int arrangeid);
 }

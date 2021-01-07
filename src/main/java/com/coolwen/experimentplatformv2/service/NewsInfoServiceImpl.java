@@ -5,6 +5,8 @@ import com.coolwen.experimentplatformv2.model.NewsInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class NewsInfoServiceImpl implements NewsInfoService {
 
@@ -74,6 +76,16 @@ public class NewsInfoServiceImpl implements NewsInfoService {
     @Override
     public int findUnqualifiedpeopleByCourseId(int id) {
         return newsInfoRepository.findUnqualifiedpeopleByCourseId(id);
+    }
+
+    @Override
+    public List findScoreRanking() {
+        return newsInfoRepository.findScoreRanking();
+    }
+
+    @Override
+    public List findClassScoreRanking(int courseId) {
+        return newsInfoRepository.findClassScoreRanking(courseId);
     }
 
 }

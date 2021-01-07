@@ -31,4 +31,6 @@ public interface TotalScorePassService {
     Page<TotalScorePass> findByStudentIdAndCourseId(int pageNum, int studentId, int CourseId);
 
     Page<TotalScorePass> findByStudentId(int pageNum, int studentId);
+
+    TotalScorePass findTotalScorePassByStuIdAndCourseId(int stuid,int courseid);
 }

@@ -1,10 +1,11 @@
 package com.coolwen.experimentplatformv2.service;
 
 import com.coolwen.experimentplatformv2.dao.*;
-import com.coolwen.experimentplatformv2.model.*;
 import com.coolwen.experimentplatformv2.model.DTO.KaoHeModelStuDTO;
+import com.coolwen.experimentplatformv2.model.DTO.KaoHeModuleInfo;
 import com.coolwen.experimentplatformv2.model.DTO.KaoheModelAndExpInfoDTO;
-import com.coolwen.experimentplatformv2.specification.SimpleSpecification;
+import com.coolwen.experimentplatformv2.model.KaoheModel;
+import com.coolwen.experimentplatformv2.model.ModuleTestQuest;
 import com.coolwen.experimentplatformv2.specification.SimpleSpecificationBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -244,6 +245,16 @@ public class KaoheModelServiceImpl implements KaoheModelService {
     @Override
     public List<KaoheModel> findKaoHeModelByArrangeidAndMid(int arrangeId, Integer mid) {
         return kaoheModelRepository.findKaoHeModelByArrangeidAndMid(arrangeId, mid);
+    }
+
+    @Override
+    public List<KaoHeModuleInfo> findKaoheModelByArrange_id(int arrangeid) {
+        return kaoheModelRepository.findKaoheModelByArrange_id(arrangeid);
+    }
+
+    @Override
+    public KaoheModel findKaoheModelByIsKaohe(int mid, int courseid,int sid) {
+        return kaoheModelRepository.findKaoheModelByIsKaohe(mid, courseid,sid);
     }
 
 

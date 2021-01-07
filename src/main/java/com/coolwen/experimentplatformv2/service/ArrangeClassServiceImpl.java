@@ -4,21 +4,18 @@ import com.coolwen.experimentplatformv2.dao.ArrangeClassRepository;
 import com.coolwen.experimentplatformv2.dao.KaoHeModelScoreRepository;
 import com.coolwen.experimentplatformv2.model.ArrangeClass;
 import com.coolwen.experimentplatformv2.model.DTO.ArrangeClassDto;
+import com.coolwen.experimentplatformv2.model.DTO.ArrangeInfoDTO;
 import com.coolwen.experimentplatformv2.model.KaoHeModelScore;
+import com.coolwen.experimentplatformv2.model.Student;
 import com.coolwen.experimentplatformv2.model.TotalScoreCurrent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.coolwen.experimentplatformv2.model.DTO.ArrangeInfoDTO;
-import com.coolwen.experimentplatformv2.model.Student;
-import com.coolwen.experimentplatformv2.specification.SimpleSpecificationBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -124,6 +121,16 @@ public class ArrangeClassServiceImpl implements ArrangeClassService {
     @Override
     public List<ArrangeClass> findByClassId(int classId) {
         return arrangeClassRepository.findByClassId(classId);
+    }
+
+    @Override
+    public List<ArrangeClass> findArrangeClassesBystudentId(int id) {
+        return arrangeClassRepository.findArrangeClassesBystudentId(id);
+    }
+
+    @Override
+    public int findNumberOfParticipants(int id) {
+        return arrangeClassRepository.findNumberOfParticipants(id);
     }
 
     @Override

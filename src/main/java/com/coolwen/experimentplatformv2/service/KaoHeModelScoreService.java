@@ -1,6 +1,8 @@
 package com.coolwen.experimentplatformv2.service;
 
+import com.coolwen.experimentplatformv2.model.DTO.KaoHeModelStuDTO;
 import com.coolwen.experimentplatformv2.model.KaoHeModelScore;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -39,4 +41,15 @@ public interface KaoHeModelScoreService {
     Integer findmTestFalseByClassIdAndMid(int classId,int Mid);
 
     Integer findmReportFalseByClassIdAndMid(int classId,int Mid);
+
+    Page<KaoHeModelStuDTO> findKaoHeModelStuDTOByStuIdAll(int stu_id, int arrangeID,int pageNum);
+
+    Integer countNotFinishedModule(int stuid , int arrangeid);
+
+    Integer countAllModule(int stuid,int arrrangid);
+
+
+
+
+
 }

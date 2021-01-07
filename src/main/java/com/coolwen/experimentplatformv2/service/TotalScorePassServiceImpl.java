@@ -4,9 +4,10 @@ import com.coolwen.experimentplatformv2.dao.TotalScorePassRepository;
 import com.coolwen.experimentplatformv2.model.CourseInfo;
 import com.coolwen.experimentplatformv2.model.DTO.CourseClassInfo;
 import com.coolwen.experimentplatformv2.model.DTO.StuTotalScoreCurrentDTO;
-import com.coolwen.experimentplatformv2.model.Teacher;
 import com.coolwen.experimentplatformv2.model.TotalScorePass;
 import com.coolwen.experimentplatformv2.specification.SimpleSpecificationBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -15,9 +16,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Service
 public class TotalScorePassServiceImpl implements TotalScorePassService {
@@ -99,5 +97,10 @@ public class TotalScorePassServiceImpl implements TotalScorePassService {
                 "stuId", "=", studentId)
                 .generateSpecification(), pager);
         return teacherPage;
+    }
+
+    @Override
+    public TotalScorePass findTotalScorePassByStuIdAndCourseId(int stuid, int courseid) {
+        return totalScorePassRepository.findTotalScorePassByStuIdAndCourseId(stuid, courseid);
     }
 }

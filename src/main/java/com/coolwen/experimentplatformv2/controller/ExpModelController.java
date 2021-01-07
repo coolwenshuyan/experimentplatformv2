@@ -4,7 +4,7 @@ package com.coolwen.experimentplatformv2.controller;
 import cn.afterturn.easypoi.excel.ExcelImportUtil;
 import cn.afterturn.easypoi.excel.entity.ImportParams;
 import com.alibaba.fastjson.JSONObject;
-import com.coolwen.experimentplatformv2.config.ShiroConfig;
+import com.coolwen.experimentplatformv2.annotation.OperLog;
 import com.coolwen.experimentplatformv2.dao.KaoHeModelScoreRepository;
 import com.coolwen.experimentplatformv2.kit.ShiroKit;
 import com.coolwen.experimentplatformv2.model.*;
@@ -12,7 +12,6 @@ import com.coolwen.experimentplatformv2.model.DTO.KaoHeModelStuDTO;
 import com.coolwen.experimentplatformv2.model.DTO.KaoheModuleProgressDTO;
 import com.coolwen.experimentplatformv2.model.DTO.KaoheProgressMainDTO;
 import com.coolwen.experimentplatformv2.model.EasyPOI.CourseAndModelImport;
-import com.coolwen.experimentplatformv2.model.EasyPOI.QuestionsImport;
 import com.coolwen.experimentplatformv2.service.*;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
@@ -30,7 +29,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
-import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -92,10 +90,14 @@ public class ExpModelController {
     @Autowired
     ScoreUpdateService scoreUpdateService;
 
+    @Autowired
+    StudentService studentService;
+
     protected static final Logger logger = LoggerFactory.getLogger(ExpModelController.class);
 
 
     //查询模块信息页面
+    @OperLog("查询模块信息列表")
     @GetMapping("/list")
     public String expModelList(Model model,
                                @RequestParam(value = "pageNum", defaultValue = "0", required = true) int pageNum,
@@ -121,6 +123,7 @@ public class ExpModelController {
     }
 
     //查询模块信息页面
+    @OperLog("查询模块信息页面")
     @GetMapping("/expModelListByCourseId/{courseId}")
     public String expModelListByCourseId(Model model, @PathVariable("courseId") int courseId, @RequestParam(value = "pageNum", defaultValue = "0", required = true) int pageNum, HttpSession session) {
         boolean choose = true;
@@ -151,6 +154,7 @@ public class ExpModelController {
     }
 
     //添加模块信息页面
+    @OperLog("进入添加模块信息页面")
     @GetMapping("/addExpModel")
     public String toAdd(Model model, HttpSession session) {
         int courseId = (int) session.getAttribute("ExpModelcourseId");
@@ -160,6 +164,7 @@ public class ExpModelController {
     }
 
     //进行模块添加操作
+    @OperLog("进行模块添加操作")
     @PostMapping("/addExpModel")
     public String Add(String m_name,
                       String m_manager,
@@ -191,6 +196,7 @@ public class ExpModelController {
     }
 
     //进行模块删除
+    @OperLog("进行模块删除")
     @GetMapping("/deleteExpModel/{id}")
     public String delete(@PathVariable("id") int id) {
 
@@ -267,6 +273,7 @@ public class ExpModelController {
     }
 
     //进入模块更新
+    @OperLog("进入模块更新")
     @GetMapping("/updateExpModel/{id}")
     public String toUpdate(@PathVariable("id") int id, Model model, HttpServletRequest request, HttpSession session) {
         ExpModel expModel = expModelService.findExpModelByID(id);
@@ -277,6 +284,7 @@ public class ExpModelController {
     }
 
     //进行模块更新
+    @OperLog("进行模块更新")
     @PostMapping("/updateExpModel/{id}")
     public String updateExpModedl(String m_name,
                                   String m_manager,
@@ -313,6 +321,7 @@ public class ExpModelController {
     }
 
     //进入理论添加
+    @OperLog("进入理论添加")
     @GetMapping("/addTheory")
     public String toAddTheory(HttpSession session, Model model) {
         model.addAttribute("id", session.getAttribute("modelId"));
@@ -320,6 +329,7 @@ public class ExpModelController {
     }
 
     //执行理论添加操作
+    @OperLog("执行理论添加操作")
     @PostMapping("/addTheory/{id}")
     public String AddExpTheory(@PathVariable("id") int id,
                                String m_introduce,
@@ -341,6 +351,7 @@ public class ExpModelController {
     }
 
     //理论资料添加上传接口
+    @OperLog("理论资料添加上传接口")
     @PostMapping("/addTheoryFile/{id}")
     @ResponseBody
     public String AddExpTheory(@PathVariable("id") int id,
@@ -362,6 +373,7 @@ public class ExpModelController {
     }
 
     //保存理论资料路径
+    @OperLog("保存理论资料路径")
     @PostMapping("/savePath/{mid}")
     @ResponseBody
     public String savePathn(@PathVariable("mid") int id, @RequestParam("path") String path, HttpServletRequest request) {
@@ -378,6 +390,7 @@ public class ExpModelController {
 
 
     //理论资料修改上传接口
+    @OperLog("理论资料修改上传接口")
     @PostMapping("/updateTheoryFile/{id}")
     @ResponseBody
     public String updateExpTheory(@PathVariable("id") int id,
@@ -401,6 +414,7 @@ public class ExpModelController {
     }
 
     //进入理论更新
+    @OperLog("进入理论更新")
     @GetMapping("/updateExpTheory/{id}")
     public String toUpdateExpTheory(@PathVariable("id") int id, Model model) {
         ExpModel expModel = expModelService.findExpModelByID(id);
@@ -413,6 +427,7 @@ public class ExpModelController {
     }
 
     //执行理论更新操作
+    @OperLog("执行理论更新操作")
     @PostMapping("/updateExpTheory/{id}")
     public String updateExpTheory(@PathVariable("id") int id,
                                   String m_introduce,
@@ -435,6 +450,7 @@ public class ExpModelController {
     }
 
     //搜索模块
+    @OperLog("搜索模块")
     @GetMapping("/viewExpModel")
     public String viewModel(@RequestParam("m_name") String m_name, Model model) {
         List<ExpModel> list = expModelService.findExpModelsBym_name(m_name);
@@ -448,6 +464,7 @@ public class ExpModelController {
 
 
     //实验大厅所有模块信息
+    @OperLog("实验大厅所有模块信息")
     @GetMapping("/alltestModel")
     public String alltest(Model model, @RequestParam(value = "pageNum", required = true, defaultValue = "0") int pageNum, HttpSession session) throws ParseException {
         int arrangeId = 0;
@@ -501,6 +518,7 @@ public class ExpModelController {
     }
 
     //实验大厅考核模块
+    @OperLog("实验大厅考核模块")
     @GetMapping("/kaoheModel")
     public String kaoModelById(Model model, @RequestParam(value = "pageNum", required = true, defaultValue = "0") int pageNum, HttpSession session) throws ParseException {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -519,7 +537,7 @@ public class ExpModelController {
 
 
 //        Page<KaoHeModelStuDTO> kaohe = kaoheModelService.findKaoheModelStuDto(student.getId(), pageNum);
-        Page<KaoHeModelStuDTO> kaohe = kaoheModelService.findKaoheModelStuDto(student.getId(), pageNum, arrangeId);
+        Page<KaoHeModelStuDTO> kaohe = kaoheModelService.findKaoheModelStuDto(student.getId(), pageNum, arrangeId); //ps:这里的dao加了个考核判断
         model.addAttribute("k", kaohe);
         session.setAttribute("modulePageNum", pageNum);
         session.setAttribute("isAllModule", false);
@@ -552,6 +570,7 @@ public class ExpModelController {
     }
 
     //进入理论学习页面
+    @OperLog("进入理论学习页面")
     @GetMapping("/theoryStudy/{id}")
     public String theoryStudey(@PathVariable("id") int id, Model model) {
         ExpModel expModel = expModelService.findExpModelByID(id);
@@ -565,6 +584,7 @@ public class ExpModelController {
     }
 
     //模块测试和实验报告汇总页面
+    @OperLog("模块测试和实验报告汇总页面")
     @GetMapping("/moduleList")
     public String moduleList(Model model, HttpSession session,
                              @RequestParam(value = "pageNum", defaultValue = "0", required = true) int pageNum) {
@@ -580,6 +600,8 @@ public class ExpModelController {
         return "shiyan/lookTestAndReport";
     }
 
+    //分班级检索模块列表
+    @OperLog("分班级检索模块列表")
     @GetMapping("/moduleList/{courseId}")
     public String chooseCourse(Model model, HttpSession session,
                                @PathVariable("courseId") int courseId,
@@ -609,6 +631,7 @@ public class ExpModelController {
     }
 
     //精准返回进入模块测试或填写报告，或理论学习模块所在的页面
+    @OperLog("精准返回进入模块测试或填写报告，或理论学习模块所在的页面")
     @GetMapping("/moduleDispathcher")
     public String moduleDispathcher(HttpSession session, RedirectAttributes redirectAttributes) {
 
@@ -636,6 +659,7 @@ public class ExpModelController {
 
 
     //首页跳转过来的模块
+    @OperLog("首页跳转过来的模块")
     @GetMapping("/home_exp/{id}")
     public String homeExp(@PathVariable("id") int id, HttpSession session, Model model) throws ParseException {
 //        Student student = (Student) SecurityUtils.getSubject().getPrincipal();
@@ -708,6 +732,7 @@ public class ExpModelController {
     }
 
     //继续学习
+    @OperLog("继续学习")
     @GetMapping("/contiuneStudy/{id}")
     public String contiunrStudy(@PathVariable("id") int id, HttpSession session) {
 //        Student student = (Student) SecurityUtils.getSubject().getPrincipal();
@@ -724,6 +749,7 @@ public class ExpModelController {
     }
 
     //中转站
+    @OperLog("中转站")
     @GetMapping("/homeExpDispatcher/{id}")
     public String homeExpDispatcher(@PathVariable("id") int id, Model model, HttpSession session) {
 
@@ -745,6 +771,7 @@ public class ExpModelController {
      * @param courseId
      * @return
      */
+    @OperLog("通过课程ID查询进度")
     @GetMapping("/findClassByCourse/{id}")
     @ResponseBody
     public String findClassByCourse(@PathVariable("id") int courseId) {
@@ -764,6 +791,7 @@ public class ExpModelController {
      * @param model
      * @return
      */
+    @OperLog("考核进度查询(id)")
     @GetMapping("/kaoheProgressQuery/{id}")
     public String kaoheProgressQuery(@PathVariable("id") int id, @RequestParam(value = "pageNum", defaultValue = "0", required = true) int pageNum, Model model) {
         model.addAttribute("mid", id);
@@ -781,6 +809,7 @@ public class ExpModelController {
 
 
     //考核模块进度查询
+    @OperLog("考核模块进度查询")
     @GetMapping("/kaoheProgress")
     public String kaoheProgress(@RequestParam(value = "course", required = true, defaultValue = "0") int courseId,
                                 @RequestParam(value = "class", required = true, defaultValue = "0") int classId,
@@ -831,6 +860,7 @@ public class ExpModelController {
      * @return
      * @throws Exception
      */
+    @OperLog("Excel导入题目")
     @PostMapping("/ExcelInputExpModel")
     public String upload(@RequestParam("file") MultipartFile multipartFile) throws Exception {
         logger.debug("开始导入-------");
@@ -892,6 +922,7 @@ public class ExpModelController {
      * 提供模板下载
      * @param response
      */
+    @OperLog("下载模板")
     @RequestMapping("/downloadTemplate")
     private void downloadFile(HttpServletResponse response) {
 
@@ -938,4 +969,215 @@ public class ExpModelController {
             logger.info("下载失败");
         }
     }
+
+
+    /**
+     * 进入实验时记录log
+     */
+    @OperLog("进入实验时记录log")
+    @ResponseBody
+    @GetMapping("/expLog")
+    public String Explog(String arrangeId,String expId) {
+        logger.info("安排表ID>>>"+arrangeId+"  实验ID>>>"+expId);
+        return "";
+    }
+
+    /**
+     *
+     *首页课程点击显示模块信息
+     */
+    @OperLog("首页课程点击显示模块信息")
+    @GetMapping("/courseMInfo/{courseId}")
+    public String courseModuleInfo(@PathVariable("courseId")int id,@RequestParam(value = "pageNum", defaultValue = "0", required = true) int pageNum,Model model,HttpSession session){
+        Page<ExpModel> modelList = expModelService.findOneCourseModelList(id,pageNum);
+        model.addAttribute("modelList",modelList);
+//        model.addAttribute("courseId",id);
+        session.setAttribute("preciseCourseid",id);
+        return "";
+    }
+
+    /**
+     * 课程选择
+     *
+     */
+    @OperLog("课程选择")
+    @GetMapping("/selectCourse")
+    public String selctCourse(Model model,HttpSession session){
+        Student student = (Student) session.getAttribute("student");
+        List<CourseInfo> courseInfos = null;
+        try{
+            courseInfos = courseInfoService.findCourseInfosByclassid(student.getClassId());
+            if(courseInfos.size() == 0 || courseInfos == null){
+                return "redirect:/choose/course/list";
+            }
+        }catch (Exception e){
+            return "redirect:/choose/course/list";
+        }
+
+        model.addAttribute("courseInfo",courseInfos);
+
+        return "";
+    }
+
+
+    /**
+     * 点击模块信息精确跳转信息中转处理
+     */
+    @OperLog("点击模块信息精确跳转信息中转处理")
+    @GetMapping("/preciseRedirectModule/{mid}")
+    public String precise(@PathVariable("mid")int mid,HttpSession session,RedirectAttributes attributes,Model model){
+        List<ArrangeClass> arrangeClasses = null;
+        Student student = (Student) session.getAttribute("student");
+        int courseid = (int) session.getAttribute("preciseCourseid");
+        Boolean flag = false;
+        try {
+            arrangeClasses = arrangeClassService.findArrangeClassesBystudentId(student.getId());
+            if(arrangeClasses == null || arrangeClasses.size() == 0){
+                session.setAttribute("UnscheduledCourses","您选择的课程未被安排！请联系任课教师安排。");
+                return "redirect:/choose/course/noList";
+            }
+            for(ArrangeClass a :arrangeClasses ){
+                if(a.getCourseId() == courseid){
+                    flag = true;
+                }
+            }
+            if(flag == false){
+                session.setAttribute("UnscheduledCourses","您选择的课程未被安排！请联系任课教师安排。");
+                return "redirect:/choose/course/noList";
+            }
+
+        }catch (Exception e){
+            session.setAttribute("UnscheduledCourses","您选择的课程未被安排！请联系任课教师安排。");
+            return "redirect:/choose/course/noList";
+        }
+
+        Boolean condtion = expModelService.findExpModelByID(mid).isNeedKaohe();
+        KaoheModel kaoheModel = kaoheModelService.findKaoheModelByIsKaohe(mid,courseid, student.getId());
+        attributes.addAttribute("courseid",courseid);
+        int count = 0;
+        int pageNum = 0;
+        if(kaoheModel == null){
+            count += expModelService.findOneCourseModelList2(courseid,mid);
+            pageNum = (count / 6);
+//            return "redirect:/expmodel/alltestModelPos?pageNum="+pageNum;
+            model.addAttribute("jiekou","/expmodel/alltestModelPos?pageNum="+pageNum);
+            return "kuangjia/shiyan";
+        }else {
+            count += expModelService.findOneCourseKaoHeModelList(courseid,mid);
+            pageNum = (count / 6);
+            System.out.println("-----------------------------------"+count);
+//            return "redirect:/expmodel/kaoheModelPos?pageNum="+pageNum;
+            model.addAttribute("jiekou","/expmodel/kaoheModelPos?pageNum="+pageNum);
+            return "kuangjia/shiyan";
+        }
+    }
+
+
+    /**
+     *全部模块的精确跳转
+     */
+    @OperLog("全部模块的精确跳转")
+    @GetMapping("/alltestModelPos")
+    public String alltestPos(Model model, @RequestParam(value = "pageNum", required = true, defaultValue = "0") int pageNum,HttpSession session) throws ParseException {
+        int courseid = (int) session.getAttribute("preciseCourseid");
+        Page<ExpModel> a = expModelService.findOneCourseModelList2(courseid, pageNum, 6);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        model.addAttribute("list", a);
+        session.setAttribute("modulePageNum", pageNum);
+        session.setAttribute("isAllModule", true);
+        Student student = (Student) session.getAttribute("student");
+        Docker docker = dockerService.findDockerByStu_id(student.getId());
+        logger.info("docker"+docker);
+        long nowDate = new Date().getTime();
+        String flag = "1314-06-21 00:00:00";
+        //todo docker时间过期或者其他错误信息需要一个提示
+        if (docker != null) {
+            if (simpleDateFormat.format(docker.getDc_start_datetime()).equals(flag) && simpleDateFormat.format(docker.getDc_end_datetime()).equals(flag)) {
+                model.addAttribute("docker", docker);
+                return "home_shiyan/all-test";
+            } else if (!simpleDateFormat.format(docker.getDc_start_datetime()).equals(flag) && simpleDateFormat.format(docker.getDc_end_datetime()).equals(flag)) {
+                if (nowDate > docker.getDc_start_datetime().getTime()) {
+                    model.addAttribute("docker", docker);
+                    return "home_shiyan/all-test";
+                }
+            } else if (simpleDateFormat.format(docker.getDc_start_datetime()).equals(flag) && !simpleDateFormat.format(docker.getDc_end_datetime()).equals(flag)) {
+                if (nowDate < docker.getDc_end_datetime().getTime()) {
+                    model.addAttribute("docker", docker);
+                    return "home_shiyan/all-test";
+                }
+            } else if (!simpleDateFormat.format(docker.getDc_start_datetime()).equals(flag) && !simpleDateFormat.format(docker.getDc_end_datetime()).equals(flag)) {
+                if (docker.getDc_start_datetime().getTime() < nowDate && nowDate < docker.getDc_end_datetime().getTime()) {
+                    model.addAttribute("docker", docker);
+                    return "home_shiyan/all-test";
+                }
+            }
+        }
+        model.addAttribute("docker", null);
+        return "home_shiyan/all-test";
+    }
+
+
+    /**
+     *考核模块
+     */
+    @OperLog("考核模块")
+    @GetMapping("/kaoheModelPos")
+    public String kaoModelByIdPos(Model model, @RequestParam(value = "pageNum", required = true, defaultValue = "0") int pageNum, HttpSession session) throws ParseException {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        int courseid = (int) session.getAttribute("preciseCourseid");
+        Student student = (Student) session.getAttribute("student");
+        Page<KaoHeModelStuDTO> kaohe = kaoheModelService.findKaoheModelStuDto(student.getId(), pageNum, courseid); //ps:这里的dao加了个考核判断
+        model.addAttribute("k", kaohe);
+        session.setAttribute("modulePageNum", pageNum);
+        session.setAttribute("isAllModule", false);
+        Docker docker = dockerService.findDockerByStu_id(student.getId());
+        long nowDate = new Date().getTime();
+        String flag = "1314-06-21 00:00:00";
+        if (docker != null) {
+            if (simpleDateFormat.format(docker.getDc_start_datetime()).equals(flag) && simpleDateFormat.format(docker.getDc_end_datetime()).equals(flag)) {
+                model.addAttribute("docker", docker);
+                return "home_shiyan/index";
+            } else if (!simpleDateFormat.format(docker.getDc_start_datetime()).equals(flag) && simpleDateFormat.format(docker.getDc_end_datetime()).equals(flag)) {
+                if (nowDate > docker.getDc_start_datetime().getTime()) {
+                    model.addAttribute("docker", docker);
+                    return "home_shiyan/index";
+                }
+            } else if (simpleDateFormat.format(docker.getDc_start_datetime()).equals(flag) && !simpleDateFormat.format(docker.getDc_end_datetime()).equals(flag)) {
+                if (nowDate < docker.getDc_end_datetime().getTime()) {
+                    model.addAttribute("docker", docker);
+                    return "home_shiyan/index";
+                }
+            } else if (!simpleDateFormat.format(docker.getDc_start_datetime()).equals(flag) && !simpleDateFormat.format(docker.getDc_end_datetime()).equals(flag)) {
+                if (docker.getDc_start_datetime().getTime() < nowDate && nowDate < docker.getDc_end_datetime().getTime()) {
+                    model.addAttribute("docker", docker);
+                    return "home_shiyan/index";
+                }
+            }
+        }
+        model.addAttribute("docker", null);
+        return "home_shiyan/index";
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

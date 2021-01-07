@@ -3,9 +3,9 @@ package com.coolwen.experimentplatformv2.dao;
 import com.coolwen.experimentplatformv2.dao.basedao.BaseRepository;
 import com.coolwen.experimentplatformv2.model.ClassModel;
 import com.coolwen.experimentplatformv2.model.CourseInfo;
-import com.coolwen.experimentplatformv2.model.DTO.CourseClassInfo;
 import com.coolwen.experimentplatformv2.model.DTO.CourseInfoDto;
 import com.coolwen.experimentplatformv2.model.DTO.CourseInfoDto2;
+import com.coolwen.experimentplatformv2.model.DTO.CourseInfoDto5;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
@@ -43,4 +43,24 @@ public interface CourseInfoRepository extends BaseRepository<CourseInfo, Integer
 
     @Query("select ci from CourseInfo ci where ci.courseCode = ?1")
     List<CourseInfo> findAllByCourseCode(String courseCode);
+
+
+    @Query("select c from Student s left join ArrangeClass ac on s.classId = ac.classId left join CourseInfo c on ac.courseId = c.id where s.classId = ?1")
+    List<CourseInfo> findCourseInfosByclassid(int classid);
+//
+//    @Query("select new com.coolwen.experimentplatformv2.model.DTO.CourseInfoDto3 " +
+//            "(ci.id, ci.courseName, ci.courseCode, ci.teacherId, ci.courseImgurl, ci.courseIntruduce, ac.id, ac.classId, ac.teacherId, ac.arrangeStart, ac.arrangeEnd, ac.skAddress,tp.kaoheNum,tp.totalScore) " +
+//            "from CourseInfo ci,ArrangeClass ac , TotalScorePass tp where ci.id=ac.courseId and tp.courseId = ci.id and tp.stuId = ?2 and ac.classId = ?1")
+//    List<CourseInfoDto3> findByArrangeCourseInfoDto3byClassIdAndStuId(int classId,int stuid);
+
+
+
+    //查询一个课程往期参与（完成）人数
+    @Query("select count(t) from TotalScorePass t where t.courseId = ?1")
+    int findOneCourseInfoPassNum(int courseId);
+
+    @Query("select new com.coolwen.experimentplatformv2.model.DTO.CourseInfoDto5" +
+            "(ci.id,ci.courseName, ci.courseCode,u.nickname,ci.courseImgurl,ci.courseIntruduce) " +
+            "from CourseInfo ci ,User u where ci.teacherId = u.id")
+    List<CourseInfoDto5> findByCourseInfoDto3();
 }

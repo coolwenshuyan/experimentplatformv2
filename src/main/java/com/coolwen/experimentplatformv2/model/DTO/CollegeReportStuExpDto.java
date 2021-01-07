@@ -42,6 +42,18 @@ public class CollegeReportStuExpDto {
     private String crImgurl;
     //教师签名的时间
     private Date crSigningTime;
+    //学生id
+    private int stuId;
+
+
+    public CollegeReportStuExpDto(int mid, int stuId, String crClassName, String stuName, String stuXuehao, String mname) {
+        this.mid = mid;
+        this.stuId = stuId;
+        this.crClassName = crClassName;
+        this.stuName = stuName;
+        this.stuXuehao = stuXuehao;
+        this.mname = mname;
+    }
 
     public CollegeReportStuExpDto(int mid, String crClassName, String crDress, Date crDate, String crTeacher,
                                   String crExpPurpose, String crExpEvr, String crExpContent, String crExpSummary,
@@ -209,5 +221,13 @@ public class CollegeReportStuExpDto {
 
     public void setCrSigningTime(Date crSigningTime) {
         this.crSigningTime = crSigningTime;
+    }
+
+    public int getStuId() {
+        return stuId;
+    }
+
+    public void setStuId(int stuId) {
+        this.stuId = stuId;
     }
 }

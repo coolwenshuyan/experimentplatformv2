@@ -20,8 +20,11 @@ public interface KaoHeModelScoreRepository extends BaseRepository<KaoHeModelScor
     @Query("delete from KaoHeModelScore khms where khms.tKaohemodleId = ?1 ")
     void deleteByTKaohemodleId(int tkid);
 
-    @Query("select new com.coolwen.experimentplatformv2.model.DTO.KaoHeModelStuDTO(kh.m_id,khs.stuId,khs.mTeststate,khs.mReportstate,khs.mScale,khs.mScore,e.m_name,e.imageurl,e.m_inurl,e.report_type,kh.kaohe_starttime,kh.kaohe_endtime) from KaoheModel kh left join ExpModel e on kh.m_id = e.m_id left join KaoHeModelScore khs on khs.tKaohemodleId = kh.id where khs.stuId = ?1 and kh.arrange_id =?2 order by kh.m_id")
+    @Query("select new com.coolwen.experimentplatformv2.model.DTO.KaoHeModelStuDTO(kh.m_id,khs.stuId,khs.mTeststate,khs.mReportstate,khs.mScale,khs.mScore,e.m_name,e.imageurl,e.m_inurl,e.report_type,kh.kaohe_starttime,kh.kaohe_endtime) from KaoheModel kh left join ExpModel e on kh.m_id = e.m_id left join KaoHeModelScore khs on khs.tKaohemodleId = kh.id where khs.stuId = ?1 and kh.arrange_id =?2  order by kh.m_id")
     Page<KaoHeModelStuDTO> findKaoHeModelStuDTOByStuId(int stu_id,int arrangeID, PageRequest pageRequest);
+
+    @Query("select new com.coolwen.experimentplatformv2.model.DTO.KaoHeModelStuDTO(kh.m_id,khc.stuId,khc.mTeststate,khc.mReportstate,khc.mScale,khc.mScore,e.m_name,e.imageurl,e.m_inurl,e.report_type,kh.kaohe_starttime,kh.kaohe_endtime) from KaoHeModelScore khc left join KaoheModel kh on khc.tKaohemodleId = kh.id left join ExpModel e on e.m_id = kh.m_id where khc.stuId = ?1 and kh.arrange_id = ?2 and e.needKaohe = true")
+    Page<KaoHeModelStuDTO> findKaoHeModelStuDTOByStuIdAll(int stu_id,int arrangeID, PageRequest pageRequest);
 
     @Query("select new com.coolwen.experimentplatformv2.model.DTO.KaoHeModelStuDTO(kh.m_id,khs.stuId,khs.mTeststate,khs.mReportstate,khs.mScale,khs.mScore,e.m_name,e.imageurl,e.m_inurl,e.report_type,kh.kaohe_starttime,kh.kaohe_endtime) from KaoheModel kh left join ExpModel e on kh.m_id = e.m_id left join KaoHeModelScore khs on khs.tKaohemodleId = kh.id where khs.stuId = ?1 and e.m_id = ?2")
     KaoHeModelStuDTO findKaoHeModelStuDTOByStuId(int stu_id, int mid);
@@ -56,4 +59,10 @@ public interface KaoHeModelScoreRepository extends BaseRepository<KaoHeModelScor
 
     @Query("select khs from KaoHeModelScore khs,KaoheModel k where k.id=khs.tKaohemodleId and k.m_id = ?1")
     List<KaoHeModelScore> findKaoheModuleScoreByModelId(int mid);
+
+    @Query("select count(khs) from ArrangeClass ac left join KaoheModel kh on ac.id = kh.arrange_id left join KaoHeModelScore khs on kh.id = khs.tKaohemodleId left join Student s on s.id = khs.stuId where s.id = ?1 and ac.id = ?2 and (khs.mReportstate = false or khs.mTeststate = false or khs.mReportteacherstate = false )")
+    Integer countNotFinishedModule(int stuid , int arrangeid);
+
+    @Query("select count(khs) from ArrangeClass ac left join KaoheModel kh on ac.id = kh.arrange_id left join KaoHeModelScore khs on kh.id = khs.tKaohemodleId left join Student s on s.id = khs.stuId where s.id = ?1 and ac.id = ?2 ")
+    Integer countAllModule(int stuid,int arrrangid);
 }

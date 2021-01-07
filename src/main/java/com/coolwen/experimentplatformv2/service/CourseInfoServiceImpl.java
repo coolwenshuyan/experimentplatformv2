@@ -85,4 +85,19 @@ public class CourseInfoServiceImpl implements CourseInfoService {
     public List<CourseInfo> findAllByCourseCode(String courseCode) {
         return courseInfoRepository.findAllByCourseCode(courseCode);
     }
+
+    @Override
+    public List<CourseInfo> findCourseInfosByclassid(int classid) {
+        return courseInfoRepository.findCourseInfosByclassid(classid);
+    }
+
+//    @Override
+//    public List<CourseInfoDto3> findByArrangeCourseInfoDto3byClassIdAndStuId(int classId, int stuid) {
+//        return courseInfoRepository.findByArrangeCourseInfoDto3byClassIdAndStuId(classId, stuid);
+//    }
+
+    @Override
+    public int findOneCourseInfoPassNum(int courseId) {
+        return courseInfoRepository.findOneCourseInfoPassNum(courseId);
+    }
 }

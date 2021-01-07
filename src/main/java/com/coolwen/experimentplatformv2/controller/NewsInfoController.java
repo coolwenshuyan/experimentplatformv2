@@ -10,6 +10,8 @@ package com.coolwen.experimentplatformv2.controller;
 import com.coolwen.experimentplatformv2.dao.*;
 import com.coolwen.experimentplatformv2.model.*;
 import com.coolwen.experimentplatformv2.model.DTO.CourseInfoDto;
+import com.coolwen.experimentplatformv2.model.DTO.CourseInfoDto5;
+import com.coolwen.experimentplatformv2.model.DTO.OverallScoreDto;
 import com.coolwen.experimentplatformv2.service.*;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
@@ -26,11 +28,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @Description 首页显示的数据，后台管理系统中 首页-->平台公告页面的增删改查
@@ -63,6 +61,10 @@ public class NewsInfoController {
     private CourseInfoService courseInfoService;
     @Autowired
     private EffectService effectService;
+    @Autowired
+    private CourseInfoRepository courseInfoRepository;
+    @Autowired
+    ArrangeClassService arrangeClassService;
 
     @Value("${web.count-path}")
     private String count;
@@ -132,7 +134,13 @@ public class NewsInfoController {
         model.addAttribute("effects", effects);
 
         //课程展示
-        List<CourseInfo> courseInfos = courseInfoService.findAll();
+//        List<CourseInfo> courseInfos = courseInfoService.findAll();
+        List<CourseInfoDto5> courseInfos = courseInfoRepository.findByCourseInfoDto3();
+        for (CourseInfoDto5 courseInfo : courseInfos){
+            int participantsNum = arrangeClassService.findNumberOfParticipants(courseInfo.getCourseInfoId());
+            int completeNum = courseInfoService.findOneCourseInfoPassNum(courseInfo.getCourseInfoId());
+            courseInfo.setNumberOfLearning(participantsNum+completeNum);
+        }
         model.addAttribute("courseInfos",courseInfos);
 
         //平台统计
@@ -173,18 +181,33 @@ public class NewsInfoController {
         model.addAttribute("qualifiedstu",qualified);
         model.addAttribute("unqualifiedstu",unqualified);
 
+        //排行榜
+        //前端页面展示10个要错位，修复后  删除两个 ”-2“ 即可
+        List list = newsInfoService.findScoreRanking();
+        OverallScoreDto[] overallScoreDtos = new OverallScoreDto[list.size()-2];
+        for(int i=0;i<list.size()-2;i++) {
+            Object[] obj = (Object[]) list.get(i);
+            overallScoreDtos[i] = new OverallScoreDto(
+                    String.valueOf(obj[0]),
+                    String.valueOf(obj[1]),
+                    String.valueOf(obj[2])
+            );
+        }
+        logger.debug("overallScoreDtos:"+overallScoreDtos.toString());
+        model.addAttribute("overallScoreDtos",overallScoreDtos);
         //访问量
         // 获取访问量信息
         String txtFilePath = count;
         Long count = Get_Visit_Count(txtFilePath);
         model.addAttribute("count", count);
-        return "home_page/index";
+        return "home_page/index_new";
     }
 
 
     //前端实验大厅入口
     @GetMapping(value = "/shiyan/{courInforId}")
-    public String model(Model model, @PathVariable int courInforId) {
+//    @ResponseBody
+    public String model(Model model, @PathVariable int courInforId, HttpSession session) {
         logger.debug("shiyan接口进入");
 //        Map<Object, Object> map = CasUtils.getUserInfo(SecurityUtils.getSubject().getSession());
 //        String comsys_role = (String) map.get("comsys_role");
@@ -203,8 +226,13 @@ public class NewsInfoController {
         ClassModel classModel = classService.findClassById(student.getClassId());
         CourseInfoDto courseInfoDto = courseInfoService.findByCourseInfoIdAndClassId(courInforId, classModel.getClassId());
         logger.debug("课程信息:" + courseInfoDto);
-        model.addAttribute("arrageId_sctudemo", courseInfoDto.getArrageClassId());
+        session.setAttribute("arrageId_sctudemo", courseInfoDto.getArrageClassId());
         model.addAttribute("disMid", false);
+        model.addAttribute("fdsaf", "false");
+        model.addAttribute("jiekou","/expmodel/alltestModel");
+        //-----------------------------------------------------------------------------------------------------------------
+
+//        return String.valueOf(modelList);
         return "kuangjia/shiyan";
 //        } else {
 //            //是老师就跳转到实验管理界面
@@ -212,7 +240,6 @@ public class NewsInfoController {
 //        }
 
     }
-
 
     //前端首页，点击公告，查看详情
     @GetMapping(value = "/noticeDetails/{id}")

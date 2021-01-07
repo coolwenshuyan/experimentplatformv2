@@ -2,14 +2,16 @@ package com.coolwen.experimentplatformv2.service;
 
 import com.coolwen.experimentplatformv2.dao.KaoHeModelScoreRepository;
 import com.coolwen.experimentplatformv2.dao.KaoheModelRepository;
+import com.coolwen.experimentplatformv2.model.DTO.KaoHeModelStuDTO;
 import com.coolwen.experimentplatformv2.model.KaoHeModelScore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author Artell
@@ -103,4 +105,22 @@ public class KaoHeModelScoreServiceImpl implements KaoHeModelScoreService {
     public Integer findmReportFalseByClassIdAndMid(int classId, int Mid) {
         return kaoHeModelScoreRepository.findmReportFalseByClassIdAndMid(classId, Mid);
     }
+
+    @Override
+    public Page<KaoHeModelStuDTO> findKaoHeModelStuDTOByStuIdAll(int stu_id, int arrangeID, int pageNum) {
+        PageRequest pageRequest = PageRequest.of(pageNum, 6);
+        return kaoHeModelScoreRepository.findKaoHeModelStuDTOByStuIdAll(stu_id,arrangeID, pageRequest);
+    }
+
+    @Override
+    public Integer countNotFinishedModule(int stuid, int arrangeid) {
+        return kaoHeModelScoreRepository.countNotFinishedModule(stuid, arrangeid);
+    }
+
+    @Override
+    public Integer countAllModule(int stuid, int arrrangid) {
+        return kaoHeModelScoreRepository.countAllModule(stuid, arrrangid);
+    }
+
+
 }

@@ -102,15 +102,28 @@ public class MyShiroRealm extends AuthorizingRealm {
     //清除认证
     @Override
     public void clearCachedAuthenticationInfo(PrincipalCollection principals) {
-        User u = (User) principals.getPrimaryPrincipal();
-        SimplePrincipalCollection sp = new SimplePrincipalCollection(u.getUsername(), getName());
-        Cache c = this.getAuthenticationCache();
-        Set<Object> keys = c.keys();
-        for (Object o : keys) {
-            logger.debug("授权缓存:", o);
-            logger.debug("授权缓存:", c.get(o));
+        if (SecurityUtils.getSubject().getSession().getAttribute("teacher")==null){
+            Student u = (Student) principals.getPrimaryPrincipal();
+            SimplePrincipalCollection sp = new SimplePrincipalCollection(u.getStuName(), getName());
+            Cache c = this.getAuthenticationCache();
+            Set<Object> keys = c.keys();
+            for (Object o : keys) {
+                logger.debug("授权缓存:", o);
+                logger.debug("授权缓存:", c.get(o));
+            }
+            super.clearCachedAuthenticationInfo(sp);
+        }else {
+            User u = (User) principals.getPrimaryPrincipal();
+            SimplePrincipalCollection sp = new SimplePrincipalCollection(u.getUsername(), getName());
+            Cache c = this.getAuthenticationCache();
+            Set<Object> keys = c.keys();
+            for (Object o : keys) {
+                logger.debug("授权缓存:", o);
+                logger.debug("授权缓存:", c.get(o));
+            }
+            super.clearCachedAuthenticationInfo(sp);
         }
-        super.clearCachedAuthenticationInfo(sp);
+
         //   super.clearCachedAuthenticationInfo(principals);
     }
 

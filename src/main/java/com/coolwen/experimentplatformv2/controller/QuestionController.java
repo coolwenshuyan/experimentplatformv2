@@ -1,6 +1,6 @@
 package com.coolwen.experimentplatformv2.controller;
 
-import com.coolwen.experimentplatformv2.dao.*;
+import com.coolwen.experimentplatformv2.dao.StudentRepository;
 import com.coolwen.experimentplatformv2.exception.UserException;
 import com.coolwen.experimentplatformv2.kit.ShiroKit;
 import com.coolwen.experimentplatformv2.model.*;
@@ -81,6 +81,12 @@ public class QuestionController {
             question.setQuestionDatetime(new Date());
             question.setCourseId(courseId);
             questionService.add(question);
+
+            //朱治汶：  判断是否是从课程详情页传过来的添加提问，如果是，则返回课程详情页
+            String CourseDetails = (String) session.getAttribute("CourseDetails");
+            if (CourseDetails != null){
+                return "redirect:/newsinfo/aboutClass/" + courseId +"?isreply=2";
+            }
             return "redirect:/question/list";//list
         }
     }
@@ -155,6 +161,10 @@ public class QuestionController {
                                 @RequestParam(defaultValue = "0", required = true, value = "isreply") Integer isreply,
                                 @RequestParam(defaultValue = "0", required = true, value = "day") Integer day, HttpSession session
     ) {
+        //朱治汶：如果用户点击了课程详情页，就会保存一个session，在进入答疑室时应该清除该session，否则添加问题会跳转到课程详情页
+        session.removeAttribute("CourseDetails");
+        logger.debug("是否还存在课程详情页的session:" + session.getAttribute("CourseDetails"));
+
         logger.debug("接口信息: + /question/list");
         Question question = new Question();
         logger.debug("课程ID:" + courseId);

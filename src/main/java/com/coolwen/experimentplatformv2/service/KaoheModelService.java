@@ -1,6 +1,7 @@
 package com.coolwen.experimentplatformv2.service;
 
 import com.coolwen.experimentplatformv2.model.DTO.KaoHeModelStuDTO;
+import com.coolwen.experimentplatformv2.model.DTO.KaoHeModuleInfo;
 import com.coolwen.experimentplatformv2.model.DTO.KaoheModelAndExpInfoDTO;
 import com.coolwen.experimentplatformv2.model.KaoheModel;
 import org.springframework.data.domain.Page;
@@ -70,5 +71,11 @@ public interface KaoheModelService {
     void deleteByArrangeId(int id);
 
     List<KaoheModel> findKaoHeModelByArrangeidAndMid(int arrangeId, Integer mid);
+
+    List<KaoHeModuleInfo> findKaoheModelByArrange_id(int arrangeid);
+
+    KaoheModel findKaoheModelByIsKaohe(int mid,int courseid,int sid);
+
+
 
 }

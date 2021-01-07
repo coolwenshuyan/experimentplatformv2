@@ -2,6 +2,8 @@ package com.coolwen.experimentplatformv2.service;
 
 import com.coolwen.experimentplatformv2.model.CollegeReport;
 import com.coolwen.experimentplatformv2.model.DTO.CollegeReportStuExpDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -26,4 +28,8 @@ public interface CollegeReportService {
     void deleteByModelId(int mid);
 
     List<CollegeReport> findCollegeReportsByArrangeIdAndMids(int arrangeId, List<Integer> mids);
+
+    List<CollegeReportStuExpDto> findByCourseId(int courseId);
+
+    Page<CollegeReportStuExpDto> findByCourseIdPag(int courseId,Pageable pageable);
 }

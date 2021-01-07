@@ -1,6 +1,7 @@
 package com.coolwen.experimentplatformv2.dao;
 
 import com.coolwen.experimentplatformv2.dao.basedao.BaseRepository;
+import com.coolwen.experimentplatformv2.model.DTO.KaoHeModuleInfo;
 import com.coolwen.experimentplatformv2.model.DTO.KaoheModelAndExpInfoDTO;
 import com.coolwen.experimentplatformv2.model.KaoheModel;
 import org.springframework.data.domain.Page;
@@ -98,4 +99,11 @@ public interface KaoheModelRepository extends BaseRepository<KaoheModel, Integer
 
     @Query("select khm from KaoheModel khm where khm.arrange_id = ?1 and khm.m_id=?2")
     List<KaoheModel> findKaoHeModelByArrangeidAndMid(int arrangeId, Integer mid);
+
+
+    @Query("select new com.coolwen.experimentplatformv2.model.DTO.KaoHeModuleInfo(e.m_name,kh.kaohe_starttime,kh.kaohe_endtime) from KaoheModel kh left join ExpModel e on kh.m_id = e.m_id where kh.arrange_id = ?1")
+    List<KaoHeModuleInfo> findKaoheModelByArrange_id(int arrangeid);
+
+    @Query("select kh from Student s,ArrangeClass ac,KaoheModel kh where s.classId = ac.classId and ac.courseId = ?2 and ac.id = kh.arrange_id and kh.m_id = ?1 and s.id = ?3")
+    KaoheModel findKaoheModelByIsKaohe(int mid,int courseid,int sid);
 }

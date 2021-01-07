@@ -64,13 +64,25 @@
 <script src="//cdn.staticfile.org/layui/2.5.6/layui.all.min.js"></script>
 <script>
     $(function () {
+        var jiekou = '[[${jiekou}]]'
+        if (jiekou != null){
+            $('#iframe').attr('src',jiekou)
+        }
         $('.to-url').click(function (e) {
             e.preventDefault()
             if ($(this).data('url')) {
+                console.log("src:",$(this).data('url'))
                 $('#iframe').attr('src', $(this).data('url'))
             }
         })
     })
+
+    // 检测页面关闭
+    window.addEventListener('unload', logData, false);
+
+    function logData() {
+        navigator.sendBeacon('/learningend');
+    }
 </script>
 </body>
 </html>

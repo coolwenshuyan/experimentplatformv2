@@ -44,4 +44,8 @@ public interface ArrangeClassService {
 
 
     List<ArrangeClass> findByClassId(int classId);
+
+    List<ArrangeClass> findArrangeClassesBystudentId(int id);
+
+    int findNumberOfParticipants(int id);
 }

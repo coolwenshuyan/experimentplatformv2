@@ -9,7 +9,6 @@ import java.util.Date;
 public class CourseInfoDto2 {
     private int courseInfoId;
 
-
     private String courseName;
 
     private String courseCode;
@@ -144,5 +143,23 @@ public class CourseInfoDto2 {
 
     public void setSkAddress(String skAddress) {
         this.skAddress = skAddress;
+    }
+
+    @Override
+    public String toString() {
+        return "CourseInfoDto2{" +
+                "courseInfoId=" + courseInfoId +
+                ", courseName='" + courseName + '\'' +
+                ", courseCode='" + courseCode + '\'' +
+                ", chargeteacherId=" + chargeteacherId +
+                ", courseImgurl='" + courseImgurl + '\'' +
+                ", courseIntruduce='" + courseIntruduce + '\'' +
+                ", arrangeId=" + arrangeId +
+                ", classId=" + classId +
+                ", teacherId=" + teacherId +
+                ", arrangeStart=" + arrangeStart +
+                ", arrangeEnd=" + arrangeEnd +
+                ", skAddress='" + skAddress + '\'' +
+                '}';
     }
 }

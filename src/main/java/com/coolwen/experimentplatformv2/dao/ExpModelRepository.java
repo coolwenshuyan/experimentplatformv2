@@ -2,8 +2,10 @@ package com.coolwen.experimentplatformv2.dao;
 
 import com.coolwen.experimentplatformv2.dao.basedao.BaseRepository;
 import com.coolwen.experimentplatformv2.model.CourseInfo;
+import com.coolwen.experimentplatformv2.model.DTO.ExpModelDto;
 import com.coolwen.experimentplatformv2.model.DTO.KaoheModuleProgressDTO;
 import com.coolwen.experimentplatformv2.model.ExpModel;
+import com.coolwen.experimentplatformv2.model.KaoheModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -41,6 +43,16 @@ public interface ExpModelRepository extends BaseRepository<ExpModel,Integer> {
     @Query("select exp from ExpModel exp where exp.courseId = ?1")
     Page<ExpModel> findOneCourseModelList(int courseId, Pageable pageable);
 
+    @Query("select exp from ExpModel exp where exp.courseId = ?1 and exp.needKaohe = false")
+    Page<ExpModel> findOneCourseModelListNoKaoHe(int courseId, Pageable pageable);
+
+    @Query("select count(exp) from ExpModel exp where exp.courseId = ?1 and exp.m_id < ?2")
+    Integer findOneCourseModelList(int courseId,int m_id);
+
+//    @Query("select count(exp) from ExpModel exp where exp.courseId = ?1 and exp.m_id < ?2 and exp.needKaohe = true")
+    @Query("select count(e) from KaoheModel kh left join ExpModel e on kh.m_id = e.m_id left join KaoHeModelScore khs on khs.tKaohemodleId = kh.id where khs.stuId = ?1 and kh.arrange_id =?2 and e.m_id < ?2")
+    Integer findOneCourseKaoHeModelList(int courseId,int m_id);//123
+
     @Query("select e from KaoheModel kh left join ExpModel e on e.m_id = kh.m_id where e.courseId = ?1")
     Page<ExpModel> findExpModelsByCourse_id(int courseId,PageRequest pageRequest);
 
@@ -55,4 +67,22 @@ public interface ExpModelRepository extends BaseRepository<ExpModel,Integer> {
 
     @Query("select e from ExpModel e, KaoheModel k where k.arrange_id=?1 and k.m_id = e.m_id")
     List<ExpModel> findExpModelByArrangeId(int arrangeId);
+
+    @Query("select exp from ExpModel exp where exp.courseId = ?1")
+    List<ExpModel> findOneCourseModel(int courseId);
+
+    @Query("select new com.coolwen.experimentplatformv2.model.DTO.ExpModelDto" +
+            "(exp.m_id, exp.m_name) " +
+            "from ExpModel exp where exp.courseId = ?1")
+    List<ExpModelDto> findExpModelDtoByID(int courseId);
+
+    //查询当前需要考核的人数
+    @Query("select count(s) from KaoheModel k,ArrangeClass a,Student s where k.arrange_id = a.id and a.classId = s.classId and k.m_id = ?1")
+    int findKaoheNumByMid(int mid);
+
+    @Query("select k from KaoheModel k,ArrangeClass a,Student s where k.arrange_id = a.id and a.classId = s.classId and k.m_id = ?1 and s.id = ?2")
+    KaoheModel findIsKaohe(int mid, int stuId);
+
+    @Query("select count(tp) from TotalScorePass tp where tp.kaoheName like %?1%")
+    int findExpModelStuPassNum(String mName);
 }

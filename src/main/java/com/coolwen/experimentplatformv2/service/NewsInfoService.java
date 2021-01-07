@@ -2,6 +2,8 @@ package com.coolwen.experimentplatformv2.service;
 
 import com.coolwen.experimentplatformv2.model.NewsInfo;
 
+import java.util.List;
+
 public interface NewsInfoService {
     void add(NewsInfo newsInfo);
 
@@ -28,4 +30,8 @@ public interface NewsInfoService {
     int findQualifiedpeopleByCourseId(int id);
 
     int findUnqualifiedpeopleByCourseId(int id);
+
+    List findScoreRanking();
+
+    List findClassScoreRanking(int courseId);
 }

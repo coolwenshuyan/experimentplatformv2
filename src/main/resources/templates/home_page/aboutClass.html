@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>课程详情</title>
+    <link rel="stylesheet" href="../../static/css/layui.css">
+    <link rel="stylesheet" href="../../static/new/css/question.css" />
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
+
+</head>
+<style>
+    *{
+        padding: 0;
+        margin: auto;
+    }
+    .find{
+        margin-top:20px;
+    }
+    span{
+        color: #d4d4d4;
+        margin-right: 2%;
+        font-size: 0.7rem;
+    }
+    .introduce{
+        margin-top:2%;
+        /*margin-bottom: 2%;*/
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;/*想省略几行就写几*/
+        -webkit-box-orient: vertical;
+    }
+    .layui-col-md12{
+        margin-bottom: 3%;
+        /*padding:2%;*/
+        /*border: 1px solid #dcdcdc;*/
+        box-shadow: 10px 10px 5px #dcdcdc;
+    }
+    .right{
+        /*overflow: hidden;*/
+        position: fixed;
+        right:75px;
+        /*top: 0;*/
+        /*float: right;*/
+        box-shadow:  5px 5px 5px 5px #CCCCCC;
+    }
+    td{
+        background-color: #fafafa;
+
+    }
+    .layui-card-header{
+        font-size: 1rem;
+    }
+    .name{
+        font-size: 1.3rem;
+        font-weight: 400;
+        border-bottom: none;
+        /*margin-top: 3%;*/
+    }
+    .mudi{
+        width: 90%;
+        /*width: 95%;*/
+        margin:2% auto;
+        height: 120px;
+        border:1px solid #009688
+    }
+    .baogao{
+        background-color: #fafafa;
+        padding: 2%;
+        margin: 1% 0;
+    }
+    .layui-card{
+        box-shadow:none
+    }
+    .layui-btn{
+        float: right;
+        margin: 2% 0;
+    }
+
+    img{
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+    }
+    .pinglun{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;/*想省略几行就写几*/
+        -webkit-box-orient: vertical;
+    }
+    .test{
+        margin: 1% 0;
+        background-color: #c3e0d96b;
+    }
+    .test:hover{
+        box-shadow:5px 5px 5px 5px  #dcdcdc;
+    }
+    .content{
+        margin-left: 2%;
+        /*box-shadow: 5px 5px 5px #dcdcdc;*/
+    }
+    .content div{
+        padding:5% 10% 5% 10%;
+        border-radius: 6px;
+
+    }
+    p{
+        /*color: #d4d4d4;*/
+        display: block;
+        margin: 7% 2%;
+        color: #acaaaa;
+    }
+
+    .layui-tab-title li{
+        font-size: 1rem;
+    }
+    .writer{
+        margin: 0% 0;
+        height: 23px;
+        padding: 5px;
+    }
+    .span1{
+        color: #acaaaa;
+    }（新加的）
+
+</style>
+<body>
+
+</body>
+<div class="layui-container">
+    <div class="layui-row layui-col-space30">
+        <!--左边-->
+        <div class="find">
+            首页>课程详情
+        </div>
+        <div class="layui-col-xs8">
+                <!--课程简介-->
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header name" th:text="${courseInfo.getCourseName()}">数据库课程</div>
+                        <div class="layui-card-body">
+                            <span th:text="${participantsNum + CompleteNum}+'人学习过'">参与人数：200人</span>
+                            <span th:text="'当前参与人数：'+${participantsNum}+'人'">参与人数：200人</span>
+                            <span th:text="'完成人数：' +${CompleteNum} + '人'">完成人数：190人</span>
+                            <span th:text="'负责人：'+${courseInfo.getTeacherId()}">负责人：李千</span>
+                            <div class="introduce" th:text="${courseInfo.getCourseIntruduce()}">
+                                你好啊这门课程讲的是什么，鬼知道，太耐了aaaaa
+                                你好啊这门课程讲的是什么，鬼知道，太耐了aaaaa
+                                你好啊这门课程讲的是什么，鬼知道，太耐了aaaaa
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!--课程介绍-->
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">课程目的</div>
+                        <div class="layui-card-body" th:utext="${courseInfo.getCourseObjective()}">
+                            内容
+                        </div>
+                    </div>
+                </div>
+                <!--课程内容-->
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">全部实验</div>
+
+<!--                        <div class="layui-card-body">-->
+<!--                            <div style="padding: 1%;background-color:#c3e0d9;color: #280f1c">-->
+<!--                                <h4>考核模块</h4>-->
+<!--                            </div>-->
+<!--                            <div class="layui-row baogao" >-->
+<!--                                <div class="layui-col-md10" >-->
+<!--                                    <i class="layui-icon layui-icon-file-b"></i> 实验名称-->
+<!--                                </div>-->
+<!--                                <div class="layui-col-md2" >教师：李千</div>-->
+<!--                            </div>-->
+<!--                            <div class="layui-row baogao">-->
+<!--                                <div class="layui-col-md10" >-->
+<!--                                    <i class="layui-icon layui-icon-file-b"></i> 实验名称-->
+<!--                                </div>-->
+<!--                                <div class="layui-col-md2" >教师：李千</div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+                        <div class="layui-card-body">
+<!--                            <div style="padding: 1%;background-color:#c3e0d9;color: #280f1c">-->
+<!--                                <h4>实验模块</h4>-->
+<!--                            </div>-->
+                            <div class="layui-row baogao" th:each="expModel:${expModels}">
+                                <a th:href="@{|/expmodel/preciseRedirectModule/${expModel.getMid()}|}">
+                                    <div>
+                                        <div class="layui-col-md6" >
+                                            <i class="layui-icon layui-icon-file-b"></i>
+                                            <div style="display: inline-block" th:text="${expModel.getmName()}">实验名称</div>
+                                        </div>
+                                        <div class="layui-col-md1" th:if="${expModel.isNeedKaohe()}">&nbsp;考核</div>
+                                        <div class="layui-col-md1" th:if="!${expModel.isNeedKaohe()}">&nbsp;</div>
+                                        <div class="layui-col-md2" th:text="'当前考核人数:'+${expModel.getCurrentParticipants()}">教师：李千</div>
+                                        <div class="layui-col-md2" th:text="'累计考核人数:'+${expModel.getAllNum()}">教师：李千</div>
+                                        <div class="layui-col-md1">
+                                            <a class="layui-btn layui-btn-xs layui-btn-radius layui-btn-normal">进入</a>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+<!--                            <div class="layui-row baogao">-->
+<!--                                <div class="layui-col-md10" >-->
+<!--                                    <i class="layui-icon layui-icon-file-b"></i> 实验名称-->
+<!--                                </div>-->
+<!--                                <div class="layui-col-md2" >教师：李千</div>-->
+<!--                            </div>-->
+                        </div>
+                    </div>
+                </div>
+                <!--tab-->
+                <div class="layui-col-md12">
+                    <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief" style="width: 95%;margin: auto;margin-top: 2%;
+">
+                        <ul class="layui-tab-title">
+                            <li class="layui-this">课程评论</li>
+                            <li>实验报告</li>
+                        </ul>
+                        <div class="layui-tab-content">
+                            <!--内容1-->
+                            <div class="layui-tab-item layui-show">
+                                <div>
+                                    <div class="forEditor" id="forEditor"></div>
+                                </div>
+                                <div style="height: 50px">
+<!--                                    <button type="button"  class="layui-btn layui-btn-sm">发表评论</button>-->
+                                    <div class="submit-btn">提 问</div>
+                                </div>
+                                <form action="/question/add" id="question-form" method="POST" style="display: none;">
+                                    <input type="text" name="content" class="question-input" />
+                                </form>
+
+                                <div class="questions-filters">
+                                    <div class="filter-row">
+                                        <div class="filter-name">状 态：</div>
+                                        <div class="filter-items">
+                                            <div class="filter-item" th:classappend="${isreply == 1}?'active'">
+                                                <a th:href="@{'/newsinfo/aboutClass/'+${courseId}+'?isreply=1'}">已回答</a>
+                                            </div>
+                                            <div class="filter-item" th:classappend="${isreply == 2}?'active'">
+                                                <a th:href="@{'/newsinfo/aboutClass/'+${courseId}+'?isreply=2'}">未回答</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="questions">
+                                    <h2>提问列表</h2>
+                                    <div class="question" th:each="question:${questionPageInfo.content}">
+                                        <div class="que-info cl">
+                                            <i>?</i>
+                                            <h3 th:text="|提问者：${question.stuName}|">提问者：某某某</h3>
+                                            <p th:text="${question.questionDatetime}">2020-02-02 12:12</p>
+                                        </div>
+                                        <div class="que-con" th:utext="${question.content}"></div>
+                                        <a th:if="${question.isreply}" th:href="@{|/question/detaill/${question.id}|}" class="to-detail">查看回答</a>
+                                    </div>
+                                    <div class="que-pager">
+                                        <p>第 <span th:text="${questionPageInfo.number}+1">1</span> 页, 共 <span th:text="${questionPageInfo.totalPages}">1</span> 页 <span th:text="${questionPageInfo.totalElements}">1</span> 条</p>
+                                        <div class="cl" th:if="${questionPageInfo.number gt 0}">
+                                            <a th:href="@{/question/list}">首页</a>
+                                            <a th:href="@{/question/list(pageNum=${questionPageInfo.hasPrevious()}?${questionPageInfo.number}-1:0)}">上一页</a>
+                                            <a th:href="@{/question/list(pageNum=${questionPageInfo.hasNext()}?${questionPageInfo.number}+1:${questionPageInfo.number})}">下一页</a>
+                                            <a th:href="@{/question/list(pageNum=${questionPageInfo.totalPages}-1)}">尾页</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+<!--                                <div class="layui-card">-->
+<!--                                    <div class="layui-card-header">最新评论</div>-->
+<!--                                    <div class="layui-card-body">-->
+<!--                                        <div class="layui-row layui-col-space20">-->
+<!--                                            <div class="layui-col-xs1">-->
+<!--                                                <img src="" alt="">-->
+<!--                                            </div>-->
+<!--                                            <div class="layui-col-xs11">-->
+<!--                                                <div style="color: #dcdcdc"> 提问者</div>-->
+<!--                                                <div class="pinglun" style="height: 50px;overflow: hidden;text-overflow:ellipsis">-->
+<!--                                                    nnnnnnnnn你你你你你你nnnnnnnnn你你你你你你nnnnnnnnn你你你你你你-->
+<!--                                                    nnnnnnnnn你你你你你你nnnnnnnnn你你你你你你nnnnnnnnn你你你你你你nnnnnnnnn你你你你你你-->
+<!--                                                    nnnnnnnnn你你你你你你 nnnnnnnnn你你你你你你 nnnnnnnnn你你你你你你-->
+
+<!--                                                </div>-->
+<!--                                                <div style="color: #dcdcdc"> 2020-11-12s</div>-->
+<!--                                            </div>-->
+
+<!--                                        </div>-->
+<!--                                        <hr class="layui-bg-gray">-->
+<!--                                    </div>-->
+<!--                                    <div class="layui-card-body">-->
+<!--                                        <div class="layui-row layui-col-space20">-->
+<!--                                            <div class="layui-col-xs1">-->
+<!--                                                <img src="../s" alt="">-->
+<!--                                            </div>-->
+<!--                                            <div class="layui-col-xs11">-->
+<!--                                                <div style="color: #dcdcdc"> 提问者</div>-->
+<!--                                                <div style="height: 50px;overflow: hidden;text-overflow:ellipsis">-->
+<!--                                                    nnnnnnnnn你你你你你你nnnnnnnnn你你你你你你nnnnnnnnn你你你你你你-->
+<!--                                                    nnnnnnnnn你你你你你你nnnnnnnnn你你你你你你nnnnnnnnn你你你你你你nnnnnnnnn你你你你你你-->
+<!--                                                    nnnnnnnnn你你你你你你 nnnnnnnnn你你你你你你 nnnnnnnnn你你你你你你-->
+
+<!--                                                </div>-->
+<!--                                                <div style="color: #dcdcdc"> 2020-11-12s</div>-->
+<!--                                            </div>-->
+
+<!--                                        </div>-->
+<!--                                        <hr class="layui-bg-gray">-->
+<!--                                    </div>-->
+<!--                                </div>-->
+                            </div>
+                            <!--内容2-->
+                            <div class="layui-tab-item">
+                                <div class="layui-row layui-col-space20">
+                                    <div class="layui-col-xs3" th:each="collegeReport:${collegeReports}">
+<!--                                        <div th:text="'实验报告总数:'+${allnum}">实验报告总数:</div>-->
+                                        <div class="test">
+                                            <div class="content" style="height: 200px;">
+                                                <div style="font-size: 1rem;" th:text="${collegeReport.getCrClassName()}">课程名称没错没错没错</div>
+                                                <div style="font-size: 0.8rem;" th:text="${collegeReport.getMname()}">实验名称dididdi</div>
+                                            </div>
+                                            <div class="writer" >
+                                                <span class="span1" th:text="${collegeReport.getStuName()}">姓名:啊啊啊</span>
+                                                <span class="span1" style="float: right" th:text="${#strings.substring(collegeReport.getStuXuehao(),0,3)}+'****'+${#strings.substring(collegeReport.getStuXuehao(),collegeReport.getStuXuehao().length()-4,collegeReport.getStuXuehao().length()-1)}">7小时前</span>
+                                            </div>
+                                        </div>
+                                    </div>
+<!--                                    <div class="layui-col-xs3">-->
+<!--                                        <div class="test">-->
+<!--                                            <div class="content" style="height: 200px;">-->
+<!--                                                <div style="font-size: 1rem;">课程名称没错没错没错</div>-->
+<!--                                                <div style="font-size: 0.8rem;">实验名称dididdi</div>-->
+<!--                                                <p>开始日期：2020-12-12</p>-->
+<!--                                                <p>开始日期：2020-12-12</p>-->
+<!--                                            </div>-->
+<!--                                            <div class="writer" >-->
+<!--                                                <span class="span1">姓名:啊啊啊</span>-->
+<!--                                                <span class="span1" style="float: right">7小时前</span>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="layui-col-xs3">-->
+<!--                                        <div class="test">-->
+<!--                                            <div class="content" style="height: 200px;">-->
+<!--                                                <div style="font-size: 1rem;">课程名称没错没错没错</div>-->
+<!--                                                <div style="font-size: 0.8rem;">实验名称dididdi</div>-->
+<!--                                                <p>开始日期：2020-12-12</p>-->
+<!--                                                <p>开始日期：2020-12-12</p>-->
+<!--                                            </div>-->
+<!--                                            <div class="writer" >-->
+<!--                                                <span class="span1">姓名:啊啊啊</span>-->
+<!--                                                <span class="span1" style="float: right">7小时前</span>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="layui-col-xs3">-->
+<!--                                        <div class="test">-->
+<!--                                            <div class="content" style="height: 200px;">-->
+<!--                                                <div style="font-size: 1rem;">课程名称没错没错没错</div>-->
+<!--                                                <div style="font-size: 0.8rem;">实验名称dididdi</div>-->
+<!--                                                <p>开始日期：2020-12-12</p>-->
+<!--                                                <p>开始日期：2020-12-12</p>-->
+<!--                                            </div>-->
+<!--                                            <div class="writer" >-->
+<!--                                                <span class="span1">姓名:啊啊啊</span>-->
+<!--                                                <span class="span1" style="float: right">7小时前</span>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="layui-col-xs3">-->
+<!--                                        <div class="test">-->
+<!--                                            <div class="content" style="height: 200px;">-->
+<!--                                                <div style="font-size: 1rem;">课程名称没错没错没错</div>-->
+<!--                                                <div style="font-size: 0.8rem;">实验名称dididdi</div>-->
+<!--                                                <p>开始日期：2020-12-12</p>-->
+<!--                                                <p>开始日期：2020-12-12</p>-->
+<!--                                            </div>-->
+<!--                                            <div class="writer" >-->
+<!--                                                <span class="span1">姓名:啊啊啊</span>-->
+<!--                                                <span class="span1" style="float: right">7小时前</span>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!--<div class="layui-col-md12" >-->
+
+                    <!--</div>-->
+                </div>
+            </div>
+        <!--右边-->
+        <div class="layui-col-xs3 right">
+                <table class="layui-table" lay-skin="nob">
+                    <h3>课程学习时长排行榜</h3>
+                    <colgroup>
+                        <col width="150">
+                        <col width="150">
+                        <col width="200">
+                        <col width="100">
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>学号</th>
+                        <th>平均成绩</th>
+                        <th>学习时间</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="overallScoreDto,index:${overallScoreDtos}">
+                        <td th:text="${index.index+1}">1</td>
+                        <td th:text="${overallScoreDto.stuXueHao}">1806101012</td>
+                        <td th:text="${overallScoreDto.averageScores}">120h</td>
+                        <td th:text="${overallScoreDto.learningTime}">120h</td>
+                    </tr>
+<!--                    <tr>-->
+<!--                        <td>2</td>-->
+<!--                        <td>1806101010</td>-->
+<!--                        <td>110h</td>-->
+<!--                    </tr>-->
+<!--                    <tr>-->
+<!--                        <td>2</td>-->
+<!--                        <td>1806101010</td>-->
+<!--                        <td>110h</td>-->
+<!--                    </tr><tr>-->
+<!--                        <td>2</td>-->
+<!--                        <td>1806101010</td>-->
+<!--                        <td>110h</td>-->
+<!--                    </tr><tr>-->
+<!--                        <td>2</td>-->
+<!--                        <td>1806101010</td>-->
+<!--                        <td>110h</td>-->
+<!--                    </tr>-->
+
+
+
+                    </tbody>
+                </table>
+                    <!--<div class="layui-col-xs6">-->
+                        <!--<h3>实验报告完成人数排行榜</h3>-->
+                        <!--<div id="main" style="width:200px; height:200px"></div>-->
+                    <!--</div>-->
+<!--                        <h3>实验报告完成人数排行榜</h3>-->
+<!--                        <div id="line" style="height:220px; overflow: hidden;overflow-x: auto">-->
+<!--                        </div>-->
+            </div>
+
+    </div>
+</div>
+<script src="//cdn.staticfile.org/jquery/1.8.0/jquery.min.js"></script>
+<script src="//cdn.staticfile.org/wangEditor/3.1.1/wangEditor.min.js"></script>
+<script src="//cdn.staticfile.org/layer/3.1.1/layer.min.js"></script>
+<script src="../../static/new/js/editor.config.js"></script>
+<script>
+    $(function () {
+        var editor = initEditor('#forEditor')
+        $('.submit-btn').click(function () {
+            var _data = editor.txt.html()
+            $('.question-input').val(_data)
+            $('#question-form').submit()
+        })
+    })
+</script>
+
+<script>
+
+
+
+    // var myChart = echarts.init(document.getElementById('main'));
+    // option = {
+    //     tooltip: {
+    //         trigger: 'item',
+    //         formatter: '{a} <br/>{b}: {c} ({d}%)'
+    //     },
+    //     legend: {
+    //         orient: 'vertical',
+    //         // top:10,
+    //         // bottom:10,
+    //         // left: center,
+    //         data: ['实验1', '实验2', '实验3', '实验4', '其他']
+    //     },
+    //     series: [
+    //         {
+    //             name: '访问来源',
+    //             type: 'pie',
+    //             radius: ['50%', '70%'],
+    //             avoidLabelOverlap: false,
+    //             label: {
+    //                 show: false,
+    //                 position: 'center'
+    //             },
+    //             emphasis: {
+    //                 label: {
+    //                     show: true,
+    //                     fontSize: '30',
+    //                     fontWeight: 'bold'
+    //                 }
+    //             },
+    //             labelLine: {
+    //                 show: false
+    //             },
+    //             data: [
+    //                 {value: 221, name: '实验1'},
+    //                 {value: 220, name: '实验2'},
+    //                 {value: 22, name: '实验3'},
+    //                 {value: 220, name: '实验4'},
+    //                 {value: 22, name: '其他'}
+    //             ]
+    //         }
+    //     ]
+    // };
+    // myChart.setOption(option);
+
+    // 基于准备好的dom，初始化echarts实例
+    var line = echarts.init(document.getElementById('line'));
+
+    // 指定图表的配置项和数据
+    var option = {
+        title: {
+            // text: '实验报告完成人数排行榜'
+        },
+        tooltip: {},
+        legend: {
+            right:20,
+            data:['人数']
+        },
+        xAxis: {
+            data: ["实验1","实验2","实验3","实验4","实验5","实验六","实验七","实验八"]//这个要改变 【】
+        },
+        yAxis: {},
+        series: [{
+            name: '人数',
+            type: 'bar',
+            data: [5, 20, 36, 10, 10,60]//这个变【】
+        }]
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    line.setOption(option);
+
+</script>
+
+<script src="../../static/js/layui.all.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../static/js/layui.js" type="text/javascript" charset="utf-8"></script>
+
+</body>
+</html>

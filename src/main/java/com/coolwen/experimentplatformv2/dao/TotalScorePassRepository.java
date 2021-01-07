@@ -4,7 +4,6 @@ import com.coolwen.experimentplatformv2.dao.basedao.BaseRepository;
 import com.coolwen.experimentplatformv2.model.CourseInfo;
 import com.coolwen.experimentplatformv2.model.DTO.CourseClassInfo;
 import com.coolwen.experimentplatformv2.model.DTO.StuTotalScoreCurrentDTO;
-import com.coolwen.experimentplatformv2.model.Teacher;
 import com.coolwen.experimentplatformv2.model.TotalScorePass;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,4 +42,7 @@ public interface TotalScorePassRepository extends BaseRepository<TotalScorePass,
             "from Student st left join TotalScorePass tsc on st.id = tsc.stuId " +
             "left join ClassModel cla on st.classId=cla.classId where tsc.courseId = ?1 and tsc.classId = ?2")
     List<StuTotalScoreCurrentDTO> findallTotalScorePassbyCourseIdClassId(int courseId, int classId);
+
+
+    TotalScorePass findTotalScorePassByStuIdAndCourseId(int stuid,int courseid);
 }

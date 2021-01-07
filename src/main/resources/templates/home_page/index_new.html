@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1"/>
+    <meta name="renderer" content="webkit"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>首页 - 旅游大数据虚拟仿真实验教学平台</title>
+    <link rel="stylesheet" href="../../static/new/css/reset.css"/>
+    <link rel="stylesheet" href="../../static/new/css/common.css"/>
+    <link rel="stylesheet" href="//cdn.staticfile.org/bxslider/4.2.15/jquery.bxslider.min.css"/>
+    <link rel="stylesheet" href="../../static/new/css/index.css"/>
+    <link rel="stylesheet" href="../../static/css/layui.css">
+    <style>
+        .charts-section{
+            background: #ffffff;
+        }
+        .layui-col-xs3{
+            margin-bottom: 20px;
+            margin-top: 30px;
+        }
+        .mo{
+            width: 85%;
+            margin:0 auto;
+            border: 1px solid #eeeeee;
+        }
+        .grid :hover  .none{
+            cursor: pointer;
+            display: block;
+        }
+        .grid :hover  .t_t{
+            cursor: pointer;
+            width: 100%;
+            margin: 0 auto;
+            text-align: left;
+            margin-top: -61px;
+            background: #ffffff;
+            z-index: 99;
+            position: relative;
+            box-shadow: 0 4px 20px 4px #ddd;
+        }
+        .gri1{
+            width: 100%;
+            margin:0 auto;
+        }
+        .gri1 img{
+            width: 100%;
+            height: 150px;
+
+        }
+        .t_t{
+            width: 100%;
+            margin:0 auto;
+            text-align: left;
+        }
+        .t1{
+            font-size: 1.2rem;
+            padding-top: 14px;
+            padding-left: 10px;
+        }
+
+        .none{
+            padding:10px 8px 0px 10px;
+            font-size: 0.8rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            height: 51px;
+            display: none;
+        }
+        .t2{
+            padding:20px 0px 5px 10px;
+            color: #a4a4a4;
+        }
+        tr {
+            height: 57px;
+            border-bottom: 1px solid #a4a4a4;
+        }
+        td {
+            font-size: 1rem;
+            text-align: center;
+        }
+        .pai{
+            border-radius: 10px;
+            box-shadow: 5px 5px 5px 5px #cccccc;
+            height: 570px;
+            width: 31%;
+        }
+    </style>
+</head>
+<body>
+<div th:include="home_page/header :: common_header"></div>
+<div class="main-banner">
+    <div class="slide"><img src="../../static/new/images/index_01.jpg"/></div>
+    <div class="slide"><img src="../../static/new/images/index_02.jpg"/></div>
+    <div class="slide"><img src="../../static/new/images/index_03.jpg"/></div>
+</div>
+<div class="notice">
+    <p>本平台虚拟实验课程版权归四川旅游学院虚拟仿真实验教学管理平台所有，可供学习参考，未经允许私自盗用用作商业用途将承担法律责任</p>
+</div>
+<div class="lessions-section">
+    <div class="main">
+        <div class="lessions-title">课程展示</div>
+        <div >
+            <div class="layui-row" id="big">
+                <div th:each="courseInfo:${courseInfos}" class="layui-col-xs3">
+                    <a th:href="@{|/newsinfo/aboutClass/${courseInfo.getCourseInfoId()}|}">
+                        <div class="grid">
+                            <div class="mo"  >
+                                <div class="gri1"><img th:src="@{'/upload/'+${courseInfo.getCourseImgurl()}}" alt=""></div>
+                                <div class="t_t" id="t_t">
+                                    <div class="t1" th:text="${courseInfo.getCourseName()}">Linux基础入门</div>
+                                    <div class="none" id="none" th:text="${courseInfo.getCourseIntruduce()}">
+                                        本课程教你如何熟练地使用 Linux，本实验中通过在线动手实验的方式学习 Linux 常用命令，用户与权限管理，目录结构与文件操作，环境变量，计划任务，管道与数据流重定向等基本知识点。
+                                    </div>
+                                    <div class="t2"><span th:text="${courseInfo.getNumberOfLearning() + '人学过'}">321人学过</span>&nbsp;&nbsp;&nbsp;&nbsp;<span th:text="'课程负责人:'+${courseInfo.getTeacherName()}">总时长：120小时</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <!--                er-->
+<!--                <div class="layui-col-xs3">-->
+<!--                    <div class="grid">-->
+<!--                        <div class="mo"  >-->
+<!--                            <div class="gri1"><img src="https://dn-simplecloud.shiyanlou.com/course/1542591658684_【2】-【Vim编辑器】.png?imageView2/2/h/150/q/100" alt=""></div>-->
+<!--&lt;!&ndash;                            <div class="tt"  class="layui-anim" data-anim="layui-anim-up">&ndash;&gt;-->
+<!--&lt;!&ndash;                                <div class="t1" class="code">Linux基础入门</div>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <div class="none" >&ndash;&gt;-->
+<!--&lt;!&ndash;                                    本课程教你如何熟练地使用 Linux，本实验中通过在线动手实验的方式学习 Linux 常用命令，用户与权限管理，目录结构与文件操作，环境变量，计划任务，管道与数据流重定向等基本知识点。&ndash;&gt;-->
+<!--&lt;!&ndash;                                </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <div class="t2"><span>321人学过</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>总时长：120小时</span></div>&ndash;&gt;-->
+<!--&lt;!&ndash;                            </div>&ndash;&gt;-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                &lt;!&ndash;                san&ndash;&gt;-->
+<!--                <div class="layui-col-xs3">-->
+<!--                    <div class="grid">-->
+<!--                        <div class="mo" >-->
+<!--                            <div class="gri1"><img src="../../static/images/img_shiyan/1.jpg" alt=""></div>-->
+<!--                            <div class="t_t" >-->
+<!--                                <div class="t1">Linux基础入门</div>-->
+<!--                                <div class="none" >-->
+<!--                                    本课程教你如何熟练地使用 Linux，本实验中通过在线动手实验的方式学习 Linux 常用命令，用户与权限管理，目录结构与文件操作，环境变量，计划任务，管道与数据流重定向等基本知识点。-->
+<!--                                </div>-->
+<!--                                <div class="t2"><span>321人学过</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>总时长：120小时</span></div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                &lt;!&ndash;                si&ndash;&gt;-->
+<!--                <div class="layui-col-xs3">-->
+<!--                    <div class="grid">-->
+<!--                        <div class="mo"  >-->
+<!--                            <div class="gri1"><img src="https://dn-simplecloud.shiyanlou.com/1499827625083.png?imageView2/2/h/150/q/100" alt=""></div>-->
+<!--                            <div class="t_t" >-->
+<!--                                <div class="t1">Linux基础入门</div>-->
+<!--                                <div class="none" >-->
+<!--                                    本课程教你如何熟练地使用 Linux，本实验中通过在线动手实验的方式学习 Linux 常用命令，用户与权限管理，目录结构与文件操作，环境变量，计划任务，管道与数据流重定向等基本知识点。-->
+<!--                                </div>-->
+<!--                                <div class="t2"><span>321人学过</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>总时长：120小时</span></div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                &lt;!&ndash;                5&ndash;&gt;-->
+<!--                <div class="layui-col-xs3"  style="clear: both">-->
+<!--                    <div class="grid">-->
+<!--                        <div class="mo" >-->
+<!--                            <div class="gri1"><img src="../../static/images/img_shiyan/1.jpg" alt=""></div>-->
+<!--                            <div class="t_t" >-->
+<!--                                <div class="t1">Linux基础入门</div>-->
+<!--                                <div class="none" >-->
+<!--                                    本课程教你如何熟练地使用 Linux，本实验中通过在线动手实验的方式学习 Linux 常用命令，用户与权限管理，目录结构与文件操作，环境变量，计划任务，管道与数据流重定向等基本知识点。-->
+<!--                                </div>-->
+<!--                                <div class="t2"><span>321人学过</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>总时长：120小时</span></div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                &lt;!&ndash;                6&ndash;&gt;-->
+<!--                <div class="layui-col-xs3">-->
+<!--                    <div class="grid">-->
+<!--                        <div class="mo"  >-->
+<!--                            <div class="gri1"><img src="https://dn-simplecloud.shiyanlou.com/1499827625083.png?imageView2/2/h/150/q/100" alt=""></div>-->
+<!--                            <div class="t_t" >-->
+<!--                                <div class="t1">Linux基础入门</div>-->
+<!--                                <div class="none" >-->
+<!--                                    本课程教你如何熟练地使用 Linux，本实验中通过在线动手实验的方式学习 Linux 常用命令，用户与权限管理，目录结构与文件操作，环境变量，计划任务，管道与数据流重定向等基本知识点。-->
+<!--                                </div>-->
+<!--                                <div class="t2"><span>321人学过</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>总时长：120小时</span></div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                &lt;!&ndash;                7&ndash;&gt;-->
+<!--                <div class="layui-col-xs3">-->
+<!--                    <div class="grid">-->
+<!--                        <div class="mo" >-->
+<!--                            <div class="gri1"><img src="../../static/images/img_shiyan/1.jpg" alt=""></div>-->
+<!--                            <div class="t_t" >-->
+<!--                                <div class="t1">Linux基础入门</div>-->
+<!--                                <div class="none" >-->
+<!--                                    本课程教你如何熟练地使用 Linux，本实验中通过在线动手实验的方式学习 Linux 常用命令，用户与权限管理，目录结构与文件操作，环境变量，计划任务，管道与数据流重定向等基本知识点。-->
+<!--                                </div>-->
+<!--                                <div class="t2"><span>321人学过</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>总时长：120小时</span></div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                &lt;!&ndash;                8&ndash;&gt;-->
+<!--                <div class="layui-col-xs3">-->
+<!--                    <div class="grid">-->
+<!--                        <div class="mo" >-->
+<!--                            <div class="gri1"><img src="../../static/images/img_shiyan/1.jpg" alt=""></div>-->
+<!--                            <div class="t_t" >-->
+<!--                                <div class="t1">Linux基础入门</div>-->
+<!--                                <div class="none" >-->
+<!--                                    本课程教你如何熟练地使用 Linux，本实验中通过在线动手实验的方式学习 Linux 常用命令，用户与权限管理，目录结构与文件操作，环境变量，计划任务，管道与数据流重定向等基本知识点。-->
+<!--                                </div>-->
+<!--                                <div class="t2"><span>321人学过</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>总时长：120小时</span></div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="charts-section">
+    <div class="main">
+        <div class="charts-title" style="margin-bottom: 80px;">平台统计</div>
+        <div class="layui-row">
+            <div class="layui-col-xs8" >
+                <div class="grid-demo grid-demo-bg1">
+                    <div class="layui-row">
+                        <div class="layui-col-xs5" >
+                            <div style="width: 95%">
+                                <div id="main1" style="width: 100%;height:260px;margin-bottom: 50px;" >
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-col-xs5">
+
+                            <div style="width: 95%">
+                                <div id="main2" style="width: 100%;height:260px;margin-bottom: 50px;" >
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-col-xs5">
+                            <div style="width: 95%">
+                                <div id="main3" style="width: 100%;height:260px;margin-bottom: 50px;" >
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="layui-col-xs5">
+                            <div style="width: 95%">
+                                <div id="main4" style="width: 100%;height:260px;margin-bottom: 50px;" >
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-xs4  pai" >
+
+                <div style="font-size: 1.7rem;text-align: center">学习排行榜</div>
+<!--                <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">-->
+<!--                    <ul class="layui-tab-title">-->
+<!--                        <li class="layui-this">学习时长</li>-->
+<!--                        <li>平均成绩</li>-->
+<!--                    </ul>-->
+                    <div class="layui-tab-content" style="height: 100px;">
+                        <div class="layui-tab-item layui-show">
+                            <div class="list" style="width:100%;text-align: left">
+                                <table  style="width: 96%;" >
+                                    <tr style="border:none">
+                                        <td>排行</td>
+                                        <td>学号</td>
+                                        <td>平均成绩</td>
+                                        <td>总学习时长</td>
+                                    </tr>
+                                    <tr th:each="overallScoreDto,index : ${overallScoreDtos}">
+                                        <td th:text="${index.index+1}">1</td>
+                                        <td th:text="${overallScoreDto.stuXueHao}">1806023929</td>
+                                        <td th:text="${overallScoreDto.averageScores}">1806023929</td>
+                                        <td th:text="${overallScoreDto.learningTime}">72小时2分钟21秒</td>
+                                    </tr>
+<!--                                    <tr>-->
+<!--                                        <td>2</td>-->
+<!--                                        <td>1806023922</td>-->
+<!--                                        <td>71小时2分钟21秒</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td>3</td>-->
+<!--                                        <td>1806023923</td>-->
+<!--                                        <td>70小时2分钟21秒</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td>4</td>-->
+<!--                                        <td>1806023924</td>-->
+<!--                                        <td>69小时2分钟21秒</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td>5</td>-->
+<!--                                        <td>1806023925</td>-->
+<!--                                        <td>69小时32分钟21秒</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td>6</td>-->
+<!--                                        <td>1806023923</td>-->
+<!--                                        <td>70小时2分钟21秒</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td>7</td>-->
+<!--                                        <td>1806023924</td>-->
+<!--                                        <td>69小时2分钟21秒</td>-->
+<!--                                    </tr>-->
+                                </table>
+                            </div>
+                        </div>
+<!--                        <div class="layui-tab-item">-->
+<!--                            <div class="list" style="width:100%;text-align: left">-->
+<!--                                <table  style="width: 96%;" >-->
+<!--                                    <tr style="border:none">-->
+<!--                                        <td>排行</td>-->
+<!--                                        <td>学号</td>-->
+<!--                                        <td>平均成绩</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td>1</td>-->
+<!--                                        <td>1806023929</td>-->
+<!--                                        <td>97分</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td>2</td>-->
+<!--                                        <td>1806023922</td>-->
+<!--                                        <td>96.4分</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td>3</td>-->
+<!--                                        <td>1806023923</td>-->
+<!--                                        <td>96.3分</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td>4</td>-->
+<!--                                        <td>1806023924</td>-->
+<!--                                        <td>96分</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td>5</td>-->
+<!--                                        <td>1806023925</td>-->
+<!--                                        <td>95.9分</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td>6</td>-->
+<!--                                        <td>1806023923</td>-->
+<!--                                        <td>95.7分</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td>7</td>-->
+<!--                                        <td>1806023924</td>-->
+<!--                                        <td>95分</td>-->
+<!--                                    </tr>-->
+<!--                                </table>-->
+<!--                            </div>-->
+<!--                        </div>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer>
+    <p>copyright © 2020 旅游大数据虚拟仿真实验教学平台</p>
+</footer>
+
+<script src="../../static/js/jquery.min.js"></script>
+<script src="//cdn.staticfile.org/bxslider/4.2.15/jquery.bxslider.min.js"></script>
+<!--<script src="//cdn.staticfile.org/echarts/4.8.0/echarts.common.min.js"></script>-->
+<script src="../../static/new/js/index.js"></script>
+<script src="../../static/js/layui.js"></script>
+<script src="../../static/js/layui.all.js"></script>
+<script src="../../static/js/js_home/echart.js"></script>
+<script>
+    var myChart1 = echarts.init(document.getElementById('main1'));
+    var myChart2 = echarts.init(document.getElementById('main2'));
+    var myChart3 = echarts.init(document.getElementById('main3'));
+    var myChart4 = echarts.init(document.getElementById('main4'));
+
+    myChart1.setOption({
+        title: {
+            text: '实验总数：[[${modenum}]]',
+            left: 'center'
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b}: {c} ({d}%)'
+        },
+        legend: {
+            // orient: 'vertical',
+            // top: 'middle',
+            bottom: 10,
+            left: 'center',
+            data: ['考核实验', '普通实验']
+        },
+        series: [
+            {
+                name: '',
+                type: 'pie',
+                radius: ['25%', '60%'],
+                avoidLabelOverlap: false,
+                label: {
+                    show: false,
+                    position: 'center'
+                },
+                emphasis: {
+                    label: {
+                        show: true,
+                        fontSize: '13',
+                        fontWeight: 'bold'
+                    }
+                },
+                labelLine: {
+                    show: false
+                },
+                data: [
+                    {value: parseInt('[[${kaohenum}]]'), name: '考核实验',itemStyle: { color: '#FF6384' }},
+                    {value: parseInt('[[${modenum}]]') - parseInt('[[${kaohenum}]]'), name: '普通实验',itemStyle: { color: '#FFAE46' }},
+                ]
+            }
+        ]
+    });
+
+    myChart2.setOption({
+        title: {
+            text: '用户总数：' + (parseInt('[[${usernum}]]') + parseInt('[[${xiaowainum}]]')),
+            left: 'center'
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b}: {c} ({d}%)'
+        },
+        legend: {
+            // orient: 'vertical',
+            // top: 'middle',
+            bottom: 10,
+            left: 'center',
+            data: ['校内人员', '校外人员']
+        },
+        series: [
+            {
+                name: '',
+                type: 'pie',
+                radius: ['25%', '60%'],
+                avoidLabelOverlap: false,
+                label: {
+                    show: false,
+                    position: 'center'
+                },
+                emphasis: {
+                    label: {
+                        show: true,
+                        fontSize: '13',
+                        fontWeight: 'bold'
+                    }
+                },
+                labelLine: {
+                    show: false
+                },
+                data: [
+                    {value: parseInt('[[${usernum}]]'), name: '校内人员',itemStyle: { color: '#FF6C91' }},
+                    {value: parseInt('[[${xiaowainum}]]'), name: '校外人员',itemStyle: { color: '#7CC2F2' }},
+                ]
+            }
+        ]
+    });
+
+    myChart3.setOption({
+        title: {
+            text: '参与考核人数：[[${studentmodel}]]人',
+            left: 'center'
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b}: {c} ({d}%)'
+        },
+        legend: {
+            // orient: 'vertical',
+            // top: 'middle',
+            bottom: 10,
+            left: 'center',
+            data: ['通过考核', '未通过考核']
+        },
+        series: [
+            {
+                name: '',
+                type: 'pie',
+                radius: ['25%', '60%'],
+                avoidLabelOverlap: false,
+                label: {
+                    show: false,
+                    position: 'center'
+                },
+                emphasis: {
+                    label: {
+                        show: true,
+                        fontSize: '13',
+                        fontWeight: 'bold'
+                    }
+                },
+                labelLine: {
+                    show: false
+                },
+                data: [
+                    {value: parseInt('[[${passpeople}]]'), name: '通过考核',itemStyle: { color: '#B48EFD' }},
+                    {value: parseInt('[[${studentmodel}]]') - parseInt('[[${passpeople}]]'), name: '未通过考核',itemStyle: { color: '#FFAE46' }},
+                ]
+            }
+        ]
+    });
+
+    myChart4.setOption({
+        title: {
+            text: '成绩总数：[[${allpasspeople}]]份',
+            left: 'center'
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b}: {c} ({d}%)'
+        },
+        legend: {
+            // orient: 'vertical',
+            // top: 'middle',
+            bottom: 10,
+            left: 'center',
+            data: ['高', '中','低']
+        },
+        series: [
+            {
+                name: '',
+                type: 'pie',
+                radius: ['25%', '60%'],
+                avoidLabelOverlap: false,
+                label: {
+                    show: false,
+                    position: 'center'
+                },
+                emphasis: {
+                    label: {
+                        show: true,
+                        fontSize: '13',
+                        fontWeight: 'bold'
+                    }
+                },
+                labelLine: {
+                    show: false
+                },
+                data: [
+                    {value: parseInt('[[${excellentstu}]]'), name: '高',itemStyle: { color: '#FF6C91' }},
+                    {value: parseInt('[[${qualifiedstu}]]'), name: '中',itemStyle: { color: '#36A2EB' }},
+                    {value: parseInt('[[${unqualifiedstu}]]'), name: '低',itemStyle: { color: '#9966FF' }},
+                ]
+            }
+        ]
+    });
+
+
+</script>
+</body>
+</html>

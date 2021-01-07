@@ -49,7 +49,7 @@ public class TimeController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-//        session.invalidate();
+        session.invalidate();
     }
 }
 

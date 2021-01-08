@@ -88,6 +88,8 @@
 				</tbody>
 			</table>
 			<div id="pager"></div>
+			<input type="hidden" id="totalPage" th:value="${pageTotalScore.getTotalPages()}" />
+			<input type="hidden" id="currentPage" th:value="${pageTotalScore.pageable.getPageNumber()}" />
 		</div>
 		<script src="//cdn.staticfile.org/jquery/1.8.0/jquery.min.js"></script>
 		<script src="//cdn.staticfile.org/layui/2.5.6/layui.all.min.js"></script>
@@ -98,8 +100,8 @@
 					laypage = layui.laypage
 				laypage.render({
 					elem: 'pager',
-					curr: parseInt('[[${pageNum}]]'),
-					count: parseInt('[[${pageTotalScore}]]'),
+					curr: parseInt($('#currentPage').val())+1,
+					count: parseInt($('#totalPage').val()) * 10,
 					jump: function (obj, first) {
 						if (!first) {
 							window.location.href = window.location.origin + window.location.pathname + '?pageNum=' + (obj.curr - 1)

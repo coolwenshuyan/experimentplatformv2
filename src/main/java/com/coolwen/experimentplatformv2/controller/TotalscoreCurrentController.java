@@ -117,6 +117,8 @@ public class TotalscoreCurrentController {
     public String expModelList(Model model,
                                @RequestParam(required = true, defaultValue = "") String select_orderId,
                                @RequestParam(value = "pageNum", defaultValue = "0", required = true) int pageNum) {
+        Page<StuTotalScoreCurrentDTO> totalScore = studentService.listStuTotalScoreCurrentDTOByClassId(pageNum, select_orderId, -10);
+        model.addAttribute("pageTotalScore", totalScore);
         User user = (User) SecurityUtils.getSubject().getSession().getAttribute("teacher");
         logger.debug("登陆用户信息:" + user);
         List<ArrangeInfoDTO> arrangeInfoDTOs = arrangeClassService.findArrangeInfoDTOByTeacherId(user.getId());

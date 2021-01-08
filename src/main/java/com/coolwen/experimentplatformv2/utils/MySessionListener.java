@@ -81,10 +81,14 @@ public class MySessionListener implements HttpSessionListener, HttpSessionAttrib
                 learningTime.setPostSetTime(new Date());
 
                 int minutes = (int) ((new Date().getTime() - learningTime.getLogInTime().getTime()) / (1000 * 60));
-                if (minutes>300){
-                    minutes = 300;
-                }
-                learningTime.setTotalTime(minutes+learningTime.getTotalTime());
+                //减掉session设置的过期时间
+                minutes -= 19;
+//                if (minutes>300){
+//                    minutes = 300;
+//                }
+               if(minutes > 0){
+                   learningTime.setTotalTime(minutes+learningTime.getTotalTime());
+               }
                 learningDao.save(learningTime);
             }
         } catch (Exception e) {

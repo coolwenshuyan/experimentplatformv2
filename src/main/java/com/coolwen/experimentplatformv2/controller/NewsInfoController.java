@@ -168,18 +168,23 @@ public class NewsInfoController {
         System.out.println(passpeople);
 
         //实验成绩统计
-        //往期参与考核的全部学生
-        int allpasspeople = newsInfoService.findAllpasspeople();
-        //往期参与考核的优秀学生（85分以上）
-        int excellent = newsInfoService.findExcellentpeople();
-        //往期参与考核的中等学生（60分-85分）
-        int qualified = newsInfoService.findQualifiedpeople();
-        //往期参与考核的学生（60分以下）
-        int unqualified = newsInfoService.findUnqualifiedpeople();
-        model.addAttribute("allpasspeople",allpasspeople);
-        model.addAttribute("excellentstu",excellent);
-        model.addAttribute("qualifiedstu",qualified);
-        model.addAttribute("unqualifiedstu",unqualified);
+//        //往期参与考核的全部学生
+//        int allpasspeople = newsInfoService.findAllpasspeople();
+//        //往期参与考核的优秀学生（85分以上）
+//        int excellent = newsInfoService.findExcellentpeople();
+//        //往期参与考核的中等学生（60分-85分）
+//        int qualified = newsInfoService.findQualifiedpeople();
+//        //往期参与考核的学生（60分以下）
+//        int unqualified = newsInfoService.findUnqualifiedpeople();
+//        model.addAttribute("allpasspeople",allpasspeople);
+//        model.addAttribute("excellentstu",excellent);
+//        model.addAttribute("qualifiedstu",qualified);
+//        model.addAttribute("unqualifiedstu",unqualified);
+
+        //一次性查出当期和往期的优秀，中等，未合格的成绩数量
+        List resultsStatistical = newsInfoRepository.resultsStatistical();
+        Object obj1 = resultsStatistical.get(0);
+        model.addAttribute("obj",obj1);
 
         //排行榜
         //前端页面展示10个要错位，修复后  删除两个 ”-2“ 即可

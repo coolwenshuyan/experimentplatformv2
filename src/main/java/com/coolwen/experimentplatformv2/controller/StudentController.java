@@ -3,15 +3,11 @@ package com.coolwen.experimentplatformv2.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.coolwen.experimentplatformv2.kit.ShiroKit;
 import com.coolwen.experimentplatformv2.model.*;
-import com.coolwen.experimentplatformv2.model.ClassModel;
 import com.coolwen.experimentplatformv2.model.DTO.StuDocker;
 import com.coolwen.experimentplatformv2.model.DTO.StudentDockerDTO;
 import com.coolwen.experimentplatformv2.model.DTO.StudentListDTO;
 import com.coolwen.experimentplatformv2.model.DTO.StudentVo;
-import com.coolwen.experimentplatformv2.model.Student;
 import com.coolwen.experimentplatformv2.service.*;
-import com.coolwen.experimentplatformv2.service.ClazzService;
-import com.coolwen.experimentplatformv2.service.StudentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -172,7 +168,7 @@ public class StudentController {
             classid = "0";
         }
         student.setStuIsinschool(stuIsinschool);
-        student.setStuPassword(stu_password);
+        student.setStuPassword(ShiroKit.md5(stu_password,stu_uname));
         student.setClassId(Integer.parseInt(classid));
         logger.debug("修改学生信息为：" + student);
         studentservice.updateStudent(student);

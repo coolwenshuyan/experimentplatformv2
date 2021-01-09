@@ -129,9 +129,12 @@
 								formatter: '{b}:\n{c}个\n{d}%'
 							},
 							data: [
-								{ value: parseInt('[[${excellentstu}]]'), name: '高分' },
-								{ value: parseInt('[[${qualifiedstu}]]'), name: '中等' },
-								{ value: parseInt('[[${unqualifiedstu}]]'), name: '低分' },
+								// { value: parseInt('[[${excellentstu}]]'), name: '高分' },
+								// { value: parseInt('[[${qualifiedstu}]]'), name: '中等' },
+								// { value: parseInt('[[${unqualifiedstu}]]'), name: '低分' },
+								{ value: parseInt('[[${obj[2]}]]'), name: '高分' },
+								{ value: parseInt('[[${obj[1]}]]'), name: '中等' },
+								{ value: parseInt('[[${obj[0]}]]'), name: '低分' },
 								{
 									name: '成绩总数\n' + '[[${allpasspeople}]]' + '份',
 							// data: [

@@ -88,4 +88,22 @@ public interface NewsInfoRepository  extends BaseRepository<NewsInfo, Integer>, 
             "FROM t_totalscore_current left join t_arrange_class on t_totalscore_current.arrange_id=t_arrange_class.id left join t_learning_time on t_totalscore_current.stu_id=t_learning_time.sid LEFT JOIN t_student on t_student.id=t_totalscore_current.stu_id where t_arrange_class.course_id=?1) union (SELECT t_student.stu_xuehao,total_score AS score1,IFNULL(total_time,0) \n" +
             "FROM t_totalscore_pass LEFT JOIN t_learning_time ON t_totalscore_pass.stu_id=t_learning_time.sid LEFT JOIN t_student on t_student.id = t_totalscore_pass.stu_id WHERE t_totalscore_pass.course_id=?1))  as temp ORDER BY score1 DESC,total_time desc  limit 14",nativeQuery=true)
     List findClassScoreRanking(int courseId);
+
+    @Query(value = "SELECT count1+count4,count2+count4,count3+count6 FROM(\n" +
+            "(SELECT count(CASE WHEN t_totalscore_current.total_score BETWEEN 0 and 59 then 1 END) as count1 FROM t_totalscore_current) as t1,\n" +
+            "(SELECT count(CASE WHEN t_totalscore_current.total_score BETWEEN 60 and 84 then 1 END) as count2 FROM t_totalscore_current) as t2,\n" +
+            "(SELECT count(CASE WHEN t_totalscore_current.total_score BETWEEN 85 and 100 then 1 END) as count3 FROM t_totalscore_current) as t3,\n" +
+            "(SELECT count(CASE WHEN t_totalscore_pass.total_score BETWEEN 0 and 59 then 1 END) as count4 FROM t_totalscore_pass) as t4,\n" +
+            "(SELECT count(CASE WHEN t_totalscore_pass.total_score BETWEEN 60 and 84 then 1 END) as count5 FROM t_totalscore_pass) as t5,\n" +
+            "(SELECT count(CASE WHEN t_totalscore_pass.total_score BETWEEN 85 and 100 then 1 END) as count6 FROM t_totalscore_pass) as t6)",nativeQuery=true)
+    List resultsStatistical();
+
+    @Query(value = "SELECT count1+count4,count2+count4,count3+count6 FROM (\n" +
+            "(SELECT count(CASE WHEN t_totalscore_current.total_score BETWEEN 0 and 59 then 1 END) as count1 FROM t_totalscore_current,t_arrange_class WHERE t_totalscore_current.arrange_id=t_arrange_class.id and t_arrange_class.course_id = ?1) as t1,\n" +
+            "(SELECT count(CASE WHEN t_totalscore_current.total_score BETWEEN 60 and 84 then 1 END) as count2 FROM t_totalscore_current,t_arrange_class WHERE t_totalscore_current.arrange_id=t_arrange_class.id and t_arrange_class.course_id = ?1) as t2,\n" +
+            "(SELECT count(CASE WHEN t_totalscore_current.total_score BETWEEN 85 and 100 then 1 END) as count3 FROM t_totalscore_current,t_arrange_class WHERE t_totalscore_current.arrange_id=t_arrange_class.id and t_arrange_class.course_id = ?1) as t3,\n" +
+            "(SELECT count(CASE WHEN t_totalscore_pass.total_score BETWEEN 0 and 59 then 1 END) as count4 FROM t_totalscore_pass WHERE t_totalscore_pass.course_id = ?1) as t4,\n" +
+            "(SELECT count(CASE WHEN t_totalscore_pass.total_score BETWEEN 60 and 84 then 1 END) as count5 FROM t_totalscore_pass WHERE t_totalscore_pass.course_id = ?1) as t5,\n" +
+            "(SELECT count(CASE WHEN t_totalscore_pass.total_score BETWEEN 85 and 100 then 1 END) as count6 FROM t_totalscore_pass WHERE t_totalscore_pass.course_id = ?1) as t6)",nativeQuery=true)
+    List courseGrade(int id);
 }

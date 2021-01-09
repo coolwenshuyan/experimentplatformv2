@@ -10,23 +10,24 @@ import com.coolwen.experimentplatformv2.service.*;
 import com.coolwen.experimentplatformv2.utils.HtmlToPdf;
 import com.coolwen.experimentplatformv2.utils.ZipUtil;
 import org.apache.shiro.SecurityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.File;
-import java.util.*;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.TreeSet;
 
 import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toCollection;
@@ -272,7 +273,8 @@ public class ModleTestReportController {
             return;
         }
         //总文件夹名字
-        String f = "";
+//        String f = "";
+        String f = collegeReports.get(0).getCrClassName();
         //子文件夹名
         String fileName = "";
         //pdf文件名
@@ -291,7 +293,7 @@ public class ModleTestReportController {
             fileName = expModel.getM_name();
             pdfName = expModel.getM_name()+"-"+s.getStuXuehao()+"-"+s.getStuName();
 
-            f = collegeReport.getCrClassName();
+//            f = collegeReport.getCrClassName();
             filef = new File(rootPath+f);
             //创建文件夹
             file = new File(rootPath+f+"/"+fileName);

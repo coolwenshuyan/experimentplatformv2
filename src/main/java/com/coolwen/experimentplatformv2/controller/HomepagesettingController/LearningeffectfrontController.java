@@ -1,6 +1,7 @@
 package com.coolwen.experimentplatformv2.controller.HomepagesettingController;
 
 import com.coolwen.experimentplatformv2.dao.EffectRepository;
+import com.coolwen.experimentplatformv2.dao.NewsInfoRepository;
 import com.coolwen.experimentplatformv2.model.CourseInfo;
 import com.coolwen.experimentplatformv2.model.Effect;
 import com.coolwen.experimentplatformv2.service.CourseInfoService;
@@ -35,6 +36,8 @@ public class LearningeffectfrontController {
     NewsInfoService newsInfoService;
     @Autowired
     CourseInfoService courseInfoService;
+    @Autowired
+    NewsInfoRepository newsInfoRepository;
 
     FileUploadController fileUploadController =new FileUploadController();  //上传文件
 
@@ -97,18 +100,22 @@ public class LearningeffectfrontController {
 
         model.addAttribute("courseId",id);
 
-        //往期参与考核的全部学生
-        int allpasspeople = newsInfoService.findAllpasspeopleByCourseId(id);
-        //往期参与考核的优秀学生（85分以上）
-        int excellent = newsInfoService.findExcellentpeopleByCourseId(id);
-        //往期参与考核的优秀学生（60分-85分）
-        int qualified = newsInfoService.findQualifiedpeopleByCourseId(id);
-        //往期参与考核的优秀学生（60分以下）
-        int unqualified = newsInfoService.findUnqualifiedpeopleByCourseId(id);
-        model.addAttribute("allpasspeople",allpasspeople);
-        model.addAttribute("excellentstu",excellent);
-        model.addAttribute("qualifiedstu",qualified);
-        model.addAttribute("unqualifiedstu",unqualified);
+//        //往期参与考核的全部学生
+//        int allpasspeople = newsInfoService.findAllpasspeopleByCourseId(id);
+//        //往期参与考核的优秀学生（85分以上）
+//        int excellent = newsInfoService.findExcellentpeopleByCourseId(id);
+//        //往期参与考核的优秀学生（60分-85分）
+//        int qualified = newsInfoService.findQualifiedpeopleByCourseId(id);
+//        //往期参与考核的优秀学生（60分以下）
+//        int unqualified = newsInfoService.findUnqualifiedpeopleByCourseId(id);
+//        model.addAttribute("allpasspeople",allpasspeople);
+//        model.addAttribute("excellentstu",excellent);
+//        model.addAttribute("qualifiedstu",qualified);
+//        model.addAttribute("unqualifiedstu",unqualified);
+
+        List courseGrade = newsInfoRepository.courseGrade(id);
+        Object obj = courseGrade.get(0);
+        model.addAttribute("obj",obj);
         return "home_page/study_situation";
     }
 
@@ -125,18 +132,22 @@ public class LearningeffectfrontController {
 
         model.addAttribute("courseId",id);
 
-        //往期参与考核的全部学生
-        int allpasspeople = newsInfoService.findAllpasspeopleByCourseId(id);
-        //往期参与考核的优秀学生（85分以上）
-        int excellent = newsInfoService.findExcellentpeopleByCourseId(id);
-        //往期参与考核的优秀学生（60分-85分）
-        int qualified = newsInfoService.findQualifiedpeopleByCourseId(id);
-        //往期参与考核的优秀学生（60分以下）
-        int unqualified = newsInfoService.findUnqualifiedpeopleByCourseId(id);
-        model.addAttribute("allpasspeople",allpasspeople);
-        model.addAttribute("excellentstu",excellent);
-        model.addAttribute("qualifiedstu",qualified);
-        model.addAttribute("unqualifiedstu",unqualified);
+//        //往期参与考核的全部学生
+//        int allpasspeople = newsInfoService.findAllpasspeopleByCourseId(id);
+//        //往期参与考核的优秀学生（85分以上）
+//        int excellent = newsInfoService.findExcellentpeopleByCourseId(id);
+//        //往期参与考核的优秀学生（60分-85分）
+//        int qualified = newsInfoService.findQualifiedpeopleByCourseId(id);
+//        //往期参与考核的优秀学生（60分以下）
+//        int unqualified = newsInfoService.findUnqualifiedpeopleByCourseId(id);
+//        model.addAttribute("allpasspeople",allpasspeople);
+//        model.addAttribute("excellentstu",excellent);
+//        model.addAttribute("qualifiedstu",qualified);
+//        model.addAttribute("unqualifiedstu",unqualified);
+
+        List courseGrade = newsInfoRepository.courseGrade(id);
+        Object obj = courseGrade.get(0);
+        model.addAttribute("obj",obj);
         return "home_page/study_situation";
     }
 

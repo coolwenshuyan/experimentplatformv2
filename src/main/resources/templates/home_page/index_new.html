@@ -539,7 +539,7 @@
 
     myChart4.setOption({
         title: {
-            text: '成绩总数：[[${allpasspeople}]]份',
+            text: '成绩总数：'+(parseInt('[[${obj[0]}]]')+parseInt('[[${obj[1]}]]')+parseInt('[[${obj[2]}]]'))+'份',
             left: 'center'
         },
         tooltip: {

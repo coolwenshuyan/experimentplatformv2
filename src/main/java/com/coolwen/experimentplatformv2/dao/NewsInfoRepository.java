@@ -72,14 +72,14 @@ public interface NewsInfoRepository  extends BaseRepository<NewsInfo, Integer>, 
     @Query(value = "select stu_xuehao_a,((cc_sumscore_a+pp_sumscore_a)/(cc_sumcount_a+pp_sumcount_a)),total_time_a from\n" +
             "(select s.stu_xuehao as stu_xuehao_a,ifnull(cc_sumscore,0) as cc_sumscore_a,ifnull(pp_sumscore,0) as pp_sumscore_a,ifnull(cc_sumcount,0) as cc_sumcount_a,ifnull(pp_sumcount,0) as pp_sumcount_a,ifnull(l.total_time,0) as total_time_a\n" +
             "from t_student s LEFT JOIN t_learning_time l on s.id=l.sid\n" +
-            "LEFT JOIN ((SELECT stu_id,ifnull(sum(total_score),0) AS cc_sumscore,ifnull(count(stu_id ),0) as cc_sumcount\n" +
+            "LEFT JOIN (SELECT stu_id,ifnull(sum(total_score),0) AS cc_sumscore,ifnull(count(stu_id ),0) as cc_sumcount\n" +
             "        FROM t_totalscore_current\n" +
             "        GROUP BY t_totalscore_current.stu_id\n" +
-            ")AS cc_temp) ON s.id=cc_temp.stu_id\n" +
-            "LEFT JOIN ((SELECT stu_id,ifnull(sum(total_score),0) AS pp_sumscore,ifnull(count(stu_id),0) as pp_sumcount\n" +
+            ")AS cc_temp ON s.id=cc_temp.stu_id\n" +
+            "LEFT JOIN (SELECT stu_id,ifnull(sum(total_score),0) AS pp_sumscore,ifnull(count(stu_id),0) as pp_sumcount\n" +
             "        FROM t_totalscore_pass\n" +
             "        GROUP BY t_totalscore_pass.stu_id\n" +
-            ")AS pp_temp) on s.id=pp_temp.stu_id) as temp_tb1\n" +
+            ")AS pp_temp on s.id=pp_temp.stu_id) as temp_tb1\n" +
             "order by ((cc_sumscore_a+pp_sumscore_a)/(cc_sumcount_a+pp_sumcount_a)) desc,total_time_a desc limit 10",nativeQuery=true)
     List findScoreRanking();
 

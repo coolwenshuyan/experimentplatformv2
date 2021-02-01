@@ -97,7 +97,7 @@
                 'insertparagraphbeforetable', //"表格前插入行"
                 '|',
                 'insertcode', //代码语言
-                'fontfamily', //字体
+                // 'fontfamily', //字体
                 'fontsize', //字号
                 'paragraph', //段落格式
                 'simpleupload', //单图上传
@@ -221,8 +221,10 @@
 
         //粘贴只保留标签，去除标签所有属性
         //,retainOnlyLabelPasted: false
+        ,retainOnlyLabelPasted: true
 
         //,pasteplain:false  //是否默认为纯文本粘贴。false为不使用纯文本粘贴，true为使用纯文本粘贴
+        ,pasteplain:true  //是否默认为纯文本粘贴。false为不使用纯文本粘贴，true为使用纯文本粘贴
         //纯文本粘贴模式下的过滤规则
         //'filterTxtRules' : function(){
         //    function transP(node){
@@ -250,6 +252,33 @@
         //        }
         //    }
         //}()
+
+        ,'filterTxtRules' : function(){
+            function transP(node){
+                node.tagName = 'p';
+                node.setStyle();
+            }
+            return {
+                //直接删除及其字节点内容
+                '-' : 'script style object iframe embed input select',
+                'p': {$:{}},
+                'br':{$:{}},
+                'div':{$:{}},
+                'li':{$:{}},
+                'caption':{$:{}},
+                'th':{$:{}},
+                'tr':{$:{}},
+                'h1':{$:{}},'h2':{$:{}},'h3':{$:{}},'h4':{$:{}},'h5':{$:{}},'h6':{$:{}},
+                'td':function(node){
+                    //没有内容的td直接删掉
+                    var txt = !!node.innerText();
+                    if(txt){
+                        node.parentNode.insertAfter(UE.uNode.createText(' &nbsp; &nbsp;'),node);
+                    }
+                    node.parentNode.removeChild(node,node.innerText())
+                }
+            }
+        }()
 
         //,allHtmlEnabled:false //提交到后台的数据是否包含整个html字符串
 
@@ -288,19 +317,19 @@
 
         //fontfamily
         //字体设置 label留空支持多语言自动切换，若配置，则以配置值为准
-        //,'fontfamily':[
-        //    { label:'',name:'songti',val:'宋体,SimSun'},
-        //    { label:'',name:'kaiti',val:'楷体,楷体_GB2312, SimKai'},
-        //    { label:'',name:'yahei',val:'微软雅黑,Microsoft YaHei'},
-        //    { label:'',name:'heiti',val:'黑体, SimHei'},
-        //    { label:'',name:'lishu',val:'隶书, SimLi'},
-        //    { label:'',name:'andaleMono',val:'andale mono'},
-        //    { label:'',name:'arial',val:'arial, helvetica,sans-serif'},
-        //    { label:'',name:'arialBlack',val:'arial black,avant garde'},
-        //    { label:'',name:'comicSansMs',val:'comic sans ms'},
-        //    { label:'',name:'impact',val:'impact,chicago'},
-        //    { label:'',name:'timesNewRoman',val:'times new roman'}
-        //]
+        ,'fontfamily':[
+           { label:'',name:'songti',val:'宋体,SimSun'},
+           // { label:'',name:'kaiti',val:'楷体,楷体_GB2312, SimKai'},
+           // { label:'',name:'yahei',val:'微软雅黑,Microsoft YaHei'},
+           // { label:'',name:'heiti',val:'黑体, SimHei'},
+           // { label:'',name:'lishu',val:'隶书, SimLi'},
+           // { label:'',name:'andaleMono',val:'andale mono'},
+           // { label:'',name:'arial',val:'arial, helvetica,sans-serif'},
+           // { label:'',name:'arialBlack',val:'arial black,avant garde'},
+           // { label:'',name:'comicSansMs',val:'comic sans ms'},
+           // { label:'',name:'impact',val:'impact,chicago'},
+           // { label:'',name:'timesNewRoman',val:'times new roman'}
+        ]
 
         //fontsize
         //字号
